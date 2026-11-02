@@ -1,0 +1,54 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE } from '../../data/site';
+
+const crumbs = [{ name: 'Final Arrangements Discussion Guide', href: '/resources/final-arrangements-discussion-guide/' }];
+const points = [
+  ['Who speaks for you', 'Who should make healthcare and financial decisions if you can’t? Have you named them in a healthcare power of attorney and a financial power of attorney?'],
+  ['Your healthcare wishes', 'What matters most to you if you become seriously ill? Do you have an advance directive or living will, and does your doctor have a copy?'],
+  ['Where your documents are', 'Where are your will, trust, insurance policies, deeds, titles and account information kept, and who can get to them?'],
+  ['Your finances and bills', 'Which bank accounts, retirement accounts, recurring bills and debts exist, and who should handle them?'],
+  ['Burial or cremation', 'Do you prefer burial, cremation or another option? Do you have a cemetery plot, a pre-paid plan or a funeral home in mind?'],
+  ['Your service', 'What kind of service or celebration of life would you like? Think about music, readings, faith traditions and who should speak.'],
+  ['Paying for arrangements', 'How will final expenses be covered: insurance, savings or a pre-need plan? Who knows about it?'],
+  ['People to notify', 'Who should be contacted, including family, friends, your faith community, employer, clubs and professionals?'],
+  ['Belongings and keepsakes', 'Are there special items you want to go to specific people? Have you written it down?'],
+  ['Your legacy', 'What stories, values and messages do you want to pass on? How do you want to be remembered?'],
+];
+---
+<Base
+  title="Final Arrangements: A Free 10-Point Discussion Guide"
+  description="A free 10-point guide to talking with family about final arrangements: decision-makers, healthcare wishes, documents, funeral preferences, finances and legacy."
+  breadcrumbs={crumbs}
+  schema={[{ '@type': 'HowTo', name: 'How to discuss your final arrangements with family', description: 'Ten topics to cover when discussing final arrangements with the people who matter.', step: points.map(([t, d], i) => ({ '@type': 'HowToStep', position: i + 1, name: t, text: d })) }]}
+>
+  <PageHero
+    title="Your final arrangements: a 10-point discussion guide"
+    eyebrow="Free resource"
+    lead="Have this conversation with the people who matter to you. Clear communication about your final arrangements reduces confusion and makes sure your wishes are respected."
+    breadcrumbs={crumbs}
+  />
+  <section class="section">
+    <div class="wrap narrow">
+      <p>Speak openly with those who will listen, and make sure everyone important to you understands your wishes. You don't need to cover all ten points at once. Pick one or two to start, and come back to the rest.</p>
+      <ol class="points">
+        {points.map(([t, d]) => <li><h2>{t}</h2><p>{d}</p></li>)}
+      </ol>
+      <div class="notice" style="margin-top:2rem">
+        <strong>Write it all down in one place.</strong> <a href="/books/living-legacy-planner/">The Living Legacy Planner</a> gives you a guided space for every topic above, plus a discussion template. For wills, trusts, powers of attorney and advance directives, consult a licensed attorney in your state.
+      </div>
+      <p style="margin-top:2rem">Related: <a href="/blog/how-to-talk-to-aging-parents-about-final-wishes/">How to talk to your aging parents about their final wishes</a></p>
+      <div class="btn-row"><a class="btn btn-secondary" href={SITE.links.livingLegacyPlannerAmazon} rel="noopener">Get The Living Legacy Planner</a></div>
+    </div>
+  </section>
+  <CtaBand title="Would a guided conversation help?" text="We can help you prepare for the talk, or sit in as a calm, neutral voice. Your first call is free." />
+</Base>
+<style>
+  .points { list-style: none; counter-reset: p; padding: 0; margin: 2rem 0 0; }
+  .points li { counter-increment: p; position: relative; padding: 0 0 1.4rem 4rem; border-bottom: 1px solid var(--line); margin-bottom: 1.4rem; }
+  .points li::before { content: counter(p); position: absolute; left: 0; top: 0; width: 2.8rem; height: 2.8rem; border-radius: 50%; background: var(--brand); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 1.2rem; }
+  .points h2 { font-size: 1.35rem; margin-bottom: .3em; }
+  .points p { margin: 0; color: var(--ink-soft); }
+</style>

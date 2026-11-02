@@ -1,0 +1,51 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SERVICES } from '../../data/site';
+const crumbs = [{ name: 'Services', href: '/services/' }];
+---
+<Base
+  title="Senior Care Services for Seniors & Family Caregivers"
+  description="Senior care consulting, senior care virtual assistant services and caregiver support from Senior and Living Today. Available across the U.S. Free first call."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    title="Senior care services that make the next step clearer"
+    eyebrow="Our services"
+    lead="Every family's situation is different. Choose the kind of help you need, or book a free call and we'll point you in the right direction."
+    breadcrumbs={crumbs}
+  />
+  <section class="section">
+    <div class="wrap grid grid-3">
+      {SERVICES.map((s) => (
+        <a class="card" href={s.href}>
+          <h2 class="t">{s.title}</h2>
+          <p>{s.summary}</p>
+          <span class="more">Learn more →</span>
+        </a>
+      ))}
+    </div>
+    <div class="wrap" style="margin-top:2.5rem">
+      <div class="notice">
+        <strong>Good to know:</strong> S.A.L.T. is a consulting and support resource. We don't operate a senior living facility or provide hands-on medical care. We help you understand your options, get organized, and connect with the right providers.
+      </div>
+    </div>
+  </section>
+  <section class="section section-alt">
+    <div class="wrap grid grid-2">
+      <a class="card" href="/caregiver-connection/">
+        <h2 class="t">Caregiver Connection</h2>
+        <p>Curated daily-living products that support comfort, dignity and independence, from adult mealtime bibs to magnifiers and books for seniors.</p>
+        <span class="more">See our recommendations →</span>
+      </a>
+      <a class="card" href="/community/">
+        <h2 class="t">S.A.L.T. Community &amp; Academy</h2>
+        <p>A free online community with discussions, webinars and courses on Medicare, nutrition, and financial and estate planning.</p>
+        <span class="more">Join for free →</span>
+      </a>
+    </div>
+  </section>
+  <CtaBand />
+</Base>
+<style>.t { font-size: 1.5rem; }</style>

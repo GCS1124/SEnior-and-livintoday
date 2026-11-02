@@ -1,0 +1,180 @@
+---
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE, SERVICES } from '../data/site';
+import { faqSchema } from '../data/schema';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf())
+  .slice(0, 3);
+
+const faqs = [
+  {
+    q: 'What does Senior and Living Today do?',
+    a: 'Senior and Living Today (S.A.L.T.) is a senior care resource founded by Courtney Jones. We offer one-on-one senior care consulting, senior care virtual assistant services, caregiver support, planning tools like The Living Legacy Planner, and a free online community for seniors and caregivers.',
+  },
+  {
+    q: 'Is S.A.L.T. a senior living facility or home health agency?',
+    a: 'No. We do not run a facility or provide hands-on medical care. We help seniors and families understand their options, make a plan and get organized, so you can choose the right senior living, in-home care or community resources with confidence.',
+  },
+  {
+    q: 'Do you only help families in Dayton, Ohio?',
+    a: 'We are based in Dayton, Ohio, but consultations, virtual assistant services and our online community are available to seniors and caregivers anywhere in the United States.',
+  },
+  {
+    q: 'How much does a consultation cost?',
+    a: 'Your first conversation is free. Book a free call and we will talk through your situation and let you know how we can help before you commit to anything.',
+  },
+  {
+    q: 'What is The Living Legacy Planner?',
+    a: 'The Living Legacy Planner is an end-of-life and personal records planner written by Courtney Jones. It helps seniors record their final wishes, finances, insurance, medical information, household contacts and treasured memories in one place so family members are never left guessing.',
+  },
+];
+---
+<Base
+  title="Senior and Living Today: Senior Care Help & Caregiver Support"
+  description="Senior care consulting, virtual assistant help and planning tools for seniors and family caregivers across the U.S. Led by advocate Courtney Jones. Free first call."
+  schema={[faqSchema(faqs)]}
+>
+  <section class="hero">
+    <div class="wrap grid split">
+      <div>
+        <span class="eyebrow">Senior and Living Today · S.A.L.T.</span>
+        <h1>Senior care guidance for seniors and the families who love them</h1>
+        <p class="lead">
+          Making decisions about care, housing, money and final wishes is a lot to carry alone. Courtney Jones and the S.A.L.T. team bring 30+ years of senior care experience to help you sort it out, one clear step at a time.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href={SITE.links.bookCall} rel="noopener">Book a free consultation</a>
+          <a class="btn btn-secondary" href="/services/">Explore our services</a>
+        </div>
+        <p class="trust">Serving seniors and caregivers across the U.S. from Dayton, Ohio · <a href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a></p>
+      </div>
+      <Photo src="/images/courtney.jpg" alt="Courtney Jones, founder of Senior and Living Today" eager />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <span class="eyebrow">How we help</span>
+      <h2>Senior care services for seniors and family caregivers</h2>
+      <p class="lead">Whether you are planning for yourself or caring for a parent, spouse or friend, we meet you where you are.</p>
+      <div class="grid grid-3" style="margin-top:2rem">
+        {SERVICES.map((s) => (
+          <a class="card" href={s.href}>
+            <h3>{s.title}</h3>
+            <p>{s.summary}</p>
+            <span class="more">Learn more →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap grid split">
+      <Photo src="/images/living-legacy-planner.webp" alt="The Living Legacy Planner book by Courtney Jones" />
+      <div>
+        <span class="eyebrow">Our best-known resource</span>
+        <h2>The Living Legacy Planner: your final wishes, all in one place</h2>
+        <p>
+          A guided, fill-in planner for recording what matters most: final arrangements, finances, insurance, medications, providers, household contacts and the memories you want to pass on. It includes a temporary instructions section for recovery after a surgery or illness, and a discussion template to help you talk with family.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="/books/living-legacy-planner/">See what’s inside</a>
+          <a class="btn btn-secondary" href={SITE.links.livingLegacyPlannerAmazon} rel="noopener">Buy on Amazon</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <span class="eyebrow">Get started today</span>
+      <h2>Three simple steps</h2>
+      <div class="grid grid-3 steps" style="margin-top:2rem">
+        <div class="card">
+          <span class="num">1</span>
+          <h3>Join the free community</h3>
+          <p>Discussions, webinars, courses and quizzes for seniors and caregivers through S.A.L.T. Academy.</p>
+          <a class="more" href="/community/">Join the S.A.L.T. family →</a>
+        </div>
+        <div class="card">
+          <span class="num">2</span>
+          <h3>Download a free daily planner</h3>
+          <p>A simple printable planner to organize appointments, medications and the day ahead.</p>
+          <a class="more" href={SITE.links.freePlanner} rel="noopener">Download the free planner →</a>
+        </div>
+        <div class="card">
+          <span class="num">3</span>
+          <h3>Shop thoughtful gifts</h3>
+          <p>Practical, comforting gifts and daily-living aids for seniors at the SALT Online Store.</p>
+          <a class="more" href={SITE.links.store} rel="noopener">Visit the store →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap grid split">
+      <div>
+        <span class="eyebrow">Free resource</span>
+        <h2>Your final arrangements: a 10-point discussion guide</h2>
+        <p>
+          Talking about final wishes is hard, and putting it off is harder on the people you leave behind. Our free discussion guide walks you through ten topics to cover with the people who matter, so everyone understands your wishes and there is less confusion later.
+        </p>
+        <a class="btn btn-primary" href="/resources/final-arrangements-discussion-guide/">Read the 10-point guide</a>
+      </div>
+      <Photo src="/images/caregivers-together.jpg" alt="Two older women talking and smiling together" />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid split">
+      <Photo src="/images/saltines-got-talent.png" alt="Saltine's Got Talent senior talent show announcement" />
+      <div>
+        <span class="eyebrow">Community event</span>
+        <h2>Saltine’s Got Talent: a celebration of senior talent and joy</h2>
+        <p>
+          A community event that celebrates the talents, stories and spirit of older adults. Sing, play, dance, recite, share a craft or tell your story. Talent shines at every age, and we are building a stage to prove it.
+        </p>
+        <a class="btn btn-primary" href={SITE.links.talentForm} rel="noopener">Register for Saltine’s Got Talent</a>
+      </div>
+    </div>
+  </section>
+
+  {posts.length > 0 && (
+    <section class="section section-alt">
+      <div class="wrap">
+        <span class="eyebrow">From the blog</span>
+        <h2>Practical tips for seniors and caregivers</h2>
+        <div class="grid grid-3" style="margin-top:2rem">
+          {posts.map((p) => (
+            <a class="card" href={`/blog/${p.id}/`}>
+              <h3>{p.data.title}</h3>
+              <p>{p.data.description}</p>
+              <span class="more">Read article →</span>
+            </a>
+          ))}
+        </div>
+        <p style="margin-top:1.5rem"><a href="/blog/">See all articles</a></p>
+      </div>
+    </section>
+  )}
+
+  <Faq items={faqs} />
+  <CtaBand />
+</Base>
+
+<style>
+  .hero { padding: clamp(40px, 7vw, 88px) 0; background: linear-gradient(180deg, var(--salt), var(--paper)); }
+  .hero h1 { max-width: 18ch; }
+  .trust { margin-top: 1.25rem; font-size: 1rem; color: var(--ink-soft); }
+  .num {
+    display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
+    background: var(--brand); color: #fff; font-weight: 700; margin-bottom: 1rem;
+  }
+</style>

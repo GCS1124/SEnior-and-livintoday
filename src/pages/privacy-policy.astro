@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { SITE } from '../data/site';
+const crumbs = [{ name: 'Privacy Policy', href: '/privacy-policy/' }];
+---
+<Base title="Privacy Policy" description="How Senior and Living Today collects, uses, shares and protects your personal information, and your rights regarding your data." breadcrumbs={crumbs}>
+  <PageHero title="Privacy Policy" breadcrumbs={crumbs} lead="Effective date: April 1, 2025" />
+  <section class="section"><div class="wrap prose">
+    <h2>1. Introduction</h2>
+    <p>This Privacy Policy explains how Senior and Living Today ("we", "us") collects, uses, shares and protects your personal information when you visit or use seniorandlivingtoday.com.</p>
+    <h2>2. Information we collect</h2>
+    <ul>
+      <li><strong>Personal information:</strong> may include your name, email address, phone number and any other details you provide voluntarily (for example, through contact or subscription forms).</li>
+      <li><strong>Automatic data:</strong> we may collect technical data such as your IP address, browser type, device information and usage logs for analytics and site performance.</li>
+    </ul>
+    <h2>3. How we use your information</h2>
+    <ul>
+      <li>To respond to your inquiries or requests.</li>
+      <li>To send newsletters or updates, only if you have opted in.</li>
+      <li>To analyze and improve website performance, personalize content and enhance your experience.</li>
+    </ul>
+    <h2>4. Text messaging</h2>
+    <p>If you opt in to text messages, we will use your phone number only to send the messages you agreed to receive. Message frequency varies and message and data rates may apply. Reply HELP for help or STOP to opt out at any time. We do not sell or share your mobile number or SMS opt-in consent with third parties for their marketing purposes.</p>
+    <h2>5. Cookies and tracking technologies</h2>
+    <p>We use cookies and similar technologies to manage sessions, improve functionality and gather analytics.</p>
+    <h2>6. Information sharing</h2>
+    <p>We do not sell your personal data. We may disclose information to:</p>
+    <ul>
+      <li>Service providers who help run the site or support our operations.</li>
+      <li>Comply with legal requirements or protect our rights.</li>
+      <li>Complete a business transfer or reorganization.</li>
+    </ul>
+    <h2>7. Third-party links</h2>
+    <p>Our site links to third-party websites (such as Amazon, Calendly, our online community and the SALT Online Store). We are not responsible for their content or privacy practices.</p>
+    <h2>8. Data security</h2>
+    <p>We take reasonable measures to protect your information from unauthorized access, loss or misuse using standard security technologies such as encryption and secure hosting.</p>
+    <h2>9. Children’s privacy</h2>
+    <p>Our site is intended for adults. We do not knowingly collect information from children under 18.</p>
+    <h2>10. Your rights</h2>
+    <p>You may request to access, update or delete your personal information by contacting us.</p>
+    <h2>11. Changes to this policy</h2>
+    <p>We may update this Privacy Policy from time to time. The effective date above will reflect when changes are made. Continued use of the site means you accept the updated policy.</p>
+    <h2>12. Contact information</h2>
+    <p>Email: <a href={`mailto:${SITE.email}`}>{SITE.email}</a><br />Mail: {SITE.name}, {SITE.address.street}, {SITE.address.city}, {SITE.address.region} {SITE.address.postalCode}</p>
+  </div></section>
+</Base>

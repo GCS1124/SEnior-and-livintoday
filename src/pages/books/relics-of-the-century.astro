@@ -1,0 +1,37 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Photo from '../../components/Photo.astro';
+import { SITE } from '../../data/site';
+import { bookSchema } from '../../data/schema';
+
+const path = '/books/relics-of-the-century/';
+const crumbs = [{ name: 'Relics of the Century', href: path }];
+const description = 'Relics of the Century by Courtney Jones: a nostalgic, visual journey through everyday items that defined past decades. A conversation-starting gift for seniors.';
+---
+<Base
+  title="Relics of the Century: A Nostalgic Book for Seniors"
+  {description}
+  image="/images/relics-of-the-century.jpg"
+  breadcrumbs={crumbs}
+  schema={[bookSchema({ name: 'Relics of the Century', description, path, amazonUrl: SITE.links.relicsAmazon, image: '/images/relics-of-the-century.jpg' })]}
+>
+  <PageHero title="Relics of the Century" eyebrow="By Courtney Jones" lead="A visual and historical celebration of the items that defined past decades, now overshadowed by modern innovations." breadcrumbs={crumbs}>
+    <div class="btn-row"><a class="btn btn-primary" href={SITE.links.relicsAmazon} rel="noopener">Buy on Amazon</a></div>
+  </PageHero>
+  <section class="section">
+    <div class="wrap grid split">
+      <div>
+        <h2>A nostalgic journey that connects generations</h2>
+        <p>Relics of the Century brings back the everyday objects many of us grew up with, sparking cherished memories and easy conversations between grandparents, children and grandchildren.</p>
+        <ul class="checklist">
+          <li>A thoughtful gift for seniors and memory-sharing moments</li>
+          <li>A gentle conversation starter for families and caregivers</li>
+          <li>A celebration of the past that honors the present</li>
+        </ul>
+        <p>Also by Courtney: <a href="/books/living-legacy-planner/">The Living Legacy Planner</a>.</p>
+      </div>
+      <Photo src="/images/relics-of-the-century.jpg" alt="Relics of the Century book by Courtney Jones" eager />
+    </div>
+  </section>
+</Base>

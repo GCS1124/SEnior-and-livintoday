@@ -1,0 +1,81 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Photo from '../../components/Photo.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE } from '../../data/site';
+import { faqSchema, serviceSchema } from '../../data/schema';
+
+const path = '/services/caregiver-support/';
+const crumbs = [{ name: 'Services', href: '/services/' }, { name: 'Caregiver Support', href: path }];
+const description = 'Support for family caregivers of aging parents and spouses: private consultations, round-table discussions, planning tools and a community that understands.';
+const faqs = [
+  { q: 'What kind of support do you offer family caregivers?', a: 'We offer private one-on-one consultations, group round-table discussions, practical planning tools like The Living Legacy Planner, and a free online community where caregivers can ask questions and share experiences.' },
+  { q: 'I am caring for a parent and feel overwhelmed. Where do I start?', a: 'Start with a free call. We will listen, help you sort out what is most urgent, and suggest clear next steps for care, paperwork and your own well-being.' },
+  { q: 'Do you provide caregivers or respite care?', a: 'We do not employ caregivers. We help you understand respite, in-home care and other options and what to look for, so you can choose providers with confidence.' },
+];
+---
+<Base
+  title="Family Caregiver Support & Consultations"
+  {description}
+  image="/images/courtney-laughing.png"
+  breadcrumbs={crumbs}
+  schema={[serviceSchema({ name: 'Family Caregiver Support', serviceType: 'Caregiver support and consultation', description, path }), faqSchema(faqs)]}
+>
+  <PageHero
+    title="Support for family caregivers"
+    eyebrow="Empowering seniors and caregivers through information and discussion"
+    lead="Private consultations and round-table discussions with compassion and clarity, whether you're navigating today's challenges or planning for the future."
+    breadcrumbs={crumbs}
+  />
+
+  <section class="section">
+    <div class="wrap grid split">
+      <div>
+        <h2>Three simple steps to feeling lighter</h2>
+        <ol class="steps">
+          <li><strong>Book your free call.</strong> Tell us what's going on. No pressure, no obligation.</li>
+          <li><strong>Choose personal consulting or self-exploration.</strong> Work one-on-one with us, or use our community, courses and tools at your own pace.</li>
+          <li><strong>Complete The Living Legacy Planner.</strong> Get everything important written down in one place.</li>
+        </ol>
+        <div class="btn-row">
+          <a class="btn btn-primary" href={SITE.links.bookCall30} rel="noopener">Book your free call</a>
+          <a class="btn btn-secondary" href="/community/">Join the community</a>
+        </div>
+      </div>
+      <Photo src="/images/courtney-laughing.png" alt="Courtney Jones laughing with a senior friend" />
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap grid split">
+      <Photo src="/images/caregivers-together.jpg" alt="Two women sharing a warm moment together" />
+      <div>
+        <h2>Simplify your life</h2>
+        <blockquote class="quote">“For every minute spent organizing, an hour is earned.” <span>Benjamin Franklin</span></blockquote>
+        <p>The Living Legacy Planner is a practical tool for simplifying life as a caregiver. From treasured memories to vital information, it keeps everything your loved one values preserved and easy to find for the people who need it most.</p>
+        <a class="btn btn-primary" href="/books/living-legacy-planner/">Explore The Living Legacy Planner</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap narrow">
+      <h2>Helpful reading for caregivers</h2>
+      <ul>
+        <li><a href="/blog/how-to-talk-to-aging-parents-about-final-wishes/">How to talk to your aging parents about their final wishes</a></li>
+        <li><a href="/blog/aging-in-place-home-safety-checklist/">Aging in place: a room-by-room home safety checklist</a></li>
+        <li><a href="/resources/final-arrangements-discussion-guide/">Your final arrangements: 10-point discussion guide</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <Faq items={faqs} />
+  <CtaBand />
+</Base>
+<style>
+  .steps { padding-left: 1.2em; } .steps li { margin-bottom: .8em; }
+  .quote { font-family: var(--font-head); font-size: 1.5rem; color: var(--brand-dark); margin: 0 0 1rem; }
+  .quote span { display: block; font-family: var(--font-body); font-size: 1rem; color: var(--ink-soft); margin-top: .4rem; }
+</style>

@@ -1,0 +1,75 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { faqSchema, articleSchema } from '../../data/schema';
+import { SITE } from '../../data/site';
+
+const path = '/guides/types-of-senior-living/';
+const crumbs = [{ name: 'Types of Senior Living', href: path }];
+const title = 'Types of Senior Living Explained: Which Option Fits?';
+const description = 'Compare senior living options: aging in place, 55+ communities, independent living, assisted living, memory care, nursing homes and continuing care communities.';
+const options = [
+  { name: 'Aging in place (with or without in-home care)', who: 'Seniors who want to stay in their own home.', what: 'Staying home, often with home modifications, family help, a virtual assistant, or paid in-home care. Non-medical home care helps with daily tasks like meals, bathing and errands; home health care is skilled care ordered by a doctor.', link: { href: '/blog/aging-in-place-home-safety-checklist/', text: 'Home safety checklist' } },
+  { name: '55+ / active adult communities', who: 'Active, independent adults 55 and older.', what: 'Age-restricted neighborhoods with low-maintenance homes and social amenities. Residents usually own their homes; care services are generally not included.', link: { href: '/blog/over-55-communities-pros-and-cons/', text: 'Pros and cons of 55+ communities' } },
+  { name: 'Independent living', who: 'Seniors who are largely independent but want convenience and community.', what: 'Apartments or cottages with services such as meals, housekeeping, transportation and activities. Personal care is not usually included but can sometimes be added.' },
+  { name: 'Assisted living', who: 'Seniors who need help with daily activities but not 24-hour skilled nursing.', what: 'Housing plus help with activities such as bathing, dressing, medications and meals, with staff available around the clock. Rules and licensing vary by state.' },
+  { name: 'Memory care', who: 'People living with Alzheimer’s disease or other forms of dementia.', what: 'Secure, specialized settings, often within assisted living, with staff trained in dementia care and structured routines and activities.' },
+  { name: 'Nursing homes (skilled nursing facilities)', who: 'People who need 24-hour medical care or supervision, or short-term rehab after a hospital stay.', what: 'Licensed nursing care, rehabilitation therapies and help with all daily activities.' },
+  { name: 'Continuing care retirement communities (CCRCs)', who: 'Planners who want to stay on one campus as their needs change.', what: 'Also called life plan communities. They offer independent living, assisted living and nursing care on one campus, usually with an entrance fee plus monthly fees.' },
+  { name: 'Adult day programs & respite care', who: 'Seniors living at home and the family caregivers who need a break.', what: 'Daytime programs offer supervision, meals and activities; respite care provides short-term stays or in-home help so caregivers can rest.' },
+];
+const faqs = [
+  { q: 'What is the difference between independent living and assisted living?', a: 'Independent living offers housing, convenience services and social activities for seniors who manage their own care. Assisted living adds hands-on help with daily activities such as bathing, dressing and medications, with staff available around the clock.' },
+  { q: 'Does Medicare pay for assisted living?', a: 'Generally, no. Medicare does not usually cover long-term custodial care such as assisted living. Medicaid, long-term care insurance, veterans benefits or private funds may help, depending on your state and situation. Check Medicare.gov and your state Medicaid office for current rules.' },
+  { q: 'How do I find senior living near me?', a: 'Start by deciding what level of care and lifestyle you need, then use the Eldercare Locator (eldercare.acl.gov) or your local Area Agency on Aging to find options. Tour several places, ask about every cost, and talk with current residents. If you would like help weighing options, book a free call with S.A.L.T.' },
+  { q: 'When is it time to consider moving?', a: 'Common signs include frequent falls, difficulty with daily tasks, missed medications, isolation or loneliness, and caregiver exhaustion. A conversation with the senior’s doctor and family can help clarify the right next step.' },
+];
+---
+<Base
+  {title}
+  {description}
+  type="article"
+  breadcrumbs={crumbs}
+  schema={[articleSchema({ title, description, path, published: new Date('2026-11-02') }), faqSchema(faqs)]}
+>
+  <PageHero
+    title="Types of senior living, explained in plain English"
+    eyebrow="Senior living guide"
+    lead="From staying at home to assisted living and memory care, here's what each option means, who it's for, and how to choose."
+    breadcrumbs={crumbs}
+  >
+    <p class="byline">By <a href="/about/" rel="author">{SITE.founder.name}</a>, {SITE.founder.jobTitle}</p>
+  </PageHero>
+  <section class="section">
+    <div class="wrap narrow">
+      <p>There's no single "right" answer. The best fit depends on health, safety, budget, location and, most of all, what the senior wants. Use this guide as a starting point for family conversations.</p>
+      {options.map((o) => (
+        <div class="opt">
+          <h2>{o.name}</h2>
+          <p><strong>Best for:</strong> {o.who}</p>
+          <p>{o.what}</p>
+          {o.link && <p><a href={o.link.href}>{o.link.text} →</a></p>}
+        </div>
+      ))}
+      <h2>How to choose: questions to ask</h2>
+      <ul class="checklist">
+        <li>What help is needed today, and what might be needed in two to five years?</li>
+        <li>What does the senior want, and what matters most to them?</li>
+        <li>What is the full monthly cost, and what is extra? How have fees changed over time?</li>
+        <li>How close is it to family, doctors and the hospital?</li>
+        <li>What are the staffing levels, and how are emergencies handled?</li>
+        <li>What do current residents and families say?</li>
+      </ul>
+      <p>Not sure which way to go? Take our <a href={SITE.links.quiz} rel="noopener">senior living style quiz</a>, or let our <a href="/services/senior-care-consulting/">senior care consulting</a> team help you compare options side by side.</p>
+    </div>
+  </section>
+  <Faq items={faqs} />
+  <CtaBand />
+</Base>
+<style>
+  .byline { color: var(--ink-soft); font-size: 1rem; }
+  .opt { border-top: 1px solid var(--line); padding-top: 1.4rem; margin-top: 1.4rem; }
+  .opt h2 { font-size: 1.55rem; }
+</style>

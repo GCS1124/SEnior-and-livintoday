@@ -1,0 +1,18 @@
+---
+import { SITE } from '../data/site';
+interface Props { title?: string; text?: string }
+const {
+  title = 'Not sure where to start? Let’s talk it through.',
+  text = 'Book a free call with Courtney and the S.A.L.T. team. Sometimes you need ideas and a plan; sometimes you just need someone who understands to listen.',
+} = Astro.props;
+---
+<section class="section section-brand">
+  <div class="wrap narrow">
+    <h2>{title}</h2>
+    <p class="lead">{text}</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href={SITE.links.bookCall} rel="noopener">Book a free consultation</a>
+      <a class="btn btn-light" href={`tel:${SITE.phone}`}>Call {SITE.phoneDisplay}</a>
+    </div>
+  </div>
+</section>

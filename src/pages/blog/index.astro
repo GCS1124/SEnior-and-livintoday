@@ -1,0 +1,41 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+const crumbs = [{ name: 'Blog', href: '/blog/' }];
+---
+<Base
+  title="Senior Living & Caregiving Blog: Tips for Seniors"
+  description="Practical articles on senior living options, home safety, end-of-life planning and caregiving from Courtney Jones and the Senior and Living Today team."
+  breadcrumbs={crumbs}
+  schema={[{ '@type': 'Blog', name: 'Senior and Living Today Blog', url: 'https://seniorandlivingtoday.com/blog/', publisher: { '@id': 'https://seniorandlivingtoday.com/#organization' } }]}
+>
+  <PageHero
+    title="The Senior and Living Today blog"
+    eyebrow="Stay informed, stay inspired"
+    lead="Insights, tips and stories on senior wellness, lifestyle, caregiving and planning ahead."
+    breadcrumbs={crumbs}
+  />
+  <section class="section">
+    <div class="wrap grid grid-2">
+      {posts.map((p) => (
+        <a class="card" href={`/blog/${p.id}/`}>
+          <time datetime={p.data.published.toISOString()}>{fmt(p.data.published)}</time>
+          <h2 class="t">{p.data.title}</h2>
+          <p>{p.data.description}</p>
+          <span class="more">Read article →</span>
+        </a>
+      ))}
+    </div>
+  </section>
+  <CtaBand />
+</Base>
+<style>
+  time { font-size: .95rem; color: var(--ink-soft); margin-bottom: .5rem; }
+  .t { font-size: 1.45rem; }
+</style>

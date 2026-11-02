@@ -1,0 +1,86 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Photo from '../../components/Photo.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE } from '../../data/site';
+import { bookSchema, faqSchema } from '../../data/schema';
+
+const path = '/books/living-legacy-planner/';
+const crumbs = [{ name: 'The Living Legacy Planner', href: path }];
+const description = 'The Living Legacy Planner by Courtney Jones: an end-of-life planner to record final wishes, finances, insurance, medical details and memories in one place.';
+const faqs = [
+  { q: 'What is The Living Legacy Planner?', a: 'It is a guided, fill-in planner written by senior care advocate Courtney Jones. Seniors use it to document final wishes, financial and insurance information, medical details, household contacts and personal memories so loved ones are never left guessing.' },
+  { q: 'Who should use an end-of-life planner?', a: 'Any adult, and especially seniors, caregivers planning on behalf of a loved one, and adults who live alone. It is also a helpful resource for professionals who work with seniors to recommend to clients.' },
+  { q: 'Is The Living Legacy Planner a legal will?', a: 'No. The planner organizes your information and wishes in one place, but it does not replace a will, trust, power of attorney or advance directive. Work with a licensed attorney for legal documents and record where they are kept in your planner.' },
+  { q: 'Can I update it later?', a: 'Yes. The planner leaves ample space to make changes as your decisions or health change, so you do not need to buy a new book.' },
+  { q: 'Where can I buy it?', a: 'The Living Legacy Planner is available on Amazon. A free digital daily planner is also available from the SALT Online Store with code SALTFREEPLAN.' },
+];
+---
+<Base
+  title="The Living Legacy Planner: End-of-Life Planning Book"
+  {description}
+  image="/images/living-legacy-planner.webp"
+  imageAlt="The Living Legacy Planner book cover"
+  breadcrumbs={crumbs}
+  schema={[bookSchema({ name: 'The Living Legacy Planner', description, path, amazonUrl: SITE.links.livingLegacyPlannerAmazon, image: '/images/living-legacy-planner.webp' }), faqSchema(faqs)]}
+>
+  <PageHero
+    title="The Living Legacy Planner"
+    eyebrow="By Courtney Jones"
+    lead="A comprehensive, compassionate guide for documenting your final wishes and the details of your life, so the people you love have a clear path to follow."
+    breadcrumbs={crumbs}
+  >
+    <div class="btn-row">
+      <a class="btn btn-primary" href={SITE.links.livingLegacyPlannerAmazon} rel="noopener">Buy on Amazon</a>
+      <a class="btn btn-secondary" href="/blog/living-legacy-planner-guide/">Read the full guide</a>
+    </div>
+  </PageHero>
+
+  <section class="section">
+    <div class="wrap grid split">
+      <div>
+        <h2>What’s inside the planner</h2>
+        <ul class="checklist">
+          <li><strong>Temporary Instructions:</strong> a section up front for when you're recovering from an accident, illness or surgery and someone is helping at home.</li>
+          <li><strong>Final wishes and arrangements</strong>, so loved ones don't have to guess.</li>
+          <li><strong>Insurance, wills, trusts and beneficiaries</strong>, all recorded together.</li>
+          <li><strong>Health information:</strong> allergies, medications, past surgeries, pharmacy, preferred providers and hospitals.</li>
+          <li><strong>Financial section</strong> for personal and business accounts.</li>
+          <li><strong>Household contacts</strong> such as your HVAC company, handyman and other service providers.</li>
+          <li><strong>Memories and legacy:</strong> stories, values and treasures you want to pass on.</li>
+          <li><strong>A discussion template</strong> to guide heartfelt conversations with family.</li>
+        </ul>
+      </div>
+      <Photo src="/images/living-legacy-planner.webp" alt="The Living Legacy Planner book by Courtney Jones" eager />
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap">
+      <h2>Who it’s for</h2>
+      <div class="grid grid-3" style="margin-top:1.5rem">
+        <div class="card"><h3>Seniors</h3><p>Take charge of your own story while every detail is fresh, and give your family the gift of clarity.</p></div>
+        <div class="card"><h3>Caregivers &amp; families</h3><p>Have everything you need to provide excellent care and honor your loved one's wishes.</p></div>
+        <div class="card"><h3>Senior service providers</h3><p>A practical tool to recommend or gift to clients in healthcare, estate planning and community service.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap narrow">
+      <h2>What readers say</h2>
+      <blockquote class="rq">“As a caregiver, The Living Legacy Planner has been a lifesaver. It has been the difference between providing good and excellent care.”</blockquote>
+      <blockquote class="rq">“This is an incredible book! You thought of everything. I definitely recommend it.”</blockquote>
+      <blockquote class="rq">“Some things I never would have thought of are listed here. It pretty much covers everything.”</blockquote>
+      <div class="btn-row"><a class="btn btn-primary" href={SITE.links.livingLegacyPlannerAmazon} rel="noopener">Get your copy on Amazon</a></div>
+    </div>
+  </section>
+
+  <Faq items={faqs} />
+  <CtaBand title="Want help getting started with your planner?" text="Book a free call and we'll walk you through where to begin, or how to start the conversation with a loved one." />
+</Base>
+<style>
+  .rq { margin: 0 0 1.2rem; padding: 1rem 1.4rem; border-left: 4px solid var(--accent); background: var(--salt); border-radius: 0 var(--radius) var(--radius) 0; font-size: 1.15rem; }
+</style>

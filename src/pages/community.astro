@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import { SITE } from '../data/site';
+const crumbs = [{ name: 'Community', href: '/community/' }];
+---
+<Base
+  title="Free Online Community for Seniors & Caregivers"
+  description="Join the free Senior and Living Today community: discussions, webinars, and courses on Medicare, nutrition and estate planning for seniors and caregivers."
+  image="/images/community-quiz.png"
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    title="A free community made just for you"
+    eyebrow="S.A.L.T. Community & Academy"
+    lead="A safe, friendly space where seniors and caregivers connect, learn and thrive, with discussions, quizzes, challenges and webinars that make life after 60 exciting and rewarding."
+    breadcrumbs={crumbs}
+  >
+    <div class="btn-row"><a class="btn btn-primary" href={SITE.links.community} rel="noopener">Join the community, it’s free</a></div>
+  </PageHero>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>What you can do in the community</h2>
+      <div class="grid grid-3" style="margin-top:1.5rem">
+        <div class="card"><h3>Discussions</h3><p>Share experiences, ask questions and get advice from fellow members walking the same path.</p></div>
+        <div class="card"><h3>Free courses &amp; webinars</h3><p>Courses on Medicare simplified, health and nutrition planning, and smart financial and estate planning, plus Ask-the-Expert sessions and a peer conversation hour.</p></div>
+        <div class="card"><h3>Challenges &amp; quizzes</h3><p>Fun quizzes and wellness challenges to keep your mind and body active.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap grid split">
+      <div>
+        <h2>What’s your senior living style?</h2>
+        <p>Do you love staying active, prefer quiet comfort, or thrive on social connection? Take our short quiz to discover which senior living atmosphere feels most like home, then share your result with the community.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href={SITE.links.quiz} rel="noopener">Take the quiz</a>
+          <a class="btn btn-secondary" href="/guides/types-of-senior-living/">Read: types of senior living</a>
+        </div>
+      </div>
+      <Photo src="/images/community-quiz.png" alt="What's your senior living style quiz" />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap narrow">
+      <h2>Our mission</h2>
+      <p class="lead">To empower seniors to live with wisdom, financial peace and meaningful connection.</p>
+      <a class="btn btn-primary" href={SITE.links.community} rel="noopener">Join now, it’s free</a>
+    </div>
+  </section>
+</Base>

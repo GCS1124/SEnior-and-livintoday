@@ -1,0 +1,60 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE } from '../data/site';
+const crumbs = [{ name: 'About', href: '/about/' }];
+---
+<Base
+  title="About Courtney Jones, Founder of S.A.L.T."
+  description="Meet Courtney Jones, senior care advocate with 30+ years of experience, author of The Living Legacy Planner and founder of Senior and Living Today in Dayton, Ohio."
+  image="/images/about-hero.jpg"
+  breadcrumbs={crumbs}
+  schema={[{ '@type': 'AboutPage', url: 'https://seniorandlivingtoday.com/about/', about: { '@id': 'https://seniorandlivingtoday.com/#organization' }, mainEntity: { '@id': 'https://seniorandlivingtoday.com/#courtney-jones' } }]}
+>
+  <PageHero
+    title="About Senior and Living Today"
+    eyebrow="Our story"
+    lead="S.A.L.T. exists to make sure seniors, and the people who care for them, feel valued, respected and cared for."
+    breadcrumbs={crumbs}
+  />
+
+  <section class="section">
+    <div class="wrap grid split">
+      <div class="prose">
+        <h2>Meet Courtney Jones</h2>
+        <p>Senior and Living Today (S.A.L.T.) is led by <strong>Courtney Jones</strong>, a passionate senior care advocate with more than {SITE.founder.yearsExperience} years of experience. Courtney founded S.A.L.T. to give seniors and their care providers across the U.S. trusted resources and practical solutions.</p>
+        <p>Her mission is simple and powerful: to build a supportive community where seniors and those who care for them feel valued, respected and cared for.</p>
+        <p>Courtney is also a published author. <a href="/books/living-legacy-planner/">The Living Legacy Planner</a> helps seniors document their wishes, and <a href="/books/relics-of-the-century/">Relics of the Century</a> celebrates the everyday objects and cultural heritage of decades past.</p>
+      </div>
+      <Photo src="/images/courtney.jpg" alt="Portrait of Courtney Jones, founder of Senior and Living Today" eager />
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap">
+      <h2>Why families choose S.A.L.T.</h2>
+      <div class="grid grid-3" style="margin-top:1.5rem">
+        <div class="card"><h3>Kindness and compassion</h3><p>Courtney's warmth is the heart of our approach. Every interaction is grounded in empathy, so no one feels alone on their journey.</p></div>
+        <div class="card"><h3>Courteous expertise</h3><p>Courtney understands the challenges seniors face and offers personalized strategies, whether you're weighing senior living options or planning to age in place.</p></div>
+        <div class="card"><h3>A true leader</h3><p>Compassionate and leading by example, Courtney makes sure S.A.L.T. is more than a business: it's a team of caring hearts united by one mission.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid split">
+      <Photo src="/images/about-hero.jpg" alt="Courtney Jones with a senior friend" />
+      <div>
+        <h2>Warmth, respect and attention to detail</h2>
+        <p>At S.A.L.T., we're committed to making every moment sweeter for seniors and those who care for them. Based in Dayton, Ohio, our tight-knit team shares a mission of spreading kindness and compassion, from personalized consulting to curated tools that support you and your loved ones every step of the way.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="/services/">See how we help</a>
+          <a class="btn btn-secondary" href="/community/">Discover the community</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <CtaBand />
+</Base>
