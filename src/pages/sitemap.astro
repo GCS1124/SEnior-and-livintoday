@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { getCollection } from 'astro:content';
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort((a, b) => a.data.title.localeCompare(b.data.title));
+const crumbs = [{ name: 'Site map', href: '/sitemap/' }];
+const groups = [
+  { h: 'Get help', links: [['/help/', 'What do I do when…?'], ['/find-help/', 'Find help near me'], ['/videos/', 'Courtney’s videos'], ['/resources/final-arrangements-discussion-guide/', '10-point final arrangements guide'], ['/guides/types-of-senior-living/', 'Types of senior living']] },
+  { h: 'Planners & shop', links: [['/planners/', 'All planners'], ['/books/living-legacy-planner/', 'The Living Legacy Planner'], ['/books/relics-of-the-century/', 'Relics of the Century'], ['/gifts/', 'Holiday gifts for seniors'], ['/caregiver-connection/', 'Caregiver Connection']] },
+  { h: 'Fun & memories', links: [['/games/', 'Coloring book & games'], ['/greeting-cards/', 'Greeting card maker'], ['/memory-lane/', 'Memory Lane'], ['/community/', 'Free community']] },
+  { h: 'Work with us', links: [['/services/', 'All services'], ['/services/senior-care-consulting/', 'Senior care consulting'], ['/services/senior-care-virtual-assistant/', 'Senior care virtual assistant'], ['/services/caregiver-support/', 'Caregiver support'], ['/contact/', 'Contact & free call']] },
+  { h: 'About', links: [['/about/', 'About Courtney Jones'], ['/blog/', 'Blog'], ['/privacy-policy/', 'Privacy policy'], ['/terms-conditions/', 'Terms & conditions']] },
+];
+---
+<Base title="Site Map: Every Page on Senior and Living Today" description="Find every page on Senior and Living Today: help for seniors and caregivers, planners, gifts, games, greeting cards, Courtney’s videos and all blog articles." breadcrumbs={crumbs}>
+  <PageHero title="Site map" kicker="Everything in one place" lead="Every page on our website, so you can find what you need quickly." breadcrumbs={crumbs} />
+  <section class="section">
+    <div class="wrap grid grid-3">
+      {groups.map((g) => (
+        <div><h2 class="t">{g.h}</h2><ul>{g.links.map(([href, label]) => <li><a href={href}>{label}</a></li>)}</ul></div>
+      ))}
+      <div><h2 class="t">Blog articles</h2><ul>{posts.map((p) => <li><a href={`/blog/${p.id}/`}>{p.data.title}</a></li>)}</ul></div>
+    </div>
+    <div class="wrap"><p class="small">For search engines: <a href="/sitemap-index.xml">XML sitemap</a> · <a href="/rss.xml">RSS feed</a> · <a href="/llms.txt">llms.txt</a></p></div>
+  </section>
+</Base>
+<style>
+  .t { font-size: 1.35rem; }
+  ul { padding-left: 1.2em; } li { margin-bottom: .5em; }
+  .small { font-size: .95rem; color: var(--ink-soft); }
+</style>

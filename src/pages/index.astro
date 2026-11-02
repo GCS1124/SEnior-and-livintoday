@@ -5,6 +5,7 @@ import Video from '../components/Video.astro';
 import Reviews from '../components/Reviews.astro';
 import ProductGrid from '../components/ProductGrid.astro';
 import CtaBand from '../components/CtaBand.astro';
+import BibSpotlight from '../components/BibSpotlight.astro';
 import { SITE, SERVICES, BOOKS, VIDEOS, GIFTS, RELICS, storeLink } from '../data/site';
 import { faqSchema } from '../data/schema';
 import { getCollection } from 'astro:content';
@@ -17,8 +18,10 @@ const tiles = [
   { href: '/planners/', icon: '📘', title: 'Planners', text: 'The Living Legacy Planner and friends, on Amazon.', color: '#e7efe3' },
   { href: '/gifts/', icon: '🎁', title: 'Holiday gifts', text: 'Cozy, useful gifts from our SALT Online Store.', color: '#ffe8cf' },
   { href: '/memory-lane/', icon: '📻', title: 'Memory Lane', text: 'Old newspapers, classic TV and radio, and “remember when?”', color: '#efe6fb' },
-  { href: '/games/', icon: '🖍️', title: 'Games & coloring', text: 'An online coloring book and a gentle memory game.', color: '#e3f3fb' },
-  { href: '/videos/', icon: '▶️', title: 'Courtney’s videos', text: 'Pull up a chair. Hundreds of real-talk videos.', color: '#fde4ea' },
+  { href: '/games/', icon: '🎨', title: 'Coloring & games', text: '16 pictures to color, plus a memory game.', color: '#e3f3fb' },
+  { href: '/greeting-cards/', icon: '💌', title: 'Make a greeting card', text: 'Add a photo and your wishes. Print, PDF or share.', color: '#fde4ea' },
+  { href: '/videos/', icon: '▶️', title: 'Courtney’s videos', text: 'Pull up a chair. Hundreds of real-talk videos.', color: '#efe6fb' },
+  { href: '/blog/', icon: '📰', title: 'Blog & resources', text: 'Practical articles for seniors and caregivers.', color: '#e7efe3' },
   { href: '/contact/', icon: '📞', title: 'Talk to Courtney', text: 'Your first call is free. No pressure.', color: '#fff4d6' },
 ];
 
@@ -80,7 +83,7 @@ const faqs = [
     <div class="wrap">
       <span class="kicker">🎄 The season of giving</span>
       <h2>Holiday gift ideas for the seniors you love</h2>
-      <p class="lead">Warm robes, arthritis gloves, reading glasses, a cane that folds into a purse. Hand-picked from our own SALT Online Store.</p>
+      <p class="lead">Adult bibs, arthritis gloves, reading glasses, a cane that folds into a purse. Hand-picked from our own SALT Online Store.</p>
       <ProductGrid items={GIFTS.slice(0, 8)} campaign="home-holiday" />
       <div class="btn-row">
         <a class="btn btn-primary" href="/gifts/">See the full gift guide</a>
@@ -88,6 +91,8 @@ const faqs = [
       </div>
     </div>
   </section>
+
+  <BibSpotlight campaign="home-bibs" />
 
   <section class="section">
     <div class="wrap">
@@ -124,6 +129,7 @@ const faqs = [
         <div class="btn-row">
           <a class="btn btn-berry" href="/memory-lane/">Visit Memory Lane</a>
           <a class="btn btn-outline" href="/games/">🖍️ Color a picture</a>
+          <a class="btn btn-outline" href="/greeting-cards/">💌 Make a card</a>
         </div>
       </div>
       <a class="relics-card" href="/books/relics-of-the-century/">

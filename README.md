@@ -39,10 +39,15 @@ A chat helper on every page (bottom-right button, the header button and the home
 - Until the key is added, or if the AI is down, the helper still answers common questions instantly (doctor, Medicare, hospital, gifts, planners, games…) with links to the right page.
 - Set a monthly spend limit on the NVIDIA account. The endpoint caps message length and questions per visitor.
 
+## Customer reviews
+
+- Planner reviews (Amazon, word for word): `REVIEWS` in `src/data/site.ts`. Shown three lines at a time with “Read more”.
+- Bib reviews (SALT store Facebook page): `BIB_REVIEWS`. Paste Anthony Baffa’s full review into the `more` field to show all of it.
+
 ## How the two websites connect
 
 - **Planners and books → Amazon** (trusted checkout and shipping): `BOOKS` in `src/data/site.ts`.
-- **Gifts and everyday helpers → SALT Online Store**: `GIFTS` in `src/data/site.ts` (robes, arthritis gloves, reading glasses, folding cane, hand warmer, calendar clock, card holder, pill organizer…). Product photos are in `public/images/shop/`.
+- **Gifts and everyday helpers → SALT Online Store**: `GIFTS` in `src/data/site.ts` (adult bibs first, arthritis gloves, reading glasses, folding cane, hand warmer, calendar clock, card holder, pill organizer…). Product photos are in `public/images/shop/`.
 - **E-planners, e-greeting cards, e-wishes → SALT Online Store**: `EPRODUCTS`. Add new digital products there as they launch.
 - Every store link carries `utm_source=seniorandlivingtoday`, so the store's analytics show sales and visits that came from this site.
 
@@ -55,7 +60,9 @@ A chat helper on every page (bottom-right button, the header button and the home
 /find-help/                               Find a doctor, lawyer, Medicare help near a ZIP code
 /gifts/                                   Holiday gift guide (SALT store + Amazon)
 /memory-lane/                             Remember-when cards, old newspapers, classic TV & radio
-/games/                                   Online coloring book + memory match game
+/games/                                   Online coloring book (16 pictures) + memory match game
+/greeting-cards/                          Greeting card maker: photo, wishes, print / PDF / share
+/sitemap/                                 Human-readable site map (XML: /sitemap-index.xml)
 /videos/                                  Courtney's YouTube videos
 /planners/                                All planners & books
 /services/                                Work with us

@@ -1,0 +1,281 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE, storeLink } from '../data/site';
+const crumbs = [{ name: 'Greeting Card Maker', href: '/greeting-cards/' }];
+const occasions = [
+  { id: 'birthday', label: '🎂 Birthday' }, { id: 'holiday', label: '🎄 Holidays' }, { id: 'thanks', label: '🌻 Thank you' },
+  { id: 'getwell', label: '💐 Get well' }, { id: 'thinking', label: '🕊️ Thinking of you' }, { id: 'love', label: '❤️ Love' },
+  { id: 'anniversary', label: '💍 Anniversary' }, { id: 'congrats', label: '🎉 Congratulations' }, { id: 'sympathy', label: '🌿 Sympathy' },
+];
+const inks = ['#2f4f33', '#5a1f3c', '#cc3366', '#1d4ed8', '#111111', '#8a5a00', '#ffffff'];
+const stickers = ['❤️', '🌸', '🌻', '⭐', '🎈', '🎁', '🎄', '❄️', '🦋', '☕', '🐦', '🍰', '🌈', '🍀', '✨', '🙏'];
+---
+<Base
+  title="Free Greeting Card Maker: Print, PDF or Share"
+  description="Make your own greeting card for free: pick an occasion, add a photo, write your wishes, then print it, download a PDF or share it with family. Easy for seniors."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    title="Make your own greeting card"
+    kicker="Free & easy, no sign-up"
+    lead="Pick an occasion, add a favorite photo, write your wishes, and print it, save it as a PDF, or send it to someone you love. Your photos stay on your device."
+    breadcrumbs={crumbs}
+  />
+
+  <section class="section">
+    <div class="wrap maker">
+      <div class="preview">
+        <canvas id="card" width="1000" height="1400" aria-label="Your greeting card preview"></canvas>
+        <div class="out btn-row">
+          <button type="button" class="btn btn-berry" id="pdf">⬇️ Download PDF</button>
+          <button type="button" class="btn btn-primary" id="printc">🖨️ Print</button>
+          <button type="button" class="btn btn-outline" id="png">🖼️ Save picture</button>
+          <button type="button" class="btn btn-green" id="share">📤 Share</button>
+        </div>
+        <p class="status" id="status" aria-live="polite"></p>
+      </div>
+
+      <form class="controls" id="controls" onsubmit="return false">
+        <fieldset>
+          <legend><span class="n">1</span> Choose an occasion</legend>
+          <div class="occ">
+            {occasions.map((o, i) => <button type="button" class:list={['oc', { on: i === 0 }]} data-occ={o.id}>{o.label}</button>)}
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="n">2</span> Add a photo (optional)</legend>
+          <label class="upload btn btn-outline">📷 Choose a photo<input type="file" id="photo" accept="image/*" /></label>
+          <div class="row">
+            <label>Shape
+              <select id="shape"><option value="round">Circle</option><option value="square">Square</option><option value="heart">Heart</option></select>
+            </label>
+            <label>Zoom <input type="range" id="zoom" min="1" max="3" step="0.05" value="1" /></label>
+            <button type="button" class="link" id="nophoto">Remove photo</button>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="n">3</span> Write your wishes</legend>
+          <label>Big greeting <input id="headline" maxlength="40" value="Happy Birthday!" /></label>
+          <label>Your message <textarea id="message" rows="4" maxlength="280">Wishing you a day full of love, laughter and your favorite cake. You mean the world to me.</textarea></label>
+          <label>Signed <input id="sign" maxlength="40" value="With love," /></label>
+          <label>Your name <input id="from" maxlength="40" placeholder="e.g. Grandma Jean" /></label>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="n">4</span> Make it yours</legend>
+          <p class="sub">Writing style</p>
+          <div class="occ">
+            <button type="button" class="ft on" data-font="Caveat">✍️ Handwritten</button>
+            <button type="button" class="ft" data-font="Poppins">Aa Bold</button>
+            <button type="button" class="ft" data-font="Atkinson Hyperlegible">Aa Easy to read</button>
+          </div>
+          <p class="sub">Ink color</p>
+          <div class="inks">
+            {inks.map((c, i) => <button type="button" class:list={['ink', { on: i === 0 }]} data-ink={c} style={`background:${c}`} aria-label={`Ink color ${c}`}></button>)}
+          </div>
+          <p class="sub">Stickers (tap to add, tap “Clear stickers” to remove)</p>
+          <div class="stickers">
+            {stickers.map((st) => <button type="button" class="st" data-st={st}>{st}</button>)}
+          </div>
+          <button type="button" class="link" id="clearst">Clear stickers</button>
+        </fieldset>
+      </form>
+    </div>
+  </section>
+
+  <section class="section section-cream">
+    <div class="wrap grid grid-3">
+      <div class="card"><h2 class="t">Print at home</h2><p>Print on regular or card-stock paper, trim if you like, and tuck it in an envelope. Real mail still makes people smile.</p></div>
+      <div class="card"><h2 class="t">Save as a PDF</h2><p>Download a PDF to print later, email to family, or take to your local print shop for a glossy copy.</p></div>
+      <div class="card"><h2 class="t">Send it from your phone</h2><p>Tap “Share” to send your card by text message, email or social media.</p></div>
+    </div>
+    <div class="wrap" style="margin-top:2rem">
+      <p class="lead">Looking for ready-made e-cards, e-wishes and printable planners? More are coming to our <a href={storeLink('/collections/digital-products', 'card-maker')} target="_blank" rel="noopener">SALT Online Store</a>. And if you liked this, try the <a href="/games/#color">online coloring book</a>.</p>
+    </div>
+  </section>
+  <CtaBand title="Making a card for someone who’s struggling?" text="If someone you love is going through a hard time, Courtney is a phone call away. Your first call is free." />
+</Base>
+
+<style>
+  .maker { display: grid; gap: 30px; align-items: start; }
+  @media (min-width: 980px) { .maker { grid-template-columns: 1fr 1fr; } .preview { position: sticky; top: 150px; } }
+  #card { width: 100%; max-width: 520px; display: block; margin: 0 auto; border-radius: 10px; box-shadow: 0 20px 50px rgba(90,31,60,.22); background: #fff; }
+  .out { justify-content: center; }
+  .out .btn { min-height: 50px; padding: 10px 18px; font-size: 1rem; }
+  .status { text-align: center; color: var(--green-dark); font-weight: 700; min-height: 1.5em; }
+  .controls { display: grid; gap: 18px; }
+  fieldset { border: 2px solid var(--line); border-radius: 20px; padding: 18px 20px 20px; background: #fff; margin: 0; }
+  legend { display: flex; align-items: center; gap: 10px; font: 600 1.2rem var(--font-head); color: var(--green-ink); padding: 0 8px; }
+  .n { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--berry); color: #fff; font-size: .95rem; }
+  .occ { display: flex; flex-wrap: wrap; gap: 8px; }
+  .oc, .ft { font: 600 1rem var(--font-head); padding: 10px 14px; border-radius: 999px; border: 2px solid var(--line); background: var(--paper); cursor: pointer; color: var(--ink); min-height: 46px; }
+  .oc.on, .ft.on { background: var(--gold-soft); border-color: var(--gold); }
+  .ft[data-font='Caveat'] { font-family: var(--font-hand); font-size: 1.3rem; }
+  label { display: block; font-weight: 700; margin-top: 12px; }
+  input:not([type]), input[type='text'], textarea, select { display: block; width: 100%; margin-top: 6px; font: 1.12rem var(--font-body); padding: 12px 14px; border: 2px solid var(--line); border-radius: 12px; background: var(--paper); }
+  textarea { resize: vertical; }
+  input:focus, textarea:focus, select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 4px rgba(255,174,0,.25); }
+  .upload { position: relative; cursor: pointer; margin-top: 4px; }
+  .upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .row { display: flex; flex-wrap: wrap; gap: 16px; align-items: end; }
+  .row label { margin-top: 12px; }
+  .row select { width: auto; }
+  input[type='range'] { width: 180px; display: block; margin-top: 10px; accent-color: var(--berry); }
+  .link { background: none; border: 0; color: var(--berry); font: 700 1rem var(--font-head); text-decoration: underline; cursor: pointer; padding: 10px 0; }
+  .sub { margin: 14px 0 6px; font-weight: 700; }
+  .inks { display: flex; flex-wrap: wrap; gap: 10px; }
+  .ink { width: 44px; height: 44px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 2px var(--line); cursor: pointer; }
+  .ink.on { box-shadow: 0 0 0 4px var(--ink); }
+  .stickers { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
+  .st { font-size: 1.7rem; padding: 6px 0; border-radius: 12px; border: 2px solid var(--line); background: var(--paper); cursor: pointer; }
+  .st:hover { border-color: var(--gold); }
+  .t { font-size: 1.3rem; }
+  @media print {
+    :global(body > *:not(main)), :global(.page-hero), :global(.wave), .controls, .out, .status, :global(.section-cream), :global(.cta), :global(.ask-launch) { display: none !important; }
+    .maker { display: block; }
+    #card { box-shadow: none; max-width: 100%; width: 5in; }
+  }
+</style>
+
+<script>
+  type Theme = { bg: [string, string]; accent: string; motif: string[]; headline: string; message: string; sign: string };
+  const THEMES: Record<string, Theme> = {
+    birthday: { bg: ['#fff4d6', '#ffd1dc'], accent: '#cc3366', motif: ['🎈', '🎂', '🎉'], headline: 'Happy Birthday!', message: 'Wishing you a day full of love, laughter and your favorite cake. You mean the world to me.', sign: 'With love,' },
+    holiday: { bg: ['#e7efe3', '#fff4d6'], accent: '#2f4f33', motif: ['🎄', '❄️', '⭐'], headline: 'Happy Holidays', message: 'Wishing you warmth, joy and good company this season, and every blessing in the new year.', sign: 'Warmly,' },
+    thanks: { bg: ['#fff7e0', '#ffe8cf'], accent: '#8a5a00', motif: ['🌻', '🍃', '✨'], headline: 'Thank You', message: 'Your kindness meant more than I can say. Thank you for being so wonderful.', sign: 'Gratefully,' },
+    getwell: { bg: ['#e3f3fb', '#fde4ea'], accent: '#1d4ed8', motif: ['💐', '🌈', '☀️'], headline: 'Get Well Soon', message: 'Sending you healing thoughts, warm hugs and a little sunshine. Feel better soon.', sign: 'Thinking of you,' },
+    thinking: { bg: ['#efe6fb', '#fffaf2'], accent: '#5a1f3c', motif: ['🕊️', '🌸', '💜'], headline: 'Thinking of You', message: 'Just wanted you to know you’re on my mind and in my heart today.', sign: 'With love,' },
+    love: { bg: ['#fde4ea', '#ffd1dc'], accent: '#cc3366', motif: ['❤️', '💕', '🌹'], headline: 'I Love You', message: 'After all these years, you still make my heart smile. Thank you for everything.', sign: 'Forever yours,' },
+    anniversary: { bg: ['#fffaf2', '#f3e2c4'], accent: '#8a5a00', motif: ['💍', '🥂', '❤️'], headline: 'Happy Anniversary', message: 'Here’s to all the years of love, laughter and adventures together, and to many more.', sign: 'With all my love,' },
+    congrats: { bg: ['#fff4d6', '#e3f3fb'], accent: '#1d4ed8', motif: ['🎉', '⭐', '🏆'], headline: 'Congratulations!', message: 'I’m so proud of you. You worked hard for this, and you deserve every bit of it.', sign: 'Cheering you on,' },
+    sympathy: { bg: ['#eef3ec', '#fffaf2'], accent: '#2f4f33', motif: ['🌿', '🕊️', '🤍'], headline: 'With Deepest Sympathy', message: 'Holding you close in my thoughts. May treasured memories bring you comfort and peace.', sign: 'With heartfelt sympathy,' },
+  };
+
+  const cv = document.getElementById('card') as HTMLCanvasElement;
+  const ctx = cv.getContext('2d')!;
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const state = { occ: 'birthday', font: 'Caveat', ink: '#2f4f33', photo: null as HTMLImageElement | null, shape: 'round', zoom: 1, stickers: [] as { s: string; x: number; y: number; r: number }[] };
+
+  const W = 1000, H = 1400;
+  function wrap(text: string, maxW: number, size: number) {
+    ctx.font = `${state.font === 'Caveat' ? 600 : 400} ${size}px "${state.font}"`;
+    const words = text.split(/\s+/); const lines: string[] = []; let line = '';
+    for (const w of words) { const t = line ? line + ' ' + w : w; if (ctx.measureText(t).width > maxW && line) { lines.push(line); line = w; } else line = t; }
+    if (line) lines.push(line); return lines;
+  }
+  function heartPath(cx: number, cy: number, r: number) {
+    ctx.beginPath(); ctx.moveTo(cx, cy + r * 0.9);
+    ctx.bezierCurveTo(cx - r * 1.6, cy - r * 0.2, cx - r * 0.7, cy - r * 1.3, cx, cy - r * 0.45);
+    ctx.bezierCurveTo(cx + r * 0.7, cy - r * 1.3, cx + r * 1.6, cy - r * 0.2, cx, cy + r * 0.9); ctx.closePath();
+  }
+  function render() {
+    const th = THEMES[state.occ];
+    const g = ctx.createLinearGradient(0, 0, W, H); g.addColorStop(0, th.bg[0]); g.addColorStop(1, th.bg[1]);
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    // border
+    ctx.strokeStyle = th.accent; ctx.lineWidth = 10; ctx.strokeRect(36, 36, W - 72, H - 72);
+    ctx.lineWidth = 3; ctx.strokeRect(56, 56, W - 112, H - 112);
+    // corner motifs
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = '84px serif';
+    [[130, 140], [W - 130, 140], [130, H - 140], [W - 130, H - 140]].forEach(([x, y], i) => ctx.fillText(th.motif[i % th.motif.length], x, y));
+    // photo or big motif
+    const cx = W / 2, cy = 470, r = 280;
+    if (state.photo) {
+      ctx.save();
+      if (state.shape === 'round') { ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); }
+      else if (state.shape === 'square') { ctx.beginPath(); ctx.roundRect(cx - r, cy - r, r * 2, r * 2, 30); }
+      else heartPath(cx, cy + 20, r * 0.95);
+      ctx.clip();
+      const img = state.photo, s = Math.max((r * 2) / img.width, (r * 2) / img.height) * state.zoom;
+      ctx.drawImage(img, cx - (img.width * s) / 2, cy - (img.height * s) / 2, img.width * s, img.height * s);
+      ctx.restore();
+      ctx.strokeStyle = '#fff'; ctx.lineWidth = 16;
+      if (state.shape === 'round') { ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke(); }
+      else if (state.shape === 'square') { ctx.beginPath(); ctx.roundRect(cx - r, cy - r, r * 2, r * 2, 30); ctx.stroke(); }
+      else { heartPath(cx, cy + 20, r * 0.95); ctx.stroke(); }
+    } else {
+      ctx.font = '300px serif'; ctx.fillText(th.motif[0], cx, cy);
+    }
+    // headline
+    const head = $<HTMLInputElement>('headline').value;
+    let hs = state.font === 'Caveat' ? 130 : 96;
+    ctx.fillStyle = state.ink === '#ffffff' ? th.accent : state.ink;
+    ctx.font = `700 ${hs}px "${state.font}"`;
+    while (ctx.measureText(head).width > W - 180 && hs > 50) { hs -= 4; ctx.font = `700 ${hs}px "${state.font}"`; }
+    ctx.fillText(head, cx, 860);
+    // message
+    ctx.fillStyle = state.ink;
+    const ms = state.font === 'Caveat' ? 62 : 44;
+    const lines = wrap($<HTMLTextAreaElement>('message').value, W - 220, ms).slice(0, 6);
+    lines.forEach((l, i) => ctx.fillText(l, cx, 980 + i * ms * 1.25));
+    // signature
+    const sig = [$<HTMLInputElement>('sign').value, $<HTMLInputElement>('from').value].filter(Boolean).join(' ');
+    ctx.font = `600 ${state.font === 'Caveat' ? 70 : 46}px "${state.font}"`;
+    ctx.fillText(sig, cx, H - 150);
+    // stickers
+    state.stickers.forEach((st) => { ctx.save(); ctx.translate(st.x, st.y); ctx.rotate(st.r); ctx.font = '96px serif'; ctx.fillText(st.s, 0, 0); ctx.restore(); });
+  }
+
+  const fontsReady = Promise.all(['600 40px Caveat', '700 40px Poppins', '400 40px "Atkinson Hyperlegible"'].map((f) => document.fonts.load(f))).catch(() => {});
+  fontsReady.then(render); render();
+
+  document.querySelectorAll<HTMLButtonElement>('.oc').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('.oc').forEach((o) => o.classList.toggle('on', o === b));
+    state.occ = b.dataset.occ!; const th = THEMES[state.occ];
+    $<HTMLInputElement>('headline').value = th.headline; $<HTMLTextAreaElement>('message').value = th.message; $<HTMLInputElement>('sign').value = th.sign;
+    render();
+  }));
+  document.querySelectorAll<HTMLButtonElement>('.ft').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('.ft').forEach((o) => o.classList.toggle('on', o === b)); state.font = b.dataset.font!; render();
+  }));
+  document.querySelectorAll<HTMLButtonElement>('.ink').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('.ink').forEach((o) => o.classList.toggle('on', o === b)); state.ink = b.dataset.ink!; render();
+  }));
+  let stickerSpot = 0;
+  const spots = [[220, 760], [780, 760], [190, 300], [810, 300], [500, 1180], [170, 1080], [830, 1080], [500, 130]];
+  document.querySelectorAll<HTMLButtonElement>('.st').forEach((b) => b.addEventListener('click', () => {
+    const [x, y] = spots[stickerSpot++ % spots.length];
+    state.stickers.push({ s: b.dataset.st!, x, y, r: (Math.random() - 0.5) * 0.5 }); render();
+  }));
+  $('clearst').addEventListener('click', () => { state.stickers = []; stickerSpot = 0; render(); });
+  ['headline', 'message', 'sign', 'from'].forEach((id) => $(id).addEventListener('input', render));
+  $<HTMLSelectElement>('shape').addEventListener('change', (e) => { state.shape = (e.target as HTMLSelectElement).value; render(); });
+  $<HTMLInputElement>('zoom').addEventListener('input', (e) => { state.zoom = Number((e.target as HTMLInputElement).value); render(); });
+  $('nophoto').addEventListener('click', () => { state.photo = null; $<HTMLInputElement>('photo').value = ''; render(); });
+  $<HTMLInputElement>('photo').addEventListener('change', (e) => {
+    const f = (e.target as HTMLInputElement).files?.[0]; if (!f) return;
+    const img = new Image(); img.onload = () => { state.photo = img; render(); URL.revokeObjectURL(img.src); };
+    img.src = URL.createObjectURL(f);
+  });
+
+  const status = $('status');
+  const say = (m: string) => { status.textContent = m; setTimeout(() => (status.textContent = ''), 4000); };
+  const fileName = () => `${state.occ}-card-from-seniorandlivingtoday`;
+  const blob = () => new Promise<Blob>((res) => cv.toBlob((b) => res(b!), 'image/jpeg', 0.92));
+
+  $('png').addEventListener('click', () => {
+    const a = document.createElement('a'); a.download = `${fileName()}.png`; a.href = cv.toDataURL('image/png'); a.click(); say('Picture saved to your downloads.');
+  });
+  $('pdf').addEventListener('click', async () => {
+    say('Making your PDF…');
+    const { jsPDF } = await import('jspdf');
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'in', format: [5, 7] });
+    pdf.addImage(cv.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, 5, 7);
+    pdf.save(`${fileName()}.pdf`); say('Your PDF is in your downloads. Print it at 5 × 7 inches.');
+  });
+  $('printc').addEventListener('click', () => window.print());
+  $('share').addEventListener('click', async () => {
+    const file = new File([await blob()], `${fileName()}.jpg`, { type: 'image/jpeg' });
+    const text = `${$<HTMLInputElement>('headline').value} 💌`;
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try { await navigator.share({ files: [file], title: 'A card for you', text }); } catch { /* cancelled */ }
+    } else {
+      const a = document.createElement('a'); a.download = file.name; a.href = URL.createObjectURL(file); a.click();
+      say('Saved the card picture. Attach it to an email or text message to send it.');
+    }
+  });
+</script>

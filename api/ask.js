@@ -16,7 +16,7 @@ What S.A.L.T. offers (link to these pages when relevant, using full URLs):
 - "What do I do when…" advice (hospital advocate, Medicare letters, someone moving in, workers in the home, key lockbox, winter prep, asking for help): https://seniorandlivingtoday.com/help/
 - Courtney's videos: https://seniorandlivingtoday.com/videos/
 - Planners (sold on Amazon): The Living Legacy Planner https://www.amazon.com/dp/B0D4JDBFYQ , Military Deployment & Family Readiness Edition https://www.amazon.com/dp/B0HFDZMWZX , Relics of the Century https://www.amazon.com/dp/B0DH537CC3 . Overview: https://seniorandlivingtoday.com/planners/
-- Holiday gifts and everyday helpers (robes, arthritis gloves, reading glasses, folding cane, pill organizers, calendar clock) and fillable PDF e-planners at the SALT Online Store: https://seniorandlivingtoday.com/gifts/
+- Holiday gifts and everyday helpers (adult bibs, arthritis gloves, reading glasses, folding cane, pill organizers, calendar clock) and fillable PDF e-planners at the SALT Online Store: https://seniorandlivingtoday.com/gifts/
 - Memory Lane (old newspapers, classic TV, old-time radio): https://seniorandlivingtoday.com/memory-lane/
 - Games and online coloring book: https://seniorandlivingtoday.com/games/
 - Free community and courses: https://seniorandlivingtoday.com/community/

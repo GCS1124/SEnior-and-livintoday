@@ -1,0 +1,60 @@
+---
+import { GIFTS, BIB_REVIEWS, storeLink } from '../data/site';
+interface Props { campaign?: string }
+const { campaign = 'bib-spotlight' } = Astro.props;
+const bibs = GIFTS.filter((g) => g.key.startsWith('bib'));
+---
+<section class="section bibs">
+  <div class="wrap grid split">
+    <div>
+      <span class="kicker">Our customers’ favorite</span>
+      <h2>Adult bibs that keep the good shirts good</h2>
+      <p class="lead">Mealtime should feel dignified, not stressful. Our adult bibs protect clothes from spills, crumbs and even hot ashes, and our customers come back for them again and again.</p>
+      <div class="quotes">
+        {BIB_REVIEWS.map((r) => (
+          <blockquote class="q">
+            <p class="stars" aria-label="5 out of 5 stars">★★★★★</p>
+            <p>“{r.short}{r.more && <span class="rest" hidden> {r.more}</span>}”</p>
+            {r.more && <button type="button" class="more-btn bib-more" aria-expanded="false">Read more</button>}
+            <footer><strong>{r.name}</strong> · {r.note}</footer>
+          </blockquote>
+        ))}
+      </div>
+    </div>
+    <div class="bibcards">
+      {bibs.map((b) => (
+        <a href={storeLink(`/products/${b.handle}`, campaign)} target="_blank" rel="noopener">
+          <img src={`/images/shop/${b.key}.webp`} alt={b.name} width="600" height="600" loading="lazy" />
+          <strong>{b.name}</strong>
+          <span>{b.why}</span>
+          <span class="go">Shop at the SALT store ↗</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+<style>
+  .bibs { background: linear-gradient(160deg, #fff4d6 0%, #ffe8cf 100%); }
+  .quotes { display: grid; gap: 14px; margin-top: 1.2rem; }
+  .q { margin: 0; background: #fff; border-left: 6px solid var(--berry); border-radius: 0 16px 16px 0; padding: 16px 20px; box-shadow: 0 8px 20px rgba(90,31,60,.07); }
+  .q p { margin: 0 0 .3rem; font-size: 1.12rem; }
+  .q .stars { color: #e8a000; }
+  .q footer { font-size: .95rem; color: var(--ink-soft); }
+  .more-btn { background: none; border: 0; padding: 4px 0; font: 700 1rem var(--font-head); color: var(--berry); cursor: pointer; text-decoration: underline; }
+  .bibcards { display: grid; gap: 18px; grid-template-columns: 1fr 1fr; }
+  .bibcards a { display: flex; flex-direction: column; gap: 6px; background: #fff; border: 2px solid var(--line); border-radius: 20px; padding: 14px; text-decoration: none; color: var(--ink); transition: transform .15s, border-color .15s; }
+  .bibcards a:hover { transform: translateY(-4px); border-color: var(--gold); }
+  .bibcards img { border-radius: 14px; aspect-ratio: 1; object-fit: contain; background: #f7f2ea; }
+  .bibcards strong { font: 600 1.1rem/1.3 var(--font-head); }
+  .bibcards span { font-size: .98rem; color: var(--ink-soft); }
+  .bibcards .go { margin-top: auto; font: 600 1rem var(--font-head); color: var(--plum); }
+</style>
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.bib-more').forEach((b) => b.addEventListener('click', () => {
+    const rest = b.previousElementSibling?.querySelector<HTMLElement>('.rest');
+    if (!rest) return;
+    rest.hidden = !rest.hidden;
+    b.textContent = rest.hidden ? 'Read more' : 'Show less';
+    b.setAttribute('aria-expanded', String(!rest.hidden));
+  }));
+</script>

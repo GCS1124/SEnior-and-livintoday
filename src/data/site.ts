@@ -50,11 +50,12 @@ export const NAV = [
   { href: '/help/', label: 'Get Help', icon: '💬' },
   { href: '/find-help/', label: 'Find Help Near Me', icon: '📍' },
   { href: '/planners/', label: 'Planners', icon: '📘' },
-  { href: '/gifts/', label: 'Holiday Gifts', icon: '🎁' },
-  { href: '/memory-lane/', label: 'Memory Lane', icon: '📻' },
-  { href: '/games/', label: 'Games', icon: '🖍️' },
+  { href: '/gifts/', label: 'Gifts', icon: '🎁' },
+  { href: '/blog/', label: 'Blog', icon: '📰' },
   { href: '/videos/', label: 'Videos', icon: '▶️' },
-  { href: '/about/', label: 'About Courtney', icon: '👋' },
+  { href: '/memory-lane/', label: 'Memory Lane', icon: '📻' },
+  { href: '/games/', label: 'Fun & Cards', icon: '🎨' },
+  { href: '/about/', label: 'About', icon: '👋' },
 ];
 
 export const SERVICES = [
@@ -170,8 +171,8 @@ export const storeLink = (path: string, campaign = 'senior-site') =>
 export interface Product { key: string; name: string; why: string; handle: string; tag: string }
 
 export const GIFTS: Product[] = [
-  { key: 'robe-hotel', name: 'Thick Fleece Hotel-Style Robe', why: 'Cozy, warm and easy to slip on. For him or for her.', handle: 'long-robe-hotel-collection-thick-fleece-for-men-women', tag: 'Warm & cozy' },
-  { key: 'robe-men', name: 'Men’s Soft Coral Fleece Robe', why: 'Ultra-soft with pockets. A Dad and Grandpa favorite.', handle: 'mens-solid-color-coral-fleece-long-robe-ultra-soft-bathrobe-gown-with-pockets', tag: 'For him' },
+  { key: 'bib-flannel', name: 'Thick Flannel Adult Bib', why: 'Soft, absorbent and adjustable. Keeps good shirts clean at every meal.', handle: 'adjustable-high-end-adult-clothing-protector-thick-flannel-bib-for-elderly-disabled', tag: 'Customer favorite' },
+  { key: 'bib-set', name: 'Stain-Resistant Adult Bibs', why: 'Wipe-clean bibs for men and women. Buy one or a set of four.', handle: '1-4pcs-adult-bibs-stain-resistant-apron-for-men-women', tag: 'Dignity at mealtime' },
   { key: 'cane', name: 'Adjustable Folding Walking Cane', why: 'Folds small for the car or a handbag, adjusts to the right height.', handle: 'adjustable-folding-walking-cane-for-seniors', tag: 'Steady steps' },
   { key: 'gloves-arthritis', name: 'Compression Arthritis Gloves', why: 'Gentle compression and warmth for stiff, achy hands.', handle: 'compression-arthritis-gloves-wrist-support-carpal-tunnel-pain-relief', tag: 'Comfort' },
   { key: 'glasses-bifocal', name: 'Bifocal Reading Glasses', why: 'Near and far in one pair, with lenses that darken outside.', handle: 'photochromic-bifocal-reading-glasses-clear-vision-both-far-and-near-wide-field-of-vision-tr-toughness-frame-unisex-model', tag: 'See clearly' },
@@ -243,4 +244,11 @@ export const MEMORY_LINKS = [
   { name: 'Old-time radio shows', url: 'https://archive.org/details/oldtimeradio', note: 'Mysteries, comedies and westerns from radio’s golden age.', icon: '📻' },
   { name: '78 rpm records', url: 'https://great78.archive.org/', note: 'The Great 78 Project: tens of thousands of early records, free to play.', icon: '🎶' },
   { name: 'Old movies, free', url: 'https://archive.org/details/feature_films', note: 'Public-domain feature films from Hollywood’s early years.', icon: '🎬' },
+];
+
+// Real SALT customer words about our bibs (from the SALT Online Store Facebook page).
+// Only text we could verify is quoted. Paste the complete review here when you have it.
+export const BIB_REVIEWS = [
+  { name: 'Anthony Baffa', note: 'Pipe smoker and repeat SALT customer', short: 'I’m a pipe smoker and I bought at least 25 different bibs from different companies to find the best…', more: '' },
+  { name: 'SALT customer', note: 'Shared on the SALT Online Store Facebook page', short: 'Your bib with the crumb catcher protects my nice shirts when I’m smoking my pipes.', more: 'Since using your bibs I haven’t burned any of my shirts.' },
 ];
