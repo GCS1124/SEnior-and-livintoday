@@ -23,12 +23,22 @@ The new **seniorandlivingtoday.com**: a fast, static [Astro](https://astro.build
 - Accessibility for older readers: 19px base font, the Atkinson Hyperlegible typeface (built for low vision), high contrast, 48px+ tap targets
 - `npm run check:seo` audits every built page: one H1, title and description length, no duplicates, valid canonical, image alt text, valid JSON-LD, no broken internal links
 
+## Brand & voice
+
+- Colours come from the S.A.L.T. logo: forest green `#47704C`, sunshine yellow `#FFF200`, gold `#FFAE00`, with berry `#CC3366` for small handwritten touches.
+- Fonts: Poppins (headings), Atkinson Hyperlegible (body, built for low vision), Caveat (handwritten notes).
+- Copy is written in Courtney's first-person voice. The "What do I do when…?" articles are based on her own YouTube videos, which are embedded on each article.
+- Videos, planners and reviews live in `src/data/site.ts`. Add a video there and it appears on /videos/.
+
 ## Site map
 
 ```
 /                                         Home
 /about/                                   Courtney Jones and S.A.L.T.
-/services/                                Services hub
+/help/                                    What do I do when…? (situations)
+/videos/                                  Courtney's YouTube videos
+/planners/                                All planners & books
+/services/                                Work with us
   /services/senior-care-consulting/
   /services/senior-care-virtual-assistant/
   /services/caregiver-support/
@@ -70,7 +80,7 @@ Commit and push; Vercel redeploys automatically.
 
 ## Launch checklist
 
-1. **Copy the photos** (before the DNS switch): on your computer run `npm run images`, then commit `public/images/`. This downloads the photos from the current WordPress media library. Until then, pages show a soft placeholder instead of a broken image.
+1. **Photos are already in the repo** (`public/images/`): the real S.A.L.T. logo, Courtney's photos, planner covers and community photos, compressed to WebP.
 2. **Deploy to Vercel:** vercel.com → Add New → Project → import this GitHub repo. The framework (Astro) is detected automatically; no settings needed.
 3. **Review the Vercel preview URL**, especially the new copy flagged below.
 4. **Connect the domain:** in Vercel → Project → Settings → Domains, add `seniorandlivingtoday.com` and `www.seniorandlivingtoday.com` (redirect www → apex). In **Bluehost → Domains → DNS**, set the records Vercel shows (typically `A @ → 76.76.21.21` and `CNAME www → cname.vercel-dns.com`). **Do not change MX records** or email will stop working. Leave the `community.` subdomain record as it is.
@@ -80,6 +90,8 @@ Commit and push; Vercel redeploys automatically.
 
 ## Before launch: review these
 
-- The new articles **"How to Talk to Your Aging Parents About Their Final Wishes"** and **"Aging in Place: Home Safety Checklist"**, the **10-point discussion guide** and the **Types of Senior Living** guide are new copy. Have Courtney review them for voice and accuracy.
+- The seven articles based on Courtney's videos (hospital advocate, houseguests, Medicare letter, workers in your home, asking for help, winter prep, key lockbox) were written from her video transcripts. Have Courtney read them to confirm they sound like her and are accurate.
+- The **10-point discussion guide** and **Types of Senior Living** guide are new copy for Courtney to review.
+- The Daily Bloom links to Courtney's Amazon author page. Swap in its direct Amazon link in `src/data/site.ts` if you have it.
 - **Terms & Conditions section 10:** the old page still had unfinished template text ("Specify applicable jurisdiction…"). It now says Ohio law and Montgomery County courts. Confirm with your attorney.
 - Add a real logo file (replace `public/favicon.svg`) and fill `sameAs`, `googleSiteVerification` and `ga4Id` in `src/data/site.ts`.

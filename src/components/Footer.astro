@@ -5,58 +5,65 @@ const year = new Date().getFullYear();
 <footer class="site-footer">
   <div class="wrap grid cols">
     <div>
-      <p class="name">Senior and Living Today (S.A.L.T.)</p>
-      <p>{SITE.tagline}.</p>
+      <img src="/images/logo.png" width="96" height="96" alt="Senior and Living Today S.A.L.T. logo" class="logo" loading="lazy" />
+      <p class="sign">Take care of yourselves, Saltines.<br />— Courtney</p>
       <address>
-        {SITE.address.street}<br />
-        {SITE.address.city}, {SITE.address.region} {SITE.address.postalCode}<br />
-        <a href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a><br />
-        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        {SITE.address.street}, {SITE.address.city}, {SITE.address.region} {SITE.address.postalCode}<br />
+        <a href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a> · <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
       </address>
+      <p class="social">
+        <a href={SITE.links.youtube} rel="noopener">YouTube</a> ·
+        <a href={SITE.links.threads} rel="noopener">Threads</a> ·
+        <a href={SITE.links.community} rel="noopener">Community</a>
+      </p>
     </div>
-    <nav aria-label="Services">
-      <p class="h">Services</p>
+    <nav aria-label="Get help">
+      <p class="h">Get help</p>
       <ul>
-        {SERVICES.map((s) => <li><a href={s.href}>{s.title}</a></li>)}
-        <li><a href="/caregiver-connection/">Caregiver Connection</a></li>
-      </ul>
-    </nav>
-    <nav aria-label="Resources">
-      <p class="h">Resources</p>
-      <ul>
-        <li><a href="/books/living-legacy-planner/">The Living Legacy Planner</a></li>
-        <li><a href="/books/relics-of-the-century/">Relics of the Century</a></li>
-        <li><a href="/resources/final-arrangements-discussion-guide/">Final Arrangements Discussion Guide</a></li>
-        <li><a href="/guides/types-of-senior-living/">Types of Senior Living</a></li>
+        <li><a href="/help/">What do I do when…?</a></li>
+        <li><a href="/videos/">Courtney’s videos</a></li>
+        <li><a href="/resources/final-arrangements-discussion-guide/">10-point discussion guide</a></li>
+        <li><a href="/guides/types-of-senior-living/">Senior living options</a></li>
         <li><a href="/blog/">Blog</a></li>
       </ul>
     </nav>
-    <nav aria-label="Company">
-      <p class="h">S.A.L.T.</p>
+    <nav aria-label="Work with us">
+      <p class="h">Work with us</p>
       <ul>
-        <li><a href="/about/">About Courtney Jones</a></li>
-        <li><a href="/community/">Free Community</a></li>
+        {SERVICES.map((s) => <li><a href={s.href}>{s.short}</a></li>)}
+        <li><a href="/community/">Free community</a></li>
+        <li><a href="/contact/">Book a free call</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Planners and shop">
+      <p class="h">Planners &amp; shop</p>
+      <ul>
+        <li><a href="/planners/">All planners</a></li>
+        <li><a href="/books/living-legacy-planner/">The Living Legacy Planner</a></li>
+        <li><a href="/caregiver-connection/">Caregiver Connection</a></li>
         <li><a href={SITE.links.store} rel="noopener">SALT Online Store</a></li>
-        <li><a href="/contact/">Contact</a></li>
-        <li><a href="/privacy-policy/">Privacy Policy</a></li>
-        <li><a href="/terms-conditions/">Terms &amp; Conditions</a></li>
+        <li><a href="/about/">About Courtney</a></li>
       </ul>
     </nav>
   </div>
   <div class="wrap legal">
-    <p>© {year} Senior and Living Today. S.A.L.T. provides information, consulting and support. We are not a medical, legal or financial provider; please consult a licensed professional for advice about your situation.</p>
+    <p><strong>Please note:</strong> S.A.L.T. offers guidance, organization and support. We are not doctors, nurses, lawyers or financial advisors, and nothing here is medical, legal or financial advice. For those decisions, please talk with a licensed professional.</p>
+    <p>© {year} Senior and Living Today · <a href="/privacy-policy/">Privacy</a> · <a href="/terms-conditions/">Terms</a></p>
   </div>
 </footer>
 
 <style>
-  .site-footer { background: #10302f; color: #dfe8e6; padding: 64px 0 28px; font-size: 1rem; }
+  .site-footer { background: var(--green-ink); color: #d7e3d4; padding: 70px 0 28px; font-size: 1.02rem; border-top: 6px solid var(--gold); }
   .site-footer a { color: #fff; }
+  .site-footer a:hover { color: var(--sun); }
   .cols { gap: 36px; }
   @media (min-width: 760px) { .cols { grid-template-columns: 1.4fr 1fr 1fr 1fr; } }
-  .name { font-family: var(--font-head); font-size: 1.35rem; color: #fff; }
-  .h { font-weight: 700; color: #f2b98f; letter-spacing: .1em; text-transform: uppercase; font-size: .85rem; }
+  .logo { width: 96px; height: 96px; border-radius: 50%; margin-bottom: 14px; }
+  .sign { font: 600 1.7rem/1.15 var(--font-hand); color: var(--sun); }
+  .h { font: 600 .9rem var(--font-head); color: var(--gold); letter-spacing: .1em; text-transform: uppercase; }
   ul { list-style: none; padding: 0; margin: 0; }
-  li { margin-bottom: .55em; }
+  li { margin-bottom: .6em; }
   address { font-style: normal; line-height: 1.8; }
-  .legal { border-top: 1px solid #2c4a49; margin-top: 40px; padding-top: 22px; font-size: .9rem; color: #b8c8c5; }
+  .legal { border-top: 1px solid #36513a; margin-top: 44px; padding-top: 22px; font-size: .95rem; color: #b9cab5; }
+  .legal strong { color: #fff; }
 </style>

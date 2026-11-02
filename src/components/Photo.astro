@@ -1,25 +1,9 @@
 ---
-// Renders a photo from /public/images only if the file exists at build time.
-// Run `npm run images` once (before DNS moves) to copy photos from the old
-// WordPress media library. Missing photos fall back to a soft branded panel
-// instead of a broken image.
-import fs from 'node:fs';
-import path from 'node:path';
-
-interface Props { src: string; alt: string; width?: number; height?: number; eager?: boolean; class?: string }
-const { src, alt, width = 1200, height = 900, eager = false, class: cls = 'media' } = Astro.props;
-const exists = fs.existsSync(path.join(process.cwd(), 'public', src));
+// A real photo in a hand-placed frame. Use tilt/tape sparingly so it feels personal, not themed.
+interface Props { src: string; alt: string; width: number; height: number; caption?: string; tilt?: 'l' | 'r'; tape?: boolean; eager?: boolean; class?: string }
+const { src, alt, width, height, caption, tilt, tape = false, eager = false, class: cls } = Astro.props;
 ---
-<div class={cls}>
-  {exists ? (
-    <img src={src} alt={alt} width={width} height={height} loading={eager ? 'eager' : 'lazy'} decoding="async" fetchpriority={eager ? 'high' : undefined} />
-  ) : (
-    <div class="ph" role="img" aria-label={alt}>
-      <svg viewBox="0 0 120 120" width="96" height="96" aria-hidden="true"><circle cx="60" cy="60" r="56" fill="none" stroke="currentColor" stroke-width="3"/><path d="M38 70c6 10 14 15 22 15s16-5 22-15" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><circle cx="45" cy="50" r="5" fill="currentColor"/><circle cx="75" cy="50" r="5" fill="currentColor"/></svg>
-    </div>
-  )}
-</div>
-
-<style>
-  .ph { width: 100%; height: 100%; min-height: 220px; display: grid; place-items: center; color: var(--brand); background: radial-gradient(circle at 30% 20%, #fff 0, var(--salt) 60%); }
-</style>
+<figure class:list={['photo', tilt && `tilt-${tilt}`, { tape }, cls]}>
+  <img {src} {alt} {width} {height} loading={eager ? 'eager' : 'lazy'} decoding="async" fetchpriority={eager ? 'high' : undefined} />
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>

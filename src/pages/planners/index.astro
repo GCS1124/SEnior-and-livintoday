@@ -1,0 +1,66 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Reviews from '../../components/Reviews.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE, BOOKS } from '../../data/site';
+const crumbs = [{ name: 'Planners', href: '/planners/' }];
+---
+<Base
+  title="Living Legacy Planner & More: Planners by Courtney Jones"
+  description="The Living Legacy Planner, the Military Deployment Edition, The Daily Bloom and Relics of the Century: planners and books for seniors and families by Courtney Jones."
+  breadcrumbs={crumbs}
+  schema={[{ '@type': 'ItemList', name: 'Planners and books by Courtney Jones', itemListElement: BOOKS.map((b, i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'Book', name: b.title, author: { '@id': 'https://seniorandlivingtoday.com/#courtney-jones' }, url: b.buy, image: new URL(b.image, SITE.url).href } })) }]}
+>
+  <PageHero
+    title="Planners for the things your family will need to know"
+    kicker="Written by Courtney"
+    lead="When something happens, the hardest part is often not knowing: which bank, which doctor, what Mom wanted. My planners put all of that in one place, in big, clear pages you can fill in at your own pace."
+    breadcrumbs={crumbs}
+  />
+  <section class="section">
+    <div class="wrap books">
+      {BOOKS.map((b, i) => (
+        <article class:list={['bk', { flip: i % 2 === 1 }]}>
+          <img src={b.image} alt={b.alt} width="300" height="430" loading={i === 0 ? 'eager' : 'lazy'} />
+          <div>
+            <span class="hand">{b.tag}</span>
+            <h2>{b.title}</h2>
+            <p class="sub">{b.subtitle}</p>
+            <p>{b.blurb}</p>
+            <div class="btn-row">
+              <a class="btn btn-primary" href={b.buy} rel="noopener">Get it on Amazon</a>
+              {b.page && <a class="btn btn-outline" href={b.page}>Look inside</a>}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+  <section class="section section-cream">
+    <div class="wrap">
+      <span class="kicker">For caregivers</span>
+      <h2>Printable caregiver tools</h2>
+      <p class="lead">Fillable PDFs from the SALT Online Store: a daily care log, a medication and health tracker, a medical appointment planner, and a caregiver hand-off organizer for when someone else takes a shift.</p>
+      <div class="btn-row">
+        <a class="btn btn-green" href={SITE.links.storeDigital} rel="noopener">Browse caregiver printables</a>
+        <a class="btn btn-outline" href={SITE.links.freePlanner} rel="noopener">Free daily planner (PDF)</a>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap">
+      <h2>What readers say</h2>
+      <div style="margin-top:1.5rem"><Reviews /></div>
+    </div>
+  </section>
+  <CtaBand title="Want help filling yours in?" text="Some people sit down with their planner and finish it in a weekend. Others want company. Book a free call and we’ll get you started, or help you have the talk with your family." />
+</Base>
+<style>
+  .books { display: grid; gap: 64px; }
+  .bk { display: grid; gap: 30px; align-items: center; }
+  @media (min-width: 800px) { .bk { grid-template-columns: 300px 1fr; gap: 56px; } .bk.flip { grid-template-columns: 1fr 300px; } .bk.flip > img { order: 2; } }
+  .bk img { width: 100%; max-width: 300px; margin: 0 auto; border-radius: 3px 10px 10px 3px; box-shadow: -8px 14px 26px rgba(0,0,0,.25); }
+  .bk h2 { font-size: clamp(1.5rem, 2.6vw, 2rem); margin-bottom: .2em; }
+  .sub { font: 600 1.15rem var(--font-head); color: var(--green); }
+</style>

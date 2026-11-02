@@ -1,7 +1,7 @@
 ---
 interface Crumb { name: string; href: string }
-interface Props { title: string; eyebrow?: string; lead?: string; breadcrumbs?: Crumb[] }
-const { title, eyebrow, lead, breadcrumbs = [] } = Astro.props;
+interface Props { title: string; kicker?: string; lead?: string; breadcrumbs?: Crumb[] }
+const { title, kicker, lead, breadcrumbs = [] } = Astro.props;
 ---
 <section class="page-hero">
   <div class="wrap">
@@ -15,9 +15,11 @@ const { title, eyebrow, lead, breadcrumbs = [] } = Astro.props;
         </ol>
       </nav>
     )}
-    {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+    {kicker && <span class="kicker">{kicker}</span>}
     <h1>{title}</h1>
     {lead && <p class="lead">{lead}</p>}
     <slot />
   </div>
 </section>
+<svg class="wave" viewBox="0 0 1440 48" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0h1440v18c-120 22-260 30-420 18S700 2 540 10 220 44 0 30z" fill="var(--green-soft)"/></svg>
+<style>.wave { margin-top: -1px; }</style>

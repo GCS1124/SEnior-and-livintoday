@@ -1,0 +1,30 @@
+---
+import { REVIEWS, SITE } from '../data/site';
+interface Props { limit?: number }
+const { limit = 5 } = Astro.props;
+---
+<div class="revs">
+  {REVIEWS.slice(0, limit).map((r) => (
+    <blockquote class="rev">
+      <p class="stars" aria-label="5 out of 5 stars">★★★★★</p>
+      <p class="rt">{r.title}</p>
+      <p class="rx">“{r.text}”</p>
+      <footer>
+        <strong>{r.name}</strong>, Amazon review, {r.date}{r.verified && <span class="vp"> · Verified Purchase</span>}
+      </footer>
+    </blockquote>
+  ))}
+</div>
+<p class="src">Reviews of The Living Legacy Planner, quoted from <a href={SITE.links.livingLegacyPlannerAmazon} rel="noopener">Amazon</a>.</p>
+<style>
+  .revs { columns: 1; column-gap: 24px; }
+  @media (min-width: 760px) { .revs { columns: 2; } }
+  @media (min-width: 1100px) { .revs { columns: 3; } }
+  .rev { break-inside: avoid; margin: 0 0 24px; background: #fff; border: 2px solid var(--line); border-radius: var(--radius); padding: 22px 24px; }
+  .stars { margin: 0 0 .3rem; }
+  .rt { font: 600 1.1rem/1.3 var(--font-head); color: var(--green-ink); margin-bottom: .5rem; }
+  .rx { color: var(--ink); }
+  .rev footer { font-size: .95rem; color: var(--ink-soft); }
+  .vp { color: #c45500; font-weight: 700; }
+  .src { font-size: .95rem; color: var(--ink-soft); }
+</style>

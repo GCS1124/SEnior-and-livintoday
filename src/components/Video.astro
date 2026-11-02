@@ -1,0 +1,46 @@
+---
+// Click-to-play YouTube embed: shows the thumbnail until clicked, so pages stay fast
+// and no YouTube cookies load until a visitor chooses to watch.
+interface Props { id: string; title: string; length?: string; note?: string; large?: boolean }
+const { id, title, length, note, large = false } = Astro.props;
+---
+<div class:list={['vid', { large }]}>
+  <button type="button" class="play" data-yt={id} aria-label={`Play video: ${title}`}>
+    <img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} width="480" height="360" alt="" loading="lazy" decoding="async" />
+    <span class="btnplay" aria-hidden="true"><svg viewBox="0 0 68 48" width="68" height="48"><path d="M66.5 7.7c-.8-2.9-3-5.2-6-6C55.3.3 34 .3 34 .3s-21.3 0-26.5 1.4c-3 .8-5.2 3.1-6 6C.1 13 .1 24 .1 24s0 11 1.4 16.3c.8 2.9 3 5.2 6 6C12.7 47.7 34 47.7 34 47.7s21.3 0 26.5-1.4c3-.8 5.2-3.1 6-6C67.9 35 67.9 24 67.9 24s0-11-1.4-16.3z" fill="#cc3366"/><path d="M45 24 27 14v20" fill="#fff"/></svg></span>
+    {length && <span class="len">{length}</span>}
+  </button>
+  <p class="vt"><a href={`https://www.youtube.com/watch?v=${id}`} rel="noopener">{title}</a></p>
+  {note && <p class="vn">{note}</p>}
+</div>
+
+<style>
+  .vid { display: flex; flex-direction: column; }
+  .play { position: relative; padding: 0; border: 0; cursor: pointer; border-radius: 14px; overflow: hidden; background: #000; aspect-ratio: 16/9; width: 100%; box-shadow: 0 8px 22px rgba(29,50,33,.18); }
+  .play img { width: 100%; height: 100%; object-fit: cover; opacity: .92; transition: opacity .15s, transform .3s; }
+  .play:hover img { opacity: 1; transform: scale(1.03); }
+  .btnplay { position: absolute; inset: 0; display: grid; place-items: center; }
+  .len { position: absolute; right: 10px; bottom: 10px; background: rgba(0,0,0,.8); color: #fff; font-size: .85rem; padding: 2px 8px; border-radius: 6px; }
+  .vt { margin: .8rem 0 .2rem; font: 600 1.1rem/1.3 var(--font-head); }
+  .vt a { color: var(--green-ink); text-decoration: none; }
+  .vt a:hover { color: var(--berry); }
+  .vn { color: var(--ink-soft); font-size: 1rem; margin: 0; }
+  .large .vt { font-size: 1.35rem; }
+  :global(.section-green) .vt a, :global(.section-dark) .vt a { color: #fff; }
+  :global(.section-green) .vt a:hover, :global(.section-dark) .vt a:hover { color: var(--sun); }
+  :global(.section-green) .vn, :global(.section-dark) .vn { color: #d4e2d0; }
+  .vid :global(iframe) { width: 100%; aspect-ratio: 16/9; border: 0; border-radius: 14px; }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('button[data-yt]').forEach((b) => {
+    b.addEventListener('click', () => {
+      const f = document.createElement('iframe');
+      f.src = `https://www.youtube-nocookie.com/embed/${b.dataset.yt}?autoplay=1&rel=0`;
+      f.title = b.getAttribute('aria-label') ?? 'YouTube video';
+      f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      f.allowFullscreen = true;
+      b.replaceWith(f);
+    });
+  });
+</script>

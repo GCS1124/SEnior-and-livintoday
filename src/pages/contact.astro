@@ -1,43 +1,40 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
 import { SITE } from '../data/site';
 const crumbs = [{ name: 'Contact', href: '/contact/' }];
 ---
 <Base
-  title="Contact Senior and Living Today"
-  description="Call (888) 416-4264, email info@seniorandlivingtoday.com, or book a free consultation with Senior and Living Today. Helping seniors and caregivers across the U.S."
+  title="Contact Courtney: Book a Free Call"
+  description="Book a free call with Courtney Jones, call (888) 416-4264, or email info@seniorandlivingtoday.com. Helping seniors and family caregivers nationwide."
   breadcrumbs={crumbs}
   schema={[{ '@type': 'ContactPage', url: 'https://seniorandlivingtoday.com/contact/', about: { '@id': 'https://seniorandlivingtoday.com/#organization' } }]}
 >
-  <PageHero
-    title="Contact us"
-    eyebrow="We'd love to hear from you"
-    lead="Questions about care, planning, our books or the community? Reach out the way that's easiest for you."
-    breadcrumbs={crumbs}
-  />
+  <PageHero title="Let’s talk" kicker="Book a free call" lead="Pick whatever’s easiest for you. Your first conversation is free, and there’s nothing to buy." breadcrumbs={crumbs} />
   <section class="section">
-    <div class="wrap grid grid-3">
-      <div class="card">
-        <h2 class="t">Book a free call</h2>
-        <p>Pick a time that works for you for a no-obligation conversation.</p>
-        <a class="btn btn-primary" href={SITE.links.bookCall} rel="noopener">Book online</a>
+    <div class="wrap grid split">
+      <div class="grid">
+        <div class="card">
+          <h2 class="t">Book a time online</h2>
+          <p>Choose a time that works for you. We’ll call you.</p>
+          <a class="btn btn-primary" href={SITE.links.bookCall} rel="noopener">Book a free call</a>
+        </div>
+        <div class="card">
+          <h2 class="t">Call us</h2>
+          <p>Toll-free from anywhere in the U.S.</p>
+          <a class="btn btn-green" href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a>
+        </div>
+        <div class="card">
+          <h2 class="t">Send an email</h2>
+          <p>Tell us a little about what’s going on and we’ll get back to you.</p>
+          <a class="btn btn-outline" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        </div>
+        <p><strong>Mail:</strong> {SITE.name}, {SITE.address.street}, {SITE.address.city}, {SITE.address.region} {SITE.address.postalCode}</p>
+        <p class="small">If you text us, you may receive messages from Senior and Living Today. Message frequency varies; message and data rates may apply. Reply HELP for help or STOP to opt out. See our <a href="/privacy-policy/">Privacy Policy</a> and <a href="/terms-conditions/">Terms</a>.</p>
       </div>
-      <div class="card">
-        <h2 class="t">Call us</h2>
-        <p>Toll-free from anywhere in the U.S.</p>
-        <a class="btn btn-secondary" href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a>
-      </div>
-      <div class="card">
-        <h2 class="t">Email us</h2>
-        <p>We reply as soon as we can.</p>
-        <a class="btn btn-secondary" href={`mailto:${SITE.email}`}>{SITE.email}</a>
-      </div>
-    </div>
-    <div class="wrap" style="margin-top:2rem">
-      <p><strong>Mailing address:</strong> {SITE.name}, {SITE.address.street}, {SITE.address.city}, {SITE.address.region} {SITE.address.postalCode}</p>
-      <p class="small">By contacting us by text you may receive messages from Senior and Living Today. Message frequency varies; message and data rates may apply. Reply HELP for help or STOP to opt out. See our <a href="/privacy-policy/">Privacy Policy</a> and <a href="/terms-conditions/">Terms &amp; Conditions</a>.</p>
+      <Photo src="/images/courtney-portrait.webp" alt="Courtney Jones of Senior and Living Today" width={599} height={900} tilt="r" tape caption="Looking forward to hearing from you!" />
     </div>
   </section>
 </Base>
-<style>.t { font-size: 1.4rem; } .small { font-size: .95rem; color: var(--ink-soft); }</style>
+<style>.t { font-size: 1.35rem; } .small { font-size: .95rem; color: var(--ink-soft); }</style>

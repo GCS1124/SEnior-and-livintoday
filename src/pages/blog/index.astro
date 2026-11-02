@@ -11,20 +11,22 @@ const crumbs = [{ name: 'Blog', href: '/blog/' }];
 ---
 <Base
   title="Senior Living & Caregiving Blog: Tips for Seniors"
-  description="Practical articles on senior living options, home safety, end-of-life planning and caregiving from Courtney Jones and the Senior and Living Today team."
+  description="Straight-talking advice from Courtney Jones for seniors and caregivers: hospital advocacy, Medicare deadlines, home safety, planning ahead and everyday life."
   breadcrumbs={crumbs}
   schema={[{ '@type': 'Blog', name: 'Senior and Living Today Blog', url: 'https://seniorandlivingtoday.com/blog/', publisher: { '@id': 'https://seniorandlivingtoday.com/#organization' } }]}
 >
   <PageHero
     title="The Senior and Living Today blog"
-    eyebrow="Stay informed, stay inspired"
-    lead="Insights, tips and stories on senior wellness, lifestyle, caregiving and planning ahead."
+    kicker="Stay informed, stay inspired"
+    lead="Straight talk from Courtney on hospital stays, Medicare, home safety, money, planning ahead and everyday life after 55."
     breadcrumbs={crumbs}
   />
   <section class="section">
     <div class="wrap grid grid-2">
       {posts.map((p) => (
-        <a class="card" href={`/blog/${p.id}/`}>
+        <a class="card post" href={`/blog/${p.id}/`}>
+          {(p.data.video || p.data.image) && <img src={p.data.video ? `https://i.ytimg.com/vi/${p.data.video}/mqdefault.jpg` : p.data.image} width="320" height="180" alt="" loading="lazy" />}
+          {p.data.video && <span class="hand">▶ with Courtney’s video</span>}
           <time datetime={p.data.published.toISOString()}>{fmt(p.data.published)}</time>
           <h2 class="t">{p.data.title}</h2>
           <p>{p.data.description}</p>
@@ -37,5 +39,7 @@ const crumbs = [{ name: 'Blog', href: '/blog/' }];
 </Base>
 <style>
   time { font-size: .95rem; color: var(--ink-soft); margin-bottom: .5rem; }
-  .t { font-size: 1.45rem; }
+  .t { font-size: 1.35rem; }
+  .post img { width: calc(100% + 56px); max-width: none; margin: -28px -28px 1rem; aspect-ratio: 16/9; object-fit: cover; border-radius: 16px 16px 0 0; }
+  .post .hand { font-size: 1.3rem; }
 </style>

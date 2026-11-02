@@ -6,32 +6,32 @@ import { SITE } from '../../data/site';
 import { bookSchema } from '../../data/schema';
 
 const path = '/books/relics-of-the-century/';
-const crumbs = [{ name: 'Relics of the Century', href: path }];
-const description = 'Relics of the Century by Courtney Jones: a nostalgic, visual journey through everyday items that defined past decades. A conversation-starting gift for seniors.';
+const crumbs = [{ name: 'Planners', href: '/planners/' }, { name: 'Relics of the Century', href: path }];
+const description = 'Relics of the Century by Courtney Jones: rotary phones, record players and typewriters. A nostalgic picture book that gets seniors and grandkids talking.';
 ---
 <Base
   title="Relics of the Century: A Nostalgic Book for Seniors"
   {description}
-  image="/images/relics-of-the-century.jpg"
+  image="/images/relics-of-the-century.webp"
   breadcrumbs={crumbs}
-  schema={[bookSchema({ name: 'Relics of the Century', description, path, amazonUrl: SITE.links.relicsAmazon, image: '/images/relics-of-the-century.jpg' })]}
+  schema={[bookSchema({ name: 'Relics of the Century', description, path, amazonUrl: SITE.links.relicsAmazon, image: '/images/relics-of-the-century.webp' })]}
 >
-  <PageHero title="Relics of the Century" eyebrow="By Courtney Jones" lead="A visual and historical celebration of the items that defined past decades, now overshadowed by modern innovations." breadcrumbs={crumbs}>
+  <PageHero title="Relics of the Century" kicker="Remember these?" lead="The everyday things that defined past decades, before smartphones replaced them all." breadcrumbs={crumbs}>
     <div class="btn-row"><a class="btn btn-primary" href={SITE.links.relicsAmazon} rel="noopener">Buy on Amazon</a></div>
   </PageHero>
   <section class="section">
     <div class="wrap grid split">
       <div>
-        <h2>A nostalgic journey that connects generations</h2>
-        <p>Relics of the Century brings back the everyday objects many of us grew up with, sparking cherished memories and easy conversations between grandparents, children and grandchildren.</p>
+        <h2>A conversation starter between generations</h2>
+        <p>Rotary phones. Record players. Typewriters. Transistor radios. Hand this book to a grandparent and a grandchild, and watch the stories start.</p>
         <ul class="checklist">
-          <li>A thoughtful gift for seniors and memory-sharing moments</li>
-          <li>A gentle conversation starter for families and caregivers</li>
+          <li>A thoughtful gift for a senior who loves to reminisce</li>
+          <li>A gentle memory-sharing activity for caregivers and families</li>
           <li>A celebration of the past that honors the present</li>
         </ul>
-        <p>Also by Courtney: <a href="/books/living-legacy-planner/">The Living Legacy Planner</a>.</p>
+        <p>Also by Courtney: <a href="/books/living-legacy-planner/">The Living Legacy Planner</a> and <a href="/planners/">more planners</a>.</p>
       </div>
-      <Photo src="/images/relics-of-the-century.jpg" alt="Relics of the Century book by Courtney Jones" eager />
+      <Photo src="/images/relics-of-the-century.webp" alt="Relics of the Century cover with vintage radios, records and a typewriter" width={525} height={750} tilt="r" tape eager />
     </div>
   </section>
 </Base>

@@ -8,74 +8,72 @@ import { SITE } from '../../data/site';
 import { faqSchema, serviceSchema } from '../../data/schema';
 
 const path = '/services/senior-care-consulting/';
-const crumbs = [{ name: 'Services', href: '/services/' }, { name: 'Senior Care Consulting', href: path }];
-const description = 'Personalized senior care consulting for seniors and families: in-home care planning, senior living options, healthcare navigation and budgeting. Free first call.';
+const crumbs = [{ name: 'Work With Us', href: '/services/' }, { name: 'Senior Care Consulting', href: path }];
+const description = 'One-on-one senior care consulting with Courtney Jones: in-home care, senior living choices, hospital stays, bills and family decisions. Your first call is free.';
 const faqs = [
-  { q: 'What is a senior care consultant?', a: 'A senior care consultant helps older adults and their families understand care and living options, plan next steps and find the right resources. At S.A.L.T., that can mean a single conversation to talk things through or an ongoing plan for in-home care, senior living, healthcare and costs.' },
-  { q: 'Who is senior care consulting for?', a: 'It is for seniors planning their own future, adult children caring for aging parents, spouses who have become caregivers, and anyone who feels overwhelmed by senior care decisions.' },
-  { q: 'Do you help with in-home care?', a: 'Yes. We help you decide whether in-home care is the right fit, what kind of help is needed, which questions to ask providers, and how to plan for the cost. We do not provide in-home caregivers ourselves.' },
-  { q: 'Can you consult with families outside Ohio?', a: 'Yes. Consultations happen by phone or video, so we can help families anywhere in the United States.' },
-  { q: 'What is S.A.L.T. Academy?', a: 'S.A.L.T. Academy is our learning platform, offering senior care webinars and interest-based courses that educate and empower older adults and caregivers. It is part of our free online community.' },
+  { q: 'What does a senior care consultant actually do?', a: 'I listen to what’s happening, help you sort out what matters most, explain your options in plain English, and help you make a plan. That can be one conversation or ongoing support while you work through it.' },
+  { q: 'Do you provide caregivers or medical care?', a: 'No. I don’t send caregivers and I’m not a medical provider. I help you figure out what kind of help you need, what to ask, and who to call.' },
+  { q: 'Can you help with medical bills?', a: 'I spent years in medical billing, so I can help you understand a bill, what to ask the billing office, and whether financial assistance might be available. I can’t give legal or financial advice.' },
+  { q: 'We’re not in Ohio. Can you still help?', a: 'Yes. Consultations happen by phone or video, so I can help families anywhere in the U.S.' },
 ];
 ---
 <Base
-  title="Senior Care Consulting & In-Home Care Planning"
+  title="Senior Care Consulting with Courtney Jones"
   {description}
-  image="/images/consulting-plan.webp"
+  image="/images/courtney-home.webp"
   breadcrumbs={crumbs}
   schema={[serviceSchema({ name: 'Senior Care Consulting', serviceType: 'Senior care consulting', description, path }), faqSchema(faqs)]}
 >
   <PageHero
-    title="Senior care consulting for seniors and their families"
-    eyebrow="Expert guidance, personal attention"
-    lead="Senior living decisions can be overwhelming. Sometimes you need to talk things through; other times you need ideas, options and a plan. Either way, we're here for you."
+    title="Senior care consulting: talk it through with me"
+    kicker="Senior care consulting"
+    lead="Sometimes you need ideas and a plan. Sometimes you just need to say it all out loud to someone who understands. Either way, I’m here."
     breadcrumbs={crumbs}
   >
     <div class="btn-row">
       <a class="btn btn-primary" href={SITE.links.bookCall} rel="noopener">Book your free consultation</a>
-      <a class="btn btn-secondary" href={`tel:${SITE.phone}`}>Call {SITE.phoneDisplay}</a>
+      <a class="btn btn-outline" href={`tel:${SITE.phone}`}>Call {SITE.phoneDisplay}</a>
     </div>
   </PageHero>
 
   <section class="section">
-    <div class="wrap narrow">
-      <h2>What our senior care consulting includes</h2>
-      <ul class="checklist">
-        <li><strong>Tailored solutions.</strong> Every plan is built around the senior's needs, preferences and family situation.</li>
-        <li><strong>Experienced guidance.</strong> Courtney Jones brings more than 30 years of experience advocating for seniors and caregivers.</li>
-        <li><strong>Whole-picture planning.</strong> From healthcare navigation to budgeting, we look at the full picture of elderly in-home care and senior living.</li>
-        <li><strong>U.S.-focused support.</strong> A practical understanding of the U.S. senior care landscape, so the advice fits where you live.</li>
-      </ul>
+    <div class="wrap grid split">
+      <div>
+        <h2>What people call me about</h2>
+        <ul class="checklist">
+          <li>Mom or Dad can’t live alone safely anymore, and the family can’t agree on what’s next.</li>
+          <li>Someone’s going into the hospital and you want to make sure they’re looked after.</li>
+          <li>Comparing in-home help, a 55+ community, independent or assisted living.</li>
+          <li>A medical bill or insurance letter that makes no sense.</li>
+          <li>A relative or friend who wants to move in “for a while.”</li>
+          <li>Getting everything written down before something happens.</li>
+        </ul>
+        <p>Your situation doesn’t have to be on the list. If it’s about getting older or caring for someone who is, it’s my kind of call.</p>
+      </div>
+      <Photo src="/images/courtney-with-friends.webp" alt="Courtney Jones smiling with an older woman and a friend" width={1100} height={841} tilt="r" tape />
     </div>
   </section>
 
-  <section class="section section-alt">
-    <div class="wrap grid grid-3">
-      <div class="card">
-        <Photo src="/images/consulting-plan.webp" alt="Consultant reviewing a care plan with an older couple" />
-        <h3 style="margin-top:1rem">Personalized care plans</h3>
-        <p>We work closely with you to build a plan for in-home care or senior living that fits your lifestyle, preferences and health needs.</p>
-      </div>
-      <div class="card">
-        <Photo src="/images/consulting-healthcare.webp" alt="Reviewing healthcare paperwork together" />
-        <h3 style="margin-top:1rem">Healthcare navigation</h3>
-        <p>Understanding your options is crucial. We help you explore the healthcare and home health services available and the questions to ask.</p>
-      </div>
-      <div class="card">
-        <Photo src="/images/consulting-finance.webp" alt="Family discussing financial planning for senior care" />
-        <h3 style="margin-top:1rem">Planning for the costs</h3>
-        <p>Guidance on budgeting, insurance questions and potential funding sources so care feels more manageable. For legal or tax advice, we'll suggest you consult a licensed professional.</p>
+  <section class="section section-cream">
+    <div class="wrap">
+      <h2>How I help</h2>
+      <div class="grid grid-3" style="margin-top:1.5rem">
+        <div class="card"><h3>A plan that fits you</h3><p>Every family is different. We build a plan around the senior’s wishes, health, budget and the people available to help.</p></div>
+        <div class="card"><h3>Plain-English explanations</h3><p>Care options, hospital discharge, insurance letters, bills. I’ll explain what it means and what questions to ask.</p></div>
+        <div class="card"><h3>Who to call</h3><p>When you need a professional like a lawyer, an elder law attorney or a Medicare counselor, I’ll help you find them and prepare.</p></div>
       </div>
     </div>
   </section>
 
   <section class="section">
     <div class="wrap narrow">
-      <span class="eyebrow">Keep learning</span>
-      <h2>S.A.L.T. Academy: webinars and courses</h2>
-      <p>Senior and Living Today launched <strong>S.A.L.T. Academy</strong>, a platform with senior care webinars and interest-based courses that educate, empower and enrich the lives of older adults and caregivers. Topics include Medicare, health and nutrition planning, and financial and estate planning.</p>
-      <a class="btn btn-secondary" href="/community/">Explore the free community</a>
-      <p style="margin-top:2rem">Related: <a href="/guides/types-of-senior-living/">Types of senior living explained</a> · <a href="/services/senior-care-virtual-assistant/">Senior care virtual assistant</a></p>
+      <span class="kicker">Keep learning</span>
+      <h2>S.A.L.T. Academy</h2>
+      <p>Our free community includes webinars and courses for seniors and caregivers on topics like Medicare, health and nutrition planning, and financial and estate planning.</p>
+      <div class="btn-row">
+        <a class="btn btn-green" href="/community/">Explore the community</a>
+        <a class="btn btn-outline" href="/help/">Browse “What do I do when…?”</a>
+      </div>
     </div>
   </section>
 

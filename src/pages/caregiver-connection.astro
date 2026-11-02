@@ -4,46 +4,30 @@ import PageHero from '../components/PageHero.astro';
 import Photo from '../components/Photo.astro';
 import { SITE } from '../data/site';
 const crumbs = [{ name: 'Caregiver Connection', href: '/caregiver-connection/' }];
-const items = [
-  { img: '/images/adult-bibs.png', alt: 'Adult mealtime bibs for men and women', title: 'Adult mealtime bibs', text: 'Stylish, stain-resistant and easy-to-clean bibs for men and women that keep mealtimes dignified and enjoyable.' },
-  { img: '/images/magnifier.png', alt: 'Handheld 10X magnifying glass for seniors', title: 'Handheld magnifying glasses', text: 'Portable 10X magnifiers for reading labels, mail and maps, and for hobbies that need close detail.' },
-  { img: '/images/books-for-seniors.png', alt: 'Selection of books for seniors', title: 'Books for seniors', text: 'Carefully chosen books, from inspiring memoirs to engaging fiction, to keep minds active and entertained.' },
-];
 ---
 <Base
-  title="Caregiver Connection: Daily Living Aids for Seniors"
-  description="Caregiver-recommended products that support senior comfort, safety and independence: adult mealtime bibs, handheld magnifiers, books for seniors and more."
+  title="Caregiver Connection: Everyday Aids for Seniors"
+  description="Products Courtney Jones recommends for senior comfort and independence: adult mealtime bibs, 10X magnifiers, books for seniors and caregiver printables."
   breadcrumbs={crumbs}
 >
   <PageHero
-    title="Caregiver Connection: products for comfort, safety and independence"
-    eyebrow="Curated with care"
-    lead="Thoughtfully selected products that make daily living easier, safer and more dignified for seniors and their caregivers."
+    title="Caregiver Connection: little things that make the day easier"
+    kicker="Picked with care"
+    lead="Simple, practical things that help seniors keep their comfort, dignity and independence. Available at the SALT Online Store."
     breadcrumbs={crumbs}
-  />
+  >
+    <div class="btn-row"><a class="btn btn-primary" href={SITE.links.store} rel="noopener">Visit the SALT Online Store</a></div>
+  </PageHero>
   <section class="section">
-    <div class="wrap narrow">
-      <h2>Why trust our recommendations?</h2>
-      <ul class="checklist">
-        <li><strong>Expert curation.</strong> Every item is chosen specifically for seniors and how it improves daily life.</li>
-        <li><strong>Personal fit.</strong> Every senior's needs are different, from mealtime to hobbies to everyday tasks.</li>
-        <li><strong>Quality first.</strong> We favor durable, effective products so caregivers can buy with confidence.</li>
-      </ul>
-    </div>
-  </section>
-  <section class="section section-alt">
-    <div class="wrap grid grid-3">
-      {items.map((i) => (
-        <div class="card">
-          <Photo src={i.img} alt={i.alt} />
-          <h3 style="margin-top:1rem">{i.title}</h3>
-          <p>{i.text}</p>
-        </div>
-      ))}
-    </div>
-    <div class="wrap btn-row">
-      <a class="btn btn-primary" href={SITE.links.store} rel="noopener">Shop the SALT Online Store</a>
-      <a class="btn btn-secondary" href="/contact/">Ask us for a recommendation</a>
+    <div class="wrap grid split">
+      <div class="grid">
+        <div class="card"><h2 class="t">Adult mealtime bibs</h2><p>Stylish, stain-resistant and easy to wash, for men and women. Mealtime stays pleasant and dignified.</p></div>
+        <div class="card"><h2 class="t">Handheld magnifying glasses</h2><p>Portable 10X magnifiers for pill bottles, mail, recipes, maps and hobbies.</p></div>
+        <div class="card"><h2 class="t">Books for seniors</h2><p>From memoirs to fiction, plus our own <a href="/books/relics-of-the-century/">Relics of the Century</a> for memory-lane conversations.</p></div>
+        <div class="card"><h2 class="t">Caregiver printables</h2><p>Fillable care logs, medication trackers and appointment planners. <a href={SITE.links.storeDigital} rel="noopener">See them all</a>.</p></div>
+      </div>
+      <Photo src="/images/couple-outdoors.webp" alt="An older couple smiling together outdoors" width={675} height={900} tilt="r" tape />
     </div>
   </section>
 </Base>
+<style>.t { font-size: 1.3rem; }</style>

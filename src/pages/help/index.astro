@@ -1,0 +1,60 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { getCollection } from 'astro:content';
+const crumbs = [{ name: 'Get Help', href: '/help/' }];
+const posts = (await getCollection('blog', ({ data }) => !data.draft && !!data.situation))
+  .sort((a, b) => Number(!!b.data.video) - Number(!!a.data.video));
+---
+<Base
+  title="What Do I Do When…? Practical Help for Seniors"
+  description="Hospital stay coming up? Medicare letter? Someone wants to move in? Courtney Jones’s plain-English advice and videos for seniors and family caregivers."
+  breadcrumbs={crumbs}
+  schema={[{ '@type': 'CollectionPage', name: 'What do I do when…?', url: 'https://seniorandlivingtoday.com/help/' }]}
+>
+  <PageHero
+    title="What do I do when…?"
+    kicker="Real situations, real answers"
+    lead="These are the situations people bring to me again and again. Find yours, read what I’d do, and watch the video if you’d rather hear it from me. If yours isn’t here, call me. That’s what I’m for."
+    breadcrumbs={crumbs}
+  />
+  <section class="section">
+    <div class="wrap">
+      <ul class="list">
+        {posts.map((p) => (
+          <li>
+            <a href={`/blog/${p.id}/`}>
+              {p.data.video
+                ? <img src={`https://i.ytimg.com/vi/${p.data.video}/mqdefault.jpg`} width="320" height="180" alt="" loading="lazy" />
+                : <span class="noimg" aria-hidden="true">S.A.L.T.</span>}
+              <span class="txt">
+                <span class="hand">“{p.data.situation}”</span>
+                <strong>{p.data.title}</strong>
+                <span class="d">{p.data.description}</span>
+                {p.data.video && <span class="v">▶ Includes Courtney’s video</span>}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="notice" style="margin-top:2rem">
+        <strong>Remember:</strong> this is practical, everyday guidance from someone who’s been there. It isn’t medical, legal or financial advice. For those decisions, please check with your doctor, a lawyer or a licensed advisor. I’m happy to help you work out what to ask them.
+      </div>
+    </div>
+  </section>
+  <CtaBand title="Don’t see your situation? Tell me about it." />
+</Base>
+<style>
+  .list { list-style: none; padding: 0; margin: 0; display: grid; gap: 18px; }
+  .list a { display: grid; grid-template-columns: 1fr; gap: 0; background: #fff; border: 2px solid var(--line); border-radius: 16px; overflow: hidden; text-decoration: none; color: var(--ink); transition: border-color .15s, transform .15s; }
+  .list a:hover { border-color: var(--gold); transform: translateY(-2px); }
+  @media (min-width: 700px) { .list a { grid-template-columns: 280px 1fr; } }
+  .list img, .noimg { width: 100%; height: 100%; min-height: 160px; object-fit: cover; }
+  .noimg { display: grid; place-items: center; background: var(--green); color: var(--sun); font: 700 1.6rem var(--font-head); }
+  .txt { padding: 18px 22px; display: flex; flex-direction: column; gap: 4px; }
+  .txt .hand { font-size: 1.55rem; }
+  .txt strong { font: 600 1.2rem/1.3 var(--font-head); }
+  .d { color: var(--ink-soft); font-size: 1.02rem; }
+  .v { color: var(--berry); font-weight: 700; font-size: .95rem; margin-top: 4px; }
+</style>

@@ -52,7 +52,7 @@ const graph: Record<string, unknown>[] = [
     name: SITE.name,
     alternateName: ['S.A.L.T.', 'SALT', 'Senior & Living Today'],
     url: SITE.url,
-    logo: `${SITE.url}/favicon.svg`,
+    logo: `${SITE.url}/images/logo-512.png`,
     image: ogImage,
     description: SITE.description,
     email: SITE.email,
@@ -84,7 +84,9 @@ const graph: Record<string, unknown>[] = [
     jobTitle: SITE.founder.jobTitle,
     url: SITE.founder.url,
     worksFor: { '@id': orgId },
-    knowsAbout: ['Senior care', 'Caregiving', 'End-of-life planning', 'Aging in place', 'Senior living options'],
+    knowsAbout: ['Senior care', 'Caregiving', 'Hospital advocacy', 'End-of-life planning', 'Aging in place', 'Medical billing', 'Senior living options'],
+    image: `${SITE.url}/images/courtney-portrait.webp`,
+    sameAs: [SITE.links.youtube, SITE.links.threads],
   },
   {
     '@type': 'WebSite',
@@ -119,8 +121,9 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': [...
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
-    <meta name="theme-color" content="#12403f" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#47704c" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" type="application/rss+xml" title={`${SITE.name} Blog`} href="/rss.xml" />
     {SITE.googleSiteVerification && <meta name="google-site-verification" content={SITE.googleSiteVerification} />}

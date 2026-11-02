@@ -2,54 +2,94 @@
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import Photo from '../../components/Photo.astro';
+import Video from '../../components/Video.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { getCollection, render } from 'astro:content';
 import { articleSchema } from '../../data/schema';
-import { SITE } from '../../data/site';
+import { SITE, VIDEOS } from '../../data/site';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
-  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post, all: posts } }));
 }
 
-const { post } = Astro.props;
+const { post, all } = Astro.props;
 const { Content } = await render(post);
 const d = post.data;
 const path = `/blog/${post.id}/`;
 const fmt = (x: Date) => x.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
 const crumbs = [{ name: 'Blog', href: '/blog/' }, { name: d.title, href: path }];
+const video = d.video ? VIDEOS.find((v) => v.id === d.video) : undefined;
+const image = d.image ?? (d.video ? `https://i.ytimg.com/vi/${d.video}/hqdefault.jpg` : undefined);
+const more = all.filter((p) => p.id !== post.id && p.data.video).slice(0, 3);
+
+const schema: Record<string, unknown>[] = [articleSchema({ title: d.title, description: d.description, path, published: d.published, updated: d.updated, image })];
+// VideoObject markup is left out on purpose: it needs the true YouTube upload date.
+
 ---
 <Base
   title={d.seoTitle ?? d.title}
   description={d.description}
   type="article"
-  image={d.image}
+  image={image}
   imageAlt={d.imageAlt}
   breadcrumbs={crumbs}
   publishedTime={d.published.toISOString()}
   modifiedTime={(d.updated ?? d.published).toISOString()}
-  schema={[articleSchema({ title: d.title, description: d.description, path, published: d.published, updated: d.updated, image: d.image })]}
+  schema={schema}
 >
-  <PageHero title={d.title} breadcrumbs={crumbs}>
-    <p class="byline">
-      By <a href="/about/" rel="author">{SITE.founder.name}</a>, {SITE.founder.jobTitle} ·
-      <time datetime={d.published.toISOString()}>{fmt(d.published)}</time>
-      {d.updated && <> · Updated <time datetime={d.updated.toISOString()}>{fmt(d.updated)}</time></>}
-    </p>
+  <PageHero title={d.title} kicker={d.situation ? `When: “${d.situation.charAt(0).toLowerCase() + d.situation.slice(1)}”` : undefined} breadcrumbs={crumbs}>
+    <div class="byline">
+      <img src="/images/courtney-portrait.webp" width="56" height="56" alt="" />
+      <p>By <a href="/about/" rel="author">{SITE.founder.name}</a>, the caregiver’s caregiver<br /><time datetime={d.published.toISOString()}>{fmt(d.published)}</time></p>
+    </div>
   </PageHero>
   <article class="section">
     <div class="wrap">
-      {d.image && <div class="prose"><Photo src={d.image} alt={d.imageAlt ?? ''} eager /></div>}
+      {d.video && (
+        <div class="prose vidwrap">
+          <p class="hand">Rather watch? Here’s my video on this ↓</p>
+          <Video id={d.video} title={video?.title ?? d.title} length={video?.length} large />
+        </div>
+      )}
+      {!d.video && d.image && <div class="prose"><Photo src={d.image} alt={d.imageAlt ?? ''} width={1200} height={800} eager /></div>}
       <div class="prose"><Content /></div>
       <aside class="author prose">
-        <p><strong>About the author.</strong> {SITE.founder.name} founded Senior and Living Today after more than {SITE.founder.yearsExperience} years as an advocate for seniors and caregivers. She is the author of <a href="/books/living-legacy-planner/">The Living Legacy Planner</a> and <a href="/books/relics-of-the-century/">Relics of the Century</a>. <a href="/about/">Read Courtney’s story</a>.</p>
+        <img src="/images/courtney-portrait.webp" width="120" height="120" alt="Courtney Jones" loading="lazy" />
+        <div>
+          <p class="hand">About me</p>
+          <p>I’m Courtney Jones, founder of Senior and Living Today. I’ve spent more than {SITE.founder.yearsExperience} years around senior care, including time working in a hospital and years in medical billing. I wrote <a href="/books/living-legacy-planner/">The Living Legacy Planner</a>, and I post new videos for seniors and caregivers on <a href={SITE.links.youtube} rel="noopener">YouTube</a>. <a href="/about/">More about me</a>.</p>
+        </div>
       </aside>
     </div>
   </article>
+  {more.length > 0 && (
+    <section class="section section-cream">
+      <div class="wrap">
+        <h2>More help from Courtney</h2>
+        <div class="grid grid-3" style="margin-top:1.5rem">
+          {more.map((p) => (
+            <a class="card" href={`/blog/${p.id}/`}>
+              {p.data.situation && <span class="hand">{p.data.situation}…</span>}
+              <h3>{p.data.title}</h3>
+              <span class="more">Read it →</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
   <CtaBand />
 </Base>
 <style>
-  .byline { color: var(--ink-soft); font-size: 1rem; }
-  .author { margin-top: 3rem; padding: 22px 26px; background: var(--salt); border-radius: var(--radius); font-size: 1.05rem; }
-  .author p { margin: 0; }
+  .byline { display: flex; align-items: center; gap: 14px; margin-top: 1rem; }
+  .byline img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; object-position: top; border: 3px solid #fff; }
+  .byline p { margin: 0; color: var(--ink-soft); font-size: 1rem; }
+  .vidwrap { margin-bottom: 2.5rem; }
+  .vidwrap .hand { margin-bottom: .6rem; }
+  .author { margin-top: 3rem; padding: 24px; background: var(--green-soft); border-radius: var(--radius); display: flex; gap: 20px; align-items: flex-start; font-size: 1.05rem; }
+  .author img { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; object-position: top; flex-shrink: 0; }
+  .author p { margin: 0 0 .4rem; }
+  @media (max-width: 560px) { .author { flex-direction: column; } }
+  .card .hand { font-size: 1.4rem; margin-bottom: .4rem; }
 </style>

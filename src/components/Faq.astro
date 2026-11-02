@@ -1,10 +1,9 @@
 ---
-// Visible FAQ. Pair with faqSchema() from src/data/schema.ts on the same page so the
-// markup always matches what readers can see on the page.
+// Visible FAQ. Pair with faqSchema() on the same page so the markup matches what readers see.
 interface Props { items: { q: string; a: string }[]; title?: string }
-const { items, title = 'Frequently asked questions' } = Astro.props;
+const { items, title = 'Questions people ask me' } = Astro.props;
 ---
-<section class="section">
+<section class="section section-cream">
   <div class="wrap narrow">
     <h2>{title}</h2>
     <div class="faq">
@@ -17,13 +16,12 @@ const { items, title = 'Frequently asked questions' } = Astro.props;
     </div>
   </div>
 </section>
-
 <style>
-  .faq details { border-bottom: 1px solid var(--line); padding: 6px 0; }
+  .faq details { border-bottom: 2px solid var(--line); padding: 6px 0; }
   .faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: 14px 0; }
   .faq summary::-webkit-details-marker { display: none; }
-  .faq summary::after { content: '+'; font-size: 1.8rem; color: var(--accent); line-height: 1; }
+  .faq summary::after { content: '+'; font: 700 1.8rem/1 var(--font-head); color: var(--gold); }
   .faq details[open] summary::after { content: '−'; }
-  .faq h3 { font-size: 1.2rem; margin: 0; font-family: var(--font-body); font-weight: 700; color: var(--ink); }
+  .faq h3 { font-size: 1.15rem; margin: 0; }
   .faq p { color: var(--ink-soft); }
 </style>

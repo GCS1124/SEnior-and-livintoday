@@ -6,6 +6,7 @@ published: 2025-01-24
 updated: 2025-03-06
 image: /images/legacy-planner-reading.webp
 imageAlt: "Senior reading and filling in a planner at home"
+situation: "I want my family to know my wishes"
 tags: ["end-of-life planning", "Living Legacy Planner"]
 ---
 

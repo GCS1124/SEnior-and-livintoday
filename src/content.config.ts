@@ -13,6 +13,8 @@ const blog = defineCollection({
     image: z.string().optional(),      // /images/... file
     imageAlt: z.string().optional(),
     tags: z.array(z.string()).default([]),
+    video: z.string().optional(),      // YouTube id of Courtney's video this article is based on
+    situation: z.string().optional(),  // short 'When…' label used on the Get Help page
     draft: z.boolean().default(false),
   }),
 });

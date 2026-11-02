@@ -2,59 +2,86 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Photo from '../components/Photo.astro';
+import Video from '../components/Video.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { SITE } from '../data/site';
-const crumbs = [{ name: 'About', href: '/about/' }];
+import { SITE, BOOKS } from '../data/site';
+const crumbs = [{ name: 'About Courtney', href: '/about/' }];
 ---
 <Base
-  title="About Courtney Jones, Founder of S.A.L.T."
-  description="Meet Courtney Jones, senior care advocate with 30+ years of experience, author of The Living Legacy Planner and founder of Senior and Living Today in Dayton, Ohio."
-  image="/images/about-hero.jpg"
+  title="About Courtney Jones, the Caregiver’s Caregiver"
+  description="Meet Courtney Jones: 30+ years around senior care, hospital and medical billing experience, author of The Living Legacy Planner, founder of S.A.L.T."
+  image="/images/courtney-portrait.webp"
   breadcrumbs={crumbs}
   schema={[{ '@type': 'AboutPage', url: 'https://seniorandlivingtoday.com/about/', about: { '@id': 'https://seniorandlivingtoday.com/#organization' }, mainEntity: { '@id': 'https://seniorandlivingtoday.com/#courtney-jones' } }]}
 >
-  <PageHero
-    title="About Senior and Living Today"
-    eyebrow="Our story"
-    lead="S.A.L.T. exists to make sure seniors, and the people who care for them, feel valued, respected and cared for."
-    breadcrumbs={crumbs}
-  />
+  <PageHero title="Hi, I’m Courtney" kicker="The caregiver’s caregiver" breadcrumbs={crumbs} />
 
   <section class="section">
     <div class="wrap grid split">
       <div class="prose">
-        <h2>Meet Courtney Jones</h2>
-        <p>Senior and Living Today (S.A.L.T.) is led by <strong>Courtney Jones</strong>, a passionate senior care advocate with more than {SITE.founder.yearsExperience} years of experience. Courtney founded S.A.L.T. to give seniors and their care providers across the U.S. trusted resources and practical solutions.</p>
-        <p>Her mission is simple and powerful: to build a supportive community where seniors and those who care for them feel valued, respected and cared for.</p>
-        <p>Courtney is also a published author. <a href="/books/living-legacy-planner/">The Living Legacy Planner</a> helps seniors document their wishes, and <a href="/books/relics-of-the-century/">Relics of the Century</a> celebrates the everyday objects and cultural heritage of decades past.</p>
+        <p class="lead">I started Senior and Living Today, S.A.L.T. for short, because I kept seeing the same thing: good, loving people trying to take care of someone, and nobody taking care of <em>them</em>.</p>
+        <p>I’ve spent more than {SITE.founder.yearsExperience} years around senior care. I’ve worked in a hospital. I spent years in medical billing, so I know how those bills and policies work, and how to ask for help with them. I’ve also been the patient lying in the bed, in too much pain to speak, grateful that someone was there to speak for me.</p>
+        <p>So I call myself the <strong>caregiver’s caregiver</strong>. S.A.L.T. is for anyone 55 and older, and for everyone who plays a part in a senior’s everyday life: sons and daughters, spouses, neighbors, friends.</p>
+        <p>We talk about the obstacles <em>and</em> the joys of getting older. Health, money, safety, relationships, and the conversations families keep putting off. I’ll tell you what I’d do, and if I don’t know, I’ll help you find who does.</p>
+        <p class="hand">I’m so glad you’re here. — Courtney</p>
       </div>
-      <Photo src="/images/courtney.jpg" alt="Portrait of Courtney Jones, founder of Senior and Living Today" eager />
+      <Photo src="/images/courtney-portrait.webp" alt="Courtney Jones, founder of Senior and Living Today, standing in a blue dress" width={599} height={900} tilt="r" tape eager />
     </div>
   </section>
 
-  <section class="section section-alt">
-    <div class="wrap">
-      <h2>Why families choose S.A.L.T.</h2>
-      <div class="grid grid-3" style="margin-top:1.5rem">
-        <div class="card"><h3>Kindness and compassion</h3><p>Courtney's warmth is the heart of our approach. Every interaction is grounded in empathy, so no one feels alone on their journey.</p></div>
-        <div class="card"><h3>Courteous expertise</h3><p>Courtney understands the challenges seniors face and offers personalized strategies, whether you're weighing senior living options or planning to age in place.</p></div>
-        <div class="card"><h3>A true leader</h3><p>Compassionate and leading by example, Courtney makes sure S.A.L.T. is more than a business: it's a team of caring hearts united by one mission.</p></div>
+  <section class="section section-cream">
+    <div class="wrap grid split split-rev">
+      <div>
+        <h2>What I believe</h2>
+        <ul class="checklist">
+          <li><strong>You don’t need to know everything.</strong> You just need to know who to call.</li>
+          <li><strong>Nobody should be in the hospital alone.</strong> Everyone needs an advocate.</li>
+          <li><strong>We may be soft-hearted, but we’re not fools.</strong> Protect your home, your money and your peace.</li>
+          <li><strong>Write it down.</strong> The kindest thing you can leave your family is a clear plan.</li>
+          <li><strong>Ask for help.</strong> It isn’t weakness. It’s smart.</li>
+        </ul>
       </div>
+      <Video id="WhVr1HWaXgw" title="How Not to Hesitate: it’s okay to ask for help" length="7:33" note="This one says a lot about who I am." />
     </div>
   </section>
 
   <section class="section">
-    <div class="wrap grid split">
-      <Photo src="/images/about-hero.jpg" alt="Courtney Jones with a senior friend" />
-      <div>
-        <h2>Warmth, respect and attention to detail</h2>
-        <p>At S.A.L.T., we're committed to making every moment sweeter for seniors and those who care for them. Based in Dayton, Ohio, our tight-knit team shares a mission of spreading kindness and compassion, from personalized consulting to curated tools that support you and your loved ones every step of the way.</p>
-        <div class="btn-row">
-          <a class="btn btn-primary" href="/services/">See how we help</a>
-          <a class="btn btn-secondary" href="/community/">Discover the community</a>
-        </div>
+    <div class="wrap">
+      <h2>Books I’ve written</h2>
+      <div class="grid grid-4" style="margin-top:1.5rem">
+        {BOOKS.map((b) => (
+          <a class="card bk" href={b.page ?? '/planners/'}>
+            <img src={b.image} alt={b.alt} width="300" height="430" loading="lazy" />
+            <h3>{b.title.replace(': Military Deployment & Family Readiness Edition', ', Military Edition')}</h3>
+            <p>{b.subtitle}</p>
+          </a>
+        ))}
       </div>
     </div>
   </section>
+
+  <section class="section section-cream">
+    <div class="wrap">
+      <h2>The S.A.L.T. family</h2>
+      <p class="lead">Based in Dayton, Ohio. Helping seniors and caregivers all across the country by phone, video, YouTube and our online community.</p>
+      <div class="wall">
+        <Photo src="/images/courtney-with-friends.webp" alt="Courtney Jones with an older woman and a friend" width={1100} height={841} tilt="l" />
+        <Photo src="/images/garden-bench.webp" alt="Three women sitting on a garden bench" width={734} height={1100} tilt="r" tape />
+        <Photo src="/images/garden-family.webp" alt="Friends taking a selfie in a garden" width={1200} height={900} tilt="l" />
+      </div>
+      <div class="btn-row">
+        <a class="btn btn-green" href="/community/">Join our community</a>
+        <a class="btn btn-outline" href={SITE.links.youtube} rel="noopener">Watch on YouTube</a>
+      </div>
+    </div>
+  </section>
+
   <CtaBand />
 </Base>
+<style>
+  .bk img { width: 100%; max-width: 180px; margin: 0 auto 1rem; border-radius: 3px 8px 8px 3px; box-shadow: -5px 8px 16px rgba(0,0,0,.2); }
+  .bk h3 { font-size: 1.1rem; }
+  .wall { display: grid; gap: 24px; margin: 2rem 0 .5rem; align-items: center; }
+  @media (min-width: 800px) { .wall { grid-template-columns: 1.2fr .8fr 1.1fr; } }
+  .wall :global(img) { aspect-ratio: 1; object-fit: cover; }
+</style>

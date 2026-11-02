@@ -2,17 +2,28 @@
 import { SITE } from '../data/site';
 interface Props { title?: string; text?: string }
 const {
-  title = 'Not sure where to start? Let’s talk it through.',
-  text = 'Book a free call with Courtney and the S.A.L.T. team. Sometimes you need ideas and a plan; sometimes you just need someone who understands to listen.',
+  title = 'Not sure where to start? Call me.',
+  text = 'Your first conversation is free. Tell me what’s going on, and we’ll work out the next step together. Sometimes you need a plan. Sometimes you just need somebody who gets it.',
 } = Astro.props;
 ---
-<section class="section section-brand">
-  <div class="wrap narrow">
-    <h2>{title}</h2>
-    <p class="lead">{text}</p>
-    <div class="btn-row">
-      <a class="btn btn-primary" href={SITE.links.bookCall} rel="noopener">Book a free consultation</a>
-      <a class="btn btn-light" href={`tel:${SITE.phone}`}>Call {SITE.phoneDisplay}</a>
+<section class="section section-green cta">
+  <div class="wrap grid split">
+    <div>
+      <span class="kicker">From Courtney</span>
+      <h2>{title}</h2>
+      <p class="lead">{text}</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href={SITE.links.bookCall} rel="noopener">Book a free call</a>
+        <a class="btn btn-light" href={`tel:${SITE.phone}`}>Call {SITE.phoneDisplay}</a>
+      </div>
     </div>
+    <figure class="photo tilt-r tape me">
+      <img src="/images/courtney-portrait.webp" width="599" height="900" alt="Courtney Jones, founder of Senior and Living Today" loading="lazy" />
+      <figcaption>Talk soon! — Courtney</figcaption>
+    </figure>
   </div>
 </section>
+<style>
+  .me { max-width: 300px; margin: 0 auto; }
+  .me img { aspect-ratio: 4/5; object-fit: cover; object-position: top; }
+</style>

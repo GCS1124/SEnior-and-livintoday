@@ -1,51 +1,54 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
+import Photo from '../../components/Photo.astro';
 import CtaBand from '../../components/CtaBand.astro';
-import { SERVICES } from '../../data/site';
-const crumbs = [{ name: 'Services', href: '/services/' }];
+import { SERVICES, SITE } from '../../data/site';
+const crumbs = [{ name: 'Work With Us', href: '/services/' }];
 ---
 <Base
-  title="Senior Care Services for Seniors & Family Caregivers"
-  description="Senior care consulting, senior care virtual assistant services and caregiver support from Senior and Living Today. Available across the U.S. Free first call."
+  title="Senior Care Consulting, Virtual Assistant & Caregiver Help"
+  description="Work one-on-one with Courtney Jones: senior care consulting, a senior care virtual assistant, and support for family caregivers. Your first call is free."
   breadcrumbs={crumbs}
 >
   <PageHero
-    title="Senior care services that make the next step clearer"
-    eyebrow="Our services"
-    lead="Every family's situation is different. Choose the kind of help you need, or book a free call and we'll point you in the right direction."
+    title="When you want a real person in your corner"
+    kicker="Work with us"
+    lead="Videos and planners help a lot. But sometimes you need to talk to somebody about your situation. Here’s how we can help, starting with a free call."
     breadcrumbs={crumbs}
   />
   <section class="section">
-    <div class="wrap grid grid-3">
-      {SERVICES.map((s) => (
-        <a class="card" href={s.href}>
-          <h2 class="t">{s.title}</h2>
-          <p>{s.summary}</p>
-          <span class="more">Learn more →</span>
-        </a>
-      ))}
-    </div>
-    <div class="wrap" style="margin-top:2.5rem">
-      <div class="notice">
-        <strong>Good to know:</strong> S.A.L.T. is a consulting and support resource. We don't operate a senior living facility or provide hands-on medical care. We help you understand your options, get organized, and connect with the right providers.
+    <div class="wrap grid split">
+      <div class="svcs">
+        {SERVICES.map((s) => (
+          <a class="card" href={s.href}>
+            <span class="hand">{s.short}</span>
+            <h2 class="t">{s.title}</h2>
+            <p>{s.summary}</p>
+            <span class="more">Find out more →</span>
+          </a>
+        ))}
       </div>
+      <Photo src="/images/courtney-home.webp" alt="Courtney Jones at home, ready to help" width={900} height={600} tilt="r" tape caption="Let’s talk it through." />
     </div>
   </section>
-  <section class="section section-alt">
-    <div class="wrap grid grid-2">
-      <a class="card" href="/caregiver-connection/">
-        <h2 class="t">Caregiver Connection</h2>
-        <p>Curated daily-living products that support comfort, dignity and independence, from adult mealtime bibs to magnifiers and books for seniors.</p>
-        <span class="more">See our recommendations →</span>
-      </a>
-      <a class="card" href="/community/">
-        <h2 class="t">S.A.L.T. Community &amp; Academy</h2>
-        <p>A free online community with discussions, webinars and courses on Medicare, nutrition, and financial and estate planning.</p>
-        <span class="more">Join for free →</span>
-      </a>
+  <section class="section section-cream">
+    <div class="wrap narrow">
+      <h2>How it works</h2>
+      <ol class="steps">
+        <li><strong>Book a free call.</strong> Pick a time online or call <a href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a>.</li>
+        <li><strong>Tell me what’s going on.</strong> No forms to fill in first. Just talk.</li>
+        <li><strong>Get a next step.</strong> Sometimes that’s a resource or a phone number. Sometimes it’s ongoing help. You decide.</li>
+      </ol>
+      <div class="notice"><strong>Good to know:</strong> we don’t run a facility, send in-home caregivers, or give medical, legal or financial advice. We help you understand your options, get organized, and find the right professionals.</div>
     </div>
   </section>
   <CtaBand />
 </Base>
-<style>.t { font-size: 1.5rem; }</style>
+<style>
+  .svcs { display: grid; gap: 18px; }
+  .svcs .hand { font-size: 1.45rem; }
+  .t { font-size: 1.4rem; }
+  .steps { padding-left: 1.3em; margin-bottom: 1.8rem; }
+  .steps li { margin-bottom: .8em; }
+</style>

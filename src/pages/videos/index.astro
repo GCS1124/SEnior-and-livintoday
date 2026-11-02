@@ -1,0 +1,46 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Video from '../../components/Video.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE, VIDEOS } from '../../data/site';
+const crumbs = [{ name: 'Videos', href: '/videos/' }];
+const topics = [...new Set(VIDEOS.map((v) => v.topic))];
+---
+<Base
+  title="Videos for Seniors & Caregivers with Courtney Jones"
+  description="Free videos from Courtney Jones of Senior and Living Today on hospital advocacy, Medicare deadlines, home safety, money and everyday life after 55."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    title="Courtney’s videos"
+    kicker="Grab a cup of coffee"
+    lead="I’ve been making videos for seniors and the people who care for them for years: more than 480 on our YouTube channel. Here are some of the ones people tell me helped the most."
+    breadcrumbs={crumbs}
+  >
+    <div class="btn-row">
+      <a class="btn btn-primary" href={SITE.links.youtubeSubscribe} rel="noopener">Subscribe on YouTube</a>
+      <a class="btn btn-outline" href={SITE.links.youtube} rel="noopener">See the whole channel</a>
+    </div>
+  </PageHero>
+
+  {topics.map((t, i) => (
+    <section class:list={['section', { 'section-cream': i % 2 === 1 }]}>
+      <div class="wrap">
+        <h2>{t}</h2>
+        <div class="grid grid-3" style="margin-top:1.5rem">
+          {VIDEOS.filter((v) => v.topic === t).map((v) => <Video id={v.id} title={v.title} length={v.length} note={v.note} />)}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="section section-dark">
+    <div class="wrap narrow">
+      <span class="kicker">Got a topic?</span>
+      <h2>Tell me what you want me to talk about next</h2>
+      <p class="lead">Leave a comment on any video and I’ll read it. I answer every one I can. Or send an email to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+    </div>
+  </section>
+  <CtaBand />
+</Base>

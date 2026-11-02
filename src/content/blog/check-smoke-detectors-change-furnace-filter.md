@@ -6,6 +6,7 @@ published: 2025-03-18
 updated: 2026-01-15
 image: /images/smoke-detector.webp
 imageAlt: "Smoke detector mounted on a ceiling"
+situation: "It’s time to change the clocks"
 tags: ["home safety", "aging in place"]
 ---
 

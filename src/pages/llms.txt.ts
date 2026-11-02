@@ -12,7 +12,7 @@ Founded by ${SITE.founder.name}, a senior care advocate with ${SITE.founder.year
 Contact: ${SITE.phoneDisplay} · ${SITE.email}
 
 ## Services
-${SERVICES.map((s) => `- [${s.title}](${SITE.url}${s.href}): ${s.summary}`).join('\n')}
+${SERVICES.map((s) => `- [${s.short}](${SITE.url}${s.href}): ${s.summary}`).join('\n')}
 - [Caregiver Connection](${SITE.url}/caregiver-connection/): curated daily-living products for seniors.
 - [Free community & S.A.L.T. Academy](${SITE.url}/community/): discussions, webinars and courses.
 
@@ -21,6 +21,9 @@ ${SERVICES.map((s) => `- [${s.title}](${SITE.url}${s.href}): ${s.summary}`).join
 - [Relics of the Century](${SITE.url}/books/relics-of-the-century/): nostalgic book about everyday items from past decades.
 - [Final arrangements 10-point discussion guide](${SITE.url}/resources/final-arrangements-discussion-guide/)
 - [Types of senior living explained](${SITE.url}/guides/types-of-senior-living/)
+- [What do I do when…? Practical help](${SITE.url}/help/)
+- [Courtney’s videos](${SITE.url}/videos/) and YouTube channel ${SITE.links.youtube}
+- [All planners](${SITE.url}/planners/)
 
 ## Articles
 ${posts.map((p) => `- [${p.data.title}](${SITE.url}/blog/${p.id}/): ${p.data.description}`).join('\n')}

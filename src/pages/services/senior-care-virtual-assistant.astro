@@ -8,69 +8,57 @@ import { SITE } from '../../data/site';
 import { faqSchema, serviceSchema } from '../../data/schema';
 
 const path = '/services/senior-care-virtual-assistant/';
-const crumbs = [{ name: 'Services', href: '/services/' }, { name: 'Senior Care Virtual Assistant', href: path }];
-const description = 'Senior care virtual assistant services: appointment and medication reminders, paperwork, online orders and friendly check-ins, with updates for family.';
+const crumbs = [{ name: 'Work With Us', href: '/services/' }, { name: 'Senior Care Virtual Assistant', href: path }];
+const description = 'A senior care virtual assistant for appointments, medication reminders, paperwork, online orders and friendly check-in calls, with updates for family.';
 const faqs = [
-  { q: 'What does a senior care virtual assistant do?', a: 'A senior care virtual assistant (VA) helps an older adult stay organized and connected remotely: scheduling appointments, sending medication and bill reminders, managing email and documents, placing online orders, and making regular friendly check-in calls.' },
-  { q: 'Is a virtual assistant a replacement for in-home care?', a: 'No. A VA handles organization, reminders and communication from a distance. It does not provide hands-on personal or medical care. For many families it is an affordable way to add support alongside family help or in-home care.' },
-  { q: 'Can family members get updates?', a: 'Yes, if the senior wishes. We can send regular updates to family members so everyone stays informed without feeling overwhelmed.' },
-  { q: 'Do you handle medical decisions or medical insurance claims?', a: 'No. We can help organize non-medical paperwork and remind you of deadlines, but medical decisions stay with the senior, their family and their healthcare providers.' },
+  { q: 'What does a senior care virtual assistant do?', a: 'Helps from a distance with the day-to-day: scheduling appointments, reminders for medications and bills, organizing paperwork and email, ordering groceries online, and regular friendly check-in calls.' },
+  { q: 'Is this the same as in-home care?', a: 'No. A virtual assistant works by phone, video and email. There’s no hands-on or medical care. Many families use it alongside family help or in-home care.' },
+  { q: 'Can family members get updates?', a: 'Yes, if the senior wants that. We can send regular updates so everyone stays in the loop.' },
 ];
 ---
 <Base
   title="Senior Care Virtual Assistant Services"
   {description}
-  image="/images/va-independence.png"
   breadcrumbs={crumbs}
   schema={[serviceSchema({ name: 'Senior Care Virtual Assistant Services', serviceType: 'Virtual assistant services for seniors', description, path }), faqSchema(faqs)]}
 >
   <PageHero
-    title="Senior care virtual assistant services"
-    eyebrow="Independence, with support that feels personal"
-    lead="Help for older adults who want to stay in charge of their routine, and peace of mind for families who can't always be there in person."
+    title="A senior care virtual assistant: an extra pair of hands, from a distance"
+    kicker="Stay independent, stay in touch"
+    lead="For seniors who want to keep running their own lives, and for families who live too far away to pop over every day."
     breadcrumbs={crumbs}
   >
-    <div class="btn-row">
-      <a class="btn btn-primary" href={SITE.links.bookCall30} rel="noopener">Book a free call</a>
-    </div>
+    <div class="btn-row"><a class="btn btn-primary" href={SITE.links.bookCall30} rel="noopener">Book a free call</a></div>
   </PageHero>
 
   <section class="section">
     <div class="wrap">
-      <h2>How our senior care VAs help</h2>
+      <h2>What we can take off your plate</h2>
       <div class="grid grid-2" style="margin-top:1.5rem">
-        <div class="card">
-          <h3>Daily organization &amp; scheduling</h3>
-          <ul class="checklist"><li>Medical appointments and doctor follow-ups</li><li>Medication reminders</li><li>Calendar setup and management</li></ul>
-        </div>
-        <div class="card">
-          <h3>Administrative support</h3>
-          <ul class="checklist"><li>Email and document management</li><li>Non-medical insurance paperwork</li><li>Organizing personal records and contacts</li></ul>
-        </div>
-        <div class="card">
-          <h3>Lifestyle coordination</h3>
-          <ul class="checklist"><li>Grocery orders and delivery tracking</li><li>Online shopping support</li><li>Utility and bill payment reminders</li><li>Home maintenance follow-ups</li></ul>
-        </div>
-        <div class="card">
-          <h3>Companionship &amp; check-ins</h3>
-          <ul class="checklist"><li>Regular phone or video calls</li><li>Friendly conversation to ease isolation</li><li>Updates to family members, if desired</li></ul>
-        </div>
+        <div class="card"><h3>Appointments &amp; reminders</h3><ul class="checklist"><li>Doctor appointments and follow-ups</li><li>Medication reminders</li><li>Setting up and keeping a calendar</li></ul></div>
+        <div class="card"><h3>Paperwork</h3><ul class="checklist"><li>Email and documents</li><li>Non-medical insurance paperwork</li><li>Organizing records and contacts</li></ul></div>
+        <div class="card"><h3>Everyday errands, online</h3><ul class="checklist"><li>Grocery orders and delivery tracking</li><li>Online shopping help</li><li>Utility and bill reminders</li><li>Home repair follow-ups</li></ul></div>
+        <div class="card"><h3>A friendly voice</h3><ul class="checklist"><li>Regular phone or video check-ins</li><li>Real conversation, to ease loneliness</li><li>Updates to family, if you’d like</li></ul></div>
       </div>
     </div>
   </section>
 
-  <section class="section section-alt">
-    <div class="wrap">
-      <h2>Why families choose a senior care VA</h2>
-      <div class="grid grid-2" style="margin-top:1.5rem">
-        <div class="card"><Photo src="/images/va-independence.png" alt="Senior managing her schedule independently" /><h3 style="margin-top:1rem">Seniors keep their independence</h3><p>We help seniors stay in control of their routine, even when family lives far away.</p></div>
-        <div class="card"><Photo src="/images/va-family.png" alt="Family receiving an update about a loved one" /><h3 style="margin-top:1rem">Families get peace of mind</h3><p>Check-ins and regular updates keep families informed without the overwhelm.</p></div>
-        <div class="card"><Photo src="/images/va-savings.png" alt="Saving time and money with remote support" /><h3 style="margin-top:1rem">Saves time, energy and money</h3><p>Many tasks can be done remotely, often at a fraction of the cost of full-time in-person help.</p></div>
-        <div class="card"><Photo src="/images/va-wellness.png" alt="Senior enjoying a friendly video call" /><h3 style="margin-top:1rem">Supports emotional wellness</h3><p>Regular conversation and routine help reduce loneliness and confusion.</p></div>
+  <section class="section section-cream">
+    <div class="wrap grid split">
+      <div>
+        <h2>Why families like it</h2>
+        <ul class="checklist">
+          <li><strong>Seniors stay in charge</strong> of their own routine.</li>
+          <li><strong>Families get peace of mind</strong> without hovering.</li>
+          <li><strong>It costs less</strong> than full-time help in the home for tasks that can be done remotely.</li>
+          <li><strong>Routine and conversation</strong> help with loneliness.</li>
+        </ul>
+        <p>Medicare letter came in the mail? A bill that doesn’t look right? That’s exactly the kind of thing we help with. Read my <a href="/blog/medicare-advantage-letter-deadline/">Medicare letter checklist</a>.</p>
       </div>
+      <Photo src="/images/dinner-out.webp" alt="An older woman smiling at a restaurant table" width={750} height={1000} tilt="l" tape />
     </div>
   </section>
 
   <Faq items={faqs} />
-  <CtaBand title="See if a senior care VA is right for your family" />
+  <CtaBand title="See if a virtual assistant is right for your family" />
 </Base>

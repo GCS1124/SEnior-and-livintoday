@@ -3,13 +3,19 @@ import { NAV, SITE } from '../data/site';
 const path = Astro.url.pathname;
 const current = (href: string) => (path.startsWith(href) ? 'page' : undefined);
 ---
+<div class="topbar">
+  <div class="wrap tb">
+    <span>Help for seniors &amp; the people who care for them. Not medical, not legal, just real help.</span>
+    <a href={`tel:${SITE.phone}`}>Call Courtney’s team: <strong>{SITE.phoneDisplay}</strong></a>
+  </div>
+</div>
 <header class="site-header">
   <div class="wrap bar">
     <a href="/" class="brand" aria-label="Senior and Living Today home">
-      <img src="/favicon.svg" width="44" height="44" alt="" />
+      <img src="/images/logo.png" width="64" height="64" alt="" />
       <span>
         <strong>Senior and Living Today</strong>
-        <small>S.A.L.T.</small>
+        <small>the caregiver’s caregiver</small>
       </span>
     </a>
 
@@ -17,7 +23,7 @@ const current = (href: string) => (path.startsWith(href) ? 'page' : undefined);
       <ul>
         {NAV.map((item) => <li><a href={item.href} aria-current={current(item.href)}>{item.label}</a></li>)}
       </ul>
-      <a class="btn btn-primary call" href={`tel:${SITE.phone}`}>Call {SITE.phoneDisplay}</a>
+      <a class="btn btn-primary book" href="/contact/">Book a free call</a>
     </nav>
 
     <details class="mobile">
@@ -25,42 +31,50 @@ const current = (href: string) => (path.startsWith(href) ? 'page' : undefined);
       <nav aria-label="Main (mobile)">
         <ul>
           {NAV.map((item) => <li><a href={item.href} aria-current={current(item.href)}>{item.label}</a></li>)}
+          <li><a href="/contact/">Contact</a></li>
         </ul>
-        <a class="btn btn-primary call" href={`tel:${SITE.phone}`}>Call {SITE.phoneDisplay}</a>
+        <a class="btn btn-primary book" href="/contact/">Book a free call</a>
+        <a class="btn btn-outline book" href={`tel:${SITE.phone}`}>Call {SITE.phoneDisplay}</a>
       </nav>
     </details>
   </div>
 </header>
 
 <style>
-  .site-header { background: var(--surface); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 20; }
-  .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 76px; }
-  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--brand-dark); }
-  .brand strong { display: block; font-family: var(--font-head); font-size: 1.25rem; line-height: 1.1; }
-  .brand small { display: block; font-size: .85rem; letter-spacing: .14em; color: var(--accent); font-weight: 700; }
+  .topbar { background: var(--green-ink); color: #dfe9dc; font-size: .95rem; }
+  .tb { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-top: 8px; padding-bottom: 8px; }
+  .tb a { color: var(--sun); text-decoration: none; }
+  .tb a strong { color: var(--sun); }
+  @media (max-width: 760px) { .tb span { display: none; } .tb { justify-content: center; } }
+
+  .site-header { background: var(--paper); border-bottom: 3px solid var(--gold); position: sticky; top: 0; z-index: 20; }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 84px; }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .brand img { width: 60px; height: 60px; border-radius: 50%; }
+  .brand strong { display: block; font: 700 1.2rem/1.1 var(--font-head); color: var(--green-ink); }
+  .brand small { display: block; font: 600 1.35rem/1 var(--font-hand); color: var(--berry); }
   ul { list-style: none; margin: 0; padding: 0; }
 
   .desk { display: none; }
   .mobile summary {
-    list-style: none; cursor: pointer; font-weight: 700; padding: 10px 16px; min-height: 48px;
-    border: 2px solid var(--line); border-radius: 999px; display: flex; align-items: center; gap: 8px;
+    list-style: none; cursor: pointer; font-weight: 700; padding: 10px 18px; min-height: 50px;
+    border: 2px solid var(--green); border-radius: 999px; display: flex; align-items: center; gap: 8px; color: var(--green-ink);
   }
   .mobile summary::-webkit-details-marker { display: none; }
   .mobile nav {
-    position: absolute; left: 0; right: 0; top: 100%; background: var(--surface);
-    border-bottom: 1px solid var(--line); padding: 12px 20px 24px;
+    position: absolute; left: 0; right: 0; top: 100%; background: var(--paper);
+    border-bottom: 3px solid var(--gold); padding: 12px 20px 24px; display: grid; gap: 10px;
   }
-  .mobile ul { margin-bottom: 16px; }
-  .mobile li a { display: block; padding: 12px 4px; font-size: 1.15rem; font-weight: 700; text-decoration: none; color: var(--ink); border-bottom: 1px solid var(--line); }
-  .mobile .call { width: 100%; }
-  a[aria-current='page'] { color: var(--accent) !important; }
+  .mobile li a { display: block; padding: 13px 4px; font: 600 1.15rem var(--font-head); text-decoration: none; color: var(--ink); border-bottom: 1px solid var(--line); }
+  .mobile .book { width: 100%; }
+  a[aria-current='page'] { color: var(--berry) !important; }
 
-  @media (min-width: 1140px) {
+  @media (min-width: 1160px) {
     .mobile { display: none; }
-    .desk { display: flex; align-items: center; gap: 20px; }
+    .desk { display: flex; align-items: center; gap: 22px; }
     .desk ul { display: flex; gap: 20px; }
-    .desk li a { font-weight: 700; text-decoration: none; color: var(--ink); white-space: nowrap; }
-    .desk li a:hover { color: var(--accent-dark); }
-    .desk .call { white-space: nowrap; min-height: 46px; padding: 10px 20px; font-size: 1rem; }
+    .desk li a { font: 600 1rem var(--font-head); text-decoration: none; color: var(--ink); white-space: nowrap; }
+    .desk li a:hover { color: var(--berry); }
+    .desk .book { white-space: nowrap; min-height: 48px; padding: 10px 22px; font-size: 1rem; }
   }
 </style>

@@ -47,7 +47,8 @@ for (const file of files) {
   }
   for (const m of h.matchAll(/href="(\/[^"#?]*)"/g)) {
     const u = m[1];
-    if (u.startsWith('/_astro/') || publicFiles.has(u) || u.startsWith('/images/')) continue;
+    if (u.startsWith('/_astro/') || publicFiles.has(u)) continue;
+    if (/\.[a-z0-9]+$/i.test(u)) { if (!fs.existsSync(path.join(DIST, u))) err(rel, `missing file ${u}`); continue; }
     if (!routes.has(u) && !redirects.has(u)) err(rel, `broken internal link ${u}`);
     else if (!u.endsWith('/')) warn(rel, `link without trailing slash ${u}`);
   }
