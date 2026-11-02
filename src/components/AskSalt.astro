@@ -1,0 +1,152 @@
+---
+// Site-wide "Ask S.A.L.T." helper. Talks to /api/ask (AI). If the AI is not configured
+// or unavailable, it still answers common questions instantly from the list below.
+// Any element with [data-ask] opens the helper; data-ask="question text" asks it right away.
+---
+<button type="button" class="ask-launch" data-ask aria-haspopup="dialog">
+  <img src="/images/logo.png" width="40" height="40" alt="" />
+  <span>Ask S.A.L.T.</span>
+</button>
+
+<dialog class="ask" id="ask-dialog" aria-labelledby="ask-title">
+  <header>
+    <img src="/images/logo.png" width="46" height="46" alt="" />
+    <div>
+      <p id="ask-title" class="t">Ask S.A.L.T.</p>
+      <p class="s">Your friendly helper. Ask me anything about getting older or caring for someone.</p>
+    </div>
+    <button type="button" class="x" id="ask-close" aria-label="Close">✕</button>
+  </header>
+  <div class="log" id="ask-log" aria-live="polite">
+    <div class="msg bot">Hi there! I can point you to doctors and Medicare help near you, Courtney’s advice and videos, planners, gifts, or something fun to do. What’s on your mind?</div>
+    <div class="chips" id="ask-chips">
+      <button type="button">Find a doctor near me</button>
+      <button type="button">Mom is going into the hospital</button>
+      <button type="button">I got a Medicare letter</button>
+      <button type="button">Gift ideas for my dad</button>
+      <button type="button">Something fun to do</button>
+    </div>
+  </div>
+  <form id="ask-form">
+    <label class="visually-hidden" for="ask-input">Type your question</label>
+    <input id="ask-input" autocomplete="off" placeholder="Type your question here…" maxlength="1000" />
+    <button class="btn btn-berry" type="submit">Ask</button>
+  </form>
+  <p class="fine">General information, not medical, legal or financial advice. In an emergency call 911. Please don’t share Social Security or bank numbers.</p>
+</dialog>
+
+<style is:global>
+  .ask-launch { position: fixed; right: 18px; bottom: 18px; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 8px 20px 8px 8px; border-radius: 999px; border: 3px solid #fff; background: var(--berry); color: #fff; font: 600 1.1rem var(--font-head); cursor: pointer; box-shadow: 0 10px 28px rgba(90,31,60,.35); }
+  .ask-launch img { width: 40px; height: 40px; border-radius: 50%; }
+  .ask-launch:hover { background: #b52a59; }
+  @media print { .ask-launch { display: none; } }
+  dialog.ask { width: min(560px, calc(100vw - 24px)); max-height: min(760px, calc(100vh - 24px)); padding: 0; border: 0; border-radius: 24px; box-shadow: 0 30px 80px rgba(0,0,0,.35); background: var(--paper); color: var(--ink); }
+  dialog.ask[open] { display: flex; flex-direction: column; }
+  dialog.ask::backdrop { background: rgba(29,20,25,.45); }
+  .ask header { display: flex; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, #ffc93c, #ffae00); }
+  .ask header img { width: 46px; height: 46px; border-radius: 50%; }
+  .ask .t { margin: 0; font: 700 1.3rem var(--font-head); color: var(--green-ink); }
+  .ask .s { margin: 0; font-size: .95rem; color: #3a2a12; }
+  .ask .x { margin-left: auto; width: 48px; height: 48px; border-radius: 50%; border: 0; background: #fff; font-size: 1.3rem; cursor: pointer; }
+  .ask .log { flex: 1; overflow-y: auto; padding: 18px; display: flex; flex-direction: column; gap: 12px; min-height: 260px; }
+  .ask .msg { max-width: 88%; padding: 12px 16px; border-radius: 18px; font-size: 1.1rem; line-height: 1.5; white-space: pre-wrap; }
+  .ask .bot { background: #fff; border: 2px solid var(--line); border-bottom-left-radius: 6px; }
+  .ask .me { align-self: flex-end; background: var(--green); color: #fff; border-bottom-right-radius: 6px; }
+  .ask .msg a { color: var(--plum); font-weight: 700; }
+  .ask .typing { color: var(--ink-soft); font-style: italic; }
+  .ask .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ask .chips button { font: 600 1rem var(--font-head); padding: 10px 14px; border-radius: 999px; border: 2px solid var(--gold); background: var(--gold-soft); cursor: pointer; color: var(--green-ink); }
+  .ask form { display: flex; gap: 10px; padding: 12px 16px; border-top: 2px solid var(--line); }
+  .ask input { flex: 1; font: 1.15rem var(--font-body); padding: 12px 16px; border-radius: 14px; border: 2px solid var(--line); min-width: 0; }
+  .ask input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 4px rgba(255,174,0,.25); }
+  .ask .fine { margin: 0; padding: 0 16px 14px; font-size: .85rem; color: var(--ink-soft); }
+</style>
+
+<script>
+  type Msg = { role: 'user' | 'assistant'; content: string };
+  // Instant answers: used when the AI is off/unavailable, and for very common questions.
+  const QUICK: { k: RegExp; a: string }[] = [
+    { k: /emergenc|chest pain|stroke|can'?t breathe|fell and|bleeding|911/i, a: 'If this is an emergency, please call 911 right now.' },
+    { k: /doctor|physician|clinic|specialist|geriatric/i, a: 'Let’s find a doctor near you. Type your ZIP code on our Find Help page and tap “A doctor”: /find-help/?need=doctor\nMedicare’s official tool also lists doctors who take Medicare: https://www.medicare.gov/care-compare/' },
+    { k: /lawyer|attorney|legal|will |power of attorney|estate/i, a: 'For an elder law attorney near you, try our finder: /find-help/?need=lawyer\nFree legal aid by state: https://www.lawhelp.org/' },
+    { k: /medicare|insurance|advantage|part d|enrollment/i, a: 'Courtney wrote about Medicare Advantage letters and the December 7 deadline: /blog/medicare-advantage-letter-deadline/\nFree, unbiased Medicare counseling: https://www.shiphelp.org/ or call 1-800-MEDICARE (1-800-633-4227).' },
+    { k: /hospital|surgery|advocate|discharge/i, a: 'Nobody should be in the hospital alone. Here’s Courtney’s advice on being (or finding) an advocate, with her video: /blog/hospital-advocate/' },
+    { k: /move in|moving in|stay with me|houseguest|freeload/i, a: 'Before anyone moves in, set ground rules. Courtney’s advice: /blog/protect-your-home-from-freeloaders/' },
+    { k: /scam|fraud|gift card|stranger|repair|install|worker/i, a: 'Have another set of eyes there when workers come in: /blog/workers-in-your-home/\nIf someone is asking you for money or gift cards, stop and talk to someone you trust first.' },
+    { k: /fall|live alone|lock(ed)? out|lockbox|spare key/i, a: 'Living alone? A combination key lockbox lets help get in: /blog/emergency-key-lockbox/' },
+    { k: /gift|present|christmas|holiday|birthday|dad|mom|grandma|grandpa/i, a: 'Here’s Courtney’s holiday gift guide: cozy robes, arthritis gloves, reading glasses, a folding cane and more: /gifts/' },
+    { k: /planner|legacy|wishes|final arrangement|funeral|book/i, a: 'The Living Legacy Planner keeps your wishes and important details in one place. It’s on Amazon: https://www.amazon.com/dp/B0D4JDBFYQ\nMore planners: /planners/' },
+    { k: /pdf|printable|e-?planner|download|e-?card/i, a: 'Fillable PDF planners and journals are instant downloads at the SALT Online Store: /gifts/#instant' },
+    { k: /fun|bored|game|color|colour|puzzle|activity/i, a: 'Try our online coloring book or the memory match game: /games/\nOr take a walk down Memory Lane with old newspapers and radio shows: /memory-lane/' },
+    { k: /old (news|tv|show|radio|song|movie)|memory lane|remember|nostalg/i, a: 'Memory Lane has free old newspapers, classic TV, old-time radio and 78 records: /memory-lane/' },
+    { k: /video|youtube|watch/i, a: 'Here are Courtney’s most helpful videos: /videos/' },
+    { k: /call|talk|consult|help me|courtney|appointment|book/i, a: 'Courtney’s first call is free. Book here: /contact/ or call (888) 416-4264.' },
+    { k: /lonely|alone|sad|depress|grief|lost my/i, a: 'I’m sorry you’re going through this. You don’t have to carry it alone. Our free community is a kind place to talk: /community/\nIf you’re in crisis, call or text 988 any time.' },
+  ];
+  const quick = (q: string) => QUICK.find((x) => x.k.test(q))?.a;
+
+  const dlg = document.getElementById('ask-dialog') as HTMLDialogElement;
+  const log = document.getElementById('ask-log')!;
+  const form = document.getElementById('ask-form') as HTMLFormElement;
+  const input = document.getElementById('ask-input') as HTMLInputElement;
+  const history: Msg[] = [];
+  let busy = false;
+
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
+  const NAMES: Record<string, string> = { 'find-help': 'Find Help Near Me', help: 'What do I do when…?', blog: 'Courtney’s article', gifts: 'Holiday Gift Guide', planners: 'Planners', 'memory-lane': 'Memory Lane', games: 'Games & Coloring', videos: 'Courtney’s Videos', contact: 'Book a free call', community: 'Free Community', services: 'Our Services', about: 'About Courtney' };
+  const label = (u: string) => {
+    if (u.startsWith('http')) return u.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+    const seg = u.split('/').filter(Boolean)[0]?.split(/[?#]/)[0] ?? '';
+    return NAMES[seg] ?? 'Open page';
+  };
+  const linkify = (s: string) => esc(s).replace(/(https?:\/\/[^\s)]+|(?<![\w.])\/[a-z0-9\-/#?=&]+\/?)/gi, (u) => `<a href="${u}"${u.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${label(u)}</a>`);
+  function add(role: 'me' | 'bot', text: string, cls = '') {
+    const d = document.createElement('div');
+    d.className = `msg ${role} ${cls}`;
+    d.innerHTML = role === 'bot' ? linkify(text) : esc(text);
+    log.appendChild(d); log.scrollTop = log.scrollHeight;
+    return d;
+  }
+
+  async function ask(q: string) {
+    q = q.trim(); if (!q || busy) return;
+    document.getElementById('ask-chips')?.remove();
+    add('me', q); history.push({ role: 'user', content: q });
+    const instant = quick(q);
+    if (instant && /911|emergency/.test(instant)) { add('bot', instant); return; }
+    busy = true;
+    const typing = add('bot', 'Thinking…', 'typing');
+    let reply = '';
+    try {
+      const r = await fetch('/api/ask', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: history }) });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok && j.reply) reply = j.reply;
+      else if (r.status === 429 && j.error) reply = j.error;
+    } catch { /* fall through to instant answers */ }
+    typing.remove();
+    if (!reply) reply = instant ?? 'I’m not sure about that one. Courtney’s team would be glad to help: call (888) 416-4264 or book a free call at /contact/';
+    add('bot', reply); history.push({ role: 'assistant', content: reply });
+    busy = false; input.focus();
+  }
+
+  form.addEventListener('submit', (e) => { e.preventDefault(); const q = input.value; input.value = ''; ask(q); });
+  log.addEventListener('click', (e) => { const b = (e.target as HTMLElement).closest('.chips button'); if (b) ask(b.textContent || ''); });
+  document.getElementById('ask-close')!.addEventListener('click', () => dlg.close());
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+  document.addEventListener('click', (e) => {
+    const t = (e.target as HTMLElement).closest<HTMLElement>('[data-ask]');
+    if (!t) return;
+    e.preventDefault();
+    if (!dlg.open) dlg.showModal();
+    const q = t.dataset.ask || (t.dataset.askFrom ? (document.getElementById(t.dataset.askFrom) as HTMLInputElement)?.value : '');
+    if (q) ask(q); else input.focus();
+  });
+  document.addEventListener('submit', (e) => {
+    const f = e.target as HTMLFormElement;
+    if (!f.matches('[data-ask-form]')) return;
+    e.preventDefault();
+    const field = f.querySelector('input') as HTMLInputElement;
+    if (!dlg.open) dlg.showModal();
+    ask(field.value); field.value = '';
+  });
+</script>

@@ -1,0 +1,190 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+const crumbs = [{ name: 'Games & Coloring', href: '/games/' }];
+const swatches = ['#e63946', '#ff8fab', '#cc3366', '#ffae00', '#fff200', '#f4a261', '#8bc34a', '#47704c', '#4fc3f7', '#1d4ed8', '#9b5de5', '#8d6e63', '#9e9e9e', '#ffffff'];
+---
+<Base
+  title="Free Online Coloring Book & Memory Game for Seniors"
+  description="Relax with a free online coloring book for adults and seniors, with big buttons and no sign-up, plus a gentle memory match game with old-time favorites."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    title="Games & coloring, just for fun"
+    kicker="Take a break"
+    lead="No sign-up, no ads, big buttons. Color a picture, then try the memory game. Good for the mind, good for the soul."
+    breadcrumbs={crumbs}
+  >
+    <nav class="jump" aria-label="Jump to"><a href="#color">🖍️ Coloring book</a><a href="#match">🃏 Memory match</a></nav>
+  </PageHero>
+
+  <!-- COLORING BOOK -->
+  <section class="section" id="color">
+    <div class="wrap">
+      <h2>Online coloring book</h2>
+      <p class="lead">Pick a color, then tap any shape to fill it in. Change your mind? Tap it again with a new color.</p>
+      <div class="pages" role="tablist" aria-label="Choose a picture">
+        <button type="button" class="pg on" data-page="0">🌷 Flowers</button>
+        <button type="button" class="pg" data-page="1">🏡 Cottage</button>
+        <button type="button" class="pg" data-page="2">🦋 Butterfly</button>
+        <button type="button" class="pg" data-page="3">☕ Teatime</button>
+      </div>
+      <div class="studio">
+        <div class="canvas" id="canvas">
+          <!-- Flowers -->
+          <svg viewBox="0 0 400 400" data-art="0" role="img" aria-label="Flowers in a pot to color">
+            <rect class="c" x="0" y="0" width="400" height="400" />
+            <path class="c" d="M120 290h160l-20 90H140z" /><rect class="c" x="110" y="270" width="180" height="26" rx="6" />
+            <path class="c" d="M200 270V150M200 220c-30-10-50-30-55-55 30 0 50 20 55 55zM200 200c30-10 50-30 55-55-30 0-50 20-55 55z" />
+            <circle class="c" cx="200" cy="120" r="22" /><ellipse class="c" cx="200" cy="80" rx="18" ry="24" /><ellipse class="c" cx="200" cy="160" rx="18" ry="24" /><ellipse class="c" cx="160" cy="120" rx="24" ry="18" /><ellipse class="c" cx="240" cy="120" rx="24" ry="18" />
+            <path class="c" d="M120 270V190" /><circle class="c" cx="120" cy="175" r="14" /><circle class="c" cx="104" cy="160" r="12" /><circle class="c" cx="136" cy="160" r="12" /><circle class="c" cx="104" cy="190" r="12" /><circle class="c" cx="136" cy="190" r="12" />
+            <path class="c" d="M280 270V200" /><path class="c" d="M280 200c-20-30-20-55 0-75 20 20 20 45 0 75z" />
+            <circle class="c" cx="340" cy="60" r="34" />
+          </svg>
+          <!-- Cottage -->
+          <svg viewBox="0 0 400 400" data-art="1" role="img" aria-label="A cottage to color" hidden>
+            <rect class="c" x="0" y="0" width="400" height="300" /><rect class="c" x="0" y="300" width="400" height="100" />
+            <circle class="c" cx="330" cy="70" r="30" />
+            <path class="c" d="M90 170 200 80l110 90z" /><rect class="c" x="100" y="170" width="200" height="140" />
+            <rect class="c" x="180" y="230" width="44" height="80" rx="4" /><rect class="c" x="120" y="195" width="44" height="40" /><rect class="c" x="240" y="195" width="44" height="40" />
+            <rect class="c" x="250" y="95" width="26" height="45" />
+            <path class="c" d="M180 310 160 400h84l-20-90z" />
+            <circle class="c" cx="60" cy="280" r="26" /><circle class="c" cx="340" cy="285" r="22" /><path class="c" d="M30 120c20-25 60-25 80 0-20 10-60 10-80 0z" />
+          </svg>
+          <!-- Butterfly -->
+          <svg viewBox="0 0 400 400" data-art="2" role="img" aria-label="A butterfly to color" hidden>
+            <rect class="c" x="0" y="0" width="400" height="400" />
+            <path class="c" d="M196 190C150 90 60 80 50 130s40 90 146 70z" /><path class="c" d="M204 190c46-100 136-110 146-60s-40 90-146 70z" />
+            <path class="c" d="M196 210C120 210 80 260 110 300s80 0 86-90z" /><path class="c" d="M204 210c76 0 116 50 86 90s-80 0-86-90z" />
+            <circle class="c" cx="110" cy="140" r="18" /><circle class="c" cx="290" cy="140" r="18" /><circle class="c" cx="135" cy="265" r="14" /><circle class="c" cx="265" cy="265" r="14" />
+            <ellipse class="c" cx="200" cy="215" rx="12" ry="70" /><circle class="c" cx="200" cy="135" r="14" />
+            <path class="c" d="M60 360c30-30 60-30 90 0zM250 360c30-30 60-30 90 0z" />
+          </svg>
+          <!-- Teatime -->
+          <svg viewBox="0 0 400 400" data-art="3" role="img" aria-label="A teacup and saucer to color" hidden>
+            <rect class="c" x="0" y="0" width="400" height="400" />
+            <ellipse class="c" cx="200" cy="320" rx="150" ry="30" />
+            <path class="c" d="M90 180h220c0 90-40 140-110 140S90 270 90 180z" />
+            <path class="c" d="M310 200c50 0 50 70-10 70l6-20c30 0 30-34 0-34z" />
+            <ellipse class="c" cx="200" cy="180" rx="110" ry="18" />
+            <circle class="c" cx="160" cy="240" r="16" /><circle class="c" cx="200" cy="260" r="16" /><circle class="c" cx="240" cy="240" r="16" />
+            <path class="c" d="M170 140c-10-20 10-30 0-50M200 140c-10-20 10-30 0-50M230 140c-10-20 10-30 0-50" fill="none" />
+            <path class="c" d="M310 60c10-20 40-20 40 5 0 20-40 40-40 40s-40-20-40-40c0-25 30-25 40-5z" />
+          </svg>
+        </div>
+        <div class="tools">
+          <p class="hand">Pick a color</p>
+          <div class="swatches">
+            {swatches.map((c, i) => <button type="button" class:list={['sw', { on: i === 3 }]} data-color={c} style={`background:${c}`} aria-label={`Color ${c}`}></button>)}
+          </div>
+          <div class="btn-row">
+            <button type="button" class="btn btn-outline" id="undo">↶ Undo</button>
+            <button type="button" class="btn btn-outline" id="clear">Start over</button>
+            <button type="button" class="btn btn-berry" id="print">🖨️ Print</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMORY MATCH -->
+  <section class="section section-cream" id="match">
+    <div class="wrap">
+      <h2>Memory match: old-time favorites</h2>
+      <p class="lead">Turn over two cards at a time and find the pairs. Take your time. There’s no clock.</p>
+      <p class="score"><span>Turns: <strong id="turns">0</strong></span> <span>Pairs found: <strong id="pairs">0</strong> of 8</span> <button type="button" class="btn btn-outline" id="restart">New game</button></p>
+      <div class="board" id="board" aria-live="polite"></div>
+      <p class="win" id="win" hidden>🎉 You found them all! <a href="/memory-lane/">Take a walk down Memory Lane →</a></p>
+    </div>
+  </section>
+
+  <CtaBand title="Enjoyed that? Come say hello." text="Our free community has quizzes, challenges and good conversation. And if you ever need a hand with something more serious, I’m a phone call away." />
+</Base>
+
+<style>
+  .jump { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1.2rem; }
+  .jump a { background: #fff; border: 2px solid var(--line); border-radius: 999px; padding: 10px 18px; font: 600 1rem var(--font-head); text-decoration: none; color: var(--green-ink); }
+  .pages { display: flex; flex-wrap: wrap; gap: 10px; margin: 1.5rem 0; }
+  .pg { font: 600 1.05rem var(--font-head); padding: 12px 20px; border-radius: 999px; border: 2px solid var(--line); background: #fff; cursor: pointer; }
+  .pg.on { background: var(--gold-soft); border-color: var(--gold); }
+  .studio { display: grid; gap: 28px; align-items: start; }
+  @media (min-width: 900px) { .studio { grid-template-columns: 1.2fr .8fr; } }
+  .canvas { background: #fff; border: 3px solid var(--line); border-radius: 22px; padding: 12px; box-shadow: 0 14px 34px rgba(90,31,60,.08); }
+  .canvas svg { width: 100%; height: auto; display: block; }
+  .canvas svg[hidden] { display: none; }
+  .canvas :global(.c) { fill: #fff; stroke: #2b2b2b; stroke-width: 3; stroke-linejoin: round; cursor: pointer; transition: fill .15s; }
+  .canvas :global(path.c[fill='none']) { fill: none; }
+  .swatches { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin: .6rem 0 1rem; }
+  .sw { aspect-ratio: 1; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 2px var(--line); cursor: pointer; min-width: 44px; }
+  .sw.on { box-shadow: 0 0 0 4px var(--ink); }
+  .score { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; font-size: 1.2rem; }
+  .board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; max-width: 640px; margin-top: 1rem; }
+  :global(.card-m) { aspect-ratio: 1; border-radius: 16px; border: 3px solid var(--gold); background: linear-gradient(135deg, var(--plum), #8a2d5a); font-size: 0; cursor: pointer; display: grid; place-items: center; transition: transform .2s, background .2s; }
+  :global(.card-m)::after { content: 'S.A.L.T.'; color: var(--sun); font: 700 .85rem var(--font-head); }
+  :global(.card-m.up), :global(.card-m.done) { background: #fff; font-size: clamp(2rem, 7vw, 3.2rem); }
+  :global(.card-m.up)::after, :global(.card-m.done)::after { content: none; }
+  :global(.card-m.done) { border-color: var(--green); opacity: .85; }
+  .win { font: 600 1.4rem var(--font-head); color: var(--green-ink); margin-top: 1.4rem; }
+  @media print {
+    :global(body > *:not(main)), :global(.page-hero), :global(.wave), .tools, .pages, #match, :global(.cta) { display: none !important; }
+    .canvas { border: 0; box-shadow: none; }
+  }
+</style>
+
+<script>
+  // ---- Coloring book ----
+  let color = '#ffae00';
+  const history: [SVGElement, string][] = [];
+  const arts = document.querySelectorAll<SVGSVGElement>('#canvas svg');
+  document.querySelectorAll<HTMLButtonElement>('.sw').forEach((b) => b.addEventListener('click', () => {
+    color = b.dataset.color!; document.querySelectorAll('.sw').forEach((s) => s.classList.toggle('on', s === b));
+  }));
+  document.querySelectorAll<HTMLButtonElement>('.pg').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('.pg').forEach((p) => p.classList.toggle('on', p === b));
+    arts.forEach((a) => (a.hidden = a.dataset.art !== b.dataset.page));
+  }));
+  document.querySelectorAll<SVGElement>('#canvas .c').forEach((el) => {
+    if (el.getAttribute('fill') === 'none') return;
+    el.addEventListener('click', () => { history.push([el, el.style.fill]); el.style.fill = color; });
+  });
+  document.getElementById('undo')!.addEventListener('click', () => { const h = history.pop(); if (h) h[0].style.fill = h[1]; });
+  document.getElementById('clear')!.addEventListener('click', () => {
+    const visible = [...arts].find((a) => !a.hidden);
+    visible?.querySelectorAll<SVGElement>('.c').forEach((el) => (el.style.fill = ''));
+  });
+  document.getElementById('print')!.addEventListener('click', () => window.print());
+
+  // ---- Memory match ----
+  const ICONS = ['☎️', '📻', '💿', '📺', '⌨️', '🥛', '🎞️', '✉️'];
+  const board = document.getElementById('board')!;
+  const turnsEl = document.getElementById('turns')!, pairsEl = document.getElementById('pairs')!, win = document.getElementById('win')!;
+  let open: HTMLButtonElement[] = [], turns = 0, pairs = 0, lock = false;
+  function deal() {
+    const deck = [...ICONS, ...ICONS].sort(() => Math.random() - 0.5);
+    board.innerHTML = ''; open = []; turns = 0; pairs = 0; lock = false; win.hidden = true;
+    turnsEl.textContent = '0'; pairsEl.textContent = '0';
+    deck.forEach((icon) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'card-m'; b.dataset.icon = icon; b.textContent = icon; b.setAttribute('aria-label', 'Hidden card');
+      b.addEventListener('click', () => flip(b));
+      board.appendChild(b);
+    });
+  }
+  function flip(b: HTMLButtonElement) {
+    if (lock || b.classList.contains('up') || b.classList.contains('done')) return;
+    b.classList.add('up'); b.setAttribute('aria-label', `Card ${b.dataset.icon}`); open.push(b);
+    if (open.length < 2) return;
+    turns++; turnsEl.textContent = String(turns);
+    const [a, c] = open;
+    if (a.dataset.icon === c.dataset.icon) {
+      a.classList.add('done'); c.classList.add('done'); open = []; pairs++; pairsEl.textContent = String(pairs);
+      if (pairs === ICONS.length) win.hidden = false;
+    } else {
+      lock = true;
+      setTimeout(() => { a.classList.remove('up'); c.classList.remove('up'); a.setAttribute('aria-label', 'Hidden card'); c.setAttribute('aria-label', 'Hidden card'); open = []; lock = false; }, 1100);
+    }
+  }
+  document.getElementById('restart')!.addEventListener('click', deal);
+  deal();
+</script>

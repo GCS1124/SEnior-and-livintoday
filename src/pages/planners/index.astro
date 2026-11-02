@@ -3,7 +3,8 @@ import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import Reviews from '../../components/Reviews.astro';
 import CtaBand from '../../components/CtaBand.astro';
-import { SITE, BOOKS } from '../../data/site';
+import ProductGrid from '../../components/ProductGrid.astro';
+import { SITE, BOOKS, EPRODUCTS, storeLink } from '../../data/site';
 const crumbs = [{ name: 'Planners', href: '/planners/' }];
 ---
 <Base
@@ -15,7 +16,7 @@ const crumbs = [{ name: 'Planners', href: '/planners/' }];
   <PageHero
     title="Planners for the things your family will need to know"
     kicker="Written by Courtney"
-    lead="When something happens, the hardest part is often not knowing: which bank, which doctor, what Mom wanted. My planners put all of that in one place, in big, clear pages you can fill in at your own pace."
+    lead="When something happens, the hardest part is often not knowing: which bank, which doctor, what Mom wanted. My printed planners are sold on Amazon, a store you already trust."
     breadcrumbs={crumbs}
   />
   <section class="section">
@@ -29,7 +30,7 @@ const crumbs = [{ name: 'Planners', href: '/planners/' }];
             <p class="sub">{b.subtitle}</p>
             <p>{b.blurb}</p>
             <div class="btn-row">
-              <a class="btn btn-primary" href={b.buy} rel="noopener">Get it on Amazon</a>
+              <a class="btn btn-primary amzbtn" href={b.buy} rel="noopener" target="_blank">Buy on Amazon ↗</a>
               {b.page && <a class="btn btn-outline" href={b.page}>Look inside</a>}
             </div>
           </div>
@@ -37,14 +38,15 @@ const crumbs = [{ name: 'Planners', href: '/planners/' }];
       ))}
     </div>
   </section>
-  <section class="section section-cream">
+  <section class="section section-cream" id="e-planners">
     <div class="wrap">
-      <span class="kicker">For caregivers</span>
-      <h2>Printable caregiver tools</h2>
-      <p class="lead">Fillable PDFs from the SALT Online Store: a daily care log, a medication and health tracker, a medical appointment planner, and a caregiver hand-off organizer for when someone else takes a shift.</p>
+      <span class="kicker">Instant downloads</span>
+      <h2>E-planners &amp; printable caregiver tools</h2>
+      <p class="lead">Fillable PDFs you can type into or print, from our own SALT Online Store. More e-planners, e-greeting cards and e-wishes are on the way.</p>
+      <ProductGrid items={EPRODUCTS} campaign="planners-page" cta="Get it at the SALT store" />
       <div class="btn-row">
-        <a class="btn btn-green" href={SITE.links.storeDigital} rel="noopener">Browse caregiver printables</a>
-        <a class="btn btn-outline" href={SITE.links.freePlanner} rel="noopener">Free daily planner (PDF)</a>
+        <a class="btn btn-green" href={storeLink('/collections/digital-products', 'planners-page')} rel="noopener" target="_blank">All digital products ↗</a>
+        <a class="btn btn-outline" href={SITE.links.freePlanner} rel="noopener" target="_blank">Free daily planner (PDF)</a>
       </div>
     </div>
   </section>

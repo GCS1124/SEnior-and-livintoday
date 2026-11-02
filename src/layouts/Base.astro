@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import AskSalt from '../components/AskSalt.astro';
 import { SITE } from '../data/site';
 
 interface Crumb { name: string; href: string }
@@ -164,5 +165,6 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': [...
       <slot />
     </main>
     <Footer />
+    <AskSalt />
   </body>
 </html>

@@ -3,45 +3,59 @@ import Base from '../layouts/Base.astro';
 import Photo from '../components/Photo.astro';
 import Video from '../components/Video.astro';
 import Reviews from '../components/Reviews.astro';
+import ProductGrid from '../components/ProductGrid.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { SITE, SERVICES, BOOKS, VIDEOS } from '../data/site';
+import { SITE, SERVICES, BOOKS, VIDEOS, GIFTS, RELICS, storeLink } from '../data/site';
 import { faqSchema } from '../data/schema';
 import { getCollection } from 'astro:content';
 
-const situations = (await getCollection('blog', ({ data }) => !data.draft && !!data.situation))
-  .sort((a, b) => Number(!!b.data.video) - Number(!!a.data.video))
-  .slice(0, 8);
-const featured = VIDEOS[0];
-const moreVideos = VIDEOS.slice(1, 4);
+const situations = (await getCollection('blog', ({ data }) => !data.draft && !!data.video)).slice(0, 6);
+
+const tiles = [
+  { href: '/find-help/', icon: '📍', title: 'Find help near me', text: 'Doctors, lawyers, Medicare help and local services by ZIP code.', color: '#fff4d6' },
+  { href: '/help/', icon: '💬', title: 'What do I do when…?', text: 'Courtney’s advice for hospital stays, Medicare letters and more.', color: '#fde4ea' },
+  { href: '/planners/', icon: '📘', title: 'Planners', text: 'The Living Legacy Planner and friends, on Amazon.', color: '#e7efe3' },
+  { href: '/gifts/', icon: '🎁', title: 'Holiday gifts', text: 'Cozy, useful gifts from our SALT Online Store.', color: '#ffe8cf' },
+  { href: '/memory-lane/', icon: '📻', title: 'Memory Lane', text: 'Old newspapers, classic TV and radio, and “remember when?”', color: '#efe6fb' },
+  { href: '/games/', icon: '🖍️', title: 'Games & coloring', text: 'An online coloring book and a gentle memory game.', color: '#e3f3fb' },
+  { href: '/videos/', icon: '▶️', title: 'Courtney’s videos', text: 'Pull up a chair. Hundreds of real-talk videos.', color: '#fde4ea' },
+  { href: '/contact/', icon: '📞', title: 'Talk to Courtney', text: 'Your first call is free. No pressure.', color: '#fff4d6' },
+];
 
 const faqs = [
-  { q: 'Who is Senior and Living Today for?', a: 'Adults 55 and older, and anyone who looks after one: adult children, spouses, friends, neighbors and professional caregivers. If you play a part in a senior’s everyday life, this is for you.' },
-  { q: 'Is this a medical or legal service?', a: 'No. S.A.L.T. is not a medical, legal or financial service, and we don’t run a facility or send caregivers. Courtney offers practical guidance, organization and support, and points you to the right professional when you need one.' },
-  { q: 'What happens on the free call?', a: 'You tell Courtney what’s going on. She listens, asks a few questions and suggests next steps. If ongoing help would be useful, she’ll explain how that works. There’s no pressure and nothing to buy.' },
-  { q: 'Can you help if we’re not in Ohio?', a: 'Yes. We’re based in Dayton, Ohio, but calls, video chats, the virtual assistant service and our online community work anywhere in the U.S.' },
+  { q: 'What is Senior and Living Today?', a: 'A friendly, one-stop place for adults 55+ and the people who care for them, founded by Courtney Jones, the caregiver’s caregiver. You’ll find practical advice and videos, a finder for doctors, lawyers and Medicare help, planners, holiday gifts, games, and one-on-one help when you want it.' },
+  { q: 'Is this medical or legal advice?', a: 'No. S.A.L.T. offers guidance, organization and support. For medical, legal or financial decisions, we help you find and prepare for the right professional.' },
+  { q: 'Where do I buy the planners and gifts?', a: 'Courtney’s printed planners and books are on Amazon. Gifts, everyday helpers and fillable e-planners are at our own SALT Online Store.' },
+  { q: 'Is the Ask S.A.L.T. helper a real person?', a: 'Ask S.A.L.T. is an AI helper that points you to the right information and pages. When you want a real person, call (888) 416-4264 or book a free call with Courtney.' },
 ];
 ---
 <Base
-  title="Senior and Living Today: Help for Seniors & Caregivers"
-  description="Courtney Jones, the caregiver’s caregiver, helps seniors and family caregivers with planning, hospital stays, home safety and paperwork. Free videos and planners."
+  title="Senior and Living Today: Help, Planners & Fun for Seniors"
+  description="One friendly place for seniors and caregivers: find a doctor or Medicare help nearby, Courtney Jones’s advice and videos, planners, gifts, games and memories."
   image="/images/courtney-home.webp"
   imageAlt="Courtney Jones of Senior and Living Today at home"
   schema={[faqSchema(faqs)]}
 >
-  <!-- HERO -->
   <section class="hero">
+    <div class="sun" aria-hidden="true"></div>
     <div class="wrap grid split">
       <div>
         <span class="kicker">Hi, my Saltines!</span>
-        <h1>Real help for seniors and the people who care for them</h1>
-        <p class="lead">
-          I’m Courtney Jones. For more than 30 years I’ve been around senior care: working in a hospital, years in medical billing, and sitting with families through the hard stuff. I call myself the <strong>caregiver’s caregiver</strong>, because the people doing the caring need somebody too.
-        </p>
-        <p class="lead">Whether it’s a hospital stay, a stack of paperwork, a relative who wants to move in, or the “what are your wishes” talk, you don’t have to figure it out alone.</p>
-        <div class="btn-row">
-          <a class="btn btn-primary" href="/contact/">Book a free call with me</a>
-          <a class="btn btn-outline" href="/help/">What do I do when…?</a>
-        </div>
+        <h1>Help, planners and a little fun for seniors and the people who love them</h1>
+        <p class="lead">I’m Courtney Jones, the caregiver’s caregiver. Whatever you’re dealing with today, start here.</p>
+        <form class="askbox" data-ask-form role="search">
+          <label for="hero-q" class="hand">What can we help you with today?</label>
+          <div class="row">
+            <input id="hero-q" name="q" placeholder="e.g. find a doctor who takes Medicare" autocomplete="off" />
+            <button class="btn btn-berry" type="submit">Ask</button>
+          </div>
+          <div class="try">
+            <span>Try:</span>
+            <button type="button" data-ask="Mom is going into the hospital. What should I do?">Mom’s going to the hospital</button>
+            <button type="button" data-ask="Gift ideas for my dad">Gift ideas for Dad</button>
+            <button type="button" data-ask="Something fun to do today">Something fun to do</button>
+          </div>
+        </form>
       </div>
       <div class="hero-photo">
         <Photo src="/images/courtney-home.webp" alt="Courtney Jones sitting at home with a planner in her lap" width={900} height={600} tilt="r" tape eager caption="That’s me! Come on in." />
@@ -49,161 +63,157 @@ const faqs = [
       </div>
     </div>
   </section>
-  <svg class="wave" viewBox="0 0 1440 48" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0h1440v18c-120 22-260 30-420 18S700 2 540 10 220 44 0 30z" fill="var(--green-soft)"/></svg>
 
-  <!-- WHAT WE ARE / AREN'T -->
-  <section class="section is">
+  <section class="section">
     <div class="wrap">
-      <div class="grid grid-3">
-        <div><p class="big">Guidance</p><p>Plain-English help with hospital stays, Medicare letters, bills, home safety and senior living choices.</p></div>
-        <div><p class="big">Planners</p><p>Books that put your wishes, your details and your story in one place, so nobody has to guess.</p></div>
-        <div><p class="big">Someone to call</p><p>Free videos, a free community, and one-on-one help when you need a real person.</p></div>
-      </div>
-      <p class="honest"><strong>What we’re not:</strong> doctors, lawyers or a nursing agency. When you need one of those, I’ll help you figure out who to call and what to ask.</p>
-    </div>
-  </section>
-
-  <!-- SITUATIONS -->
-  <section class="section section-cream">
-    <div class="wrap">
-      <span class="kicker">Start here</span>
-      <h2>What’s going on in your life right now?</h2>
-      <p class="lead">Pick the one that sounds like you. Each one has my advice, and most have a short video of me talking it through.</p>
-      <div class="grid grid-4 sits">
-        {situations.map((p) => (
-          <a class="sit" href={`/blog/${p.id}/`}>
-            {p.data.video && <img src={`https://i.ytimg.com/vi/${p.data.video}/mqdefault.jpg`} width="320" height="180" alt="" loading="lazy" />}
-            <span>{p.data.situation}</span>
-          </a>
+      <h2 class="center">Where would you like to go?</h2>
+      <ul class="tiles">
+        {tiles.map((t) => (
+          <li><a href={t.href} style={`--bg:${t.color}`}><span class="ic" aria-hidden="true">{t.icon}</span><strong>{t.title}</strong><span>{t.text}</span></a></li>
         ))}
-      </div>
-      <p style="margin-top:1.6rem"><a href="/help/"><strong>See every topic →</strong></a></p>
+      </ul>
     </div>
   </section>
 
-  <!-- PLANNERS -->
+  <section class="section holiday">
+    <div class="snow" aria-hidden="true"></div>
+    <div class="wrap">
+      <span class="kicker">🎄 The season of giving</span>
+      <h2>Holiday gift ideas for the seniors you love</h2>
+      <p class="lead">Warm robes, arthritis gloves, reading glasses, a cane that folds into a purse. Hand-picked from our own SALT Online Store.</p>
+      <ProductGrid items={GIFTS.slice(0, 8)} campaign="home-holiday" />
+      <div class="btn-row">
+        <a class="btn btn-primary" href="/gifts/">See the full gift guide</a>
+        <a class="btn btn-light" href={storeLink('/collections/gifts-for-seniors', 'home-holiday')} target="_blank" rel="noopener">Shop the SALT store ↗</a>
+      </div>
+    </div>
+  </section>
+
   <section class="section">
     <div class="wrap">
       <span class="kicker">Written by Courtney</span>
       <h2>Planners that do the remembering for you</h2>
-      <p class="lead">I wrote these after watching too many families scramble, hunting for a bank name, a doctor’s number, or what Mom actually wanted. Fill one in once, keep it updated, and your people will know exactly what to do.</p>
+      <p class="lead">Fill one in once, keep it updated, and your family will know exactly what to do. Sold on <strong>Amazon</strong>, so you can buy with confidence.</p>
       <div class="shelf">
         {BOOKS.map((b) => (
-          <a class="book" href={b.page ?? '/planners/'}>
+          <a class="book" href={b.buy} target="_blank" rel="noopener">
             <span class="tag">{b.tag}</span>
             <img src={b.image} alt={b.alt} width="300" height="430" loading="lazy" />
             <strong>{b.title.replace(': Military Deployment & Family Readiness Edition', ', Military Edition')}</strong>
-            <span class="sub">{b.subtitle}</span>
+            <span class="amz">Buy on Amazon ↗</span>
           </a>
         ))}
       </div>
       <div class="btn-row">
-        <a class="btn btn-green" href="/planners/">See all planners</a>
-        <a class="btn btn-outline" href={SITE.links.livingLegacyPlannerAmazon} rel="noopener">Buy The Living Legacy Planner on Amazon</a>
+        <a class="btn btn-green" href="/planners/">Compare the planners</a>
+        <a class="btn btn-outline" href="/gifts/#instant">Instant-download e-planners</a>
+      </div>
+      <div style="margin-top:3rem"><Reviews limit={3} /></div>
+    </div>
+  </section>
+
+  <section class="section section-cream">
+    <div class="wrap grid split">
+      <div>
+        <span class="kicker">Remember when?</span>
+        <h2>Take a walk down Memory Lane</h2>
+        <p class="lead">Rotary phones, rabbit-ear TVs, the milkman. Flip a card, share the story, then read the newspaper from the day you were born.</p>
+        <ul class="mini-relics">
+          {RELICS.slice(0, 4).map((r) => <li><span aria-hidden="true">{r.emoji}</span>{r.name}</li>)}
+        </ul>
+        <div class="btn-row">
+          <a class="btn btn-berry" href="/memory-lane/">Visit Memory Lane</a>
+          <a class="btn btn-outline" href="/games/">🖍️ Color a picture</a>
+        </div>
+      </div>
+      <a class="relics-card" href="/books/relics-of-the-century/">
+        <Photo src="/images/relics-of-the-century.webp" alt="Relics of the Century book by Courtney Ray Jones" width={525} height={750} tilt="l" tape caption="Relics of the Century, by Courtney" />
+      </a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <span class="kicker">Real situations, real answers</span>
+      <h2>What do I do when…?</h2>
+      <div class="sits">
+        {situations.map((p) => (
+          <a class="sit" href={`/blog/${p.id}/`}>
+            <img src={`https://i.ytimg.com/vi/${p.data.video}/mqdefault.jpg`} width="320" height="180" alt="" loading="lazy" />
+            <span>“{p.data.situation}”</span>
+          </a>
+        ))}
+      </div>
+      <div class="finder-strip">
+        <p><strong>📍 Need a doctor, lawyer or Medicare help nearby?</strong></p>
+        <form action="/find-help/" method="get">
+          <label class="visually-hidden" for="zipq">ZIP code</label>
+          <input id="zipq" name="zip" placeholder="Your ZIP code" inputmode="numeric" />
+          <button class="btn btn-primary" type="submit">Find help near me</button>
+        </form>
       </div>
     </div>
   </section>
 
-  <!-- REVIEWS -->
-  <section class="section section-cream">
-    <div class="wrap">
-      <span class="kicker">In their words</span>
-      <h2>What readers say about The Living Legacy Planner</h2>
-      <div style="margin-top:2rem"><Reviews limit={5} /></div>
-    </div>
-  </section>
-
-  <!-- VIDEOS -->
   <section class="section section-dark">
     <div class="wrap">
       <span class="kicker">Watch &amp; learn</span>
       <h2>Pull up a chair. I’ve made hundreds of these.</h2>
-      <p class="lead">Short, honest videos for anyone 55 and older and anyone looking after them. Health, money, safety, and everyday life.</p>
-      <div class="grid split vids">
-        <Video id={featured.id} title={featured.title} length={featured.length} note={featured.note} large />
-        <div class="grid vstack">
-          {moreVideos.map((v) => <Video id={v.id} title={v.title} length={v.length} />)}
-        </div>
+      <div class="grid grid-3" style="margin-top:2rem">
+        {VIDEOS.slice(0, 3).map((v) => <Video id={v.id} title={v.title} length={v.length} note={v.note} />)}
       </div>
       <div class="btn-row">
         <a class="btn btn-primary" href="/videos/">More of Courtney’s videos</a>
-        <a class="btn btn-light" href={SITE.links.youtubeSubscribe} rel="noopener">Subscribe on YouTube</a>
+        <a class="btn btn-light" href={SITE.links.youtubeSubscribe} rel="noopener" target="_blank">Subscribe on YouTube</a>
       </div>
     </div>
   </section>
 
-  <!-- SERVICES -->
   <section class="section">
     <div class="wrap grid split split-rev">
       <div>
         <span class="kicker">When you want a real person</span>
-        <h2>Ways I can help you one-on-one</h2>
+        <h2>Hi, I’m Courtney</h2>
+        <p>For more than 30 years I’ve been around senior care: working in a hospital, years in medical billing, and sitting with families through the hard stuff. I’m not a doctor or a lawyer. I’m the person who helps you figure out what to do next, and who to call.</p>
         <div class="svc">
-          {SERVICES.map((s) => (
-            <a href={s.href}>
-              <strong>{s.title}</strong>
-              <span>{s.summary}</span>
-            </a>
-          ))}
+          {SERVICES.map((s) => <a href={s.href}><strong>{s.title}</strong><span>{s.summary}</span></a>)}
         </div>
-        <div class="btn-row"><a class="btn btn-primary" href="/contact/">Start with a free call</a></div>
+        <div class="btn-row"><a class="btn btn-primary" href="/contact/">Start with a free call</a><a class="btn btn-outline" href="/about/">My story</a></div>
       </div>
       <Photo src="/images/courtney-with-friends.webp" alt="Courtney Jones smiling with an older woman and a friend" width={1100} height={841} tilt="l" tape caption="This is what it’s all about." />
     </div>
   </section>
 
-  <!-- COMMUNITY -->
   <section class="section section-cream">
     <div class="wrap">
       <span class="kicker">The S.A.L.T. family</span>
       <h2>You’re not the only one going through this</h2>
-      <p class="lead">Join our free online community for discussions, webinars and courses on things like Medicare, healthy eating and estate planning, plus a lot of good company.</p>
       <div class="wall">
         <Photo src="/images/garden-friends.webp" alt="A group of friends taking a selfie outdoors" width={1200} height={900} tilt="l" />
         <Photo src="/images/friends-porch.webp" alt="Two friends smiling together on a porch" width={400} height={300} tilt="r" tape />
         <Photo src="/images/dinner-out.webp" alt="An older woman smiling at a restaurant table" width={750} height={1000} tilt="l" />
         <Photo src="/images/park-group.webp" alt="Friends standing together in a park" width={825} height={1100} tilt="r" />
       </div>
-      <div class="btn-row">
-        <a class="btn btn-green" href={SITE.links.community} rel="noopener">Join the community, it’s free</a>
-        <a class="btn btn-outline" href="/community/">What’s inside</a>
+      <div class="grid grid-2" style="margin-top:2rem">
+        <div class="card">
+          <h3>Join our free community</h3>
+          <p>Discussions, webinars and courses on Medicare, healthy eating and estate planning, plus a lot of good company.</p>
+          <a class="btn btn-green" href={SITE.links.community} rel="noopener" target="_blank">Join free ↗</a>
+        </div>
+        <div class="card">
+          <h3>🎤 Saltine’s Got Talent</h3>
+          <p>Sing it, play it, read it, show us your quilt. Talent doesn’t retire.</p>
+          <a class="btn btn-primary" href={SITE.links.talentForm} rel="noopener" target="_blank">Sign up to perform ↗</a>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- TALENT + FREEBIES -->
   <section class="section">
-    <div class="wrap grid grid-2">
-      <div class="card talent">
-        <img src="/images/saltines-got-talent.webp" width="1600" height="800" alt="Saltine's Got Talent: coming soon, stay tuned" loading="lazy" />
-        <h3 style="margin-top:1rem">Saltine’s Got Talent</h3>
-        <p>Sing it, play it, dance it, read it, show us your quilt. A celebration of the talent and spirit of our senior community. Talent doesn’t retire.</p>
-        <a class="btn btn-primary" href={SITE.links.talentForm} rel="noopener">Sign up to perform</a>
-      </div>
-      <div class="card free">
-        <span class="kicker">Free, no strings</span>
-        <h3>Grab something helpful today</h3>
-        <ul class="checklist">
-          <li><a href={SITE.links.freePlanner} rel="noopener">Free printable daily planner</a> for appointments, medications and the day ahead.</li>
-          <li><a href="/resources/final-arrangements-discussion-guide/">My 10-point final arrangements discussion guide</a>.</li>
-          <li><a href={SITE.links.storeDigital} rel="noopener">Caregiver printables</a>: daily care log, medication tracker, appointment planner and a family hand-off organizer.</li>
-          <li><a href="/guides/types-of-senior-living/">Senior living options, explained</a>.</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="section section-cream">
     <div class="wrap narrow">
       <h2>Questions people ask me</h2>
       <div class="faq">
-        {faqs.map((f) => (
-          <details>
-            <summary><h3>{f.q}</h3></summary>
-            <p>{f.a}</p>
-          </details>
-        ))}
+        {faqs.map((f) => <details><summary><h3>{f.q}</h3></summary><p>{f.a}</p></details>)}
       </div>
     </div>
   </section>
@@ -212,54 +222,63 @@ const faqs = [
 </Base>
 
 <style>
-  .hero { background: var(--green-soft); padding: clamp(40px, 6vw, 80px) 0 clamp(30px, 4vw, 40px); }
-  .hero h1 { max-width: 17ch; }
-  .hero .lead { font-size: 1.22rem; }
+  .hero { position: relative; overflow: hidden; padding: clamp(40px, 6vw, 80px) 0 clamp(50px, 6vw, 80px); background: linear-gradient(160deg, #fffaf2 0%, #ffe8cf 70%, #fde4ea 100%); }
+  .sun { position: absolute; width: 520px; height: 520px; right: -140px; top: -180px; border-radius: 50%; background: radial-gradient(circle, rgba(255,200,60,.55), rgba(255,174,0,0) 70%); }
+  .hero h1 { max-width: 19ch; font-size: clamp(2rem, 4.2vw, 3.1rem); }
   .hero-photo { position: relative; max-width: 560px; margin: 10px auto 0; }
   .badge { position: absolute; left: -18px; bottom: -26px; width: 110px; height: 110px; border-radius: 50%; box-shadow: 0 8px 20px rgba(0,0,0,.2); transform: rotate(-8deg); }
-  .wave { margin-top: -1px; }
-
-  .is .big { font: 700 1.5rem var(--font-head); color: var(--green); margin-bottom: .3rem; }
-  .is .big::before { content: ''; display: block; width: 48px; height: 6px; background: var(--gold); border-radius: 3px; margin-bottom: .7rem; }
-  .honest { margin-top: 2.2rem; padding: 18px 22px; border-radius: 14px; background: var(--gold-soft); border-left: 6px solid var(--gold); }
-
-  .sits { margin-top: 2rem; gap: 18px; }
-  .sit { display: flex; flex-direction: column; background: #fff; border: 2px solid var(--line); border-radius: 16px; overflow: hidden; text-decoration: none; color: var(--green-ink); font: 600 1.1rem/1.3 var(--font-head); transition: transform .15s, border-color .15s; }
-  .sit:hover { transform: translateY(-3px); border-color: var(--gold); color: var(--green-ink); }
-  .sit img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
-  .sit span { padding: 14px 16px 16px; }
-  .sit span::before { content: '“'; color: var(--berry); }
-  .sit span::after { content: '”'; color: var(--berry); }
-
+  .askbox { margin-top: 1.4rem; background: #fff; border-radius: 22px; padding: 18px 20px 16px; box-shadow: 0 16px 40px rgba(90,31,60,.12); border: 2px solid #ffd98a; max-width: 600px; }
+  .askbox label { display: block; margin-bottom: .5rem; }
+  .askbox .row { display: flex; gap: 10px; }
+  .askbox input { flex: 1; min-width: 0; font: 1.2rem var(--font-body); padding: 14px 16px; border-radius: 14px; border: 2px solid var(--line); }
+  .askbox input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 4px rgba(255,174,0,.25); }
+  .try { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; font-size: .95rem; color: var(--ink-soft); }
+  .try button { font: 600 .95rem var(--font-head); padding: 8px 12px; border-radius: 999px; border: 2px solid var(--line); background: var(--paper); cursor: pointer; color: var(--green-ink); }
+  .try button:hover { border-color: var(--gold); }
+  .center { text-align: center; }
+  .tiles { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; gap: 18px; grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 900px) { .tiles { grid-template-columns: repeat(4, 1fr); } }
+  .tiles a { display: flex; flex-direction: column; gap: 6px; height: 100%; padding: 22px; border-radius: 22px; background: var(--bg); text-decoration: none; color: var(--ink); border: 2px solid transparent; transition: transform .15s, border-color .15s, box-shadow .15s; }
+  .tiles a:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: 0 14px 28px rgba(90,31,60,.1); }
+  .tiles .ic { font-size: 2.4rem; line-height: 1; }
+  .tiles strong { font: 700 1.2rem/1.25 var(--font-head); color: var(--green-ink); }
+  .tiles span:last-child { font-size: 1rem; color: var(--ink-soft); }
+  .holiday { background: linear-gradient(160deg, #6b2347 0%, #5a1f3c 60%, #3f2a1f 120%); color: #f8e9ef; overflow: hidden; }
+  .holiday h2 { color: #fff; }
+  .holiday .kicker { color: var(--sun); }
+  .holiday .lead { color: #f3dbe5; }
+  .snow { position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,.18) 2px, transparent 2.5px), radial-gradient(rgba(255,242,0,.14) 1.5px, transparent 2px); background-size: 46px 46px, 70px 70px; background-position: 0 0, 20px 30px; pointer-events: none; }
+  .holiday .wrap { position: relative; }
   .shelf { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; margin-top: 2.2rem; padding-bottom: 26px; border-bottom: 14px solid #c9a46a; border-radius: 0 0 6px 6px; box-shadow: 0 10px 0 -4px #a9844d; }
   @media (min-width: 900px) { .shelf { grid-template-columns: repeat(4, 1fr); } }
-  .book { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; text-decoration: none; color: var(--ink); }
-  .book img { width: 100%; max-width: 210px; aspect-ratio: 7/10; object-fit: cover; border-radius: 3px 8px 8px 3px; box-shadow: -6px 10px 18px rgba(0,0,0,.25); transition: transform .2s; }
+  .book { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; text-decoration: none; color: var(--ink); }
+  .book img { width: 100%; max-width: 200px; aspect-ratio: 7/10; object-fit: cover; border-radius: 3px 8px 8px 3px; box-shadow: -6px 10px 18px rgba(0,0,0,.25); transition: transform .2s; }
   .book:hover img { transform: translateY(-6px) rotate(-1deg); }
-  .book strong { margin-top: 1rem; font: 600 1.05rem/1.25 var(--font-head); }
-  .book .sub { font-size: .95rem; color: var(--ink-soft); }
+  .book strong { font: 600 1.05rem/1.25 var(--font-head); }
+  .amz { background: #ff9900; color: #111; font: 600 .9rem var(--font-head); padding: 6px 14px; border-radius: 999px; }
   .tag { position: absolute; top: -10px; right: 6px; z-index: 2; background: var(--berry); color: #fff; font: 600 .8rem var(--font-head); padding: 4px 10px; border-radius: 999px; transform: rotate(4deg); }
-
-  .vids { margin-top: 2rem; align-items: start; }
-  .vstack { gap: 18px; }
-  .vstack :global(.vid) { display: grid; grid-template-columns: 200px 1fr; gap: 0 16px; align-items: center; }
-  .vstack :global(.play) { grid-row: span 2; }
-  .vstack :global(.vt) { margin: 0; font-size: 1.05rem; align-self: end; }
-  @media (max-width: 520px) { .vstack :global(.vid) { grid-template-columns: 1fr; } .vstack :global(.vt) { margin-top: .6rem; } }
-
-  .svc { display: grid; gap: 14px; margin-top: 1.2rem; }
-  .svc a { display: block; padding: 18px 20px; background: #fff; border: 2px solid var(--line); border-left: 6px solid var(--gold); border-radius: 12px; text-decoration: none; color: var(--ink); }
+  .mini-relics { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 1.2rem 0; }
+  .mini-relics li { display: flex; align-items: center; gap: 10px; background: #fff; border: 2px solid var(--line); border-radius: 14px; padding: 10px 14px; font: 600 1rem var(--font-head); }
+  .mini-relics span { font-size: 1.7rem; }
+  .relics-card { display: block; max-width: 340px; margin: 0 auto; text-decoration: none; }
+  .sits { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); margin-top: 1.5rem; }
+  .sit { display: flex; flex-direction: column; background: #fff; border: 2px solid var(--line); border-radius: 16px; overflow: hidden; text-decoration: none; color: var(--green-ink); font: 600 1.1rem/1.3 var(--font-head); transition: transform .15s, border-color .15s; }
+  .sit:hover { transform: translateY(-3px); border-color: var(--gold); }
+  .sit img { width: 100%; aspect-ratio: 16/9; object-fit: cover; background: var(--plum); }
+  .sit span { padding: 14px 16px 16px; }
+  .finder-strip { margin-top: 2.2rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; padding: 20px 24px; border-radius: 20px; background: var(--gold-soft); border: 2px dashed var(--gold); }
+  .finder-strip p { margin: 0; font-size: 1.15rem; }
+  .finder-strip form { display: flex; gap: 10px; flex-wrap: wrap; }
+  .finder-strip input { font: 1.15rem var(--font-body); padding: 12px 16px; border-radius: 14px; border: 2px solid var(--line); width: 200px; }
+  .svc { display: grid; gap: 12px; margin-top: 1.2rem; }
+  .svc a { display: block; padding: 16px 18px; background: #fff; border: 2px solid var(--line); border-left: 6px solid var(--gold); border-radius: 12px; text-decoration: none; color: var(--ink); }
   .svc a:hover { border-color: var(--gold); }
-  .svc strong { display: block; font: 600 1.15rem var(--font-head); margin-bottom: .2rem; }
-  .svc span { color: var(--ink-soft); font-size: 1.05rem; }
-
+  .svc strong { display: block; font: 600 1.1rem var(--font-head); }
+  .svc span { color: var(--ink-soft); font-size: 1rem; }
   .wall { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; margin: 2rem 0 .5rem; align-items: center; }
   @media (min-width: 900px) { .wall { grid-template-columns: repeat(4, 1fr); } }
   .wall :global(img) { aspect-ratio: 1; object-fit: cover; }
-
-  .talent img { border-radius: 12px; }
-  .free .kicker { font-size: 1.4rem; }
-
+  .card .btn { align-self: flex-start; margin-top: auto; }
   .faq details { border-bottom: 2px solid var(--line); padding: 6px 0; }
   .faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: 14px 0; }
   .faq summary::-webkit-details-marker { display: none; }

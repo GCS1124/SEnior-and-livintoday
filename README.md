@@ -30,12 +30,32 @@ The new **seniorandlivingtoday.com**: a fast, static [Astro](https://astro.build
 - Copy is written in Courtney's first-person voice. The "What do I do when…?" articles are based on her own YouTube videos, which are embedded on each article.
 - Videos, planners and reviews live in `src/data/site.ts`. Add a video there and it appears on /videos/.
 
+## Ask S.A.L.T. (AI helper)
+
+A chat helper on every page (bottom-right button, the header button and the home page question box).
+
+- Server code: `api/ask.js` (a Vercel Function). It uses the same NVIDIA setup as the SALT Online Store assistant.
+- **To switch the AI on:** Vercel → this project → Settings → Environment Variables → add `NVIDIA_API_KEY` (and optionally `NVIDIA_MODEL`), then redeploy. Never put the key in the code.
+- Until the key is added, or if the AI is down, the helper still answers common questions instantly (doctor, Medicare, hospital, gifts, planners, games…) with links to the right page.
+- Set a monthly spend limit on the NVIDIA account. The endpoint caps message length and questions per visitor.
+
+## How the two websites connect
+
+- **Planners and books → Amazon** (trusted checkout and shipping): `BOOKS` in `src/data/site.ts`.
+- **Gifts and everyday helpers → SALT Online Store**: `GIFTS` in `src/data/site.ts` (robes, arthritis gloves, reading glasses, folding cane, hand warmer, calendar clock, card holder, pill organizer…). Product photos are in `public/images/shop/`.
+- **E-planners, e-greeting cards, e-wishes → SALT Online Store**: `EPRODUCTS`. Add new digital products there as they launch.
+- Every store link carries `utm_source=seniorandlivingtoday`, so the store's analytics show sales and visits that came from this site.
+
 ## Site map
 
 ```
 /                                         Home
 /about/                                   Courtney Jones and S.A.L.T.
 /help/                                    What do I do when…? (situations)
+/find-help/                               Find a doctor, lawyer, Medicare help near a ZIP code
+/gifts/                                   Holiday gift guide (SALT store + Amazon)
+/memory-lane/                             Remember-when cards, old newspapers, classic TV & radio
+/games/                                   Online coloring book + memory match game
 /videos/                                  Courtney's YouTube videos
 /planners/                                All planners & books
 /services/                                Work with us

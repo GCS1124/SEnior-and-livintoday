@@ -1,0 +1,107 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE, RELICS, MEMORY_LINKS } from '../data/site';
+const crumbs = [{ name: 'Memory Lane', href: '/memory-lane/' }];
+---
+<Base
+  title="Memory Lane: Old Newspapers, Classic TV & Radio for Seniors"
+  description="Take a walk down memory lane: rotary phones, record players and drive-ins, plus free old newspapers, classic TV, old-time radio and 78 records to enjoy."
+  image="/images/relics-of-the-century.webp"
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    title="Take a walk down Memory Lane"
+    kicker="Remember when?"
+    lead="The things we grew up with tell our story. Pour a cup of coffee, look through these, and tell someone what you remember. Better yet, write it down."
+    breadcrumbs={crumbs}
+  />
+
+  <section class="section">
+    <div class="wrap">
+      <h2>Do you remember these?</h2>
+      <p class="lead">Tap a card to flip it over. Each one has a question to get the stories flowing at the dinner table or on a call with the grandkids.</p>
+      <ul class="relics">
+        {RELICS.map((r) => (
+          <li>
+            <button type="button" class="flip" aria-pressed="false">
+              <span class="front"><span class="em" aria-hidden="true">{r.emoji}</span><strong>{r.name}</strong><span class="tap">Tap to remember ↻</span></span>
+              <span class="back"><span class="hand">{r.name}</span><span>{r.memory}</span></span>
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-cream">
+    <div class="wrap grid split">
+      <div>
+        <span class="kicker">By Courtney Ray Jones</span>
+        <h2>Relics of the Century</h2>
+        <p class="lead">A whole book of the things that defined past decades: radios, records, typewriters and telephones. Hand it to a grandchild and listen to the questions start.</p>
+        <div class="btn-row">
+          <a class="btn btn-berry" href={SITE.links.relicsAmazon} rel="noopener" target="_blank">Buy on Amazon ↗</a>
+          <a class="btn btn-outline" href="/books/relics-of-the-century/">About the book</a>
+        </div>
+      </div>
+      <img class="book" src="/images/relics-of-the-century.webp" width="525" height="750" alt="Relics of the Century book cover with vintage radios, records and a typewriter" loading="lazy" />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <span class="kicker">Free to enjoy</span>
+      <h2>Old news, old shows, old songs</h2>
+      <p class="lead">These are free collections from the Library of Congress and the Internet Archive. Look up the front page from the day you were born, or listen to the radio shows you grew up on.</p>
+      <ul class="links">
+        {MEMORY_LINKS.map((l) => (
+          <li><a href={l.url} target="_blank" rel="noopener"><span class="ic" aria-hidden="true">{l.icon}</span><strong>{l.name} ↗</strong><span>{l.note}</span></a></li>
+        ))}
+      </ul>
+      <p class="small">These links open other websites. Some old programs reflect the attitudes of their time.</p>
+    </div>
+  </section>
+
+  <section class="section section-dark">
+    <div class="wrap grid split">
+      <div>
+        <span class="kicker">Keep the stories</span>
+        <h2>Don’t let the memories go unwritten</h2>
+        <p class="lead">The Living Legacy Planner has room for the memories, values and treasures you want passed down, right alongside the practical details your family will need.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href={SITE.links.livingLegacyPlannerAmazon} rel="noopener" target="_blank">Get the planner on Amazon ↗</a>
+          <a class="btn btn-light" href="/games/">Play a memory game</a>
+        </div>
+      </div>
+      <img class="book" src="/images/living-legacy-planner.webp" width="525" height="750" alt="The Living Legacy Planner cover" loading="lazy" />
+    </div>
+  </section>
+  <CtaBand title="Share a memory with the S.A.L.T. family" text="Join our free community and tell us about your rotary phone, your first record or your favorite drive-in. Someone out there remembers it too." />
+</Base>
+<style>
+  .relics { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+  .flip { position: relative; width: 100%; min-height: 240px; border: 0; padding: 0; background: none; cursor: pointer; perspective: 900px; font: inherit; color: inherit; }
+  .front, .back { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 20px; border-radius: 20px; backface-visibility: hidden; transition: transform .5s; text-align: center; }
+  .front { background: #fff; border: 2px solid var(--line); box-shadow: 0 8px 20px rgba(90,31,60,.07); }
+  .back { background: var(--gold-soft); border: 2px solid var(--gold); transform: rotateY(180deg); font-size: 1.1rem; }
+  .flip[aria-pressed='true'] .front { transform: rotateY(180deg); }
+  .flip[aria-pressed='true'] .back { transform: rotateY(360deg); }
+  .em { font-size: 3.4rem; line-height: 1; }
+  .front strong { font: 600 1.2rem var(--font-head); color: var(--green-ink); }
+  .tap { color: var(--berry); font-size: .95rem; }
+  @media (prefers-reduced-motion: reduce) { .front, .back { transition: none; } }
+  .book { max-width: 300px; margin: 0 auto; border-radius: 3px 10px 10px 3px; box-shadow: -8px 14px 26px rgba(0,0,0,.3); transform: rotate(2deg); }
+  .links { list-style: none; padding: 0; margin: 2rem 0 1rem; display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+  .links a { display: flex; flex-direction: column; gap: 4px; height: 100%; background: #fff; border: 2px solid var(--line); border-radius: 18px; padding: 20px; text-decoration: none; color: var(--ink); }
+  .links a:hover { border-color: var(--gold); }
+  .ic { font-size: 2.2rem; }
+  .links strong { font: 600 1.15rem var(--font-head); color: var(--plum); }
+  .links span:last-child { color: var(--ink-soft); font-size: 1rem; }
+  .small { font-size: .95rem; color: var(--ink-soft); }
+</style>
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.flip').forEach((b) =>
+    b.addEventListener('click', () => b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true'))));
+</script>

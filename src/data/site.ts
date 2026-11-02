@@ -47,12 +47,14 @@ export const SITE = {
 };
 
 export const NAV = [
-  { href: '/help/', label: 'Get Help' },
-  { href: '/planners/', label: 'Planners' },
-  { href: '/videos/', label: 'Videos' },
-  { href: '/services/', label: 'Work With Us' },
-  { href: '/about/', label: 'About Courtney' },
-  { href: '/blog/', label: 'Blog' },
+  { href: '/help/', label: 'Get Help', icon: '💬' },
+  { href: '/find-help/', label: 'Find Help Near Me', icon: '📍' },
+  { href: '/planners/', label: 'Planners', icon: '📘' },
+  { href: '/gifts/', label: 'Holiday Gifts', icon: '🎁' },
+  { href: '/memory-lane/', label: 'Memory Lane', icon: '📻' },
+  { href: '/games/', label: 'Games', icon: '🖍️' },
+  { href: '/videos/', label: 'Videos', icon: '▶️' },
+  { href: '/about/', label: 'About Courtney', icon: '👋' },
 ];
 
 export const SERVICES = [
@@ -156,4 +158,89 @@ export const VIDEOS: Video[] = [
   { id: 'SKTGDf-evVc', title: 'Retirement and owning a pet: the real numbers', length: '4:44', topic: 'Money & Medicare' },
   { id: 'NBbgpHlgnC0', title: 'Unemployed over 60: the job search', length: '7:04', topic: 'Everyday life' },
   { id: 'Cy7QDOxvW4o', title: 'Introduction to Senior and Living Today', length: '1:26', topic: 'Everyday life' },
+];
+
+// ---------- SALT Online Store (our own shop) ----------
+// Hand-picked, senior-relevant products. Links carry UTM tags so store analytics
+// can see visitors who came from seniorandlivingtoday.com.
+const STORE = 'https://www.saltonlinestore.com';
+export const storeLink = (path: string, campaign = 'senior-site') =>
+  `${STORE}${path}${path.includes('?') ? '&' : '?'}utm_source=seniorandlivingtoday&utm_medium=referral&utm_campaign=${campaign}`;
+
+export interface Product { key: string; name: string; why: string; handle: string; tag: string }
+
+export const GIFTS: Product[] = [
+  { key: 'robe-hotel', name: 'Thick Fleece Hotel-Style Robe', why: 'Cozy, warm and easy to slip on. For him or for her.', handle: 'long-robe-hotel-collection-thick-fleece-for-men-women', tag: 'Warm & cozy' },
+  { key: 'robe-men', name: 'Men’s Soft Coral Fleece Robe', why: 'Ultra-soft with pockets. A Dad and Grandpa favorite.', handle: 'mens-solid-color-coral-fleece-long-robe-ultra-soft-bathrobe-gown-with-pockets', tag: 'For him' },
+  { key: 'cane', name: 'Adjustable Folding Walking Cane', why: 'Folds small for the car or a handbag, adjusts to the right height.', handle: 'adjustable-folding-walking-cane-for-seniors', tag: 'Steady steps' },
+  { key: 'gloves-arthritis', name: 'Compression Arthritis Gloves', why: 'Gentle compression and warmth for stiff, achy hands.', handle: 'compression-arthritis-gloves-wrist-support-carpal-tunnel-pain-relief', tag: 'Comfort' },
+  { key: 'glasses-bifocal', name: 'Bifocal Reading Glasses', why: 'Near and far in one pair, with lenses that darken outside.', handle: 'photochromic-bifocal-reading-glasses-clear-vision-both-far-and-near-wide-field-of-vision-tr-toughness-frame-unisex-model', tag: 'See clearly' },
+  { key: 'glasses-catEye', name: 'Cat-Eye Reading Glasses', why: 'A little style for reading the paper and the recipe card.', handle: 'ladies-cat-eye-reading-eyeglasses-unisex-women-men-anti-blue-light-computer-far-sight-glasses-finished-presbyopia-eyewear-to-4-0', tag: 'For her' },
+  { key: 'hand-warmer', name: 'Rechargeable Hand Warmer', why: 'No more cold fingers on winter walks or in a chilly house.', handle: 'rechargeable-electric-hot-water-bag-hand-warmer-heat-pack', tag: 'Winter must-have' },
+  { key: 'calendar-clock', name: 'Large Day & Date Calendar Clock', why: 'Big, clear day, date and time, with up to 12 reminder alarms.', handle: '12-alarms-digital-led-calendar-clock-with-multi-languages-to-display-medicine-time-reminder-for-elder-home-desk-wall-decoration', tag: 'Stay on track' },
+  { key: 'card-holder', name: 'Hands-Free Playing Card Holder', why: 'Keeps card night going when fingers get tired.', handle: '2-pack-card-holders-for-playing-cards-playing-card-holder-for-adults-seniors-hands-free-card-game-holder-for-arthritis-litt', tag: 'Game night' },
+  { key: 'pill-organizer', name: 'Large 7-Day Pill Organizer', why: 'Morning, noon and night, with big compartments that are easy to open.', handle: '7-day-pill-organizer-with-21-grids-large-compartments', tag: 'Everyday helper' },
+  { key: 'hand-massager', name: 'Heated Hand Massager', why: 'Warm, gentle compression for tired hands at the end of the day.', handle: 'hand-massager-for-arthritis-carpal-tunnel-heated-air-compression-5-air-compression-modes-kneading-massage-built-in-finger-stretching-gentle-heat-relaxing-hand-care-usb-rechargeable', tag: 'Treat yourself' },
+  { key: 'glasses-titanium', name: 'Titanium Reading Glasses for Men', why: 'Lightweight and sturdy everyday readers.', handle: 'high-quality-pure-titanium-reading-glasses-for-men-anti-blue-light-presbyopia-eyewear-with-diopter-0-00-4-00', tag: 'For him' },
+];
+
+export const EPRODUCTS: Product[] = [
+  { key: 'e-medication', name: 'Medication & Health Tracker', why: 'Fillable PDF: every medicine, dose and doctor in one place.', handle: 'medication-record-health-information-tracker-fillable-pdf-bundle', tag: 'Instant download' },
+  { key: 'e-appointments', name: 'Medical Appointment Planner', why: 'Fillable PDF: questions to ask, answers you got, what’s next.', handle: 'medical-appointment-planner-fillable-pdf-bundle', tag: 'Instant download' },
+  { key: 'e-handoff', name: 'Caregiver Hand-Off Organizer', why: 'Fillable PDF for when another family member takes a shift.', handle: 'caregiver-handoff-family-care-organizer-fillable-pdf-bundle', tag: 'For caregivers' },
+  { key: 'e-carelog', name: 'Daily Care Log', why: 'Fillable PDF: meals, moods, meds and notes, day by day.', handle: 'daily-care-log-fillable-pdf-bundle', tag: 'For caregivers' },
+  { key: 'e-grief', name: 'Grief & Gentle Healing Journal', why: 'A kind, guided place to write through a loss.', handle: 'grief-gentle-healing-fillable-journal', tag: 'Journal' },
+  { key: 'e-clarity', name: 'Everyday Care & Clarity Planner', why: 'A simple fillable planner for seniors and caregivers.', handle: 'everyday-care-clarity-companion-fillable-senior-caregiver-planner', tag: 'Best value' },
+];
+
+// ---------- Find help near you ----------
+// Trusted, free directories. {zip} is replaced with the visitor's ZIP code where supported.
+export interface Finder { id: string; label: string; icon: string; maps?: string; trusted: { name: string; url: string; note: string }[] }
+
+export const FINDERS: Finder[] = [
+  { id: 'doctor', label: 'A doctor', icon: '🩺', maps: 'primary care doctor accepting medicare',
+    trusted: [{ name: 'Medicare Care Compare', url: 'https://www.medicare.gov/care-compare/', note: 'Official Medicare tool to find and compare doctors and clinicians.' }] },
+  { id: 'geriatric', label: 'A geriatric specialist', icon: '👵', maps: 'geriatrician',
+    trusted: [{ name: 'Medicare Care Compare', url: 'https://www.medicare.gov/care-compare/', note: 'Search by specialty and location.' }] },
+  { id: 'hospital', label: 'A hospital or ER', icon: '🏥', maps: 'hospital emergency room',
+    trusted: [{ name: 'Medicare Care Compare: hospitals', url: 'https://www.medicare.gov/care-compare/', note: 'Compare hospital quality ratings. In an emergency, call 911.' }] },
+  { id: 'pharmacy', label: 'A pharmacy', icon: '💊', maps: 'pharmacy open now', trusted: [] },
+  { id: 'lawyer', label: 'An elder law attorney', icon: '⚖️', maps: 'elder law attorney',
+    trusted: [
+      { name: 'NAELA attorney directory', url: 'https://www.naela.org/', note: 'National Academy of Elder Law Attorneys: find a member near you.' },
+      { name: 'LawHelp.org', url: 'https://www.lawhelp.org/', note: 'Free and low-cost legal aid by state.' },
+    ] },
+  { id: 'insurance', label: 'Medicare & insurance help', icon: '📋', maps: 'medicare insurance agent',
+    trusted: [
+      { name: 'SHIP: free Medicare counseling', url: 'https://www.shiphelp.org/', note: 'Free, unbiased help from your State Health Insurance Assistance Program.' },
+      { name: 'Medicare Plan Finder', url: 'https://www.medicare.gov/plan-compare/', note: 'Compare plans yourself. Or call 1-800-MEDICARE (1-800-633-4227).' },
+    ] },
+  { id: 'homecare', label: 'Home care or home health', icon: '🏠', maps: 'home care agency seniors',
+    trusted: [{ name: 'Medicare Care Compare: home health', url: 'https://www.medicare.gov/care-compare/', note: 'Medicare-certified home health agencies and their ratings.' }] },
+  { id: 'living', label: 'Assisted living or nursing homes', icon: '🏡', maps: 'assisted living',
+    trusted: [{ name: 'Medicare Care Compare: nursing homes', url: 'https://www.medicare.gov/care-compare/', note: 'Nursing home ratings, inspections and staffing.' }] },
+  { id: 'local', label: 'Local senior services', icon: '🤝', maps: 'area agency on aging',
+    trusted: [{ name: 'Eldercare Locator', url: 'https://eldercare.acl.gov/', note: 'U.S. Administration on Aging: meals, rides, caregiver help and more. Call 1-800-677-1116.' }] },
+  { id: 'benefits', label: 'Benefits I might qualify for', icon: '💵',
+    trusted: [{ name: 'BenefitsCheckUp', url: 'https://www.benefitscheckup.org/', note: 'Free screener from the National Council on Aging for help paying for food, medicine, utilities and more.' }] },
+];
+
+// ---------- Memory Lane ----------
+export const RELICS = [
+  { emoji: '☎️', name: 'The rotary phone', memory: 'Dialing a long number and waiting for the dial to spin back. Who was the first number you knew by heart?' },
+  { emoji: '📻', name: 'The family radio', memory: 'Gathered around for the ball game, the news, or a Saturday-night show. What did your family listen to?' },
+  { emoji: '💿', name: 'Records & the turntable', memory: 'Lifting the needle just right. What was the first record you bought with your own money?' },
+  { emoji: '📺', name: 'Rabbit-ear TV', memory: 'Three channels, foil on the antenna, and somebody had to get up to change it. What show did the whole family watch?' },
+  { emoji: '⌨️', name: 'The typewriter', memory: 'The ding at the end of the line and a bottle of correction fluid nearby. Who taught you to type?' },
+  { emoji: '🥛', name: 'The milkman', memory: 'Glass bottles on the porch before sunrise. Did your family have milk delivered?' },
+  { emoji: '🎞️', name: 'The drive-in movie', memory: 'Speakers hooked on the car window and a carload of friends. What did you see?' },
+  { emoji: '✉️', name: 'Letters & stamps', memory: 'Pen pals, love letters, and checking the mailbox every afternoon. Who did you write to?' },
+];
+
+export const MEMORY_LINKS = [
+  { name: 'Old newspapers (1770–1963)', url: 'https://chroniclingamerica.loc.gov/', note: 'Library of Congress “Chronicling America”: read front pages from the past, free.', icon: '📰' },
+  { name: 'Classic TV & old shows', url: 'https://archive.org/details/classic_tv', note: 'Internet Archive’s free collection of classic television.', icon: '📺' },
+  { name: 'Old-time radio shows', url: 'https://archive.org/details/oldtimeradio', note: 'Mysteries, comedies and westerns from radio’s golden age.', icon: '📻' },
+  { name: '78 rpm records', url: 'https://great78.archive.org/', note: 'The Great 78 Project: tens of thousands of early records, free to play.', icon: '🎶' },
+  { name: 'Old movies, free', url: 'https://archive.org/details/feature_films', note: 'Public-domain feature films from Hollywood’s early years.', icon: '🎬' },
 ];

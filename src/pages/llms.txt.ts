@@ -23,7 +23,11 @@ ${SERVICES.map((s) => `- [${s.short}](${SITE.url}${s.href}): ${s.summary}`).join
 - [Types of senior living explained](${SITE.url}/guides/types-of-senior-living/)
 - [What do I do when…? Practical help](${SITE.url}/help/)
 - [Courtney’s videos](${SITE.url}/videos/) and YouTube channel ${SITE.links.youtube}
-- [All planners](${SITE.url}/planners/)
+- [All planners](${SITE.url}/planners/) (printed planners sold on Amazon; fillable e-planners at the SALT Online Store)
+- [Find help near me](${SITE.url}/find-help/): doctors, elder law attorneys, Medicare counseling and local senior services by ZIP code
+- [Holiday gifts for seniors](${SITE.url}/gifts/) from the SALT Online Store (https://www.saltonlinestore.com)
+- [Memory Lane](${SITE.url}/memory-lane/): old newspapers, classic TV and radio
+- [Games & online coloring book](${SITE.url}/games/)
 
 ## Articles
 ${posts.map((p) => `- [${p.data.title}](${SITE.url}/blog/${p.id}/): ${p.data.description}`).join('\n')}

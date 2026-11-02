@@ -1,0 +1,139 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { FINDERS } from '../data/site';
+import { faqSchema } from '../data/schema';
+const crumbs = [{ name: 'Find Help Near Me', href: '/find-help/' }];
+const faqs = [
+  { q: 'How do I find a doctor near me who takes Medicare?', a: 'Use Medicare’s official Care Compare tool at medicare.gov/care-compare, or type your ZIP code into our finder and choose “A doctor” to see options on a map. Always call the office to confirm they take your plan.' },
+  { q: 'Where can I get free help with Medicare questions?', a: 'Your State Health Insurance Assistance Program (SHIP) offers free, unbiased Medicare counseling. Find yours at shiphelp.org, or call 1-800-MEDICARE (1-800-633-4227).' },
+  { q: 'How do I find local services like Meals on Wheels or rides to appointments?', a: 'The Eldercare Locator (eldercare.acl.gov, 1-800-677-1116) connects you with your local Area Agency on Aging and services in your community.' },
+];
+---
+<Base
+  title="Find a Doctor, Lawyer or Medicare Help Near You"
+  description="A simple search for seniors and caregivers: find a doctor, pharmacy, elder law attorney, Medicare help, home care or local senior services near your ZIP code."
+  breadcrumbs={crumbs}
+  schema={[faqSchema(faqs)]}
+>
+  <PageHero
+    title="Find help near you"
+    kicker="Doctors · lawyers · insurance · local services"
+    lead="Type your ZIP code, pick what you need, and we’ll take you to a map of places nearby, plus the trusted, free directories I’d use myself."
+    breadcrumbs={crumbs}
+  />
+
+  <section class="section finder-wrap">
+    <div class="wrap">
+      <form class="finder" id="finder" onsubmit="return false">
+        <label for="zip"><span class="step">1</span> Your ZIP code or city</label>
+        <input id="zip" name="zip" inputmode="text" autocomplete="postal-code" placeholder="e.g. 45404 or Dayton, OH" />
+        <p class="step-label"><span class="step">2</span> What are you looking for?</p>
+        <div class="cats">
+          {FINDERS.map((f, i) => (
+            <button type="button" class:list={['cat', { on: i === 0 }]} data-id={f.id}><span aria-hidden="true">{f.icon}</span> {f.label}</button>
+          ))}
+        </div>
+      </form>
+
+      {FINDERS.map((f, i) => (
+        <div class="result" data-for={f.id} hidden={i !== 0}>
+          <h2>{f.icon} {f.label}</h2>
+          {f.maps && (
+            <a class="btn btn-berry map" data-q={f.maps} href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(f.maps + ' near me')}`} target="_blank" rel="noopener">
+              Show me on a map ↗
+            </a>
+          )}
+          {f.trusted.length > 0 && (
+            <>
+              <p class="hand">Trusted, free places to look:</p>
+              <ul class="trusted">
+                {f.trusted.map((t) => (
+                  <li><a href={t.url} target="_blank" rel="noopener"><strong>{t.name} ↗</strong><span>{t.note}</span></a></li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
+      ))}
+
+      <div class="notice" style="margin-top:2rem">
+        <strong>A few tips from Courtney:</strong> always call ahead to check they take your insurance, write down who you spoke to and when, and bring someone with you to important appointments. These links go to other websites. We don’t endorse any particular provider. <strong>In an emergency, call 911.</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-cream">
+    <div class="wrap narrow">
+      <h2>Phone numbers worth keeping on the fridge</h2>
+      <ul class="phones">
+        <li><strong>Emergency:</strong> 911</li>
+        <li><strong>Medicare:</strong> 1-800-633-4227 (1-800-MEDICARE)</li>
+        <li><strong>Eldercare Locator:</strong> 1-800-677-1116</li>
+        <li><strong>988 Suicide &amp; Crisis Lifeline:</strong> call or text 988</li>
+        <li><strong>Senior and Living Today:</strong> (888) 416-4264</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap narrow">
+      <h2>Questions people ask</h2>
+      <div class="faq">
+        {faqs.map((f) => <details><summary><h3>{f.q}</h3></summary><p>{f.a}</p></details>)}
+      </div>
+    </div>
+  </section>
+  <CtaBand title="Rather have someone find it for you?" text="Our virtual assistants can make the calls, check who takes your insurance, and book the appointment. Start with a free call." />
+</Base>
+
+<style>
+  .finder { background: #fff; border: 3px solid var(--gold); border-radius: 24px; padding: clamp(20px, 4vw, 36px); box-shadow: 0 16px 40px rgba(90,31,60,.08); }
+  .finder label, .step-label { display: flex; align-items: center; gap: 10px; font: 600 1.2rem var(--font-head); color: var(--green-ink); margin: 0 0 .6rem; }
+  .step { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--berry); color: #fff; font-size: 1rem; }
+  #zip { width: 100%; max-width: 420px; font: 1.35rem var(--font-body); padding: 14px 18px; border: 2px solid var(--line); border-radius: 14px; margin-bottom: 1.6rem; }
+  #zip:focus { border-color: var(--gold); outline: none; box-shadow: 0 0 0 4px rgba(255,174,0,.25); }
+  .cats { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+  .cat { text-align: left; font: 600 1.08rem var(--font-head); padding: 16px 18px; min-height: 60px; border-radius: 14px; border: 2px solid var(--line); background: var(--paper); color: var(--ink); cursor: pointer; }
+  .cat:hover { border-color: var(--gold); }
+  .cat.on { background: var(--gold-soft); border-color: var(--gold); box-shadow: inset 0 0 0 1px var(--gold); }
+  .result { margin-top: 2rem; padding: 24px; background: var(--cream); border-radius: 20px; }
+  .result h2 { font-size: 1.6rem; }
+  .map { margin-bottom: 1.2rem; }
+  .trusted { list-style: none; padding: 0; margin: .6rem 0 0; display: grid; gap: 12px; }
+  .trusted a { display: block; background: #fff; border: 2px solid var(--line); border-radius: 14px; padding: 14px 18px; text-decoration: none; color: var(--ink); }
+  .trusted a:hover { border-color: var(--gold); }
+  .trusted strong { display: block; font: 600 1.1rem var(--font-head); color: var(--plum); }
+  .trusted span { color: var(--ink-soft); font-size: 1rem; }
+  .phones { list-style: none; padding: 0; font-size: 1.25rem; }
+  .phones li { padding: 10px 0; border-bottom: 2px dashed var(--line); }
+  .faq details { border-bottom: 2px solid var(--line); padding: 6px 0; }
+  .faq summary { cursor: pointer; list-style: none; padding: 14px 0; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq h3 { font-size: 1.15rem; margin: 0; }
+</style>
+
+<script>
+  const zip = document.getElementById('zip') as HTMLInputElement;
+  const cats = document.querySelectorAll<HTMLButtonElement>('.cat');
+  const results = document.querySelectorAll<HTMLElement>('.result');
+  const updateMaps = () => {
+    const where = zip.value.trim();
+    document.querySelectorAll<HTMLAnchorElement>('a.map').forEach((a) => {
+      const q = `${a.dataset.q} ${where ? 'near ' + where : 'near me'}`;
+      a.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+    });
+  };
+  cats.forEach((b) => b.addEventListener('click', () => {
+    cats.forEach((c) => c.classList.toggle('on', c === b));
+    results.forEach((r) => (r.hidden = r.dataset.for !== b.dataset.id));
+    updateMaps();
+    document.querySelector<HTMLElement>(`.result[data-for="${b.dataset.id}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }));
+  zip.addEventListener('input', updateMaps);
+  const params = new URLSearchParams(location.search);
+  if (params.get('zip')) { zip.value = params.get('zip')!; updateMaps(); }
+  const pre = params.get('need');
+  if (pre) document.querySelector<HTMLButtonElement>(`.cat[data-id="${pre}"]`)?.click();
+</script>
