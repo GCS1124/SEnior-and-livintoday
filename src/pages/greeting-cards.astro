@@ -2,8 +2,17 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import CtaBand from '../components/CtaBand.astro';
+import Faq from '../components/Faq.astro';
+import { faqSchema } from '../data/schema';
 import { SITE, storeLink } from '../data/site';
 const crumbs = [{ name: 'Greeting Card Maker', href: '/greeting-cards/' }];
+const faqs = [
+  { q: "Is the greeting card maker free?", a: "Yes, it's free and there's no sign-up. Make as many cards as you like." },
+  { q: "Where do my photos go?", a: "Your photos stay on your own device. The card is put together right in your web browser, and it only goes somewhere if you choose to share or email it." },
+  { q: "How do I send my card to family?", a: "On a phone or tablet, tap Share to send it by text, email or social media. Or download the PDF and email it, or print it and mail it." },
+  { q: "Can I print it on card stock?", a: "Yes. Print on regular paper or card stock and trim it if you like. You can also take the PDF to a print shop or drugstore for a glossy copy." },
+  { q: "What if I don't know what to write?", a: "Try three sentences: one memory you share, one thing you love about them, and one thing you're looking forward to. That's all a great card needs." },
+];
 const occasions = [
   { id: 'birthday', label: '🎂 Birthday' }, { id: 'holiday', label: '🎄 Holidays' }, { id: 'thanks', label: '🌻 Thank you' },
   { id: 'getwell', label: '💐 Get well' }, { id: 'thinking', label: '🕊️ Thinking of you' }, { id: 'love', label: '❤️ Love' },
@@ -16,6 +25,7 @@ const stickers = ['❤️', '🌸', '🌻', '⭐', '🎈', '🎁', '🎄', '❄�
   title="Free Greeting Card Maker: Print, PDF or Share"
   description="Make your own greeting card for free: pick an occasion, add a photo, write your wishes, then print it, download a PDF or share it with family. Easy for seniors."
   breadcrumbs={crumbs}
+  schema={[faqSchema(faqs)]}
 >
   <PageHero
     title="Make your own greeting card"
@@ -97,6 +107,7 @@ const stickers = ['❤️', '🌸', '🌻', '⭐', '🎈', '🎁', '🎄', '❄�
       <p class="lead">Looking for ready-made e-cards, e-wishes and printable planners? More are coming to our <a href={storeLink('/collections/digital-products', 'card-maker')} target="_blank" rel="noopener">SALT Online Store</a>. And if you liked this, try the <a href="/games/#color">online coloring book</a>.</p>
     </div>
   </section>
+  <Faq items={faqs} />
   <CtaBand title="Making a card for someone who’s struggling?" text="If someone you love is going through a hard time, Courtney is a phone call away. Your first call is free." />
 </Base>
 

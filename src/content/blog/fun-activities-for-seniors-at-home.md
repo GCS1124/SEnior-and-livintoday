@@ -11,8 +11,8 @@ Long afternoons, cold winter days, or just a little too much quiet in the house.
 
 ## For a calm, creative afternoon
 
-1. **Color a picture.** Our free [online coloring book](/games/#color) has big buttons and lots of pictures to choose from. Print your favorite when you’re done.
-2. **Make a greeting card.** Upload a photo, write a message and print it or save it as a PDF with our [greeting card maker](/greeting-cards/). Grandkids love getting real mail.
+1. **Color a picture.** Our free [online coloring book](/games/#color) has big buttons and lots of pictures to choose from. Print your favorite when you’re done. ([Here’s how it works](/blog/free-online-coloring-memory-games-for-seniors/).)
+2. **Make a greeting card.** Upload a photo, write a message and print it or save it as a PDF with our [greeting card maker](/greeting-cards/). Grandkids love getting real mail. ([Step-by-step guide](/blog/make-your-own-greeting-card-online/).)
 3. **Start a memory journal.** Write about your first car, your first job or how you met your sweetheart. There’s room for all of it in [The Living Legacy Planner](/books/living-legacy-planner/).
 
 ## To keep the mind sharp

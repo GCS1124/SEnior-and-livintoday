@@ -2,14 +2,24 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import CtaBand from '../components/CtaBand.astro';
+import Faq from '../components/Faq.astro';
+import { faqSchema } from '../data/schema';
 import { COLORING } from '../data/coloring';
 const crumbs = [{ name: 'Games & Coloring', href: '/games/' }];
+const faqs = [
+  { q: "Is this coloring book really free?", a: "Yes, completely free. There's no sign-up, no download and no ads. Just pick a picture and start coloring." },
+  { q: "Do I have to color inside the lines?", a: "Nope. Pick a color and tap a shape, and it fills right in. That makes it a lot easier if your hands are stiff or a little shaky. Tap again to change the color, or use Undo." },
+  { q: "Can I print my picture?", a: "Yes. When you're done, tap Print. Hang it on the fridge, mail it to someone, or turn it into a card with our greeting card maker." },
+  { q: "Is the memory game timed?", a: "No, there's no clock at all. Flip two cards at a time and find the pairs at your own pace. Take a break and come back whenever you like." },
+  { q: "Can I play on a tablet or phone?", a: "Yes. Both games work on a computer, tablet or phone. A tablet is often easiest, since you just tap with your finger." },
+];
 const swatches = ['#e63946', '#ff8fab', '#cc3366', '#ffae00', '#fff200', '#f4a261', '#8bc34a', '#47704c', '#4fc3f7', '#1d4ed8', '#9b5de5', '#8d6e63', '#9e9e9e', '#ffffff'];
 ---
 <Base
   title="Free Online Coloring Book & Memory Game for Seniors"
   description="A free online coloring book for seniors with 16 pictures and big buttons, a printable greeting card maker, and a gentle memory match game."
   breadcrumbs={crumbs}
+  schema={[faqSchema(faqs)]}
 >
   <PageHero
     title="Games & coloring, just for fun"
@@ -68,6 +78,7 @@ const swatches = ['#e63946', '#ff8fab', '#cc3366', '#ffae00', '#fff200', '#f4a26
     </div>
   </section>
 
+  <Faq items={faqs} />
   <CtaBand title="Enjoyed that? Come say hello." text="If you ever need a hand with something more serious, I’m a phone call away." />
 </Base>
 

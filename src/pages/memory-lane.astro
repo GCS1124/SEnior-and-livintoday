@@ -2,14 +2,23 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import CtaBand from '../components/CtaBand.astro';
+import Faq from '../components/Faq.astro';
+import { faqSchema } from '../data/schema';
 import { SITE, RELICS, MEMORY_LINKS } from '../data/site';
 const crumbs = [{ name: 'Memory Lane', href: '/memory-lane/' }];
+const faqs = [
+  { q: "Where can I read old newspapers for free?", a: "The Library of Congress's Chronicling America collection lets you read old American newspaper pages for free. It's a fun way to see what was in the news years ago." },
+  { q: "Can I listen to old-time radio shows online?", a: "Yes. The Internet Archive has a big free collection of old-time radio, including mysteries, comedies and westerns. The links are on this page." },
+  { q: "Where can I watch classic TV shows and old movies free?", a: "The Internet Archive has free collections of classic television and public-domain feature films. You can watch them right in your web browser." },
+  { q: "What's a good way to share memories with the grandkids?", a: "Look through these together and tell them what you remember: your first phone, your first car, the songs you danced to. Then write the stories down so they're never lost." },
+];
 ---
 <Base
   title="Memory Lane: Old Newspapers, Classic TV & Radio for Seniors"
   description="Take a walk down memory lane: rotary phones, record players and drive-ins, plus free old newspapers, classic TV, old-time radio and 78 records to enjoy."
   image="/images/relics-of-the-century.webp"
   breadcrumbs={crumbs}
+  schema={[faqSchema(faqs)]}
 >
   <PageHero
     title="Take a walk down Memory Lane"
@@ -78,6 +87,7 @@ const crumbs = [{ name: 'Memory Lane', href: '/memory-lane/' }];
       <img class="book" src="/images/living-legacy-planner.webp" width="525" height="750" alt="The Living Legacy Planner cover" loading="lazy" />
     </div>
   </section>
+  <Faq items={faqs} />
   <CtaBand />
 </Base>
 <style>
