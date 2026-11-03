@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://seniorandlivingtoday.com',
+  site: 'https://www.seniorandlivingtoday.com',
   // Old WordPress URLs all ended in "/", so keep trailing slashes for consistent canonicals.
   trailingSlash: 'always',
   build: { format: 'directory' },

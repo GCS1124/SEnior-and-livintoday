@@ -111,7 +111,7 @@ Commit and push; Vercel redeploys automatically.
 2. **Deploy to Vercel:** vercel.com → Add New → Project → import this GitHub repo. The framework (Astro) is detected automatically; no settings needed.
 3. **Review the Vercel preview URL**, especially the new copy flagged below.
 4. **Connect the domain:** in Vercel → Project → Settings → Domains, add `seniorandlivingtoday.com` and `www.seniorandlivingtoday.com` (redirect www → apex). In **Bluehost → Domains → DNS**, set the records Vercel shows (typically `A @ → 76.76.21.21` and `CNAME www → cname.vercel-dns.com`). **Do not change MX records** or email will stop working. Leave the `community.` subdomain record as it is.
-5. **Google Search Console:** verify the domain (DNS TXT), submit `https://seniorandlivingtoday.com/sitemap-index.xml`, and use URL Inspection → Request indexing on the home, services and Living Legacy Planner pages.
+5. **Google Search Console:** verify the domain (DNS TXT), submit `https://www.seniorandlivingtoday.com/sitemap-index.xml`, and use URL Inspection → Request indexing on the home, services and Living Legacy Planner pages.
 6. **Google Business Profile:** use exactly the same name, phone and website as `src/data/site.ts`. Add the profile URL and social links to `sameAs` in that file.
 7. Keep the Bluehost WordPress install for about 30 days as a backup, then cancel.
 

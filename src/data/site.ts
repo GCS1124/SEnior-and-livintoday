@@ -3,7 +3,7 @@
 // YouTube, Threads, directories). Consistency is a local-SEO signal.
 
 export const SITE = {
-  url: 'https://seniorandlivingtoday.com',
+  url: 'https://www.seniorandlivingtoday.com',
   name: 'Senior and Living Today',
   shortName: 'S.A.L.T.',
   tagline: 'Help and support for seniors and the people who care for them',
@@ -17,7 +17,7 @@ export const SITE = {
     name: 'Courtney Jones',
     jobTitle: 'Founder, the caregiver’s caregiver',
     yearsExperience: 30,
-    url: 'https://seniorandlivingtoday.com/about/',
+    url: 'https://www.seniorandlivingtoday.com/about/',
   },
   links: {
     youtube: 'https://www.youtube.com/@seniorandlivingtoday',

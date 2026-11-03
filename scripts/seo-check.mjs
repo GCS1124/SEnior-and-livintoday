@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const DIST = path.resolve('dist');
-const SITE = 'https://seniorandlivingtoday.com';
+const SITE = 'https://www.seniorandlivingtoday.com';
 const files = [];
 (function walk(d) { for (const f of fs.readdirSync(d)) { const p = path.join(d, f); fs.statSync(p).isDirectory() ? walk(p) : p.endsWith('.html') && files.push(p); } })(DIST);
 
