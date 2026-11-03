@@ -61,7 +61,7 @@ When it looks good, you've got four ways to get it out the door:
 
 ## A few ideas to get you started
 
-Make **this year's holiday card** with a family photo, then print a stack for the folks who aren't on the internet. Send a **thank-you** to your neighbor who shovels your walk, or the nurse who was so kind to you. Send a **thinking-of-you** card to a friend who's been under the weather or just lost someone. Sometimes a card says what we can't quite say on the phone.
+Make **this year's holiday card** with a family photo, then print a stack for the folks who aren't on the internet. (Here's my full guide to [making your own Christmas cards](/blog/make-christmas-cards-online/).) Send a **thank-you** to your neighbor who shovels your walk, or the nurse who was so kind to you. Send a **thinking-of-you** card to a friend who's been under the weather or just lost someone. Sometimes a card says what we can't quite say on the phone.
 
 And here's a good one: **make a card with the grandkids.** Let them pick the stickers while you write the message. Or have them color a picture in our [online coloring book](/games/#color) first, then send that along too. Grandparents love getting mail just as much as the kids do.
 
