@@ -29,7 +29,6 @@ export const SITE = {
     bookCall: 'https://calendly.com/seniorandlivingtoday/break-the-ice',
     bookCall30: 'https://calendly.com/seniorandlivingtoday/30min',
     freePlanner: 'https://storage.googleapis.com/msgsndr/sbVe09zoUWLiPTabYb5A/media/68e8d5088367a0d2b72ca815.pdf',
-    talentForm: 'https://api.leadconnectorhq.com/widget/form/eBUUWJFkBossrt6SUaLo',
     quiz: 'https://app.globalcreativeservices.us/widget/quiz/ruBJ8Z1K3m6P3McOkRkS',
     amazonAuthor: 'https://www.amazon.com/s?i=stripbooks&rh=p_27%3ACourtney%2BR%2BJones',
     livingLegacyPlannerAmazon: 'https://www.amazon.com/dp/B0D4JDBFYQ',

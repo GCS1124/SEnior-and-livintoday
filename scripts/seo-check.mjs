@@ -21,7 +21,7 @@ const decode = (x) => x && x.replace(/&amp;/g, '&').replace(/&#39;/g, "'").repla
 const get = (h, re) => decode((h.match(re) || [])[1]);
 
 for (const file of files) {
-  const rel = '/' + path.relative(DIST, file).replace(/index\.html$/, '');
+  const rel = '/' + path.relative(DIST, file).replace(/\\/g, '/').replace(/index\.html$/, '');
   const h = fs.readFileSync(file, 'utf8');
   const noindex = /name="robots" content="noindex/.test(h);
   const title = get(h, /<title>([^<]*)<\/title>/);
