@@ -1,9 +1,10 @@
 import { SITE } from '../data/site';
 // AI/answer-engine crawlers are explicitly welcome so S.A.L.T. can be cited in AI search results.
+// /thank-you/ is kept out of search with noindex (meta tag + X-Robots-Tag), not a Disallow:
+// crawlers must be able to fetch a page to see its noindex.
 export function GET() {
   const body = `User-agent: *
 Allow: /
-Disallow: /thank-you/
 
 User-agent: GPTBot
 Allow: /

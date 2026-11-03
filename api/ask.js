@@ -19,7 +19,6 @@ What S.A.L.T. offers (link to these pages when relevant, using full URLs):
 - Holiday gifts and everyday helpers (adult bibs, arthritis gloves, reading glasses, folding cane, pill organizers, calendar clock) and fillable PDF e-planners at the SALT Online Store: https://seniorandlivingtoday.com/gifts/
 - Memory Lane (old newspapers, classic TV, old-time radio): https://seniorandlivingtoday.com/memory-lane/
 - Games and online coloring book: https://seniorandlivingtoday.com/games/
-- Free community and courses: https://seniorandlivingtoday.com/community/
 - Virtual assistant service for seniors: https://seniorandlivingtoday.com/services/senior-care-virtual-assistant/
 
 Trusted outside resources you may suggest: Medicare 1-800-633-4227 and medicare.gov/care-compare; SHIP free Medicare counseling shiphelp.org; Eldercare Locator eldercare.acl.gov 1-800-677-1116; BenefitsCheckUp benefitscheckup.org; LawHelp.org; NAELA (naela.org) for elder law attorneys; 988 Suicide & Crisis Lifeline.

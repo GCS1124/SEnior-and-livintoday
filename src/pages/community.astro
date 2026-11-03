@@ -16,9 +16,7 @@ const crumbs = [{ name: 'Community', href: '/community/' }];
     kicker="The S.A.L.T. community"
     lead="A free, friendly online space where seniors and caregivers talk, learn and cheer each other on. Ask a question at midnight and someone who’s been there will answer."
     breadcrumbs={crumbs}
-  >
-    <div class="btn-row"><a class="btn btn-primary" href={SITE.links.community} rel="noopener">Join free</a></div>
-  </PageHero>
+  />
 
   <section class="section">
     <div class="wrap grid split">
@@ -30,7 +28,6 @@ const crumbs = [{ name: 'Community', href: '/community/' }];
           <li><strong>Webinars.</strong> Ask-the-Expert sessions and a peer conversation hour.</li>
           <li><strong>Quizzes &amp; challenges.</strong> Just for fun, and to keep your mind busy.</li>
         </ul>
-        <a class="btn btn-green" href={SITE.links.community} rel="noopener">Join the community</a>
       </div>
       <Photo src="/images/garden-friends.webp" alt="A group of friends taking a selfie outdoors" width={1200} height={900} tilt="r" tape caption="Good company is good medicine." />
     </div>
@@ -50,16 +47,4 @@ const crumbs = [{ name: 'Community', href: '/community/' }];
       <Photo src="/images/park-group.webp" alt="Friends standing together in a park" width={825} height={1100} tilt="l" />
     </div>
   </section>
-
-  <section class="section">
-    <div class="wrap grid split">
-      <div>
-        <h2>Saltine’s Got Talent</h2>
-        <p>Talent doesn’t retire. Sing, play, dance, recite a poem, tell a story or show us your quilt. Our community talent show celebrates the gifts and spirit of seniors.</p>
-        <a class="btn btn-primary" href={SITE.links.talentForm} rel="noopener">Sign up to perform</a>
-      </div>
-      <img class="banner" src="/images/saltines-got-talent.webp" width="1600" height="800" alt="Saltine's Got Talent: coming soon, stay tuned" loading="lazy" />
-    </div>
-  </section>
 </Base>
-<style>.banner { border-radius: 16px; box-shadow: 0 10px 26px rgba(0,0,0,.15); }</style>

@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+const crumbs = [{ name: 'Disclaimer', href: '/disclaimer/' }];
+---
+<Base
+  title="Website Disclaimer"
+  description="Senior and Living Today shares general information and resources, not legal or medical advice. Read our disclaimer, including doctor search results."
+  breadcrumbs={crumbs}
+>
+  <PageHero title="Disclaimer" breadcrumbs={crumbs} />
+  <section class="section"><div class="wrap prose">
+    <p>The information provided on Senior and Living Today is for general informational and educational purposes only. It should not be considered legal or medical advice.</p>
+    <p>We are not licensed attorneys or legal professionals. For legal questions or concerns, please consult a qualified, licensed attorney in your area.</p>
+    <p>We are not licensed medical providers or healthcare professionals. For medical advice, diagnosis, or treatment, please consult a licensed physician or qualified healthcare provider.</p>
+    <p>The content on this website is intended to provide guidance, information, and resources. It is not a substitute for professional services or advice tailored to your specific needs.</p>
+    <p>Use the information provided at your own discretion and always seek appropriate professional advice when required.</p>
+    <p id="doctor-search">Doctor and healthcare provider search results are supplied through Google. Senior and Living Today does not recommend, endorse, verify, or guarantee any doctor, healthcare provider, or listing displayed in these results. Please independently research providers and confirm their credentials, services, availability, and suitability for your needs.</p>
+    <p>By accessing and using this website, you acknowledge and agree to this disclaimer.</p>
+  </div></section>
+</Base>

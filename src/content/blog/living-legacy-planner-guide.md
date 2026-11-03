@@ -4,8 +4,8 @@ seoTitle: "The Living Legacy Planner: Organize Your Final Wishes"
 description: "Why The Living Legacy Planner helps seniors and caregivers record final wishes, finances, medical details and memories in one place, and how to start."
 published: 2025-01-24
 updated: 2025-03-06
-image: /images/legacy-planner-reading.webp
-imageAlt: "Senior reading and filling in a planner at home"
+image: /images/courtney-home.webp
+imageAlt: "Courtney Jones, author of The Living Legacy Planner, at home with a planner in her lap"
 situation: "I want my family to know my wishes"
 tags: ["end-of-life planning", "Living Legacy Planner"]
 ---

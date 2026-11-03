@@ -4,29 +4,46 @@
   "trailingSlash": true,
   "redirects": [
     { "source": "/senior-living-in-usa", "destination": "/about/", "permanent": true },
+    { "source": "/senior-living-in-usa/", "destination": "/about/", "permanent": true },
     { "source": "/consultancy-elderly-in-home-care", "destination": "/services/senior-care-consulting/", "permanent": true },
+    { "source": "/consultancy-elderly-in-home-care/", "destination": "/services/senior-care-consulting/", "permanent": true },
     { "source": "/senior-care-virtual-assistant-services", "destination": "/services/senior-care-virtual-assistant/", "permanent": true },
+    { "source": "/senior-care-virtual-assistant-services/", "destination": "/services/senior-care-virtual-assistant/", "permanent": true },
     { "source": "/elderly-caregiver-services", "destination": "/services/caregiver-support/", "permanent": true },
+    { "source": "/elderly-caregiver-services/", "destination": "/services/caregiver-support/", "permanent": true },
     { "source": "/senior-living-communities", "destination": "/guides/types-of-senior-living/", "permanent": true },
+    { "source": "/senior-living-communities/", "destination": "/guides/types-of-senior-living/", "permanent": true },
     { "source": "/contact-us-home-care-assistance", "destination": "/contact/", "permanent": true },
+    { "source": "/contact-us-home-care-assistance/", "destination": "/contact/", "permanent": true },
     { "source": "/brookdale-senior-living", "destination": "/thank-you/", "permanent": true },
+    { "source": "/brookdale-senior-living/", "destination": "/thank-you/", "permanent": true },
     { "source": "/twice-a-year-twice-the-safety-check-your-detectors-and-change-your-filters", "destination": "/blog/check-smoke-detectors-change-furnace-filter/", "permanent": true },
+    { "source": "/twice-a-year-twice-the-safety-check-your-detectors-and-change-your-filters/", "destination": "/blog/check-smoke-detectors-change-furnace-filter/", "permanent": true },
     { "source": "/over-55-communities-is-55-the-right-limit-for-you", "destination": "/blog/over-55-communities-pros-and-cons/", "permanent": true },
+    { "source": "/over-55-communities-is-55-the-right-limit-for-you/", "destination": "/blog/over-55-communities-pros-and-cons/", "permanent": true },
     { "source": "/discover-the-ultimate-guide-for-seniors-embrace-the-living-legacy-planner", "destination": "/blog/living-legacy-planner-guide/", "permanent": true },
+    { "source": "/discover-the-ultimate-guide-for-seniors-embrace-the-living-legacy-planner/", "destination": "/blog/living-legacy-planner-guide/", "permanent": true },
     { "source": "/buy-the-essential-guide-for-seniors-the-living-legacy-planner", "destination": "/books/living-legacy-planner/", "permanent": true },
+    { "source": "/buy-the-essential-guide-for-seniors-the-living-legacy-planner/", "destination": "/books/living-legacy-planner/", "permanent": true },
     { "source": "/shop", "destination": "https://www.saltonlinestore.com/", "permanent": true },
+    { "source": "/shop/", "destination": "https://www.saltonlinestore.com/", "permanent": true },
     { "source": "/cart", "destination": "https://www.saltonlinestore.com/", "permanent": true },
+    { "source": "/cart/", "destination": "https://www.saltonlinestore.com/", "permanent": true },
     { "source": "/checkout", "destination": "https://www.saltonlinestore.com/", "permanent": true },
+    { "source": "/checkout/", "destination": "https://www.saltonlinestore.com/", "permanent": true },
     { "source": "/my-account", "destination": "https://www.saltonlinestore.com/", "permanent": true },
-    { "source": "/product/:path*", "destination": "https://www.saltonlinestore.com/", "permanent": true },
-    { "source": "/category/:path*", "destination": "/blog/", "permanent": true },
-    { "source": "/author/:path*", "destination": "/about/", "permanent": true },
+    { "source": "/my-account/", "destination": "https://www.saltonlinestore.com/", "permanent": true },
+    { "source": "/product/(.*)", "destination": "https://www.saltonlinestore.com/", "permanent": true },
+    { "source": "/category/(.*)", "destination": "/blog/", "permanent": true },
+    { "source": "/author/(.*)", "destination": "/about/", "permanent": true },
     { "source": "/feed", "destination": "/rss.xml", "permanent": true },
+    { "source": "/feed/", "destination": "/rss.xml", "permanent": true },
     { "source": "/sitemap_index.xml", "destination": "/sitemap-index.xml", "permanent": true },
+    { "source": "/sitemap.xml", "destination": "/sitemap-index.xml", "permanent": true },
     { "source": "/page-sitemap.xml", "destination": "/sitemap-index.xml", "permanent": true },
     { "source": "/post-sitemap.xml", "destination": "/sitemap-index.xml", "permanent": true },
     { "source": "/elementor-hf-sitemap.xml", "destination": "/sitemap-index.xml", "permanent": true },
-    { "source": "/wp-admin/:path*", "destination": "/", "permanent": true },
+    { "source": "/wp-admin/(.*)", "destination": "/", "permanent": true },
     { "source": "/wp-login.php", "destination": "/", "permanent": true }
   ],
   "headers": [
@@ -42,11 +59,15 @@
     },
     {
       "source": "/_astro/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
     },
     {
       "source": "/thank-you/",
-      "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }]
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex" }
+      ]
     }
   ]
 }
