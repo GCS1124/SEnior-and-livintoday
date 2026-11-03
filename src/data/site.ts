@@ -35,10 +35,13 @@ export const SITE = {
     militaryPlannerAmazon: 'https://www.amazon.com/dp/B0HFDZMWZX',
     relicsAmazon: 'https://www.amazon.com/dp/B0DH537CC3',
   },
-  // Add Facebook / Instagram / LinkedIn / Google Business Profile URLs here when ready.
+  // Official profiles (verified 2026-11-03). Add Facebook / Google Business Profile URLs here when ready.
   sameAs: [
     'https://www.youtube.com/@seniorandlivingtoday',
     'https://www.threads.com/@seniorandlivingtoday',
+    'https://www.linkedin.com/company/senior-and-living-today',
+    'https://www.instagram.com/seniorandlivingtoday/',
+    'https://www.tiktok.com/@seniorandlivingtoday',
     'https://www.saltonlinestore.com/',
   ] as string[],
   googleSiteVerification: 'zLgpDEql5kDLxL85EBEouKliix6pk1aeeaFPJYE9w0w',
