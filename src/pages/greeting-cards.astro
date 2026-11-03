@@ -113,6 +113,8 @@ const stickers = ['❤️', '🌸', '🌻', '⭐', '🎈', '🎁', '🎄', '❄�
 
 <style>
   .maker { display: grid; gap: 30px; align-items: start; }
+  .maker > * { min-width: 0; }
+  #zoom { min-height: 44px; width: 100%; max-width: 260px; vertical-align: middle; }
   @media (min-width: 980px) { .maker { grid-template-columns: 1fr 1fr; } .preview { position: sticky; top: 150px; } }
   #card { width: 100%; max-width: 520px; display: block; margin: 0 auto; border-radius: 10px; box-shadow: 0 20px 50px rgba(90,31,60,.22); background: #fff; }
   .out { justify-content: center; }
@@ -141,7 +143,7 @@ const stickers = ['❤️', '🌸', '🌻', '⭐', '🎈', '🎁', '🎄', '❄�
   .inks { display: flex; flex-wrap: wrap; gap: 10px; }
   .ink { width: 44px; height: 44px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 2px var(--line); cursor: pointer; }
   .ink.on { box-shadow: 0 0 0 4px var(--ink); }
-  .stickers { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
+  .stickers { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 6px; }
   .st { font-size: 1.7rem; padding: 6px 0; border-radius: 12px; border: 2px solid var(--line); background: var(--paper); cursor: pointer; }
   .st:hover { border-color: var(--gold); }
   .t { font-size: 1.3rem; }

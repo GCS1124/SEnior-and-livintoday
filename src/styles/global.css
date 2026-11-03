@@ -91,6 +91,11 @@ a:hover { color: var(--berry); }
 .btn-light:hover { background: var(--gold-soft); color: var(--green-ink); }
 .btn-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 1.5rem; }
 
+/* Phones: never let a long word, button or wide element push the page sideways. */
+.btn { max-width: 100%; text-align: center; overflow-wrap: anywhere; }
+.grid > *, .split > * { min-width: 0; }
+img, svg, video, canvas, iframe { max-width: 100%; }
+
 /* Sections */
 .section { padding: clamp(56px, 8vw, 100px) 0; position: relative; }
 .section-cream { background: var(--cream); }
@@ -112,7 +117,7 @@ a:hover { color: var(--berry); }
 .section-dark .lead { color: #f1d9e2; }
 .hand { font-family: var(--font-hand); font-size: 1.7rem; line-height: 1.15; color: var(--berry); }
 
-.grid { display: grid; gap: 26px; }
+.grid { display: grid; gap: 26px; grid-template-columns: minmax(0, 1fr); }
 @media (min-width: 760px) {
   .grid-2 { grid-template-columns: repeat(2, 1fr); }
   .grid-3 { grid-template-columns: repeat(3, 1fr); }

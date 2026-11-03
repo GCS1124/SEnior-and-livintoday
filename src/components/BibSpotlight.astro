@@ -35,7 +35,7 @@ const bibs = GIFTS.filter((g) => g.key.startsWith('bib'));
   .q p { margin: 0 0 .3rem; font-size: 1.12rem; }
   .q .stars { color: #e8a000; }
   .q footer { font-size: .95rem; color: var(--ink-soft); }
-  .more-btn { background: none; border: 0; padding: 4px 0; font: 700 1rem var(--font-head); color: var(--berry); cursor: pointer; text-decoration: underline; }
+  .more-btn { background: none; border: 0; padding: 10px 0; min-height: 44px; font: 700 1rem var(--font-head); color: var(--berry); cursor: pointer; text-decoration: underline; }
 </style>
 <script>
   document.querySelectorAll<HTMLButtonElement>('.bib-more').forEach((b) => b.addEventListener('click', () => {

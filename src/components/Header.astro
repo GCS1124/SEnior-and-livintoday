@@ -43,8 +43,8 @@ const current = (href: string) => (path.startsWith(href) || (href === '/games/' 
 
 <style>
   .topbar { background: var(--green-ink); color: #dfe9dc; font-size: .95rem; }
-  .tb { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-top: 8px; padding-bottom: 8px; }
-  .tb a { color: var(--sun); text-decoration: none; }
+  .tb { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding-top: 2px; padding-bottom: 2px; }
+  .tb a { color: var(--sun); text-decoration: none; display: inline-flex; align-items: center; gap: .35em; min-height: 44px; }
   .tb a strong { color: var(--sun); }
   @media (max-width: 760px) { .tb span { display: none; } .tb { justify-content: center; } }
 
@@ -54,6 +54,15 @@ const current = (href: string) => (path.startsWith(href) || (href === '/games/' 
   .brand img { width: 60px; height: 60px; border-radius: 50%; }
   .brand strong { display: block; font: 700 1.2rem/1.1 var(--font-head); color: var(--green-ink); }
   .brand small { display: block; font: 600 1.35rem/1 var(--font-hand); color: var(--berry); }
+  /* Small phones: keep the sticky header compact so it doesn't eat the screen. */
+  @media (max-width: 480px) {
+    .bar { min-height: 68px; gap: 10px; }
+    .brand { gap: 8px; min-width: 0; }
+    .brand img { width: 46px; height: 46px; }
+    .brand strong { font-size: 1.02rem; }
+    .brand small { font-size: 1.1rem; }
+  }
+  @media (max-width: 360px) { .brand small { display: none; } }
   ul { list-style: none; margin: 0; padding: 0; }
   .acts { display: none; gap: 12px; }
   .acts .btn { min-height: 48px; padding: 10px 20px; font-size: 1rem; }
