@@ -5,6 +5,15 @@ description: "A simple checklist for organizing an aging parent’s important pa
 published: 2026-11-02
 situation: "I need to get Mom and Dad’s papers in order"
 tags: ["planning", "caregiving", "Living Legacy Planner"]
+faqs:
+  - q: "What documents should aging parents have in order?"
+    a: "The essentials are photo ID, Social Security and Medicare cards, insurance cards, a medication list, bank and retirement account details, a will or trust, financial and healthcare powers of attorney, an advance directive or living will, life insurance policies and any funeral or burial wishes."
+  - q: "Where should important papers be kept?"
+    a: "Keep them together in one clearly labeled place at home, such as a fire-resistant box or a planner, and tell one or two trusted people where it is. Keep copies of the most important documents somewhere separate."
+  - q: "How often should important documents be updated?"
+    a: "Look through them once a year and after any big change, such as a move, a new diagnosis, a new insurance plan, a death in the family or a change in who you want making decisions."
+  - q: "Do I need a lawyer to organize my parents' paperwork?"
+    a: "You can gather and organize papers yourselves. For creating or changing a will, trust, power of attorney or advance directive, talk with a licensed attorney in your parent's state."
 ---
 
 When Mom ends up in the hospital, the first questions come fast. *Which insurance does she have? What medications is she on? Who’s her doctor? Where’s the power of attorney?* If you have to go hunting through drawers at a moment like that, it’s twice as hard.

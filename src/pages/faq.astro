@@ -1,0 +1,57 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { FAQ_GROUPS, ALL_FAQS } from '../data/faq';
+import { faqSchema } from '../data/schema';
+const crumbs = [{ name: 'FAQ', href: '/faq/' }];
+---
+<Base
+  title="FAQ: Senior Care, Caregiving & Planning Questions"
+  description="Plain-English answers about caring for aging parents, caregiver burnout, Medicare letters, end-of-life planning and how Senior and Living Today can help."
+  breadcrumbs={crumbs}
+  schema={[faqSchema(ALL_FAQS)]}
+>
+  <PageHero
+    title="Frequently asked questions"
+    kicker="Straight answers"
+    lead="The questions seniors and caregivers ask me most, answered in plain English. Each one links to more help."
+    breadcrumbs={crumbs}
+  />
+
+  <section class="section">
+    <div class="wrap narrow">
+      <nav class="toc" aria-label="FAQ topics">
+        {FAQ_GROUPS.map((g) => <a href={`#${g.id}`}>{g.title}</a>)}
+      </nav>
+      {FAQ_GROUPS.map((g) => (
+        <section class="group" id={g.id} aria-labelledby={`${g.id}-h`}>
+          <h2 id={`${g.id}-h`}>{g.title}</h2>
+          <div class="faq">
+            {g.items.map((it) => (
+              <details>
+                <summary><h3>{it.q}</h3></summary>
+                <p>{it.a}</p>
+                {it.link && <p class="more"><a href={it.link.href}>{it.link.text} →</a></p>}
+              </details>
+            ))}
+          </div>
+        </section>
+      ))}
+      <p class="note">This is general information, not medical, legal or financial advice. See our <a href="/disclaimer/">disclaimer</a>.</p>
+    </div>
+  </section>
+  <CtaBand title="Didn’t see your question? Ask me." />
+</Base>
+<style>
+  .toc { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 2rem; }
+  .toc a { padding: 8px 14px; border: 2px solid var(--line); border-radius: 999px; text-decoration: none; color: var(--ink); background: #fff; font-size: 1rem; }
+  .toc a:hover { border-color: var(--gold); }
+  .group { margin-bottom: 2.5rem; scroll-margin-top: 120px; }
+  .faq details { border-bottom: 2px solid var(--line); padding: 6px 0; }
+  .faq summary { cursor: pointer; list-style: none; padding: 14px 0; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq h3 { font-size: 1.15rem; margin: 0; }
+  .faq .more { margin-top: -.4rem; }
+  .note { color: var(--ink-soft); font-size: 1rem; }
+</style>

@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content';
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort((a, b) => a.data.title.localeCompare(b.data.title));
 const crumbs = [{ name: 'Site map', href: '/sitemap/' }];
 const groups = [
-  { h: 'Get help', links: [['/help/', 'What do I do when…?'], ['/find-help/', 'Find help near me'], ['/videos/', 'Courtney’s videos'], ['/resources/final-arrangements-discussion-guide/', '10-point final arrangements guide'], ['/guides/types-of-senior-living/', 'Types of senior living']] },
+  { h: 'Get help', links: [['/help/', 'What do I do when…?'], ['/find-help/', 'Find help near me'], ['/faq/', 'Frequently asked questions'], ['/videos/', 'Courtney’s videos'], ['/resources/final-arrangements-discussion-guide/', '10-point final arrangements guide'], ['/guides/types-of-senior-living/', 'Types of senior living']] },
   { h: 'Planners & shop', links: [['/planners/', 'All planners'], ['/books/living-legacy-planner/', 'The Living Legacy Planner'], ['/books/relics-of-the-century/', 'Relics of the Century'], ['/gifts/', 'Holiday gifts for seniors'], ['/caregiver-connection/', 'Caregiver Connection']] },
   { h: 'Fun & memories', links: [['/games/', 'Coloring book & games'], ['/greeting-cards/', 'Greeting card maker'], ['/memory-lane/', 'Memory Lane'], ['/community/', 'Free community']] },
   { h: 'Work with us', links: [['/services/', 'All services'], ['/services/senior-care-consulting/', 'Senior care consulting'], ['/services/senior-care-virtual-assistant/', 'Senior care virtual assistant'], ['/services/caregiver-support/', 'Caregiver support'], ['/contact/', 'Contact & free call']] },

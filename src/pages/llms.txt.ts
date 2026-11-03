@@ -1,5 +1,6 @@
 import { getCollection } from 'astro:content';
 import { SITE, SERVICES } from '../data/site';
+import { FAQ_GROUPS } from '../data/faq';
 // llms.txt: a plain-language summary for AI assistants (see llmstxt.org).
 export async function GET() {
   const posts = (await getCollection('blog', ({ data }) => !data.draft));
@@ -31,6 +32,10 @@ ${SERVICES.map((s) => `- [${s.short}](${SITE.url}${s.href}): ${s.summary}`).join
 
 ## Articles
 ${posts.map((p) => `- [${p.data.title}](${SITE.url}/blog/${p.id}/): ${p.data.description}`).join('\n')}
+
+## Frequently asked questions
+Full page: ${SITE.url}/faq/ . General information only; not medical, legal or financial advice.
+${FAQ_GROUPS.map((g) => `\n### ${g.title}\n` + g.items.map((i) => `\nQ: ${i.q}\nA: ${i.a}${i.link ? ` More: ${SITE.url}${i.link.href}` : ''}`).join('\n')).join('\n')}
 `;
   return new Response(body, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
 }

@@ -5,7 +5,8 @@ import Photo from '../../components/Photo.astro';
 import Video from '../../components/Video.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { getCollection, render } from 'astro:content';
-import { articleSchema } from '../../data/schema';
+import Faq from '../../components/Faq.astro';
+import { articleSchema, faqSchema } from '../../data/schema';
 import { SITE, VIDEOS } from '../../data/site';
 
 export async function getStaticPaths() {
@@ -24,6 +25,7 @@ const image = d.image ?? (d.video ? `https://i.ytimg.com/vi/${d.video}/hqdefault
 const more = all.filter((p) => p.id !== post.id && p.data.video).slice(0, 3);
 
 const schema: Record<string, unknown>[] = [articleSchema({ title: d.title, description: d.description, path, published: d.published, updated: d.updated, image })];
+if (d.faqs.length) schema.push(faqSchema(d.faqs));
 // VideoObject markup is left out on purpose: it needs the true YouTube upload date.
 
 ---
@@ -63,6 +65,7 @@ const schema: Record<string, unknown>[] = [articleSchema({ title: d.title, descr
       </aside>
     </div>
   </article>
+  {d.faqs.length > 0 && <Faq items={d.faqs} title="Quick answers" />}
   {more.length > 0 && (
     <section class="section section-cream">
       <div class="wrap">

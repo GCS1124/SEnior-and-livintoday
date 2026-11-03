@@ -6,6 +6,15 @@ published: 2026-11-02
 video: k5v5Vwbi7QE
 situation: "Someone I love is going into the hospital"
 tags: ["hospital", "caregiving", "advocacy"]
+faqs:
+  - q: "What is a hospital advocate for an elderly parent?"
+    a: "A hospital advocate is a trusted family member or friend who stays with your loved one in the hospital, speaks up when something is missed, remembers what the doctor said on rounds and notices changes. It does not need to be a professional; it needs to be someone who is there and paying attention."
+  - q: "Can family members stay overnight in the hospital?"
+    a: "Many hospitals allow a family member to stay overnight, but rules differ by hospital and unit. Ask the nurse or unit manager what is allowed, and ask whether a recliner can be brought into the room."
+  - q: "What should I bring to the hospital for an older parent?"
+    a: "Bring a current medication list with doses, insurance cards, a list of doctors and emergency contacts, copies of any power of attorney or advance directive, glasses, hearing aids, a phone charger and a notebook to write down what the doctors and nurses say."
+  - q: "How do we share hospital visiting shifts as a family?"
+    a: "Make a simple schedule. Ask each person when they can realistically come, give them that block of time, and write it down so everyone can see who is covering mornings, evenings and overnight."
 ---
 
 Hi, my Saltines. This one matters to me, so please stay with me.

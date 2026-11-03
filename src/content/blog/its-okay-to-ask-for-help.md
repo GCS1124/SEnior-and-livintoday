@@ -6,6 +6,13 @@ published: 2026-11-02
 video: WhVr1HWaXgw
 situation: "I’m stuck and don’t know who to ask"
 tags: ["everyday life", "caregiving", "isolation"]
+faqs:
+  - q: "Why is it so hard for seniors to ask for help?"
+    a: "Many older adults spent their lives being the person others relied on, so asking can feel like losing independence. It helps to remember that nobody knows everything, and asking the right person is a smart way to stay independent."
+  - q: "What is a who-to-call list?"
+    a: "It is a written list of people you can call for different problems, such as car trouble, the computer, bills and paperwork, or repairs around the house. Keep it by the phone and share a copy with family."
+  - q: "Where can older adults find local help?"
+    a: "The Eldercare Locator at 1-800-677-1116 or eldercare.acl.gov connects you with your local Area Agency on Aging for meals, rides, caregiver support and other services."
 ---
 
 Hi, my Saltines. I'm Courtney, your caregiver's caregiver, and today's reminder is a simple one: **it is okay to ask for help.**

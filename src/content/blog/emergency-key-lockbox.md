@@ -6,6 +6,13 @@ published: 2026-11-02
 video: idcJRGWgCb4
 situation: "I live alone and worry about falling"
 tags: ["home safety", "living alone", "emergencies"]
+faqs:
+  - q: "What is a key lockbox for seniors?"
+    a: "A key lockbox is a small combination safe that mounts by the door and holds a spare house key. Family, a trusted neighbor or a caregiver can let themselves in with the code, which helps if you fall or cannot reach the door."
+  - q: "Should I give emergency responders my lockbox code?"
+    a: "If you call 911 and cannot get to the door, you can give the dispatcher the code so responders can get in without breaking the door. Some local fire departments also run key box programs, so it is worth asking yours."
+  - q: "How do I keep a key lockbox secure?"
+    a: "Choose a code that is not your birthday or house number, share it only with people you trust, and change it if someone who knew it is no longer in your life."
 ---
 
 Hi, I'm Courtney. Have you ever locked yourself out of the house or the car? It's happened to me, and to friends of mine. Now flip it around: what if you were *inside*, needed help, and every door was locked?
