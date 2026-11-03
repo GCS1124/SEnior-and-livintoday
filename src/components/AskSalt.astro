@@ -81,7 +81,7 @@
     { k: /old (news|tv|show|radio|song|movie)|memory lane|remember|nostalg/i, a: 'Memory Lane has free old newspapers, classic TV, old-time radio and 78 records: /memory-lane/' },
     { k: /video|youtube|watch/i, a: 'Here are Courtney’s most helpful videos: /videos/' },
     { k: /call|talk|consult|help me|courtney|appointment|book/i, a: 'Courtney’s first call is free. Book here: /contact/ or call (888) 416-4264.' },
-    { k: /lonely|alone|sad|depress|grief|lost my/i, a: 'I’m sorry you’re going through this. You don’t have to carry it alone. Our free community is a kind place to talk: /community/\nIf you’re in crisis, call or text 988 any time.' },
+    { k: /lonely|alone|sad|depress|grief|lost my/i, a: 'I’m sorry you’re going through this. You don’t have to carry it alone. Courtney’s first call is free: /contact/ or (888) 416-4264.\nIf you’re in crisis, call or text 988 any time.' },
   ];
   const quick = (q: string) => QUICK.find((x) => x.k.test(q))?.a;
 

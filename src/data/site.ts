@@ -41,7 +41,7 @@ export const SITE = {
     'https://www.threads.com/@seniorandlivingtoday',
     'https://www.saltonlinestore.com/',
   ] as string[],
-  googleSiteVerification: '',
+  googleSiteVerification: 'zLgpDEql5kDLxL85EBEouKliix6pk1aeeaFPJYE9w0w',
   ga4Id: '',
 };
 

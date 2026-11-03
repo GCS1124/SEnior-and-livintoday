@@ -3,8 +3,8 @@ title: "Over-55 Communities: Is 55 the Right Limit for You?"
 seoTitle: "Over-55 Communities: Pros, Cons & How to Choose"
 description: "Thinking about a 55+ active adult community? Weigh the pros and cons, from social life and low-maintenance living to HOA fees and resale limits."
 published: 2025-03-18
-image: /images/seniors-outdoors.webp
-imageAlt: "Group of older adults enjoying an outdoor game together"
+image: /images/seniors-group.webp
+imageAlt: "A group of smiling older adults together outdoors"
 situation: "I’m thinking about moving to a 55+ community"
 tags: ["senior living options", "55+ communities"]
 ---
