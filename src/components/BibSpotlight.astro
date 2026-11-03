@@ -41,7 +41,7 @@ const bibs = GIFTS.filter((g) => g.key.startsWith('bib'));
   .q .stars { color: #e8a000; }
   .q footer { font-size: .95rem; color: var(--ink-soft); }
   .more-btn { background: none; border: 0; padding: 4px 0; font: 700 1rem var(--font-head); color: var(--berry); cursor: pointer; text-decoration: underline; }
-  .bibcards { display: grid; gap: 18px; grid-template-columns: 1fr 1fr; }
+  .bibcards { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); max-width: 460px; }
   .bibcards a { display: flex; flex-direction: column; gap: 6px; background: #fff; border: 2px solid var(--line); border-radius: 20px; padding: 14px; text-decoration: none; color: var(--ink); transition: transform .15s, border-color .15s; }
   .bibcards a:hover { transform: translateY(-4px); border-color: var(--gold); }
   .bibcards img { border-radius: 14px; aspect-ratio: 1; object-fit: contain; background: #f7f2ea; }

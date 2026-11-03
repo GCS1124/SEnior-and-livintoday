@@ -1,10 +1,10 @@
 ---
 title: "Gifts for Seniors Who Say They Don’t Need Anything"
 seoTitle: "Gifts for Seniors Who Have Everything (Useful Ideas)"
-description: "Gift ideas for seniors who “don’t need anything”: comfort, safety and connection gifts, from adult bibs and arthritis gloves to planners and time together."
+description: "Gift ideas for seniors who “don’t need anything”: comfort, safety and connection gifts, from adult bibs and heated wraps to planners and time together."
 published: 2026-11-02
-image: /images/shop/gloves-arthritis.webp
-imageAlt: "Compression arthritis gloves, a practical gift for seniors"
+image: /images/shop/neck-shawl.webp
+imageAlt: "Heated neck and shoulder wrap, a cozy practical gift for seniors"
 tags: ["gifts", "holidays", "seniors"]
 ---
 
@@ -14,8 +14,8 @@ Here’s how I think about gifts for the seniors in your life.
 
 ## 1. Gifts that make every day more comfortable
 
-- **Arthritis gloves.** Gentle compression and warmth for stiff hands in the morning.
-- **A rechargeable hand warmer.** For winter walks, cold churches and chilly houses.
+- **A heated hand massager.** Gentle warmth and air compression for stiff, achy hands in the morning.
+- **A heated neck and shoulder wrap.** For chilly houses, long winter evenings and sore shoulders.
 - **A heated hand massager.** A small luxury at the end of the day.
 
 ## 2. Gifts that protect dignity
@@ -26,8 +26,8 @@ Here’s how I think about gifts for the seniors in your life.
 ## 3. Gifts that keep them safe and on track
 
 - **A big-display calendar clock.** Day, date and time in large letters, with reminder alarms. Wonderful for anyone who loses track of the days.
-- **A large pill organizer.** Morning, noon and night, with compartments that are easy to open.
-- **A folding cane.** Folds small enough for a purse or the car, so it’s there when needed.
+- **Self-heating knee supports.** Warmth and support for stiff knees on cold mornings.
+- **A memory foam neck pillow.** For car trips, doctor waiting rooms and afternoon naps in the recliner.
 
 You’ll find all of these in my [holiday gift guide](/gifts/), straight from our SALT Online Store.
 

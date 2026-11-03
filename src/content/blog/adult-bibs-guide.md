@@ -3,8 +3,8 @@ title: "Adult Bibs: How to Choose a Clothing Protector With Dignity"
 seoTitle: "Adult Bibs for Seniors: How to Choose the Right One"
 description: "How to choose an adult bib or clothing protector for a senior: materials, sizes, crumb catchers and how to make mealtime feel dignified, not embarrassing."
 published: 2026-11-02
-image: /images/shop/bib-flannel.webp
-imageAlt: "Thick flannel adult bib clothing protector"
+image: /images/shop/bib-lattice.webp
+imageAlt: "Adult mealtime bibs with crumb catcher, 3-pack"
 tags: ["adult bibs", "caregiving", "daily living"]
 ---
 
@@ -38,7 +38,6 @@ That’s the point: the right bib simply lets you get on with your day.
 
 ## Shop our adult bibs
 
-- [Thick Flannel Adult Bib](/gifts/#comfort): soft, absorbent and adjustable.
-- [Stain-Resistant Adult Bibs](/gifts/#comfort): wipe-clean, for men and women, singles or a set of four.
+- [Mealtime Bibs with Crumb Catcher (3-Pack)](https://www.saltonlinestore.com/products/3pcs-lattice-pattern-adult-mealtime-bib-adjustable-waterproof-eldly-dining-bib-with-crumb-catcher-protector-disability-aid-apron?utm_source=seniorandlivingtoday&utm_medium=referral&utm_campaign=blog): waterproof, adjustable, with a pocket that catches crumbs (and ashes). Three in a pack, so one is always clean.
 
-Both are in my [holiday gift guide](/gifts/) and available from our SALT Online Store. A thoughtful, practical gift that gets used every single day.
+They’re in my [holiday gift guide](/gifts/) and available from our SALT Online Store. A thoughtful, practical gift that gets used every single day.

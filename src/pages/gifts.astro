@@ -10,7 +10,7 @@ import { faqSchema } from '../data/schema';
 
 const crumbs = [{ name: 'Holiday Gifts for Seniors', href: '/gifts/' }];
 const faqs = [
-  { q: 'What do you buy a senior who says they don’t need anything?', a: 'Think comfort, safety and connection: an adult bib, arthritis gloves, a large calendar clock, reading glasses, or a planner that helps them get their wishes and memories written down. And time together is the best gift of all.' },
+  { q: 'What do you buy a senior who says they don’t need anything?', a: 'Think comfort, safety and connection: an adult bib with a crumb catcher, a heated neck wrap or hand massager, a large calendar clock, reading glasses, or a planner that helps them get their wishes and memories written down. And time together is the best gift of all.' },
   { q: 'Where do these gifts ship from?', a: 'Comfort and everyday items come from our own SALT Online Store. Courtney’s printed planners and books are sold on Amazon, so you get Amazon’s shipping and returns.' },
   { q: 'Do you have gifts I can send instantly?', a: 'Yes. Our fillable PDF planners and journals are instant downloads from the SALT Online Store, and more e-planners and e-cards are on the way.' },
 ];
@@ -18,7 +18,7 @@ const itemList = { '@type': 'ItemList', name: 'Holiday gifts for seniors', itemL
 ---
 <Base
   title="Holiday Gifts for Seniors & Elderly Parents"
-  description="Holiday gifts for seniors picked by Courtney Jones: adult bibs, arthritis gloves, reading glasses, a folding cane, planners and instant e-planners."
+  description="Holiday gifts for seniors picked by Courtney Jones: adult bibs, heated neck and hand massagers, reading glasses, a calendar clock, planners and instant e-planners."
   breadcrumbs={crumbs}
   schema={[faqSchema(faqs), itemList]}
 >
@@ -41,7 +41,7 @@ const itemList = { '@type': 'ItemList', name: 'Holiday gifts for seniors', itemL
     <div class="wrap">
       <span class="kicker">From our SALT Online Store</span>
       <h2>Comfort, safety &amp; everyday helpers</h2>
-      <p class="lead">Bibs, gloves, glasses, a cane that folds into a handbag, and a few little things that make a big difference.</p>
+      <p class="lead">Bibs, heated wraps, reading glasses, a calendar clock, and a few little things that make a big difference.</p>
       <ProductGrid items={GIFTS} campaign="holiday-gift-guide" />
       <div class="btn-row"><a class="btn btn-berry" href={storeLink('/collections/gifts-for-seniors', 'holiday-gift-guide')} rel="noopener" target="_blank">See more gifts at the SALT store ↗</a></div>
     </div>
