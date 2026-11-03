@@ -11,6 +11,7 @@ const faqs = [
   { q: 'How can I check that a doctor is licensed?', a: 'Every state medical board has a free license lookup. DocInfo.org, from the Federation of State Medical Boards, searches the state boards in one place. Then call the office to confirm they take your insurance.' },
   { q: 'How do I find local services like Meals on Wheels or rides to appointments?', a: 'The Eldercare Locator (eldercare.acl.gov, 1-800-677-1116) connects you with your local Area Agency on Aging and services in your community.' },
 ];
+import SearchSource from '../components/SearchSource.astro';
 ---
 <Base
   title="Find a Doctor, Lawyer or Medicare Help Near You"
@@ -21,7 +22,7 @@ const faqs = [
   <PageHero
     title="Find help near you"
     kicker="Doctors · lawyers · insurance · local services"
-    lead="Type your ZIP code, pick what you need, and we’ll take you to a map of places nearby, plus the trusted, free directories I’d use myself."
+    lead="Type your ZIP code and pick what you need. You’ll search Google Maps yourself for places nearby, and I’ll list the trusted, free directories I’d use myself."
     breadcrumbs={crumbs}
   />
 
@@ -38,6 +39,7 @@ const faqs = [
         </div>
       </form>
 
+      <SearchSource mode="google" />
       <aside class="doctor-disclaimer" role="note" aria-labelledby="doctor-disclaimer-title">
         <p><strong id="doctor-disclaimer-title">Doctor Search Disclaimer:</strong> Doctor and healthcare provider search results are supplied through Google. Senior and Living Today does not recommend, endorse, verify, or guarantee any doctor, healthcare provider, or listing displayed in these results. Search information may be incomplete or outdated. Please independently research providers and contact them directly to confirm their credentials, services, availability, and suitability for your needs. Any decision to consult a healthcare provider is your own.</p>
         <p class="more"><a href="/disclaimer/">Read our full disclaimer</a></p>
@@ -48,7 +50,8 @@ const faqs = [
           <h2>{f.icon} {f.label}</h2>
           {f.maps && (
             <a class="btn btn-berry map" data-q={f.maps} href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(f.maps + ' near me')}`} target="_blank" rel="noopener">
-              Show me on a map ↗
+              <svg aria-hidden="true" viewBox="0 0 48 48" width="22" height="22" style="background:#fff;border-radius:50%;padding:2px"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
+              Search on Google Maps ↗
             </a>
           )}
           {f.trusted.length > 0 && (

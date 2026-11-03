@@ -4,6 +4,7 @@ import Photo from '../components/Photo.astro';
 import Video from '../components/Video.astro';
 import Reviews from '../components/Reviews.astro';
 import ProductGrid from '../components/ProductGrid.astro';
+import SearchSource from '../components/SearchSource.astro';
 import CtaBand from '../components/CtaBand.astro';
 import BibSpotlight from '../components/BibSpotlight.astro';
 import { SITE, SERVICES, BOOKS, VIDEOS, GIFTS, RELICS, storeLink } from '../data/site';
@@ -58,6 +59,7 @@ const faqs = [
             <button type="button" data-ask="Gift ideas for my dad">Gift ideas for Dad</button>
             <button type="button" data-ask="Something fun to do today">Something fun to do</button>
           </div>
+          <SearchSource compact />
         </form>
       </div>
       <div class="hero-photo">

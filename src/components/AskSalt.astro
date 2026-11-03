@@ -13,7 +13,7 @@
     <img src="/images/logo.png" width="46" height="46" alt="" />
     <div>
       <p id="ask-title" class="t">Ask S.A.L.T.</p>
-      <p class="s">Your friendly helper. Ask me anything about getting older or caring for someone.</p>
+      <p class="s">Your friendly AI helper. Ask me anything about getting older or caring for someone.</p>
     </div>
     <button type="button" class="x" id="ask-close" aria-label="Close">✕</button>
   </header>
@@ -32,7 +32,7 @@
     <input id="ask-input" autocomplete="off" placeholder="Type your question here…" maxlength="1000" />
     <button class="btn btn-berry" type="submit">Ask</button>
   </form>
-  <p class="fine">General information, not medical, legal or financial advice. In an emergency call 911. Please don’t share Social Security or bank numbers.</p>
+  <p class="fine"><span class="ai-tag">✨ AI</span> Answers are written by AI to help you look things up yourself. Links to outside websites and Google searches are not chosen or endorsed by S.A.L.T. General information, not medical, legal or financial advice. In an emergency call 911. Please don’t share Social Security or bank numbers. <a href="/disclaimer/#search-and-ai">Learn more</a></p>
 </dialog>
 
 <style is:global>
@@ -59,7 +59,11 @@
   .ask form { display: flex; gap: 10px; padding: 12px 16px; border-top: 2px solid var(--line); }
   .ask input { flex: 1; font: 1.15rem var(--font-body); padding: 12px 16px; border-radius: 14px; border: 2px solid var(--line); min-width: 0; }
   .ask input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 4px rgba(255,174,0,.25); }
-  .ask .fine { margin: 0; padding: 0 16px 14px; font-size: .85rem; color: var(--ink-soft); }
+  .ask .fine { margin: 0; padding: 0 16px 14px; font-size: .85rem; line-height: 1.45; color: var(--ink-soft); }
+  .ask .fine a { color: var(--plum); font-weight: 600; }
+  .ask .ai-tag { display: inline-block; padding: 1px 8px; border-radius: 999px; background: #f6f0fd; border: 1px solid #d9c8ef; color: #6b3fa0; font: 600 .78rem var(--font-head); }
+  .ask .msg a.ext::after { content: " ↗"; }
+  .ask .src { display: block; margin-top: 6px; font-size: .85rem; color: var(--ink-soft); }
 </style>
 
 <script>
@@ -99,11 +103,12 @@
     const seg = u.split('/').filter(Boolean)[0]?.split(/[?#]/)[0] ?? '';
     return NAMES[seg] ?? 'Open page';
   };
-  const linkify = (s: string) => esc(s).replace(/(https?:\/\/[^\s)]+|(?<![\w.])\/[a-z0-9\-/#?=&]+\/?)/gi, (u) => `<a href="${u}"${u.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${label(u)}</a>`);
+  const linkify = (s: string) => esc(s).replace(/(https?:\/\/[^\s)]+|(?<![\w.])\/[a-z0-9\-/#?=&]+\/?)/gi, (u) => `<a href="${u}"${u.startsWith('http') ? ' class="ext" target="_blank" rel="noopener nofollow" title="Opens an outside website"' : ''}>${label(u)}</a>`);
   function add(role: 'me' | 'bot', text: string, cls = '') {
     const d = document.createElement('div');
     d.className = `msg ${role} ${cls}`;
     d.innerHTML = role === 'bot' ? linkify(text) : esc(text);
+    if (role === 'bot' && !cls && d.querySelector('a.ext')) d.insertAdjacentHTML('beforeend', '<span class="src">Outside links are for your own research. S.A.L.T. doesn’t choose or endorse them.</span>');
     log.appendChild(d); log.scrollTop = log.scrollHeight;
     return d;
   }
