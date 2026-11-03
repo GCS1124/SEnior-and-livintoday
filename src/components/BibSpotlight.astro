@@ -1,5 +1,6 @@
 ---
-import { GIFTS, BIB_REVIEWS, storeLink } from '../data/site';
+import { GIFTS, BIB_REVIEWS } from '../data/site';
+import ProductGrid from './ProductGrid.astro';
 interface Props { campaign?: string }
 const { campaign = 'bib-spotlight' } = Astro.props;
 const bibs = GIFTS.filter((g) => g.key.startsWith('bib'));
@@ -22,18 +23,12 @@ const bibs = GIFTS.filter((g) => g.key.startsWith('bib'));
       </div>
     </div>
     <div class="bibcards">
-      {bibs.map((b) => (
-        <a href={storeLink(`/products/${b.handle}`, campaign)} target="_blank" rel="noopener">
-          <img src={`/images/shop/${b.key}.webp`} alt={b.name} width="600" height="600" loading="lazy" />
-          <strong>{b.name}</strong>
-          <span>{b.why}</span>
-          <span class="go">Shop at the SALT store ↗</span>
-        </a>
-      ))}
+      <ProductGrid items={bibs} campaign={campaign} single />
     </div>
   </div>
 </section>
 <style>
+  .bibcards { display: grid; justify-items: center; }
   .bibs { background: linear-gradient(160deg, #fff4d6 0%, #ffe8cf 100%); }
   .quotes { display: grid; gap: 14px; margin-top: 1.2rem; }
   .q { margin: 0; background: #fff; border-left: 6px solid var(--berry); border-radius: 0 16px 16px 0; padding: 16px 20px; box-shadow: 0 8px 20px rgba(90,31,60,.07); }
@@ -41,13 +36,6 @@ const bibs = GIFTS.filter((g) => g.key.startsWith('bib'));
   .q .stars { color: #e8a000; }
   .q footer { font-size: .95rem; color: var(--ink-soft); }
   .more-btn { background: none; border: 0; padding: 4px 0; font: 700 1rem var(--font-head); color: var(--berry); cursor: pointer; text-decoration: underline; }
-  .bibcards { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); max-width: 460px; }
-  .bibcards a { display: flex; flex-direction: column; gap: 6px; background: #fff; border: 2px solid var(--line); border-radius: 20px; padding: 14px; text-decoration: none; color: var(--ink); transition: transform .15s, border-color .15s; }
-  .bibcards a:hover { transform: translateY(-4px); border-color: var(--gold); }
-  .bibcards img { border-radius: 14px; aspect-ratio: 1; object-fit: contain; background: #f7f2ea; }
-  .bibcards strong { font: 600 1.1rem/1.3 var(--font-head); }
-  .bibcards span { font-size: .98rem; color: var(--ink-soft); }
-  .bibcards .go { margin-top: auto; font: 600 1rem var(--font-head); color: var(--plum); }
 </style>
 <script>
   document.querySelectorAll<HTMLButtonElement>('.bib-more').forEach((b) => b.addEventListener('click', () => {

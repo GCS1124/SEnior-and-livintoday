@@ -6,6 +6,8 @@
   "description": "Senior and Living Today (S.A.L.T.) website - static Astro site deployed on Vercel",
   "scripts": {
     "dev": "astro dev",
+    "sync:store": "node scripts/sync-store.mjs",
+    "prebuild": "node scripts/sync-store.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "check:seo": "node scripts/seo-check.mjs"
