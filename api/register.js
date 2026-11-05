@@ -14,15 +14,17 @@
 // GoHighLevel result for every visitor: the contact is created or updated by email, then tagged
 //   website · <source> · [marketing-opt-in]   on sign-up
 //   game-winner · reward-100-coupon      on a win
-// The team emails each winner a coupon code worth $100 by hand.
+// On a win, api/_lib/reward.js then creates a unique $100 Shopify code, saves it on the contact
+// and adds "reward-code-sent", which starts the GoHighLevel email workflow (see
+// docs/WINNER-EMAIL-SETUP.md). Without the Shopify keys the team sends codes by hand as before.
 //
 // With nothing configured the endpoint answers 503 "not_configured" and the website
 // lets the visitor carry on without saving anything (and without promising a reward).
 
-const GHL_API = process.env.GHL_API_BASE || 'https://services.leadconnectorhq.com'; // override only for local tests
-const GHL_VERSION = '2021-07-28';
 import { readPass } from './_lib/reading-pass.js';
-const SALT_LOCATION_ID = 'sbVe09zoUWLiPTabYb5A'; // "Senior and living today" sub-account (not a secret)
+import { saveContact } from './_lib/ghl.js';
+import { playToken, checkPlayToken } from './_lib/play-token.js';
+import { issueReward } from './_lib/reward.js';
 
 const ALLOWED = [/^https:\/\/(www\.)?seniorandlivingtoday\.com$/, /^https:\/\/[a-z0-9-]+\.vercel\.app$/, /^http:\/\/localhost(:\d+)?$/];
 const SOURCES = new Set(['memory-match', 'coloring-book', 'games', 'books', 'resources', 'newsletter']);
@@ -74,14 +76,22 @@ export default async function handler(req, res) {
   if (limited(ip)) return res.status(429).json({ error: 'busy', message: 'Too many tries in a short time. Please wait a few minutes.' });
 
   const tags = ['website', source, ...(marketing ? ['marketing-opt-in'] : []), ...(event === 'game_won' ? ['game-winner', 'reward-100-coupon'] : []), ...(book ? ['reader', `reading-${book}`] : [])];
-  const ok = () => res.status(200).json({ ok: true, ...(book ? { readPass: readPass(book) } : {}) });
-  const rewardRules = 'Coupon code worth $100 for the SALT Online Store, emailed by the team within 24-48 hours. One reward per email address.';
+  const ok = (extra = {}) => res.status(200).json({
+    ok: true,
+    ...(book ? { readPass: readPass(book) } : {}),
+    ...(event === 'signup' ? { playToken: playToken(email) } : {}),
+    ...extra,
+  });
+  const rewardRules = 'Coupon code worth $100 for the SALT Online Store, emailed to the winner. One reward per email address.';
 
   // Preferred: save straight into GoHighLevel.
   if (process.env.GHL_PRIVATE_TOKEN) {
     try {
-      await saveToGoHighLevel({ name, email, source, tags });
-      return ok();
+      const contactId = await saveContact({ name, email, source, tags });
+      if (event !== 'game_won') return ok();
+      const check = checkPlayToken(email, body.playToken);
+      const reward = await issueReward({ contactId, eligible: check.ok, reason: check.reason });
+      return ok({ reward: { status: reward.status } });
     } catch (e) {
       console.error('GoHighLevel save failed:', e.message); // never log the email address
       return res.status(502).json({ error: 'unavailable' });
@@ -108,7 +118,7 @@ export default async function handler(req, res) {
           game, level, turns,
           // The GoHighLevel workflow uses this to send the reward email and to make sure
           // each email address receives the reward only once.
-          reward: '$100 coupon code (sent manually by email)',
+          reward: '$100 coupon code (sent by the team by email)',
           reward_rules: rewardRules,
         } : {}),
         tags,
@@ -116,36 +126,9 @@ export default async function handler(req, res) {
       signal: AbortSignal.timeout(8000),
     });
     if (!r.ok) throw new Error(`webhook ${r.status}`);
-    return ok();
+    return ok(event === 'game_won' ? { reward: { status: 'manual' } } : {});
   } catch (e) {
     console.error('signup forward failed:', e.message); // never log the email address
     return res.status(502).json({ error: 'unavailable' });
   }
-}
-
-async function ghl(path, body) {
-  const r = await fetch(`${GHL_API}${path}`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${process.env.GHL_PRIVATE_TOKEN}`,
-      Version: GHL_VERSION,
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: JSON.stringify(body),
-    signal: AbortSignal.timeout(8000),
-  });
-  if (!r.ok) throw new Error(`GoHighLevel ${path.split('/').slice(0, 3).join('/')} ${r.status}`);
-  return r.json().catch(() => ({}));
-}
-
-async function saveToGoHighLevel({ name, email, source, tags }) {
-  const locationId = process.env.GHL_LOCATION_ID || SALT_LOCATION_ID;
-  // 1. Create or update the contact by email. No tags here: upsert would replace existing tags.
-  const up = await ghl('/contacts/upsert', { locationId, firstName: name, email, source: `Website (${source})` });
-  const id = up?.contact?.id;
-  if (!id) throw new Error('GoHighLevel upsert returned no contact id');
-  // 2. Add tags (keeps any tags the contact already has). Winners get "game-winner" and
-  //    "reward-100-coupon"; the team then emails a $100 coupon code by hand.
-  await ghl(`/contacts/${encodeURIComponent(id)}/tags`, { tags });
 }

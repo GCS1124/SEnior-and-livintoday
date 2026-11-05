@@ -84,7 +84,7 @@
     achievement: string;   // e.g. "found all 8 pairs in Memory Match"
     detail?: string;       // e.g. "Normal level · 12 turns"
     artwork?: HTMLCanvasElement;
-    reward?: { recorded: boolean; emailHint: string }; // win + reward recorded in GoHighLevel
+    reward?: { recorded: boolean; emailHint: string; status?: string }; // status: sent | pending | already | manual
     fileName?: string;
     onPlayAgain?: () => void;
   };
@@ -159,7 +159,9 @@
     x.fillStyle = '#ffffff'; x.font = '700 40px Poppins, sans-serif';
     let y = wrap(x, 'You won a $100 coupon code!', cx, 430, 900, 52);
     x.fillStyle = '#e6edf7'; x.font = '400 30px "Atkinson Hyperlegible", sans-serif';
-    y = wrap(x, 'Your coupon code, worth $100 at the SALT Online Store, will be emailed to you within 24–48 hours.', cx, y + 6, 880, 40);
+    y = wrap(x, o.reward?.status === 'sent'
+      ? 'Your coupon code, worth $100 at the SALT Online Store, has been emailed to you. It usually arrives within a few minutes.'
+      : 'Your coupon code, worth $100 at the SALT Online Store, will be emailed to you within 24–48 hours.', cx, y + 6, 880, 40);
     if (o.reward?.emailHint) { x.fillStyle = '#ffe14d'; x.font = '700 30px "Atkinson Hyperlegible", sans-serif'; y = wrap(x, `Account email: ${o.reward.emailHint}`, cx, y + 8, 880, 40); }
     x.fillStyle = '#c3d0e3'; x.font = '400 26px "Atkinson Hyperlegible", sans-serif';
     y = wrap(x, 'Shop at www.saltonlinestore.com and enter your code at checkout. Your email will explain each simple step.', cx, y + 18, 880, 36);
@@ -176,12 +178,17 @@
     $('cel-kicker').textContent = win ? 'OH YEAH!' : 'ALL DONE!';
     $('cel-title').textContent = win ? 'YOU WON!' : 'Beautiful work!';
     const nm = o.name && o.name !== 'Friend' ? `, ${o.name}` : '';
-    const rewarded = win && !!o.reward?.recorded;
+    const already = win && !!o.reward?.recorded && o.reward.status === 'already';
+    const rewarded = win && !!o.reward?.recorded && !already;
     $('cel-msg').textContent = !win ? `Well done${nm}! You finished it.`
       : rewarded ? `You did it${nm}! You’ve won a $100 coupon code!` : `You did it${nm}! Congratulations on your win!`;
     const rw = $('cel-reward');
-    rw.hidden = !win; rw.classList.toggle('warn', win && !rewarded);
-    rw.innerHTML = !win ? '' : rewarded
+    rw.hidden = !win; rw.classList.toggle('warn', win && !rewarded && !already);
+    rw.innerHTML = !win ? '' : already
+      ? `🎉 Thanks for playing again! Your <strong>$100 coupon code</strong> was already sent to <strong>${o.reward!.emailHint}</strong>. It’s one reward per email address. Can’t find it? Check spam or junk, or call <a href="tel:+18884164264">(888) 416-4264</a>.`
+      : rewarded && o.reward!.status === 'sent'
+      ? `🎁 We’ve just emailed your <strong>coupon code worth $100</strong> to <strong>${o.reward!.emailHint}</strong>. It usually arrives <strong>within a few minutes</strong>. If you don’t see it, please check your spam or junk folder.`
+      : rewarded
       ? `🎁 Your <strong>coupon code worth $100</strong> for the SALT Online Store will be emailed to <strong>${o.reward!.emailHint}</strong> within <strong>24–48 hours</strong>, with simple steps to use it.`
       : 'We couldn’t record your reward just now, so it hasn’t been added yet. Please call Courtney’s team at <a href="tel:+18884164264">(888) 416-4264</a> and we’ll sort it out.';
     $('cel-shop').hidden = !win;

@@ -2,7 +2,7 @@
 
 The website collects **first name and email** when people play the games, read online, download printables or join the newsletter. The details go to the **"Senior and living today"** GoHighLevel sub-account (location ID `sbVe09zoUWLiPTabYb5A`).
 
-**Nothing is automated.** The team handles everything after sign-up by hand, including emailing each winner a **coupon code worth $100** for the SALT Online Store.
+**Winner emails are automatic** once Shopify is connected: each winner gets a unique **coupon code worth $100**, created in Shopify and emailed by a GoHighLevel workflow. See **`docs/WINNER-EMAIL-SETUP.md`**. Until that's set up, the team sends codes by hand using the steps at the end of this page.
 
 ## How sign-ups reach GoHighLevel
 
@@ -23,11 +23,13 @@ Until one of these is in place, nothing is saved. Winners see a friendly "please
 |---|---|
 | Sign up on the Games page | `website`, `games` (+ `marketing-opt-in` if ticked) |
 | **Win a game** | `game-winner`, **`reward-100-coupon`** |
+| Code created and saved (starts the email workflow) | **`reward-code-sent`** |
+| Held by a safety check (team approves by adding `reward-approved`) | **`reward-needs-approval`** |
 | Sign up to read a book | `website`, `books`, `reader`, `reading-<book>` |
 | Printables page | `website`, `resources` |
 | Newsletter | `website`, `newsletter`, `marketing-opt-in` |
 
-## The team's manual steps for each winner
+## Manual steps (only while Shopify isn't connected)
 
 1. In GoHighLevel, filter contacts by **`reward-100-coupon`**. Skip anyone already marked (for example with a `reward-sent` tag), because it's one reward per email address.
 2. In **Shopify**, create a discount code worth **$100**. Set the limits you want, for example one use per customer.

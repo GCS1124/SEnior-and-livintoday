@@ -85,3 +85,15 @@ Each stage was built on its own review branch, checked by the owner through a Ve
   - The voucher, the celebration, the story, the guide page (now `/coupon-code/`, with `/store-credit/` forwarding there), the PDF and the video script were all updated.
   - The 10%-per-order wording was removed.
   - GoHighLevel winners are tagged `reward-100-coupon`.
+
+## 7. Stage 9: automatic winner emails
+
+- Each winner gets a **unique, single-use $100 code**, created in Shopify by the website and emailed by a GoHighLevel workflow. It usually arrives within minutes.
+- **Safety checks:**
+  - one code per email;
+  - signed up before winning;
+  - at least 30 seconds of play;
+  - at most 10 codes a day.
+- Wins that fail a check are tagged `reward-needs-approval`. Adding `reward-approved` sends the code.
+- The Shopify app can only create and read discount codes.
+- **Setup:** `docs/WINNER-EMAIL-SETUP.md` (Shopify app, Vercel keys, GoHighLevel fields and two workflows, the email template).

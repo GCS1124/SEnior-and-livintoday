@@ -5,7 +5,7 @@
 | # | On screen | Courtney says |
 |---|---|---|
 | 1 | Courtney on camera. Title: **How to Use Your $100 Coupon Code** | “Hi, Saltines! If you won one of our games, congratulations! You’ve earned a coupon code worth one hundred dollars. Let me show you how to use it.” |
-| 2 | Text: **Check your email (24–48 hours)** + inbox | “Within twenty-four to forty-eight hours after you win, we email you your coupon code. If you don’t see it, peek in your spam or junk folder.” |
+| 2 | Text: **Check your email** + inbox | “Right after you win, we email you your own coupon code. It usually arrives within a few minutes. If you don’t see it, peek in your spam or junk folder.” |
 | 3 | Screen: saltonlinestore.com → product → choose option → **Add to cart** | “Go to w-w-w dot salt online store dot com. Find something you love, choose any options, and tap Add to cart.” |
 | 4 | Screen: cart → **Check out** → sign in with email → code arrives → type code | “Open your cart and tap Check out. The store asks you to sign in. Type your email, and it sends you a short code. Type it in. No password needed.” |
 | 5 | Screen: **Discount code or gift card** box → type code → **Apply** (zoom in) | “Find the box that says Discount code or gift card. Type your coupon code exactly as it is in our email, and tap Apply.” |
