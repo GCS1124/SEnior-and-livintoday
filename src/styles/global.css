@@ -96,7 +96,9 @@ a:hover { color: var(--blue-ink); }
   text-decoration: none; cursor: pointer;
   transition: transform .15s, background .15s, color .15s, box-shadow .15s;
 }
-.btn:hover { transform: translateY(-1px); }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(20,33,61,.16); }
+.btn:active { transform: translateY(1px) scale(.99); box-shadow: none; }
+@media (prefers-reduced-motion: reduce) { .btn, .btn:hover, .btn:active, a.card:hover { transform: none; transition: none; } }
 .btn-primary { background: var(--yellow); color: var(--blue-ink); box-shadow: 0 3px 0 var(--yellow-shadow); }
 .btn-primary:hover { background: var(--yellow-hover); color: var(--blue-ink); }
 .btn-green { background: var(--blue); color: #fff; box-shadow: 0 3px 0 var(--blue-ink); }
@@ -216,3 +218,10 @@ a.card:hover { border-color: var(--yellow); transform: translateY(-3px); box-sha
 .eyebrow { display: inline-block; font: 600 1.6rem/1 var(--font-hand); color: var(--berry); margin-bottom: .35rem; transform: rotate(-2deg); }
 .btn-secondary { background: transparent; color: var(--green-ink); border-color: var(--green); }
 .btn-secondary:hover { background: var(--green-soft); color: var(--green-ink); }
+
+/* Gentle floating decoration (sun, badges). Off for reduced motion. */
+@keyframes salt-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@media (prefers-reduced-motion: no-preference) {
+  .float { animation: salt-float 9s ease-in-out infinite; }
+  .float-slow { animation: salt-float 14s ease-in-out infinite; }
+}

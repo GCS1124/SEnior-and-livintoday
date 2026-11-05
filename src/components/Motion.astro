@@ -1,0 +1,75 @@
+---
+// Gentle, optional motion for the whole site.
+// - Sections and cards fade up softly the first time they scroll into view.
+// - A "Back to top" button appears on long pages.
+// Nothing moves for visitors whose device asks for reduced motion, and content
+// is never hidden if JavaScript is off (the effect is only switched on by script).
+---
+<button type="button" class="to-top" id="to-top" aria-label="Back to the top of the page" hidden>
+  <span aria-hidden="true">↑</span> Top
+</button>
+
+<style is:global>
+  html.motion-ok [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; transition-delay: var(--d, 0s); }
+  html.motion-ok [data-reveal].in { opacity: 1; transform: none; }
+  @media print { [data-reveal] { opacity: 1 !important; transform: none !important; } .to-top { display: none !important; } }
+
+  .to-top {
+    position: fixed; left: 18px; bottom: 18px; z-index: 39;
+    display: inline-flex; align-items: center; gap: 6px;
+    min-height: 52px; padding: 10px 18px; border-radius: 999px;
+    border: 3px solid #fff; background: var(--blue); color: #fff;
+    font: 600 1.05rem var(--font-head); cursor: pointer;
+    box-shadow: 0 10px 24px rgba(20,33,61,.3);
+    transition: transform .2s, background .2s, opacity .3s;
+  }
+  .to-top:hover { background: var(--blue-dark); transform: translateY(-2px); }
+  .to-top[hidden] { display: none; }
+  @media (max-width: 520px) { .to-top { left: 12px; bottom: 12px; padding: 10px 14px; } }
+</style>
+
+<script>
+  const html = document.documentElement;
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  // 1. Soft entrance animations
+  function setupReveal() {
+    if (calm.matches || !('IntersectionObserver' in window)) return;
+    const sections = [...document.querySelectorAll<HTMLElement>('main > section')].slice(1); // never the first (hero) section
+    const targets: HTMLElement[] = [];
+    sections.forEach((sec) => {
+      const wrap = sec.querySelector<HTMLElement>(':scope > .wrap') ?? sec;
+      [...wrap.children].forEach((el) => {
+        if (!(el instanceof HTMLElement) || el.tagName === 'SCRIPT' || el.tagName === 'STYLE') return;
+        // Cards inside grids come in one after another
+        const group = el.matches('.grid, .pgrid, .tiles, .board, ul, ol') ? [...el.children] : [];
+        if (group.length > 1 && group.length <= 24) {
+          group.forEach((c, i) => {
+            if (!(c instanceof HTMLElement) || c.tagName === 'SCRIPT' || c.tagName === 'STYLE') return;
+            c.style.setProperty('--d', `${Math.min(i, 5) * 0.08}s`); targets.push(c);
+          });
+        } else targets.push(el);
+      });
+    });
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    targets.forEach((t) => { t.setAttribute('data-reveal', ''); io.observe(t); });
+    html.classList.add('motion-ok');
+    // Safety net: if anything is still hidden after a while (e.g. very tall element), show it.
+    window.addEventListener('beforeprint', () => targets.forEach((t) => t.classList.add('in')));
+  }
+  setupReveal();
+
+  // 2. Back to top
+  const btn = document.getElementById('to-top') as HTMLButtonElement | null;
+  if (btn) {
+    const toggle = () => { btn.hidden = window.scrollY < 700; };
+    window.addEventListener('scroll', toggle, { passive: true });
+    toggle();
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: calm.matches ? 'auto' : 'smooth' });
+      document.querySelector<HTMLElement>('.brand')?.focus({ preventScroll: true });
+    });
+  }
+</script>

@@ -13,7 +13,13 @@ const faqs = [
   { q: "Is the memory game timed?", a: "No, there's no clock at all. Flip two cards at a time and find the pairs at your own pace. Take a break and come back whenever you like." },
   { q: "Can I play on a tablet or phone?", a: "Yes. Both games work on a computer, tablet or phone. A tablet is often easiest, since you just tap with your finger." },
 ];
-const swatches = ['#e63946', '#ff8fab', '#cc3366', '#ffae00', '#fff200', '#f4a261', '#8bc34a', '#47704c', '#4fc3f7', '#1d4ed8', '#9b5de5', '#8d6e63', '#9e9e9e', '#ffffff'];
+// Crayon box for the coloring book (a real range of colours, so these are not brand colours).
+const swatches = [
+  { c: '#e63946', n: 'Red' }, { c: '#ff8fab', n: 'Rose pink' }, { c: '#cc3366', n: 'Raspberry' }, { c: '#ffae00', n: 'Gold' },
+  { c: '#fff200', n: 'Sunshine yellow' }, { c: '#f4a261', n: 'Orange' }, { c: '#8bc34a', n: 'Grass green' }, { c: '#47704c', n: 'Forest green' },
+  { c: '#4fc3f7', n: 'Sky blue' }, { c: '#1d4ed8', n: 'Royal blue' }, { c: '#9b5de5', n: 'Purple' }, { c: '#8d6e63', n: 'Brown' },
+  { c: '#9e9e9e', n: 'Gray' }, { c: '#ffffff', n: 'White (eraser)' },
+];
 ---
 <Base
   title="Free Online Coloring Book & Memory Game for Seniors"
@@ -34,8 +40,14 @@ const swatches = ['#e63946', '#ff8fab', '#cc3366', '#ffae00', '#fff200', '#f4a26
   <section class="section" id="color">
     <div class="wrap">
       <h2>Online coloring book</h2>
-      <p class="lead">Choose any picture below. Pick a color, then tap a shape to fill it in. Change your mind? Tap it again with a new color. When you’re done, print it out.</p>
-      <p class="hand">1. Choose a picture ({COLORING.length} to pick from)</p>
+      <p class="lead">Relax and color at your own pace. There’s no wrong way to do it.</p>
+      <ol class="howto" aria-label="How to color">
+        <li><span>1</span> Choose a picture</li>
+        <li><span>2</span> Pick a color</li>
+        <li><span>3</span> Tap a shape to fill it</li>
+        <li><span>4</span> Print it when you’re done</li>
+      </ol>
+      <p class="hand">Choose a picture ({COLORING.length} to pick from)</p>
       <div class="pages" role="tablist" aria-label="Choose a picture">
         {COLORING.map((pg, i) => (
           <button type="button" class:list={['pg', { on: i === 0 }]} data-page={String(i)} aria-label={pg.name}>
@@ -44,7 +56,7 @@ const swatches = ['#e63946', '#ff8fab', '#cc3366', '#ffae00', '#fff200', '#f4a26
           </button>
         ))}
       </div>
-      <p class="hand">2. Color it in!</p>
+      <p class="hand">Color it in! Tap any shape.</p>
       <div class="studio">
         <div class="canvas" id="canvas">
           {COLORING.map((pg, i) => (
@@ -53,9 +65,10 @@ const swatches = ['#e63946', '#ff8fab', '#cc3366', '#ffae00', '#fff200', '#f4a26
         </div>
         <div class="tools">
           <p class="hand">Pick a color</p>
-          <div class="swatches">
-            {swatches.map((c, i) => <button type="button" class:list={['sw', { on: i === 3 }]} data-color={c} style={`background:${c}`} aria-label={`Color ${c}`}></button>)}
+          <div class="swatches" role="group" aria-label="Colors">
+            {swatches.map((s, i) => <button type="button" class:list={['sw', { on: i === 3 }]} data-color={s.c} data-name={s.n} style={`background:${s.c}`} aria-label={s.n} aria-pressed={i === 3 ? 'true' : 'false'} title={s.n}></button>)}
           </div>
+          <p class="picked" aria-live="polite">You picked: <strong id="picked-name">Gold</strong> <span class="dot" id="picked-dot" aria-hidden="true"></span></p>
           <div class="btn-row">
             <button type="button" class="btn btn-outline" id="undo">↶ Undo</button>
             <button type="button" class="btn btn-outline" id="clear">Start over</button>
@@ -71,10 +84,27 @@ const swatches = ['#e63946', '#ff8fab', '#cc3366', '#ffae00', '#fff200', '#f4a26
   <section class="section section-cream" id="match">
     <div class="wrap">
       <h2>Memory match: old-time favorites</h2>
-      <p class="lead">Turn over two cards at a time and find the pairs. Take your time. There’s no clock.</p>
-      <p class="score"><span>Turns: <strong id="turns">0</strong></span> <span>Pairs found: <strong id="pairs">0</strong> of 8</span> <button type="button" class="btn btn-outline" id="restart">New game</button></p>
-      <div class="board" id="board" aria-live="polite"></div>
-      <p class="win" id="win" hidden>🎉 You found them all! <a href="/memory-lane/">Take a walk down Memory Lane →</a></p>
+      <p class="lead">Take your time. There’s no clock and no rush.</p>
+      <ol class="howto" aria-label="How to play memory match">
+        <li><span>1</span> Choose how many cards</li>
+        <li><span>2</span> Tap a card to turn it over</li>
+        <li><span>3</span> Tap a second card to look for its twin</li>
+        <li><span>4</span> Find every pair to finish</li>
+      </ol>
+      <div class="levels" role="group" aria-label="How many cards">
+        <button type="button" class="lvl" data-pairs="6" aria-pressed="false">😊 Easy <small>12 cards</small></button>
+        <button type="button" class="lvl" data-pairs="8" aria-pressed="true">🙂 Normal <small>16 cards</small></button>
+        <button type="button" class="lvl" data-pairs="10" aria-pressed="false">💪 Challenge <small>20 cards</small></button>
+      </div>
+      <p class="score">
+        <span>Turns: <strong id="turns">0</strong></span>
+        <span>Pairs found: <strong id="pairs">0</strong> of <strong id="total">8</strong></span>
+        <span class="best" id="best" hidden>Your best: <strong id="best-n"></strong> turns</span>
+        <button type="button" class="btn btn-outline" id="restart">↻ New game</button>
+      </p>
+      <p class="feedback" id="feedback" role="status" aria-live="polite">Tap any card to begin.</p>
+      <div class="board" id="board"></div>
+      <p class="win" id="win" hidden>🎉 You found them all in <strong id="win-turns"></strong> turns! <a href="/memory-lane/">Take a walk down Memory Lane →</a></p>
     </div>
   </section>
 
@@ -103,14 +133,34 @@ const swatches = ['#e63946', '#ff8fab', '#cc3366', '#ffae00', '#fff200', '#f4a26
   .canvas :global(path.c[fill='none']) { fill: none; }
   .swatches { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; margin: .6rem 0 1rem; }
   .sw { aspect-ratio: 1; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 2px var(--line); cursor: pointer; min-width: 44px; }
-  .sw.on { box-shadow: 0 0 0 4px var(--ink); }
+  .sw.on { box-shadow: 0 0 0 4px var(--ink); transform: scale(1.08); }
+  .sw { transition: transform .15s; }
+  .sw:hover { transform: scale(1.08); }
+  .picked { display: flex; align-items: center; gap: 8px; font-size: 1.1rem; margin: 0 0 1rem; }
+  .picked .dot { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--line); background: #ffae00; display: inline-block; }
+  .howto { list-style: none; padding: 0; margin: 1rem 0 1.4rem; display: flex; flex-wrap: wrap; gap: 10px; }
+  .howto li { display: flex; align-items: center; gap: 10px; background: #fff; border: 2px solid var(--line); border-radius: 999px; padding: 8px 16px 8px 8px; font: 600 1.02rem var(--font-head); color: var(--blue-ink); }
+  .howto span { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--yellow); color: var(--blue-ink); font-weight: 700; }
+  .levels { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 1rem; }
+  .lvl { min-height: 56px; padding: 8px 20px; border-radius: 16px; border: 2px solid var(--line); background: #fff; font: 600 1.1rem var(--font-head); color: var(--blue-ink); cursor: pointer; display: flex; flex-direction: column; align-items: flex-start; line-height: 1.2; }
+  .lvl small { font: 400 .9rem var(--font-body); color: var(--ink-soft); }
+  .lvl[aria-pressed='true'] { border-color: var(--blue); background: var(--blue-soft); box-shadow: 0 0 0 2px var(--blue); }
+  .feedback { min-height: 1.8em; font: 600 1.2rem var(--font-head); color: var(--blue); margin: .4rem 0 .2rem; }
+  .best { color: var(--ink-soft); }
   .score { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; font-size: 1.2rem; }
-  .board { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(8px, 3vw, 14px); max-width: 640px; margin-top: 1rem; }
-  :global(.card-m) { aspect-ratio: 1; border-radius: 16px; border: 3px solid var(--gold); background: var(--blue); font-size: 0; cursor: pointer; display: grid; place-items: center; transition: transform .2s, background .2s; }
+  .board { display: grid; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); gap: clamp(8px, 3vw, 14px); max-width: calc(var(--cols, 4) * 160px); margin-top: 1rem; }
+  :global(.card-m) { aspect-ratio: 1; border-radius: 16px; border: 3px solid var(--gold); background: var(--blue); font-size: 0; cursor: pointer; display: grid; place-items: center; transition: transform .25s, background .2s, box-shadow .2s; }
+  :global(.card-m:hover:not(.up):not(.done)) { transform: translateY(-3px); box-shadow: 0 8px 18px rgba(20,33,61,.25); }
+  :global(.card-m:focus-visible) { outline: 4px solid var(--yellow-shadow); outline-offset: 3px; }
+  :global(.card-m.match) { animation: pair-pop .5s ease; }
+  :global(.card-m.miss) { animation: pair-shake .45s ease; }
+  @keyframes pair-pop { 40% { transform: scale(1.1); } }
+  @keyframes pair-shake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+  @media (prefers-reduced-motion: reduce) { :global(.card-m), :global(.card-m.match), :global(.card-m.miss) { animation: none !important; transition: none; } }
   :global(.card-m)::after { content: 'S.A.L.T.'; color: var(--sun); font: 700 .85rem var(--font-head); }
   :global(.card-m.up), :global(.card-m.done) { background: #fff; font-size: clamp(2rem, 7vw, 3.2rem); }
   :global(.card-m.up)::after, :global(.card-m.done)::after { content: none; }
-  :global(.card-m.done) { border-color: var(--green); opacity: .85; }
+  :global(.card-m.done) { border-color: var(--blue); background: var(--yellow-soft); }
   .win { font: 600 1.4rem var(--font-head); color: var(--green-ink); margin-top: 1.4rem; }
   @media print {
     :global(body > *:not(main)), :global(.page-hero), :global(.wave), .tools, .pages, #match, :global(.cta) { display: none !important; }
@@ -124,7 +174,10 @@ const swatches = ['#e63946', '#ff8fab', '#cc3366', '#ffae00', '#fff200', '#f4a26
   const history: [SVGElement, string][] = [];
   const arts = document.querySelectorAll<SVGSVGElement>('#canvas svg');
   document.querySelectorAll<HTMLButtonElement>('.sw').forEach((b) => b.addEventListener('click', () => {
-    color = b.dataset.color!; document.querySelectorAll('.sw').forEach((s) => s.classList.toggle('on', s === b));
+    color = b.dataset.color!;
+    document.querySelectorAll<HTMLButtonElement>('.sw').forEach((s) => { s.classList.toggle('on', s === b); s.setAttribute('aria-pressed', String(s === b)); });
+    document.getElementById('picked-name')!.textContent = b.dataset.name ?? '';
+    (document.getElementById('picked-dot') as HTMLElement).style.background = color;
   }));
   document.querySelectorAll<HTMLButtonElement>('.pg').forEach((b) => b.addEventListener('click', () => {
     document.querySelectorAll('.pg').forEach((p) => p.classList.toggle('on', p === b));
@@ -143,35 +196,67 @@ const swatches = ['#e63946', '#ff8fab', '#cc3366', '#ffae00', '#fff200', '#f4a26
   document.getElementById('print')!.addEventListener('click', () => window.print());
 
   // ---- Memory match ----
-  const ICONS = ['☎️', '📻', '💿', '📺', '⌨️', '🥛', '🎞️', '✉️'];
+  const ICONS: [string, string][] = [
+    ['☎️', 'Telephone'], ['📻', 'Radio'], ['💿', 'Record'], ['📺', 'Television'], ['⌨️', 'Typewriter keys'],
+    ['🥛', 'Milk bottle'], ['🎞️', 'Film reel'], ['✉️', 'Letter'], ['📷', 'Camera'], ['🕰️', 'Mantel clock'],
+  ];
+  const NICE = ['A match! Well done.', 'Lovely, a pair!', 'You found one!', 'Great memory!', 'That’s a pair!'];
   const board = document.getElementById('board')!;
-  const turnsEl = document.getElementById('turns')!, pairsEl = document.getElementById('pairs')!, win = document.getElementById('win')!;
-  let open: HTMLButtonElement[] = [], turns = 0, pairs = 0, lock = false;
+  const $ = (id: string) => document.getElementById(id)!;
+  const turnsEl = $('turns'), pairsEl = $('pairs'), totalEl = $('total'), win = $('win'), fb = $('feedback'), bestEl = $('best'), bestN = $('best-n');
+  let open: HTMLButtonElement[] = [], turns = 0, pairs = 0, lock = false, size = 8;
+  const store = { get: (k: string) => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k: string, v: string) => { try { localStorage.setItem(k, v); } catch { /* private mode */ } } };
+  const showBest = () => { const v = store.get(`salt-match-best-${size}`); bestEl.hidden = !v; bestN.textContent = v ?? ''; };
   function deal() {
-    const deck = [...ICONS, ...ICONS].sort(() => Math.random() - 0.5);
+    const picks = ICONS.slice(0, size);
+    const deck = [...picks, ...picks].map((x) => ({ x, r: Math.random() })).sort((p, q) => p.r - q.r).map((o) => o.x);
     board.innerHTML = ''; open = []; turns = 0; pairs = 0; lock = false; win.hidden = true;
-    turnsEl.textContent = '0'; pairsEl.textContent = '0';
-    deck.forEach((icon) => {
+    turnsEl.textContent = '0'; pairsEl.textContent = '0'; totalEl.textContent = String(size);
+    board.style.setProperty('--cols', size === 10 ? '5' : '4');
+    fb.textContent = 'Tap any card to begin.';
+    deck.forEach(([icon, name], i) => {
       const b = document.createElement('button');
-      b.type = 'button'; b.className = 'card-m'; b.dataset.icon = icon; b.textContent = icon; b.setAttribute('aria-label', 'Hidden card');
+      b.type = 'button'; b.className = 'card-m'; b.dataset.icon = icon; b.dataset.name = name; b.textContent = icon;
+      b.dataset.pos = `${i + 1} of ${deck.length}`;
+      b.setAttribute('aria-label', `Card ${b.dataset.pos}, face down`);
       b.addEventListener('click', () => flip(b));
       board.appendChild(b);
     });
+    showBest();
   }
   function flip(b: HTMLButtonElement) {
     if (lock || b.classList.contains('up') || b.classList.contains('done')) return;
-    b.classList.add('up'); b.setAttribute('aria-label', `Card ${b.dataset.icon}`); open.push(b);
-    if (open.length < 2) return;
+    b.classList.add('up'); b.setAttribute('aria-label', `Card ${b.dataset.pos}: ${b.dataset.name}`); open.push(b);
+    if (open.length < 2) { fb.textContent = `${b.dataset.name}. Now find its twin.`; return; }
     turns++; turnsEl.textContent = String(turns);
     const [a, c] = open;
     if (a.dataset.icon === c.dataset.icon) {
-      a.classList.add('done'); c.classList.add('done'); open = []; pairs++; pairsEl.textContent = String(pairs);
-      if (pairs === ICONS.length) win.hidden = false;
+      [a, c].forEach((x) => { x.classList.add('done', 'match'); x.setAttribute('aria-label', `Card ${x.dataset.pos}: ${x.dataset.name}, matched`); });
+      open = []; pairs++; pairsEl.textContent = String(pairs);
+      fb.textContent = `${NICE[pairs % NICE.length]} ${a.dataset.name}s.`;
+      if (pairs === size) {
+        $('win-turns').textContent = String(turns);
+        win.hidden = false;
+        fb.textContent = `All ${size} pairs found!`;
+        const prev = Number(store.get(`salt-match-best-${size}`) || 0);
+        if (!prev || turns < prev) store.set(`salt-match-best-${size}`, String(turns));
+        showBest();
+      }
     } else {
       lock = true;
-      setTimeout(() => { a.classList.remove('up'); c.classList.remove('up'); a.setAttribute('aria-label', 'Hidden card'); c.setAttribute('aria-label', 'Hidden card'); open = []; lock = false; }, 1100);
+      fb.textContent = 'Not a pair. Take a good look, then try again.';
+      setTimeout(() => { a.classList.add('miss'); c.classList.add('miss'); }, 500);
+      setTimeout(() => {
+        [a, c].forEach((x) => { x.classList.remove('up', 'miss'); x.setAttribute('aria-label', `Card ${x.dataset.pos}, face down`); });
+        open = []; lock = false;
+      }, 1500);
     }
   }
-  document.getElementById('restart')!.addEventListener('click', deal);
+  document.querySelectorAll<HTMLButtonElement>('.lvl').forEach((btn) => btn.addEventListener('click', () => {
+    size = Number(btn.dataset.pairs);
+    document.querySelectorAll('.lvl').forEach((x) => x.setAttribute('aria-pressed', String(x === btn)));
+    deal();
+  }));
+  $('restart').addEventListener('click', deal);
   deal();
 </script>

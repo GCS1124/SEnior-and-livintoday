@@ -23,7 +23,7 @@ const current = (href: string) => (path.startsWith(href) || (href === '/games/' 
       <a class="btn btn-primary" href="/contact/">Book a free call</a>
     </div>
     <details class="mobile">
-      <summary><span aria-hidden="true">☰</span> Menu</summary>
+      <summary aria-label="Open the menu"><span class="ic" aria-hidden="true">☰</span> <span class="lbl">Menu</span></summary>
       <nav aria-label="Main (mobile)">
         <ul>
           {NAV.map((item) => <li><a href={item.href} aria-current={current(item.href)}><span aria-hidden="true">{item.icon}</span> {item.label}</a></li>)}
@@ -31,6 +31,7 @@ const current = (href: string) => (path.startsWith(href) || (href === '/games/' 
           <li><a href="/contact/"><span aria-hidden="true">📞</span> Contact</a></li>
         </ul>
         <a class="btn btn-primary book" href="/contact/">Book a free call</a>
+        <button type="button" class="btn btn-outline book" data-ask>💬 Ask S.A.L.T.</button>
       </nav>
     </details>
   </div>
@@ -79,6 +80,12 @@ const current = (href: string) => (path.startsWith(href) || (href === '/games/' 
   .mobile li a { display: block; padding: 13px 4px; font: 600 1.15rem var(--font-head); text-decoration: none; color: var(--ink); border-bottom: 1px solid var(--line); }
   .mobile a[aria-current='page'] { color: var(--berry); }
   .mobile .book { width: 100%; }
+  .mobile[open] summary { background: var(--blue); color: #fff; border-color: var(--blue); }
+  .mobile li a:hover, .mobile li a:focus-visible { color: var(--blue); background: var(--blue-pale); }
+  @media (prefers-reduced-motion: no-preference) {
+    .mobile[open] nav { animation: menu-in .22s ease-out; }
+    @keyframes menu-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+  }
 
   @media (min-width: 1100px) {
     .mobile { display: none; }
@@ -86,3 +93,23 @@ const current = (href: string) => (path.startsWith(href) || (href === '/games/' 
     .desk { display: block; }
   }
 </style>
+
+<script>
+  // Mobile menu: show "Close" while open, and close it with Escape,
+  // a tap outside the menu, or after choosing a link.
+  const menu = document.querySelector<HTMLDetailsElement>('details.mobile');
+  if (menu) {
+    const summary = menu.querySelector('summary')!;
+    const lbl = summary.querySelector('.lbl')!;
+    const ic = summary.querySelector('.ic')!;
+    const sync = () => {
+      lbl.textContent = menu.open ? 'Close' : 'Menu';
+      ic.textContent = menu.open ? '✕' : '☰';
+      summary.setAttribute('aria-label', menu.open ? 'Close the menu' : 'Open the menu');
+    };
+    menu.addEventListener('toggle', sync);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menu.open) { menu.open = false; summary.focus(); } });
+    document.addEventListener('click', (e) => { if (menu.open && !menu.contains(e.target as Node)) menu.open = false; });
+    menu.querySelectorAll('a, button').forEach((el) => el.addEventListener('click', () => { menu.open = false; }));
+  }
+</script>
