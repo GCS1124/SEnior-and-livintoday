@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro';
 import AskSalt from '../components/AskSalt.astro';
 import Motion from '../components/Motion.astro';
 import Celebration from '../components/Celebration.astro';
+import NewsletterSignup from '../components/NewsletterSignup.astro';
 import { SITE } from '../data/site';
 
 interface Crumb { name: string; href: string }
@@ -166,6 +167,7 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': [...
     <main id="main">
       <slot />
     </main>
+    <NewsletterSignup />
     <Footer />
     <AskSalt />
     <Motion />

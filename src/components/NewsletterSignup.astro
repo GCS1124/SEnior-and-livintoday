@@ -1,0 +1,83 @@
+---
+// Newsletter sign-up band (shown above the footer on every page).
+// First name + email go to /api/register (source "newsletter"), which saves them in
+// GoHighLevel with the tags website, newsletter and marketing-opt-in. Nothing is kept in the browser.
+---
+<section class="news" aria-labelledby="news-title">
+  <div class="wrap news-in">
+    <div class="copy">
+      <p class="kick">From Courtney’s desk</p>
+      <h2 id="news-title">Get helpful tips by email</h2>
+      <p>Practical advice for seniors and caregivers, new free games and books, and SALT Online Store offers. Unsubscribe any time with one click.</p>
+    </div>
+    <form class="nform" novalidate>
+      <div class="fields">
+        <label><span>First name</span><input name="name" autocomplete="given-name" maxlength="80" required /></label>
+        <label><span>Email address</span><input name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" required /></label>
+      </div>
+      <label class="hp" aria-hidden="true">Company <input name="company" tabindex="-1" autocomplete="off" /></label>
+      <button class="btn btn-primary" type="submit">Sign me up</button>
+      <p class="nmsg" role="status" aria-live="polite"></p>
+      <p class="fine">By signing up you agree to receive emails from Senior and Living Today. We never sell your details. <a href="/privacy-policy/#signups">Privacy</a></p>
+    </form>
+  </div>
+</section>
+
+<style>
+  .news { background: var(--yellow-soft); border-top: 4px solid var(--yellow); padding: clamp(34px, 6vw, 56px) 0; }
+  .news-in { display: grid; gap: 24px; align-items: center; }
+  @media (min-width: 900px) { .news-in { grid-template-columns: 1fr 1.15fr; gap: 48px; } }
+  .kick { font: 600 1.5rem/1 var(--font-hand); color: var(--blue); margin: 0 0 .3rem; }
+  .news h2 { margin-bottom: .3em; }
+  .copy p:last-child { margin: 0; font-size: 1.1rem; color: var(--ink-soft); }
+  .fields { display: grid; gap: 12px; }
+  @media (min-width: 560px) { .fields { grid-template-columns: 1fr 1.3fr; } }
+  .nform label span { display: block; font: 600 1rem var(--font-head); color: var(--blue-ink); margin-bottom: 4px; }
+  .nform input { width: 100%; min-height: 52px; font: 1.1rem var(--font-body); padding: 10px 14px; border: 2px solid var(--line); border-radius: 14px; background: #fff; color: var(--ink); }
+  .nform input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 4px rgba(255,180,0,.3); }
+  .nform input[aria-invalid='true'] { border-color: #b3261e; }
+  .nform .btn { margin-top: 14px; }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .nmsg { min-height: 1.4em; margin: 10px 0 0; font-weight: 700; color: var(--blue); }
+  .nmsg.bad { color: #b3261e; }
+  .fine { font-size: .92rem; color: var(--ink-soft); margin: 4px 0 0; }
+  @media print { .news { display: none; } }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('.nform').forEach((form) => {
+    const btn = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    const msg = form.querySelector<HTMLElement>('.nmsg')!;
+    const nameIn = form.elements.namedItem('name') as HTMLInputElement;
+    const emailIn = form.elements.namedItem('email') as HTMLInputElement;
+    const say = (t: string, bad = false, field?: HTMLInputElement) => {
+      msg.textContent = t; msg.classList.toggle('bad', bad);
+      [nameIn, emailIn].forEach((f) => f.removeAttribute('aria-invalid'));
+      if (field) { field.setAttribute('aria-invalid', 'true'); field.focus(); }
+    };
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (btn.disabled) return; // no double submissions
+      const name = nameIn.value.trim().replace(/\s+/g, ' ').slice(0, 80);
+      const email = emailIn.value.trim().toLowerCase();
+      if (!name) return say('Please type your first name.', true, nameIn);
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return say('Please check your email address. It should look like name@example.com.', true, emailIn);
+      btn.disabled = true; btn.textContent = 'One moment…'; say('');
+      try {
+        const r = await fetch('/api/register', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, marketing: true, source: 'newsletter', company: (form.elements.namedItem('company') as HTMLInputElement).value }),
+        });
+        const j = await r.json().catch(() => ({}));
+        if (r.ok) { form.reset(); say(`Thank you, ${name}! You’re on the list. 💛`); return; }
+        if (r.status === 400) return say(j.message || 'Please check your details.', true, j.error === 'email' ? emailIn : nameIn);
+        if (r.status === 429) return say(j.message || 'Please wait a few minutes and try again.', true);
+        say('Sorry, we couldn’t sign you up just now. Please try again later, or call (888) 416-4264.', true);
+      } catch {
+        say('Sorry, we couldn’t sign you up just now. Please check your connection and try again.', true);
+      } finally {
+        btn.disabled = false; btn.textContent = 'Sign me up';
+      }
+    });
+  });
+</script>
