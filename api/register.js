@@ -12,9 +12,9 @@
 //   SIGNUP_WEBHOOK_TOKEN optional Bearer token for that webhook.
 //
 // GoHighLevel result for every visitor: the contact is created or updated by email, then tagged
-//   website · <source> · [marketing-opt-in]                         on sign-up
-//   game-winner · reward-100-store-credit (+ a note with the details) on a win
-// A GoHighLevel workflow triggered by the tag "reward-100-store-credit" sends the reward email.
+//   website · <source> · [marketing-opt-in]   on sign-up
+//   game-winner · reward-100-store-credit      on a win
+// GoHighLevel handles the follow-up emails; the team adds the $100 store credit in Shopify by hand.
 //
 // With nothing configured the endpoint answers 503 "not_configured" and the website
 // lets the visitor carry on without saving anything (and without promising a reward).
@@ -77,7 +77,7 @@ export default async function handler(req, res) {
   // Preferred: save straight into GoHighLevel.
   if (process.env.GHL_PRIVATE_TOKEN) {
     try {
-      await saveToGoHighLevel({ name, email, source, tags, event, game, level, turns, marketing, rewardRules });
+      await saveToGoHighLevel({ name, email, source, tags });
       return res.status(200).json({ ok: true });
     } catch (e) {
       console.error('GoHighLevel save failed:', e.message); // never log the email address
@@ -135,29 +135,13 @@ async function ghl(path, body) {
   return r.json().catch(() => ({}));
 }
 
-async function saveToGoHighLevel({ name, email, source, tags, event, game, level, turns, marketing, rewardRules }) {
+async function saveToGoHighLevel({ name, email, source, tags }) {
   const locationId = process.env.GHL_LOCATION_ID || SALT_LOCATION_ID;
   // 1. Create or update the contact by email. No tags here: upsert would replace existing tags.
   const up = await ghl('/contacts/upsert', { locationId, firstName: name, email, source: `Website (${source})` });
   const id = up?.contact?.id;
   if (!id) throw new Error('GoHighLevel upsert returned no contact id');
-  // 2. Wins: leave a note for the team with what happened and what was promised.
-  //    Best effort: a failed note must not block the reward.
-  if (event === 'game_won') {
-    const when = new Date().toLocaleString('en-US', { timeZone: 'America/New_York', dateStyle: 'medium', timeStyle: 'short' });
-    await ghl(`/contacts/${encodeURIComponent(id)}/notes`, {
-      title: 'Website game win: $100 SALT Store Credit',
-      body: [
-        `Won ${game || 'a game'}${level ? ` (${level} level)` : ''}${turns != null ? ` in ${turns} turns` : ''} on seniorandlivingtoday.com, ${when} ET.`,
-        'Promised on screen: $100 SALT Store Credit for the SALT Online Store, credited within 24-48 hours to the store account that uses this email.',
-        `Rules shown: ${rewardRules} One reward per email address.`,
-        `Marketing opt-in: ${marketing ? 'yes' : 'no'}.`,
-        'To do: if this email has not received the reward before, issue $100 store credit in Shopify (Customers > this customer > Store credit) and tag the contact "reward-sent".',
-      ].join('\n'),
-    }).catch((e) => console.error('GoHighLevel note failed:', e.message));
-  }
-  // 3. Add tags LAST (keeps any tags the contact already has). The tag
-  //    "reward-100-store-credit" starts the reward workflow, so the website only says
-  //    "recorded" when this step has succeeded.
+  // 2. Add tags (keeps any tags the contact already has). Winners get "game-winner" and
+  //    "reward-100-store-credit"; the team then issues the $100 store credit in Shopify by hand.
   await ghl(`/contacts/${encodeURIComponent(id)}/tags`, { tags });
 }
