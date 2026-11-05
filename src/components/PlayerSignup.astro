@@ -55,7 +55,7 @@ const {
         </form>
       </div>
       <div class="ready" hidden>
-        <p><span class="wave-hand" aria-hidden="true">👋</span> Welcome, <strong class="pname"></strong>!{book ? ' Enjoy your reading.' : <> Rewards go to <strong class="pmail"></strong>. Have fun!</>} <button type="button" class="change">Not you? Change details</button></p>
+        <p><span class="wave-hand" aria-hidden="true">👋</span> Welcome, <strong class="pname"></strong>!{source === 'games' ? <> Rewards go to <strong class="pmail"></strong>. Have fun!</> : book ? ' Enjoy your reading.' : ' Enjoy!'} <button type="button" class="change">Not you? Change details</button></p>
       </div>
     </div>
   </div>

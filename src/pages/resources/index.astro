@@ -1,0 +1,91 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import PlayerSignup from '../../components/PlayerSignup.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE, storeLink } from '../../data/site';
+
+const crumbs = [{ name: 'Free Printables & Downloads', href: '/resources/' }];
+// Only approved resources that already exist. "gated" ones unlock after a free sign-up.
+const items = [
+  { icon: '🗓️', title: 'Free daily planner (PDF)', text: 'A simple printable daily planner for appointments, medicines and to-dos.', href: SITE.links.freePlanner, label: '⬇ Download the planner', gated: true, external: true },
+  { icon: '🗣️', title: 'Final arrangements: 10-point discussion guide', text: 'Ten gentle topics to talk through with your family. Read it online or print the page.', href: '/resources/final-arrangements-discussion-guide/', label: 'Open the guide', also: { href: '/read/final-arrangements-guide/', label: '📖 Read in the online reader' } },
+  { icon: '💳', title: 'How to use your SALT Store Credit (PDF)', text: 'A large-print, step-by-step guide to signing in, finding your balance and using your credit.', href: '/downloads/salt-store-credit-guide.pdf', label: '⬇ Download the guide', download: true },
+  { icon: '🖍️', title: 'Coloring pages to print', text: '16 relaxing pictures. Color online, then print, or print them blank to color by hand.', href: '/games/#color', label: 'Choose a picture' },
+  { icon: '💌', title: 'Greeting card maker', text: 'Add a photo and your own words. Print it, save it as a PDF or share it.', href: '/greeting-cards/', label: 'Make a card' },
+  { icon: '📒', title: 'Fillable PDF planners & journals', text: 'Medication tracker, appointment planner, daily care log and more, from our SALT Online Store.', href: storeLink('/collections/digital-products', 'resources-page'), label: 'Shop Now: digital planners ↗', external: true },
+];
+---
+<Base
+  title="Free Printables & Downloads for Seniors and Caregivers"
+  description="Free printables from Senior and Living Today: a daily planner, a final arrangements discussion guide, coloring pages, a greeting card maker and a store credit guide."
+  breadcrumbs={crumbs}
+>
+  <PageHero
+    title="Free printables & downloads"
+    kicker="Print, color, plan"
+    lead="Helpful things to print and keep by the phone, on the fridge or in your planner. All free."
+    breadcrumbs={crumbs}
+  />
+
+  <PlayerSignup
+    source="resources"
+    title="Unlock the free downloads"
+    intro="Tell us your first name and email, and the downloads marked 🔓 open right away. It’s free."
+    emailNote="Please enter your correct email. We only send you news if you tick the box below."
+    buttonLabel="Unlock downloads"
+  />
+
+  <section class="section">
+    <div class="wrap">
+      <ul class="res">
+        {items.map((it) => (
+          <li class="item">
+            <span class="ic" aria-hidden="true">{it.icon}</span>
+            <div>
+              <h2>{it.title} {it.gated && <span class="lock" title="Free sign-up needed">🔓 free sign-up</span>}</h2>
+              <p>{it.text}</p>
+              <div class="acts">
+                {it.gated ? (
+                  <>
+                    <a class="btn btn-primary gated" href={it.href} target="_blank" rel="noopener" hidden>{it.label}</a>
+                    <a class="btn btn-outline locked" href="#player">Sign up above to download</a>
+                  </>
+                ) : (
+                  <a class:list={['btn', it.download ? 'btn-primary' : 'btn-outline']} href={it.href} {...(it.download ? { download: '' } : {})} {...(it.external ? { target: '_blank', rel: 'noopener' } : {})}>{it.label}</a>
+                )}
+                {it.also && <a class="btn btn-outline" href={it.also.href}>{it.also.label}</a>}
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p class="done" id="unlocked" role="status" aria-live="polite" hidden>🎉 Downloads unlocked! Tap “Download” to save or print. On a phone, the file opens in a new tab: use your Share or Print button there.</p>
+    </div>
+  </section>
+
+  <CtaBand title="Looking for something we don’t have yet?" text="Tell us what would help you or your family. We’re always adding new printables." />
+</Base>
+
+<style>
+  .res { list-style: none; padding: 0; margin: 0; display: grid; gap: 20px; }
+  @media (min-width: 900px) { .res { grid-template-columns: 1fr 1fr; } }
+  .item { display: grid; grid-template-columns: 64px 1fr; gap: 16px; background: #fff; border: 2px solid var(--line); border-radius: 20px; padding: 22px; }
+  .item:hover { border-color: var(--yellow); }
+  .ic { width: 60px; height: 60px; border-radius: 16px; background: var(--blue-soft); display: grid; place-items: center; font-size: 1.9rem; }
+  .item h2 { font-size: 1.3rem; margin-bottom: .3em; }
+  .lock { display: inline-block; font: 600 .85rem var(--font-head); background: var(--yellow-soft); color: var(--blue-ink); border: 1px solid var(--yellow); border-radius: 999px; padding: 2px 10px; vertical-align: middle; }
+  .acts { display: flex; flex-wrap: wrap; gap: 10px; }
+  .acts .btn { min-height: 52px; padding: 10px 18px; font-size: 1rem; }
+  .done { margin-top: 1.6rem; padding: 14px 18px; border-radius: 14px; background: var(--yellow-soft); border: 2px solid var(--yellow); font: 600 1.1rem var(--font-head); color: var(--blue-ink); }
+</style>
+
+<script>
+  // Downloads marked "free sign-up" unlock once the visitor signs up (or returns in the same visit).
+  document.addEventListener('salt:player', () => {
+    document.querySelectorAll<HTMLElement>('.gated').forEach((a) => (a.hidden = false));
+    document.querySelectorAll<HTMLElement>('.locked').forEach((a) => (a.hidden = true));
+    const msg = document.getElementById('unlocked')!;
+    msg.hidden = false;
+  });
+</script>
