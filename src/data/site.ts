@@ -52,7 +52,7 @@ export const SITE = {
 export const NAV = [
   { href: '/help/', label: 'Get Help', icon: '💬' },
   { href: '/find-help/', label: 'Find Help Near Me', icon: '📍' },
-  { href: '/planners/', label: 'Planners', icon: '📘' },
+  { href: '/books/', label: 'Books', icon: '📘' },
   { href: '/gifts/', label: 'Gifts', icon: '🎁' },
   { href: '/blog/', label: 'Blog', icon: '📰' },
   { href: '/videos/', label: 'Videos', icon: '▶️' },

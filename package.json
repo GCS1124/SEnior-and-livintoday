@@ -5,6 +5,7 @@
   "type": "module",
   "description": "Senior and Living Today (S.A.L.T.) website - static Astro site deployed on Vercel",
   "scripts": {
+    "prebuild": "node scripts/build-books.mjs",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",

@@ -49,6 +49,8 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
+/* Anything marked hidden stays hidden, even if a component gives it a display style. */
+[hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 

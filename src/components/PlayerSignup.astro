@@ -11,16 +11,19 @@
 // <html> gets the class "player-ready".
 //   window.saltPlayer()          -> first name
 //   window.saltReportWin(detail) -> Promise<{ recorded: boolean, emailHint: string }>
-interface Props { source?: string; title?: string; intro?: string }
+interface Props { source?: string; title?: string; intro?: string; book?: string; buttonLabel?: string; emailNote?: string }
 const {
   source = 'games',
   title = 'Play, win, and earn a $100 SALT Store Credit',
   intro = 'Tell us who’s playing. Win a game and we’ll add a $100 SALT Store Credit to your SALT Online Store account.',
+  book = '',
+  buttonLabel = 'Start playing',
+  emailNote = 'Please enter your correct email. Your reward is sent to this email, and it’s the email you’ll use to sign in at the SALT Online Store.',
 } = Astro.props;
 ---
 <section class="signup-wrap" id="player">
   <div class="wrap">
-    <div class="signup" data-source={source}>
+    <div class="signup" data-source={source} data-book={book} data-label={buttonLabel}>
       <div class="pending">
         <h2>{title}</h2>
         <p class="intro">{intro}</p>
@@ -35,7 +38,7 @@ const {
               <input name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" required aria-describedby="email-note" />
             </label>
           </div>
-          <p class="email-note" id="email-note">📧 <strong>Please enter your correct email.</strong> Your reward is sent to this email, and it’s the email you’ll use to sign in at the SALT Online Store.</p>
+          <p class="email-note" id="email-note">📧 {emailNote}</p>
           <label class="hp" aria-hidden="true">Company <input name="company" tabindex="-1" autocomplete="off" /></label>
           <label class="check">
             <input type="checkbox" name="marketing" />
@@ -43,16 +46,16 @@ const {
           </label>
           <p class="err" role="alert" hidden></p>
           <div class="acts">
-            <button class="btn btn-primary" type="submit">Start playing <span aria-hidden="true">→</span></button>
+            <button class="btn btn-primary" type="submit">{buttonLabel} <span aria-hidden="true">→</span></button>
           </div>
           <p class="privacy">
             🔒 We only ask for your name and email. We never sell or share them, and we never ask for passwords, bank or Social Security numbers.{' '}
-            <a href="/privacy-policy/#signups">How we use your details</a> · <a href="/store-credit/">How the store credit works</a>
+            <a href="/privacy-policy/#signups">How we use your details</a>{!book && <> · <a href="/store-credit/">How the store credit works</a></>}
           </p>
         </form>
       </div>
       <div class="ready" hidden>
-        <p><span class="wave-hand" aria-hidden="true">👋</span> Welcome, <strong class="pname"></strong>! Rewards go to <strong class="pmail"></strong>. Have fun! <button type="button" class="change">Not you? Change details</button></p>
+        <p><span class="wave-hand" aria-hidden="true">👋</span> Welcome, <strong class="pname"></strong>!{book ? ' Enjoy your reading.' : <> Rewards go to <strong class="pmail"></strong>. Have fun!</>} <button type="button" class="change">Not you? Change details</button></p>
       </div>
     </div>
   </div>
@@ -126,13 +129,15 @@ const {
     playerSource = box.dataset.source || 'games';
     nameIn.value = ss.get(KEY) || ''; // friendly prefill; the email is always typed again
 
-    const go = (name: string, email: string) => {
+    const book = box.dataset.book || '';
+    const label = box.dataset.label || 'Start playing';
+    const go = (name: string, email: string, readPass?: string) => {
       player = name; playerEmail = email; ss.set(KEY, name);
       box.querySelector('.pname')!.textContent = name;
-      box.querySelector('.pmail')!.textContent = email;
+      const pm = box.querySelector('.pmail'); if (pm) pm.textContent = email;
       pending.hidden = true; ready.hidden = false; box.classList.add('done');
       document.documentElement.classList.add('player-ready');
-      document.dispatchEvent(new CustomEvent('salt:player', { detail: { name } }));
+      document.dispatchEvent(new CustomEvent('salt:player', { detail: { name, book, readPass } }));
     };
     const fail = (msg: string, field?: HTMLInputElement) => {
       err.textContent = msg; err.hidden = false;
@@ -153,17 +158,18 @@ const {
       try {
         const r = await fetch('/api/register', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, marketing, source: playerSource, company: (form.elements.namedItem('company') as HTMLInputElement).value }),
+          body: JSON.stringify({ name, email, marketing, source: playerSource, ...(book ? { book } : {}), company: (form.elements.namedItem('company') as HTMLInputElement).value }),
         });
         const j = await r.json().catch(() => ({}));
         if (r.status === 400) { fail(j.message || 'Please check your details.', j.error === 'email' ? emailIn : nameIn); return; }
         if (r.status === 429) { fail(j.message || 'Please wait a few minutes and try again.'); return; }
         // Saved, or the sign-up service is briefly unavailable: never block the game.
-        go(name, email);
+        // (Books only open with the reading pass that a successful sign-up returns.)
+        go(name, email, r.ok ? j.readPass : undefined);
       } catch {
         go(name, email);
       } finally {
-        btn.disabled = false; btn.innerHTML = 'Start playing <span aria-hidden="true">→</span>';
+        btn.disabled = false; btn.innerHTML = `${label} <span aria-hidden="true">→</span>`;
       }
     });
     box.querySelector('.change')!.addEventListener('click', () => {

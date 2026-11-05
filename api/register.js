@@ -21,6 +21,7 @@
 
 const GHL_API = process.env.GHL_API_BASE || 'https://services.leadconnectorhq.com'; // override only for local tests
 const GHL_VERSION = '2021-07-28';
+import { readPass } from './_lib/reading-pass.js';
 const SALT_LOCATION_ID = 'sbVe09zoUWLiPTabYb5A'; // "Senior and living today" sub-account (not a secret)
 
 const ALLOWED = [/^https:\/\/(www\.)?seniorandlivingtoday\.com$/, /^https:\/\/[a-z0-9-]+\.vercel\.app$/, /^http:\/\/localhost(:\d+)?$/];
@@ -65,20 +66,22 @@ export default async function handler(req, res) {
   const game = clean(body.game, 40);
   const level = clean(body.level, 20);
   const turns = Number.isFinite(Number(body.turns)) ? Math.max(0, Math.min(999, Math.round(Number(body.turns)))) : null;
+  const book = /^[a-z0-9-]{1,60}$/.test(String(body.book || '')) ? String(body.book) : '';
   if (!name) return res.status(400).json({ error: 'name', message: 'Please type your first name.' });
   if (!EMAIL.test(email)) return res.status(400).json({ error: 'email', message: 'That email address doesn’t look quite right. Please check it.' });
 
   const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
   if (limited(ip)) return res.status(429).json({ error: 'busy', message: 'Too many tries in a short time. Please wait a few minutes.' });
 
-  const tags = ['website', source, ...(marketing ? ['marketing-opt-in'] : []), ...(event === 'game_won' ? ['game-winner', 'reward-100-store-credit'] : [])];
+  const tags = ['website', source, ...(marketing ? ['marketing-opt-in'] : []), ...(event === 'game_won' ? ['game-winner', 'reward-100-store-credit'] : []), ...(book ? ['reader', `reading-${book}`] : [])];
+  const ok = () => res.status(200).json({ ok: true, ...(book ? { readPass: readPass(book) } : {}) });
   const rewardRules = 'Use up to 10% of each order from the credit until the $100 is used. Credited within 24-48 hours to the store account with this email.';
 
   // Preferred: save straight into GoHighLevel.
   if (process.env.GHL_PRIVATE_TOKEN) {
     try {
       await saveToGoHighLevel({ name, email, source, tags });
-      return res.status(200).json({ ok: true });
+      return ok();
     } catch (e) {
       console.error('GoHighLevel save failed:', e.message); // never log the email address
       return res.status(502).json({ error: 'unavailable' });
@@ -99,6 +102,7 @@ export default async function handler(req, res) {
         marketing_consent: marketing,
         consent_text: marketing ? 'Yes, send me occasional news and offers from Senior and Living Today. I can unsubscribe at any time.' : '',
         event,
+        ...(book ? { book } : {}),
         signed_up_at: new Date().toISOString(),
         ...(event === 'game_won' ? {
           game, level, turns,
@@ -112,7 +116,7 @@ export default async function handler(req, res) {
       signal: AbortSignal.timeout(8000),
     });
     if (!r.ok) throw new Error(`webhook ${r.status}`);
-    return res.status(200).json({ ok: true });
+    return ok();
   } catch (e) {
     console.error('signup forward failed:', e.message); // never log the email address
     return res.status(502).json({ error: 'unavailable' });
