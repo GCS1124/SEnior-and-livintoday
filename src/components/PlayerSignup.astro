@@ -1,18 +1,21 @@
 ---
-// "Before you play" sign-up card: first name + email, a short privacy note,
-// and a SEPARATE, optional box for news and offers (never pre-ticked).
+// "Before you play" sign-up card: first name + email (both required), a short
+// privacy note, and a SEPARATE, optional box for news and offers (never pre-ticked).
 //
 // Details go only to /api/register, which forwards them to the business's own
-// email system. The browser keeps just the first name for this visit (so the
-// games can say "Well done, Sarah!"); the email address is never stored here.
+// GoHighLevel account. The browser keeps just the first name for this visit; the
+// email address lives only in this page's memory (so a win can be sent with it)
+// and is never written to browser storage.
 //
 // When a visitor is ready to play, the page receives a "salt:player" event and
-// <html> gets the class "player-ready". window.saltPlayer() returns the name.
+// <html> gets the class "player-ready".
+//   window.saltPlayer()          -> first name
+//   window.saltReportWin(detail) -> Promise<{ recorded: boolean, emailHint: string }>
 interface Props { source?: string; title?: string; intro?: string }
 const {
   source = 'games',
-  title = 'Before you play, tell us who’s playing',
-  intro = 'We’ll use your first name to cheer you on when you win, and on your certificate.',
+  title = 'Play, win, and earn a $100 SALT Store Credit',
+  intro = 'Tell us who’s playing. Win a game and we’ll add a $100 SALT Store Credit to your SALT Online Store account.',
 } = Astro.props;
 ---
 <section class="signup-wrap" id="player">
@@ -29,9 +32,10 @@ const {
             </label>
             <label>
               <span>Your email address</span>
-              <input name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" required />
+              <input name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" required aria-describedby="email-note" />
             </label>
           </div>
+          <p class="email-note" id="email-note">📧 <strong>Please enter your correct email.</strong> Your reward is sent to this email, and it’s the email you’ll use to sign in at the SALT Online Store.</p>
           <label class="hp" aria-hidden="true">Company <input name="company" tabindex="-1" autocomplete="off" /></label>
           <label class="check">
             <input type="checkbox" name="marketing" />
@@ -40,16 +44,15 @@ const {
           <p class="err" role="alert" hidden></p>
           <div class="acts">
             <button class="btn btn-primary" type="submit">Start playing <span aria-hidden="true">→</span></button>
-            <button class="skip-play" type="button">Just play without signing up</button>
           </div>
           <p class="privacy">
             🔒 We only ask for your name and email. We never sell or share them, and we never ask for passwords, bank or Social Security numbers.{' '}
-            <a href="/privacy-policy/#signups">How we use your details</a>
+            <a href="/privacy-policy/#signups">How we use your details</a> · <a href="/store-credit/">How the store credit works</a>
           </p>
         </form>
       </div>
       <div class="ready" hidden>
-        <p><span class="wave-hand" aria-hidden="true">👋</span> Welcome, <strong class="pname"></strong>! Have fun. <button type="button" class="change">Not you? Change name</button></p>
+        <p><span class="wave-hand" aria-hidden="true">👋</span> Welcome, <strong class="pname"></strong>! Rewards go to <strong class="pmail"></strong>. Have fun! <button type="button" class="change">Not you? Change details</button></p>
       </div>
     </div>
   </div>
@@ -66,6 +69,7 @@ const {
   .sform input:not([type='checkbox']) { width: 100%; min-height: 54px; font: 1.15rem var(--font-body); padding: 10px 14px; border: 2px solid var(--line); border-radius: 14px; background: #fff; color: var(--ink); }
   .sform input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 4px rgba(255,180,0,.3); }
   .sform input[aria-invalid='true'] { border-color: #b3261e; }
+  .email-note { margin: 12px 0 0; padding: 10px 14px; background: var(--yellow-soft); border-left: 5px solid var(--yellow); border-radius: 0 12px 12px 0; font-size: 1.02rem; color: var(--blue-ink); }
   .check { display: flex; gap: 12px; align-items: flex-start; margin: 16px 0 4px; cursor: pointer; }
   .check input { width: 26px; height: 26px; margin-top: 2px; flex: none; accent-color: var(--blue); }
   .check span { font: 1.02rem var(--font-body) !important; color: var(--ink) !important; }
@@ -73,9 +77,8 @@ const {
   .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
   .err { color: #b3261e; font-weight: 700; margin: 10px 0 0; }
   .acts { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 16px; }
-  .skip-play { background: none; border: 0; padding: 10px 4px; min-height: 44px; font: 1rem var(--font-body); color: var(--ink-soft); text-decoration: underline; cursor: pointer; }
   .privacy { font-size: .95rem; color: var(--ink-soft); margin: 14px 0 0; }
-  .ready p { margin: 0; font-size: 1.2rem; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .ready p { margin: 0; font-size: 1.15rem; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
   .change { background: none; border: 0; min-height: 44px; font: 1rem var(--font-body); color: var(--blue); text-decoration: underline; cursor: pointer; }
   .signup.done { border-top-color: var(--blue); padding-top: 18px; padding-bottom: 18px; }
   @media (prefers-reduced-motion: no-preference) {
@@ -86,15 +89,31 @@ const {
 </style>
 
 <script>
-  type PlayerWin = Window & { saltPlayer?: () => string };
-  const KEY = 'salt-player-name'; // first name only, for this visit; the email is never stored in the browser
+  type WinDetail = { game: string; level?: string; turns?: number };
+  type W = Window & { saltPlayer?: () => string; saltReportWin?: (d: WinDetail) => Promise<{ recorded: boolean; emailHint: string }> };
+  const KEY = 'salt-player-name'; // first name only, for this visit
   const ss = {
     get: (k: string) => { try { return sessionStorage.getItem(k); } catch { return null; } },
     set: (k: string, v: string) => { try { sessionStorage.setItem(k, v); } catch { /* private mode */ } },
     del: (k: string) => { try { sessionStorage.removeItem(k); } catch { /* private mode */ } },
   };
-  let player = ss.get(KEY) || '';
-  (window as PlayerWin).saltPlayer = () => player;
+  // Kept in memory only (gone when the page closes).
+  let player = '', playerEmail = '', playerSource = 'games', marketing = false;
+  let winReport: Promise<{ recorded: boolean; emailHint: string }> | null = null;
+  const hint = (e: string) => { const [u, d] = e.split('@'); return `${u.slice(0, 2)}${'•'.repeat(Math.max(1, u.length - 2))}@${d}`; };
+
+  (window as W).saltPlayer = () => player;
+  (window as W).saltReportWin = (d) => {
+    // One reward request per page visit, and only with real sign-up details.
+    if (winReport) return winReport;
+    if (!player || !playerEmail) return Promise.resolve({ recorded: false, emailHint: '' });
+    winReport = fetch('/api/register', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ event: 'game_won', name: player, email: playerEmail, marketing, source: playerSource, game: d.game, level: d.level, turns: d.turns }),
+    }).then((r) => ({ recorded: r.ok, emailHint: hint(playerEmail) })).catch(() => ({ recorded: false, emailHint: hint(playerEmail) }));
+    winReport.then((r) => { if (!r.recorded) winReport = null; }); // allow a retry on the next win if it failed
+    return winReport;
+  };
 
   document.querySelectorAll<HTMLElement>('.signup').forEach((box) => {
     const form = box.querySelector<HTMLFormElement>('.sform')!;
@@ -104,11 +123,13 @@ const {
     const btn = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
     const nameIn = form.elements.namedItem('name') as HTMLInputElement;
     const emailIn = form.elements.namedItem('email') as HTMLInputElement;
+    playerSource = box.dataset.source || 'games';
+    nameIn.value = ss.get(KEY) || ''; // friendly prefill; the email is always typed again
 
-    const go = (name: string) => {
-      player = name;
-      ss.set(KEY, name);
+    const go = (name: string, email: string) => {
+      player = name; playerEmail = email; ss.set(KEY, name);
       box.querySelector('.pname')!.textContent = name;
+      box.querySelector('.pmail')!.textContent = email;
       pending.hidden = true; ready.hidden = false; box.classList.add('done');
       document.documentElement.classList.add('player-ready');
       document.dispatchEvent(new CustomEvent('salt:player', { detail: { name } }));
@@ -119,39 +140,37 @@ const {
       if (field) { field.setAttribute('aria-invalid', 'true'); field.focus(); }
     };
 
-    if (player) go(player);
-
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (btn.disabled) return; // no double submissions
       err.hidden = true;
       const name = nameIn.value.trim().replace(/\s+/g, ' ').slice(0, 80);
-      const email = emailIn.value.trim();
+      const email = emailIn.value.trim().toLowerCase();
       if (!name) return fail('Please type your first name.', nameIn);
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return fail('Please check your email address. It should look like name@example.com.', emailIn);
+      marketing = (form.elements.namedItem('marketing') as HTMLInputElement).checked;
       btn.disabled = true; btn.textContent = 'One moment…';
       try {
         const r = await fetch('/api/register', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, marketing: (form.elements.namedItem('marketing') as HTMLInputElement).checked, source: box.dataset.source, company: (form.elements.namedItem('company') as HTMLInputElement).value }),
+          body: JSON.stringify({ name, email, marketing, source: playerSource, company: (form.elements.namedItem('company') as HTMLInputElement).value }),
         });
         const j = await r.json().catch(() => ({}));
         if (r.status === 400) { fail(j.message || 'Please check your details.', j.error === 'email' ? emailIn : nameIn); return; }
         if (r.status === 429) { fail(j.message || 'Please wait a few minutes and try again.'); return; }
-        // 200 = saved. 503/502/network = sign-up not available right now: never block the game.
-        go(name);
+        // Saved, or the sign-up service is briefly unavailable: never block the game.
+        go(name, email);
       } catch {
-        go(name);
+        go(name, email);
       } finally {
         btn.disabled = false; btn.innerHTML = 'Start playing <span aria-hidden="true">→</span>';
       }
     });
-    box.querySelector('.skip-play')!.addEventListener('click', () => go('Friend'));
     box.querySelector('.change')!.addEventListener('click', () => {
-      ss.del(KEY); player = '';
+      ss.del(KEY); player = ''; playerEmail = ''; winReport = null;
       document.documentElement.classList.remove('player-ready');
       pending.hidden = false; ready.hidden = true; box.classList.remove('done');
-      nameIn.value = ''; nameIn.focus();
+      nameIn.value = ''; emailIn.value = ''; nameIn.focus();
     });
   });
 </script>

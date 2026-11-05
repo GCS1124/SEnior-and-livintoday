@@ -181,7 +181,10 @@ const swatches = [
 </style>
 
 <script>
-  type Cel = (o: { mode?: 'win' | 'done'; name?: string; achievement: string; detail?: string; artwork?: HTMLCanvasElement; fileName?: string; onPlayAgain?: () => void }) => void;
+  type Reward = { recorded: boolean; emailHint: string };
+  type Cel = (o: { mode?: 'win' | 'done'; name?: string; achievement: string; detail?: string; artwork?: HTMLCanvasElement; reward?: Reward; fileName?: string; onPlayAgain?: () => void }) => void;
+  const reportWin = (d: { game: string; level?: string; turns?: number }) =>
+    (window as unknown as { saltReportWin?: (d: { game: string; level?: string; turns?: number }) => Promise<Reward> }).saltReportWin?.(d) ?? Promise.resolve({ recorded: false, emailHint: '' });
   const celebrate = (o: Parameters<Cel>[0]) => (window as unknown as { saltCelebrate?: Cel }).saltCelebrate?.(o);
   const playerName = () => (window as unknown as { saltPlayer?: () => string }).saltPlayer?.() || 'Friend';
   // ---- Coloring book ----
@@ -302,12 +305,15 @@ const swatches = [
         if (allMatched && !celebrated) {
           celebrated = true;
           const isBest = !prev || turns < prev;
-          setTimeout(() => celebrate({
-            mode: 'win', name: playerName(),
-            achievement: `found all ${size} pairs in Memory Match`,
-            detail: `${LEVEL[size]} level · ${turns} turns${isBest && prev ? ' · New personal best!' : ''}`,
-            fileName: 'salt-memory-match-certificate', onPlayAgain: deal,
-          }), 650);
+          // Record the win (and the $100 reward request) first, then celebrate.
+          const finalTurns = turns;
+          Promise.all([reportWin({ game: 'memory-match', level: LEVEL[size], turns: finalTurns }), new Promise((r) => setTimeout(r, 650))])
+            .then(([reward]) => celebrate({
+              mode: 'win', name: playerName(), reward,
+              achievement: `found all ${size} pairs in Memory Match`,
+              detail: `${LEVEL[size]} level · ${finalTurns} turns${isBest && prev ? ' · New personal best!' : ''}`,
+              fileName: 'salt-100-store-credit-voucher', onPlayAgain: deal,
+            }));
         }
       }
     } else {

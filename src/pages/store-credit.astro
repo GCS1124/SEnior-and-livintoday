@@ -1,0 +1,82 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import StoreStory from '../components/StoreStory.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { storeLink } from '../data/site';
+import { faqSchema } from '../data/schema';
+
+const crumbs = [{ name: 'SALT Store Credit', href: '/store-credit/' }];
+const faqs = [
+  { q: 'What is SALT Store Credit?', a: 'SALT Store Credit is money added to your account at the SALT Online Store (www.saltonlinestore.com). When you win one of our games with your correct email, we add a $100 SALT Store Credit to the store account that uses that email.' },
+  { q: 'How long does it take to get my $100 credit?', a: 'Your credit is added within 24 to 48 hours after you win. We send you an email at the address you signed up with when it is ready.' },
+  { q: 'How much of my credit can I use on each order?', a: 'You can use up to 10% of each order’s total from your credit, on every order, until the full $100 has been used.' },
+  { q: 'Is store credit the same as a gift card or a discount code?', a: 'No. Store credit is a balance on your own store account. You don’t need to type a code. You just sign in to the SALT Online Store with the same email you used to play.' },
+  { q: 'I won, but I can’t see my credit. What should I do?', a: 'First, wait the full 48 hours and check your email, including the spam or junk folder. Make sure you sign in at www.saltonlinestore.com with exactly the same email you used to play. If you still can’t see it, call Courtney’s team at (888) 416-4264 and we’ll help.' },
+  { q: 'Can I win more than once?', a: 'The $100 SALT Store Credit reward is one per email address. You’re always welcome to keep playing just for fun.' },
+];
+---
+<Base
+  title="SALT Store Credit: How to Earn and Use Your $100 Reward"
+  description="Win a game on Senior and Living Today and get a $100 SALT Store Credit for the SALT Online Store. See how to sign in, find your balance and use it on every order."
+  breadcrumbs={crumbs}
+  schema={[faqSchema(faqs)]}
+>
+  <PageHero
+    title="How to use your SALT Store Credit"
+    kicker="Play, win, shop and save"
+    lead="Win a game on our website and receive a $100 SALT Store Credit for the SALT Online Store. Here’s exactly how it works, one simple step at a time."
+    breadcrumbs={crumbs}
+  >
+    <div class="btn-row">
+      <a class="btn btn-primary" href="/games/">🎮 Play and win</a>
+      <a class="btn btn-outline" href={storeLink('/', 'store-credit-page')} target="_blank" rel="noopener">🛍️ Go to www.saltonlinestore.com ↗</a>
+    </div>
+  </PageHero>
+
+  <section class="section">
+    <div class="wrap narrow">
+      <h2>Step by step</h2>
+      <ol class="steps">
+        <li>
+          <h3>Sign up with your correct email</h3>
+          <p>On our <a href="/games/">Games page</a>, type your first name and your email address. <strong>Please double-check your email.</strong> It’s where your reward is sent, and it’s the email you’ll use to sign in at the store.</p>
+        </li>
+        <li>
+          <h3>Play and win a game</h3>
+          <p>When you win, you’ll see “OH YEAH! YOU WON!” and your SALT Membership Reward Voucher with your name on it. You can download or print your voucher to keep.</p>
+        </li>
+        <li>
+          <h3>Wait 24–48 hours and check your email</h3>
+          <p>Your $100 SALT Store Credit is added to your SALT Online Store account within 24 to 48 hours. We’ll send you an email with simple instructions when it’s ready. If you don’t see it, check your spam or junk folder.</p>
+        </li>
+        <li>
+          <h3>Sign in at the SALT Online Store</h3>
+          <p>Go to <a href={storeLink('/', 'store-credit-page')} target="_blank" rel="noopener">www.saltonlinestore.com</a> and choose <strong>Sign in</strong>. Enter the <strong>same email</strong> you used to play. The store will email you a short sign-in code. There’s no password to remember.</p>
+        </li>
+        <li>
+          <h3>Find your balance</h3>
+          <p>Once you’re signed in, open your account to see your SALT Store Credit balance.</p>
+        </li>
+        <li>
+          <h3>Shop and use your credit</h3>
+          <p>Add the things you love to your cart and go to checkout while signed in. <strong>You can use up to 10% of each order from your credit</strong>, on every order, until your $100 has been used.</p>
+        </li>
+      </ol>
+      <p class="notice">💡 <strong>Good to know:</strong> store credit is not a gift card or a discount code. There’s nothing to type in. It lives in your store account, so always sign in with the email you played with.</p>
+    </div>
+  </section>
+
+  <StoreStory campaign="store-credit-page" showCreditLink={false} />
+  <Faq items={faqs} />
+  <CtaBand title="Need a hand with your store credit?" text="Call Courtney’s team and we’ll walk you through it, one step at a time." />
+</Base>
+
+<style>
+  .steps { list-style: none; counter-reset: s; padding: 0; margin: 1.5rem 0 2rem; display: grid; gap: 18px; }
+  .steps li { counter-increment: s; position: relative; background: #fff; border: 2px solid var(--line); border-radius: 18px; padding: 20px 22px 20px 82px; }
+  .steps li::before { content: counter(s); position: absolute; left: 20px; top: 20px; width: 46px; height: 46px; border-radius: 50%; background: var(--yellow); color: var(--blue-ink); display: grid; place-items: center; font: 700 1.35rem var(--font-head); }
+  .steps h3 { margin: 4px 0 .3em; font-size: 1.3rem; }
+  .steps p { margin: 0; }
+</style>

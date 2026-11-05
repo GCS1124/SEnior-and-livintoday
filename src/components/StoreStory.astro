@@ -1,0 +1,47 @@
+---
+// "Why we started the SALT Online Store" story + a short "how your store credit works"
+// summary + Shop more. Used on the Gifts page and the Store Credit page.
+import { storeLink } from '../data/site';
+interface Props { campaign?: string; showCreditLink?: boolean }
+const { campaign = 'salt-story', showCreditLink = true } = Astro.props;
+---
+<section class="section story" id="our-story">
+  <div class="wrap grid split">
+    <div>
+      <span class="kicker">Why we started the SALT Online Store</span>
+      <h2>A little store with a big heart for seniors</h2>
+      <p class="lead">SALT stands for <strong>Senior and Living Today</strong>. The SALT Online Store is our own shop, the same SALT you know from our videos, planners and free help.</p>
+      <p>The seniors I help kept asking me the same things. “Where can I find a bib that doesn’t make me feel like a child?” “Is there a clock I can actually read?” “Something to keep my hands warm?” So we gathered the comfortable, practical things that make everyday life a little easier, and put them in one friendly place.</p>
+      <p>Every purchase does more than fill a cart. <strong>The earnings from the SALT Online Store help us keep supporting seniors</strong>: our free games, guides and videos, and the help we give families every day. When you shop with us, you’re helping another senior get the support they deserve.</p>
+      <p>And because you’re part of our SALT family, we want to give something back. <strong>Play our games, win, and receive a $100 SALT Store Credit</strong> to spend at the store.</p>
+      <p class="sign">With love, Courtney</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href={storeLink('/', campaign)} target="_blank" rel="noopener">🛍️ Shop more at www.saltonlinestore.com ↗</a>
+        <a class="btn btn-outline" href="/games/">🎮 Play &amp; win your $100 credit</a>
+      </div>
+    </div>
+    <aside class="credit" aria-labelledby="credit-title">
+      <p class="badge">$100</p>
+      <h3 id="credit-title">Your SALT Store Credit, in 3 easy steps</h3>
+      <ol>
+        <li><span>1</span><div><strong>Play and win.</strong> Sign up with your name and correct email, then win a game on our <a href="/games/">Games page</a>.</div></li>
+        <li><span>2</span><div><strong>Watch your email.</strong> Within 24–48 hours, your $100 credit is added to your SALT Online Store account, and we email you.</div></li>
+        <li><span>3</span><div><strong>Shop and save.</strong> Sign in at <a href={storeLink('/', campaign)} target="_blank" rel="noopener">www.saltonlinestore.com</a> with the same email. Use up to 10% of each order from your credit until the $100 is used.</div></li>
+      </ol>
+      {showCreditLink && <a class="more" href="/store-credit/">Read the full store credit guide →</a>}
+    </aside>
+  </div>
+</section>
+
+<style>
+  .story { background: var(--blue-pale); }
+  .story p { font-size: 1.12rem; }
+  .story p.sign { font: 600 2rem/1.1 var(--font-hand); color: var(--blue); margin-top: .4rem; }
+  .credit { background: #fff; border: 3px solid var(--yellow); border-radius: 24px; padding: clamp(22px, 4vw, 32px); box-shadow: 0 16px 36px rgba(34,58,102,.1); position: relative; }
+  .badge { position: absolute; top: -26px; right: 22px; margin: 0; background: var(--blue); color: var(--sun); font: 700 1.6rem var(--font-head); padding: 8px 20px; border-radius: 999px; border: 3px solid var(--yellow); transform: rotate(4deg); }
+  .credit h3 { font-size: 1.45rem; margin-bottom: 1rem; }
+  .credit ol { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; }
+  .credit li { display: flex; gap: 14px; align-items: flex-start; font-size: 1.08rem; }
+  .credit li > span { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--yellow); color: var(--blue-ink); font: 700 1.2rem var(--font-head); }
+  .more { display: inline-block; margin-top: 1.2rem; font-weight: 700; color: var(--blue); }
+</style>

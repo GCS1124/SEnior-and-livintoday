@@ -5,6 +5,7 @@ import ProductGrid from '../components/ProductGrid.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
 import BibSpotlight from '../components/BibSpotlight.astro';
+import StoreStory from '../components/StoreStory.astro';
 import { SITE, GIFTS, EPRODUCTS, BOOKS, storeLink } from '../data/site';
 import { faqSchema } from '../data/schema';
 
@@ -32,6 +33,7 @@ const itemList = { '@type': 'ItemList', name: 'Holiday gifts for seniors', itemL
       <a href="#comfort">🧣 Warm &amp; comfy</a>
       <a href="#planners">📘 Planners (Amazon)</a>
       <a href="#instant">⚡ Instant downloads</a>
+      <a href="#our-story">💛 Our story &amp; $100 store credit</a>
     </nav>
   </PageHero>
 
@@ -46,6 +48,8 @@ const itemList = { '@type': 'ItemList', name: 'Holiday gifts for seniors', itemL
       <div class="btn-row"><a class="btn btn-berry" href={storeLink('/collections/gifts-for-seniors', 'holiday-gift-guide')} rel="noopener" target="_blank">Shop Now: more gifts for seniors ↗</a><a class="btn btn-primary" href={storeLink('/', 'holiday-gift-guide')} rel="noopener" target="_blank">Shop more at www.saltonlinestore.com ↗</a></div>
     </div>
   </section>
+
+  <StoreStory campaign="gifts-story" />
 
   <section class="section section-cream" id="planners">
     <div class="wrap">

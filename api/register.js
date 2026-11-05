@@ -49,6 +49,11 @@ export default async function handler(req, res) {
   const email = clean(body.email, 254).toLowerCase();
   const source = SOURCES.has(body.source) ? body.source : 'games';
   const marketing = body.marketing === true;
+  // event: 'signup' (default) or 'game_won' (sent once when a game's real winning condition is met)
+  const event = body.event === 'game_won' ? 'game_won' : 'signup';
+  const game = clean(body.game, 40);
+  const level = clean(body.level, 20);
+  const turns = Number.isFinite(Number(body.turns)) ? Math.max(0, Math.min(999, Math.round(Number(body.turns)))) : null;
   if (!name) return res.status(400).json({ error: 'name', message: 'Please type your first name.' });
   if (!EMAIL.test(email)) return res.status(400).json({ error: 'email', message: 'That email address doesn’t look quite right. Please check it.' });
 
@@ -68,8 +73,16 @@ export default async function handler(req, res) {
         source: `website-${source}`,
         marketing_consent: marketing,
         consent_text: marketing ? 'Yes, send me occasional news and offers from Senior and Living Today. I can unsubscribe at any time.' : '',
+        event,
         signed_up_at: new Date().toISOString(),
-        tags: ['website', source, ...(marketing ? ['marketing-opt-in'] : [])],
+        ...(event === 'game_won' ? {
+          game, level, turns,
+          // The GoHighLevel workflow uses this to send the reward email and to make sure
+          // each email address receives the reward only once.
+          reward: '$100 SALT Store Credit',
+          reward_rules: 'Use up to 10% of each order from the credit until the $100 is used. Credited within 24-48 hours to the store account with this email.',
+        } : {}),
+        tags: ['website', source, ...(marketing ? ['marketing-opt-in'] : []), ...(event === 'game_won' ? ['game-winner', 'reward-100-store-credit'] : [])],
       }),
       signal: AbortSignal.timeout(8000),
     });

@@ -3,8 +3,9 @@
 //
 //   window.saltCelebrate({
 //     mode: 'win' | 'done',         // 'win' only when the game's real winning condition is met
-//     name, achievement, detail,    // shown on screen and on the certificate
-//     artwork?: HTMLCanvasElement,  // for 'done' (e.g. a finished coloring page) instead of a certificate
+//     name, achievement, detail,    // shown on screen and on the voucher
+//     artwork?: HTMLCanvasElement,  // for "done" (e.g. a finished coloring page) instead of a voucher
+//     reward?: { recorded, emailHint } // the $100 voucher shows only when recorded is true
 //     fileName, onPlayAgain,
 //   })
 //
@@ -19,11 +20,16 @@
     <p class="cel-msg" id="cel-msg"></p>
     <p class="cel-score" id="cel-score"></p>
     <figure class="cel-preview"><img id="cel-img" alt="" /></figure>
+    <p class="cel-reward" id="cel-reward" hidden></p>
     <div class="cel-acts">
       <button type="button" class="btn btn-primary" id="cel-again">↻ Play again</button>
       <button type="button" class="btn btn-berry" id="cel-download">⬇ Download</button>
       <button type="button" class="btn btn-outline" id="cel-print">🖨️ Print</button>
     </div>
+    <p class="cel-shop" id="cel-shop" hidden>
+      <a class="btn btn-green" href="https://www.saltonlinestore.com/?utm_source=seniorandlivingtoday&utm_medium=referral&utm_campaign=game-reward" target="_blank" rel="noopener">🛍️ Shop at www.saltonlinestore.com ↗</a>
+      <a class="cel-how" href="/store-credit/">How to use your SALT Store Credit</a>
+    </p>
     <p class="cel-status" id="cel-status" role="status" aria-live="polite"></p>
     <button type="button" class="cel-close" id="cel-close" aria-label="Close">✕</button>
   </div>
@@ -41,6 +47,10 @@
   .cel-msg { font-size: 1.3rem; color: var(--blue-ink); margin: 0 0 .4em; }
   .cel-score { display: inline-block; background: var(--blue-soft); border-radius: 999px; padding: 6px 18px; font: 600 1.1rem var(--font-head); color: var(--blue); }
   .cel-score:empty { display: none; }
+  .cel-reward { margin: 10px auto 0; max-width: 480px; padding: 12px 16px; border-radius: 14px; background: var(--yellow-soft); border: 2px solid var(--yellow); font-size: 1.05rem; color: var(--blue-ink); text-align: left; }
+  .cel-reward.warn { background: var(--blue-pale); border-color: var(--line); }
+  .cel-shop { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 14px 0 0; }
+  .cel-how { font-weight: 700; color: var(--blue); }
   .cel-preview { margin: 16px auto 4px; max-width: 420px; }
   .cel-preview img { width: 100%; border-radius: 10px; border: 2px solid var(--line); }
   .cel-acts { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 16px; }
@@ -74,6 +84,7 @@
     achievement: string;   // e.g. "found all 8 pairs in Memory Match"
     detail?: string;       // e.g. "Normal level · 12 turns"
     artwork?: HTMLCanvasElement;
+    reward?: { recorded: boolean; emailHint: string }; // win + reward recorded in GoHighLevel
     fileName?: string;
     onPlayAgain?: () => void;
   };
@@ -114,34 +125,47 @@
     raf = requestAnimationFrame(tick);
   }
 
-  // ---------- Certificate ----------
+  // ---------- Membership reward voucher ----------
   const loadImg = (src: string) => new Promise<HTMLImageElement>((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = src; });
-  async function certificate(o: CelOptions) {
-    await Promise.all(['700 64px Poppins', '600 140px Caveat', '400 34px "Atkinson Hyperlegible"'].map((f) => document.fonts?.load(f).catch(() => null)));
-    const c = document.createElement('canvas'); c.width = 1600; c.height = 1131;
+  const today = () => new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  function wrap(x: CanvasRenderingContext2D, text: string, cx: number, y: number, maxW: number, lh: number) {
+    const words = text.split(' '); let line = '';
+    for (const w of words) { const t = line ? `${line} ${w}` : w; if (x.measureText(t).width > maxW && line) { x.fillText(line, cx, y); y += lh; line = w; } else line = t; }
+    if (line) x.fillText(line, cx, y);
+    return y + lh;
+  }
+  async function voucher(o: CelOptions) {
+    await Promise.all(['700 64px Poppins', '600 120px Caveat', '400 30px "Atkinson Hyperlegible"'].map((f) => document.fonts?.load(f).catch(() => null)));
+    const c = document.createElement('canvas'); c.width = 1600; c.height = 1000;
     const x = c.getContext('2d')!;
-    x.fillStyle = '#ffffff'; x.fillRect(0, 0, c.width, c.height);
-    x.fillStyle = '#223a66'; x.fillRect(0, 0, c.width, 34); x.fillRect(0, c.height - 34, c.width, 34); x.fillRect(0, 0, 34, c.height); x.fillRect(c.width - 34, 0, 34, c.height);
-    x.strokeStyle = '#ffb400'; x.lineWidth = 8; x.strokeRect(58, 58, c.width - 116, c.height - 116);
-    x.fillStyle = '#f3f7fc'; x.fillRect(66, 66, c.width - 132, 220);
-    try {
-      const logo = await loadImg('/images/logo-512.png');
-      x.fillStyle = '#223a66'; x.beginPath(); x.arc(c.width / 2, 176, 98, 0, Math.PI * 2); x.fill();
-      x.drawImage(logo, c.width / 2 - 88, 88, 176, 176);
-    } catch { /* logo optional */ }
-    x.textAlign = 'center'; x.fillStyle = '#223a66';
-    x.font = '700 64px Poppins, sans-serif'; x.fillText(o.mode === 'win' ? 'CERTIFICATE OF ACHIEVEMENT' : 'CERTIFICATE OF COMPLETION', c.width / 2, 380);
-    x.fillStyle = '#46546a'; x.font = '400 34px "Atkinson Hyperlegible", sans-serif'; x.fillText('Proudly presented to', c.width / 2, 450);
-    x.fillStyle = '#14213d'; x.font = '600 140px Caveat, cursive'; x.fillText(o.name || 'Friend', c.width / 2, 600, c.width - 240);
-    x.strokeStyle = '#ffb400'; x.lineWidth = 4; x.beginPath(); x.moveTo(400, 630); x.lineTo(1200, 630); x.stroke();
-    x.fillStyle = '#1e2a3b'; x.font = '400 40px "Atkinson Hyperlegible", sans-serif';
-    x.fillText(`for having ${o.achievement}`, c.width / 2, 710, c.width - 240);
-    if (o.detail) { x.fillStyle = '#223a66'; x.font = '700 36px Poppins, sans-serif'; x.fillText(o.detail, c.width / 2, 775, c.width - 240); }
-    x.fillStyle = '#46546a'; x.font = '400 30px "Atkinson Hyperlegible", sans-serif';
-    x.fillText(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }), c.width / 2, 900);
-    x.fillStyle = '#223a66'; x.font = '700 34px Poppins, sans-serif'; x.fillText('Senior and Living Today', c.width / 2, 990);
-    x.fillStyle = '#46546a'; x.font = '400 26px "Atkinson Hyperlegible", sans-serif'; x.fillText('seniorandlivingtoday.com', c.width / 2, 1030);
-    x.fillStyle = '#ffb400'; x.font = '48px sans-serif'; x.fillText('★', 260, 900); x.fillText('★', c.width - 260, 900);
+    // Card base: navy with a gold frame
+    x.fillStyle = '#223a66'; x.fillRect(0, 0, c.width, c.height);
+    x.strokeStyle = '#ffb400'; x.lineWidth = 10; x.strokeRect(36, 36, c.width - 72, c.height - 72);
+    x.strokeStyle = 'rgba(255,225,77,.45)'; x.lineWidth = 3; x.strokeRect(56, 56, c.width - 112, c.height - 112);
+    // Left panel: logo + $100
+    x.fillStyle = '#182b4d'; x.fillRect(56, 56, 520, c.height - 112);
+    try { const logo = await loadImg('/images/logo-512.png'); x.drawImage(logo, 196, 110, 240, 240); } catch { /* logo optional */ }
+    x.textAlign = 'center';
+    x.fillStyle = '#ffe14d'; x.font = '700 190px Poppins, sans-serif'; x.fillText('$100', 316, 560);
+    x.fillStyle = '#ffffff'; x.font = '700 40px Poppins, sans-serif'; x.fillText('SALT STORE CREDIT', 316, 625);
+    x.fillStyle = '#c3d0e3'; x.font = '400 28px "Atkinson Hyperlegible", sans-serif'; x.fillText('for the SALT Online Store', 316, 668);
+    x.fillStyle = '#ffb400'; x.font = '60px sans-serif'; x.fillText('★ ★ ★', 316, 790);
+    // Right panel: member details
+    const cx = 1080;
+    x.fillStyle = '#ffb400'; x.font = '700 34px Poppins, sans-serif'; x.fillText('SALT MEMBERSHIP REWARD VOUCHER', cx, 140);
+    x.fillStyle = '#c3d0e3'; x.font = '400 30px "Atkinson Hyperlegible", sans-serif'; x.fillText('Proudly presented to our winner', cx, 200);
+    x.fillStyle = '#ffffff'; x.font = '600 130px Caveat, cursive'; x.fillText(o.name || 'Winner', cx, 330, 900);
+    x.strokeStyle = '#ffb400'; x.lineWidth = 4; x.beginPath(); x.moveTo(cx - 330, 360); x.lineTo(cx + 330, 360); x.stroke();
+    x.fillStyle = '#ffffff'; x.font = '700 40px Poppins, sans-serif';
+    let y = wrap(x, 'You won a $100 SALT Store Credit!', cx, 430, 900, 52);
+    x.fillStyle = '#e6edf7'; x.font = '400 30px "Atkinson Hyperlegible", sans-serif';
+    y = wrap(x, 'It will be credited to your SALT Online Store account within 24–48 hours.', cx, y + 6, 880, 40);
+    if (o.reward?.emailHint) { x.fillStyle = '#ffe14d'; x.font = '700 30px "Atkinson Hyperlegible", sans-serif'; y = wrap(x, `Account email: ${o.reward.emailHint}`, cx, y + 8, 880, 40); }
+    x.fillStyle = '#c3d0e3'; x.font = '400 26px "Atkinson Hyperlegible", sans-serif';
+    y = wrap(x, 'Use up to 10% of each order from your credit until the $100 is used. Sign in at www.saltonlinestore.com with this email to see your balance.', cx, y + 18, 880, 36);
+    if (o.detail) { x.fillStyle = '#ffffff'; x.font = '600 26px Poppins, sans-serif'; wrap(x, `Won: ${o.achievement} · ${o.detail}`, cx, y + 10, 880, 34); }
+    x.fillStyle = '#ffb400'; x.font = '700 28px Poppins, sans-serif'; x.fillText('Senior and Living Today  ·  www.saltonlinestore.com', cx, c.height - 120);
+    x.fillStyle = '#c3d0e3'; x.font = '400 24px "Atkinson Hyperlegible", sans-serif'; x.fillText(`Issued ${today()}  ·  One reward per email address`, cx, c.height - 80);
     return c;
   }
 
@@ -152,17 +176,32 @@
     $('cel-kicker').textContent = win ? 'OH YEAH!' : 'ALL DONE!';
     $('cel-title').textContent = win ? 'YOU WON!' : 'Beautiful work!';
     const nm = o.name && o.name !== 'Friend' ? `, ${o.name}` : '';
-    $('cel-msg').textContent = win ? `You did it${nm}! Congratulations on your achievement!` : `Well done${nm}! You finished it.`;
+    const rewarded = win && !!o.reward?.recorded;
+    $('cel-msg').textContent = !win ? `Well done${nm}! You finished it.`
+      : rewarded ? `You did it${nm}! You’ve won a $100 SALT Store Credit!` : `You did it${nm}! Congratulations on your win!`;
+    const rw = $('cel-reward');
+    rw.hidden = !win; rw.classList.toggle('warn', win && !rewarded);
+    rw.innerHTML = !win ? '' : rewarded
+      ? `🎁 Your <strong>$100 SALT Store Credit</strong> will be added to your SALT Online Store account within <strong>24–48 hours</strong>. Watch for an email at <strong>${o.reward!.emailHint}</strong>.`
+      : 'We couldn’t record your reward just now, so it hasn’t been added yet. Please call Courtney’s team at <a href="tel:+18884164264">(888) 416-4264</a> and we’ll sort it out.';
+    $('cel-shop').hidden = !win;
+    ($('cel-download') as HTMLButtonElement).hidden = win && !rewarded;
+    ($('cel-print') as HTMLButtonElement).hidden = win && !rewarded;
     $('cel-score').textContent = o.detail ?? '';
     $('cel-status').textContent = '';
     $('cel-again').textContent = o.artwork ? '🖍️ Keep coloring' : '↻ Play again';
-    $('cel-download').textContent = o.artwork ? '⬇ Save picture' : '⬇ Download certificate';
-    $('cel-print').textContent = o.artwork ? '🖨️ Print picture' : '🖨️ Print certificate';
+    $('cel-download').textContent = o.artwork ? '⬇ Save picture' : '⬇ Download voucher';
+    $('cel-print').textContent = o.artwork ? '🖨️ Print picture' : '🖨️ Print voucher';
     if (!dlg.open) dlg.showModal();
     confetti();
-    resultCanvas = o.artwork ?? (await certificate(o));
-    ($('cel-img') as HTMLImageElement).src = resultCanvas.toDataURL('image/png');
-    ($('cel-img') as HTMLImageElement).alt = o.artwork ? 'Your finished picture' : `Certificate for ${o.name || 'you'}`;
+    const img = $('cel-img') as HTMLImageElement;
+    // The voucher is only shown once the reward has really been recorded.
+    resultCanvas = o.artwork ?? (rewarded ? await voucher(o) : null);
+    img.parentElement!.hidden = !resultCanvas;
+    if (resultCanvas) {
+      img.src = resultCanvas.toDataURL('image/png');
+      img.alt = o.artwork ? 'Your finished picture' : `SALT membership reward voucher for ${o.name || 'you'}: $100 SALT Store Credit`;
+    } else img.removeAttribute('src');
     $('cel-again').focus();
   }
   (window as unknown as { saltCelebrate: typeof celebrate }).saltCelebrate = celebrate;
@@ -175,7 +214,7 @@
 
   $('cel-download').addEventListener('click', async () => {
     if (!resultCanvas || !current) return;
-    const base = (current.fileName || 'salt-certificate').replace(/[^a-z0-9-]+/gi, '-');
+    const base = (current.fileName || 'salt-reward-voucher').replace(/[^a-z0-9-]+/gi, '-');
     const btn = $<HTMLButtonElement>('cel-download'); btn.disabled = true;
     try {
       if (current.artwork) {
