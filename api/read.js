@@ -4,9 +4,12 @@
 // Book files live in api/_books/*.json (built from books/*.md); they are never public downloads.
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { checkPass } from './_lib/reading-pass.js';
 
-const DIR = join(process.cwd(), 'api', '_books');
+// Book files sit next to this function (bundled via vercel.json "includeFiles"); fall back to the project root.
+const HERE = join(fileURLToPath(new URL('.', import.meta.url)), '_books');
+const DIR = existsSync(HERE) ? HERE : join(process.cwd(), 'api', '_books');
 
 export default function handler(req, res) {
   res.setHeader('Cache-Control', 'private, no-store');
