@@ -48,7 +48,7 @@ const crumbs = [{ name: 'About Courtney', href: '/about/' }];
   <section class="section">
     <div class="wrap">
       <h2>Books I’ve written</h2>
-      <div class="grid grid-4" style="margin-top:1.5rem">
+      <div class="grid" style="margin-top:1.5rem;grid-template-columns:repeat(auto-fit,minmax(180px,1fr))">
         {BOOKS.map((b) => (
           <a class="card bk" href={b.page ?? '/planners/'}>
             <img src={b.image} alt={b.alt} width="300" height="430" loading="lazy" />

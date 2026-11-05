@@ -32,6 +32,7 @@ export const SITE = {
     quiz: 'https://app.globalcreativeservices.us/widget/quiz/ruBJ8Z1K3m6P3McOkRkS',
     amazonAuthor: 'https://www.amazon.com/s?i=stripbooks&rh=p_27%3ACourtney%2BR%2BJones',
     livingLegacyPlannerAmazon: 'https://www.amazon.com/dp/B0D4JDBFYQ',
+    livingLegacyPlannerColorAmazon: 'https://www.amazon.com/dp/B0GY1BY1FP', // Color Edition (2nd Edition), paperback; hardcover is offered on the same page
     militaryPlannerAmazon: 'https://www.amazon.com/dp/B0HFDZMWZX',
     relicsAmazon: 'https://www.amazon.com/dp/B0DH537CC3',
   },
@@ -97,6 +98,17 @@ export const BOOKS: Book[] = [
     buy: SITE.links.livingLegacyPlannerAmazon,
     page: '/books/living-legacy-planner/',
     tag: 'Most loved',
+  },
+  {
+    slug: 'living-legacy-planner-color',
+    title: 'The Living Legacy Planner: Color Edition (2nd Edition)',
+    subtitle: 'The same caring planner, now in full color',
+    image: '/images/living-legacy-planner-2nd.webp',
+    alt: 'The Living Legacy Planner Color Edition, 2nd Edition, by Courtney R. Jones: blue cover with seniors and family sharing the planner',
+    blurb: 'Everything you love about The Living Legacy Planner, refreshed in full color: 182 pages, large 8.5 x 11 inch size, in paperback or hardcover.',
+    buy: SITE.links.livingLegacyPlannerColorAmazon,
+    page: '/books/living-legacy-planner/#color-edition',
+    tag: 'New: Color Edition',
   },
   {
     slug: 'military-edition',
