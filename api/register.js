@@ -1,16 +1,27 @@
 // Visitor sign-up (name + email) for games, reading and downloads — Vercel Function.
 //
-// This endpoint does NOT store anything itself. It checks the details and forwards
-// them to the business's own email/CRM system through a private webhook, so no
-// email address ever lives in this code, on GitHub, or in the visitor's browser.
+// This endpoint stores nothing itself. It checks the details and saves them in the
+// business's own GoHighLevel account ("Senior and living today"), so no email address
+// ever lives in this code, on GitHub, or in the visitor's browser.
 //
 // Environment variables (Vercel → Project → Settings → Environment Variables):
-//   SIGNUP_WEBHOOK_URL   (required to save sign-ups) e.g. a GoHighLevel inbound
-//                        webhook or another email platform's form endpoint. Secret: never commit it.
-//   SIGNUP_WEBHOOK_TOKEN (optional) sent as "Authorization: Bearer <token>" if the platform needs one.
+//   GHL_PRIVATE_TOKEN  GoHighLevel Private Integration token for the Senior and Living Today
+//                      sub-account (scopes: contacts.write, contacts.readonly). SECRET: never commit it.
+//   GHL_LOCATION_ID    optional; defaults to the Senior and Living Today sub-account id below.
+//   SIGNUP_WEBHOOK_URL optional alternative: a GoHighLevel inbound webhook (or other platform) URL.
+//   SIGNUP_WEBHOOK_TOKEN optional Bearer token for that webhook.
 //
-// Without SIGNUP_WEBHOOK_URL the endpoint answers 503 "not_configured" and the
-// website lets the visitor carry on without saving anything.
+// GoHighLevel result for every visitor: the contact is created or updated by email, then tagged
+//   website · <source> · [marketing-opt-in]                         on sign-up
+//   game-winner · reward-100-store-credit (+ a note with the details) on a win
+// A GoHighLevel workflow triggered by the tag "reward-100-store-credit" sends the reward email.
+//
+// With nothing configured the endpoint answers 503 "not_configured" and the website
+// lets the visitor carry on without saving anything (and without promising a reward).
+
+const GHL_API = process.env.GHL_API_BASE || 'https://services.leadconnectorhq.com'; // override only for local tests
+const GHL_VERSION = '2021-07-28';
+const SALT_LOCATION_ID = 'sbVe09zoUWLiPTabYb5A'; // "Senior and living today" sub-account (not a secret)
 
 const ALLOWED = [/^https:\/\/(www\.)?seniorandlivingtoday\.com$/, /^https:\/\/[a-z0-9-]+\.vercel\.app$/, /^http:\/\/localhost(:\d+)?$/];
 const SOURCES = new Set(['memory-match', 'coloring-book', 'games', 'books', 'resources', 'newsletter']);
@@ -60,6 +71,20 @@ export default async function handler(req, res) {
   const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
   if (limited(ip)) return res.status(429).json({ error: 'busy', message: 'Too many tries in a short time. Please wait a few minutes.' });
 
+  const tags = ['website', source, ...(marketing ? ['marketing-opt-in'] : []), ...(event === 'game_won' ? ['game-winner', 'reward-100-store-credit'] : [])];
+  const rewardRules = 'Use up to 10% of each order from the credit until the $100 is used. Credited within 24-48 hours to the store account with this email.';
+
+  // Preferred: save straight into GoHighLevel.
+  if (process.env.GHL_PRIVATE_TOKEN) {
+    try {
+      await saveToGoHighLevel({ name, email, source, tags, event, game, level, turns, marketing, rewardRules });
+      return res.status(200).json({ ok: true });
+    } catch (e) {
+      console.error('GoHighLevel save failed:', e.message); // never log the email address
+      return res.status(502).json({ error: 'unavailable' });
+    }
+  }
+
   const hook = process.env.SIGNUP_WEBHOOK_URL;
   if (!hook) return res.status(503).json({ error: 'not_configured' });
 
@@ -80,9 +105,9 @@ export default async function handler(req, res) {
           // The GoHighLevel workflow uses this to send the reward email and to make sure
           // each email address receives the reward only once.
           reward: '$100 SALT Store Credit',
-          reward_rules: 'Use up to 10% of each order from the credit until the $100 is used. Credited within 24-48 hours to the store account with this email.',
+          reward_rules: rewardRules,
         } : {}),
-        tags: ['website', source, ...(marketing ? ['marketing-opt-in'] : []), ...(event === 'game_won' ? ['game-winner', 'reward-100-store-credit'] : [])],
+        tags,
       }),
       signal: AbortSignal.timeout(8000),
     });
@@ -92,4 +117,47 @@ export default async function handler(req, res) {
     console.error('signup forward failed:', e.message); // never log the email address
     return res.status(502).json({ error: 'unavailable' });
   }
+}
+
+async function ghl(path, body) {
+  const r = await fetch(`${GHL_API}${path}`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${process.env.GHL_PRIVATE_TOKEN}`,
+      Version: GHL_VERSION,
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify(body),
+    signal: AbortSignal.timeout(8000),
+  });
+  if (!r.ok) throw new Error(`GoHighLevel ${path.split('/').slice(0, 3).join('/')} ${r.status}`);
+  return r.json().catch(() => ({}));
+}
+
+async function saveToGoHighLevel({ name, email, source, tags, event, game, level, turns, marketing, rewardRules }) {
+  const locationId = process.env.GHL_LOCATION_ID || SALT_LOCATION_ID;
+  // 1. Create or update the contact by email. No tags here: upsert would replace existing tags.
+  const up = await ghl('/contacts/upsert', { locationId, firstName: name, email, source: `Website (${source})` });
+  const id = up?.contact?.id;
+  if (!id) throw new Error('GoHighLevel upsert returned no contact id');
+  // 2. Wins: leave a note for the team with what happened and what was promised.
+  //    Best effort: a failed note must not block the reward.
+  if (event === 'game_won') {
+    const when = new Date().toLocaleString('en-US', { timeZone: 'America/New_York', dateStyle: 'medium', timeStyle: 'short' });
+    await ghl(`/contacts/${encodeURIComponent(id)}/notes`, {
+      title: 'Website game win: $100 SALT Store Credit',
+      body: [
+        `Won ${game || 'a game'}${level ? ` (${level} level)` : ''}${turns != null ? ` in ${turns} turns` : ''} on seniorandlivingtoday.com, ${when} ET.`,
+        'Promised on screen: $100 SALT Store Credit for the SALT Online Store, credited within 24-48 hours to the store account that uses this email.',
+        `Rules shown: ${rewardRules} One reward per email address.`,
+        `Marketing opt-in: ${marketing ? 'yes' : 'no'}.`,
+        'To do: if this email has not received the reward before, issue $100 store credit in Shopify (Customers > this customer > Store credit) and tag the contact "reward-sent".',
+      ].join('\n'),
+    }).catch((e) => console.error('GoHighLevel note failed:', e.message));
+  }
+  // 3. Add tags LAST (keeps any tags the contact already has). The tag
+  //    "reward-100-store-credit" starts the reward workflow, so the website only says
+  //    "recorded" when this step has succeeded.
+  await ghl(`/contacts/${encodeURIComponent(id)}/tags`, { tags });
 }
