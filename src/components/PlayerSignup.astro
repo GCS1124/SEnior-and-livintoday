@@ -10,7 +10,7 @@
 // When a visitor is ready to play, the page receives a "salt:player" event and
 // <html> gets the class "player-ready".
 //   window.saltPlayer()          -> first name
-//   window.saltReportWin(detail) -> Promise<{ recorded: boolean, emailHint: string }>
+//   window.saltReportWin(detail) -> Promise<{ recorded: boolean, emailHint: string, status?: 'sent'|'pending'|'already'|'manual' }>
 interface Props { source?: string; title?: string; intro?: string; book?: string; buttonLabel?: string; emailNote?: string }
 const {
   source = 'games',
@@ -93,7 +93,8 @@ const {
 
 <script>
   type WinDetail = { game: string; level?: string; turns?: number };
-  type W = Window & { saltPlayer?: () => string; saltReportWin?: (d: WinDetail) => Promise<{ recorded: boolean; emailHint: string }> };
+  type Report = { recorded: boolean; emailHint: string; status?: string };
+  type W = Window & { saltPlayer?: () => string; saltReportWin?: (d: WinDetail) => Promise<Report> };
   const KEY = 'salt-player-name'; // first name only, for this visit
   const ss = {
     get: (k: string) => { try { return sessionStorage.getItem(k); } catch { return null; } },
@@ -102,7 +103,8 @@ const {
   };
   // Kept in memory only (gone when the page closes).
   let player = '', playerEmail = '', playerSource = 'games', marketing = false;
-  let winReport: Promise<{ recorded: boolean; emailHint: string }> | null = null;
+  let playToken = ''; // signed by the server at sign-up: proves this player signed up before winning
+  let winReport: Promise<Report> | null = null;
   const hint = (e: string) => { const [u, d] = e.split('@'); return `${u.slice(0, 2)}${'•'.repeat(Math.max(1, u.length - 2))}@${d}`; };
 
   (window as W).saltPlayer = () => player;
@@ -112,8 +114,8 @@ const {
     if (!player || !playerEmail) return Promise.resolve({ recorded: false, emailHint: '' });
     winReport = fetch('/api/register', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ event: 'game_won', name: player, email: playerEmail, marketing, source: playerSource, game: d.game, level: d.level, turns: d.turns }),
-    }).then((r) => ({ recorded: r.ok, emailHint: hint(playerEmail) })).catch(() => ({ recorded: false, emailHint: hint(playerEmail) }));
+      body: JSON.stringify({ event: 'game_won', name: player, email: playerEmail, marketing, source: playerSource, game: d.game, level: d.level, turns: d.turns, playToken }),
+    }).then(async (r) => ({ recorded: r.ok, emailHint: hint(playerEmail), status: r.ok ? ((await r.json().catch(() => ({})))?.reward?.status || 'manual') : undefined })).catch(() => ({ recorded: false, emailHint: hint(playerEmail) }));
     winReport.then((r) => { if (!r.recorded) winReport = null; }); // allow a retry on the next win if it failed
     return winReport;
   };
@@ -131,8 +133,8 @@ const {
 
     const book = box.dataset.book || '';
     const label = box.dataset.label || 'Start playing';
-    const go = (name: string, email: string, readPass?: string) => {
-      player = name; playerEmail = email; ss.set(KEY, name);
+    const go = (name: string, email: string, readPass?: string, token?: string) => {
+      player = name; playerEmail = email; playToken = token || ''; ss.set(KEY, name);
       box.querySelector('.pname')!.textContent = name;
       const pm = box.querySelector('.pmail'); if (pm) pm.textContent = email;
       pending.hidden = true; ready.hidden = false; box.classList.add('done');
@@ -165,7 +167,7 @@ const {
         if (r.status === 429) { fail(j.message || 'Please wait a few minutes and try again.'); return; }
         // Saved, or the sign-up service is briefly unavailable: never block the game.
         // (Books only open with the reading pass that a successful sign-up returns.)
-        go(name, email, r.ok ? j.readPass : undefined);
+        go(name, email, r.ok ? j.readPass : undefined, r.ok ? j.playToken : undefined);
       } catch {
         go(name, email);
       } finally {
@@ -173,7 +175,7 @@ const {
       }
     });
     box.querySelector('.change')!.addEventListener('click', () => {
-      ss.del(KEY); player = ''; playerEmail = ''; winReport = null;
+      ss.del(KEY); player = ''; playerEmail = ''; playToken = ''; winReport = null;
       document.documentElement.classList.remove('player-ready');
       pending.hidden = false; ready.hidden = true; box.classList.remove('done');
       nameIn.value = ''; emailIn.value = ''; nameIn.focus();

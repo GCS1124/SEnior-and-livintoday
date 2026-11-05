@@ -181,7 +181,7 @@ const swatches = [
 </style>
 
 <script>
-  type Reward = { recorded: boolean; emailHint: string };
+  type Reward = { recorded: boolean; emailHint: string; status?: string };
   type Cel = (o: { mode?: 'win' | 'done'; name?: string; achievement: string; detail?: string; artwork?: HTMLCanvasElement; reward?: Reward; fileName?: string; onPlayAgain?: () => void }) => void;
   const reportWin = (d: { game: string; level?: string; turns?: number }) =>
     (window as unknown as { saltReportWin?: (d: { game: string; level?: string; turns?: number }) => Promise<Reward> }).saltReportWin?.(d) ?? Promise.resolve({ recorded: false, emailHint: '' });
