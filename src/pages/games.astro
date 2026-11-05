@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Faq from '../components/Faq.astro';
+import PlayerSignup from '../components/PlayerSignup.astro';
 import { faqSchema } from '../data/schema';
 import { COLORING } from '../data/coloring';
 const crumbs = [{ name: 'Games & Coloring', href: '/games/' }];
@@ -36,6 +37,8 @@ const swatches = [
     <nav class="jump" aria-label="Jump to"><a href="#color">🖍️ Coloring book</a><a href="/greeting-cards/">💌 Greeting card maker</a><a href="#match">🃏 Memory match</a></nav>
   </PageHero>
 
+  <PlayerSignup source="games" />
+
   <!-- COLORING BOOK -->
   <section class="section" id="color">
     <div class="wrap">
@@ -57,7 +60,8 @@ const swatches = [
         ))}
       </div>
       <p class="hand">Color it in! Tap any shape.</p>
-      <div class="studio">
+      <p class="gate-msg"><a href="#player">👆 Type your first name above to start coloring.</a></p>
+      <div class="studio needs-player">
         <div class="canvas" id="canvas">
           {COLORING.map((pg, i) => (
             <svg viewBox="0 0 400 400" data-art={String(i)} role="img" aria-label={`${pg.name} to color`} hidden={i !== 0} set:html={pg.svg} />
@@ -73,7 +77,9 @@ const swatches = [
             <button type="button" class="btn btn-outline" id="undo">↶ Undo</button>
             <button type="button" class="btn btn-outline" id="clear">Start over</button>
             <button type="button" class="btn btn-berry" id="print">🖨️ Print</button>
+            <button type="button" class="btn btn-primary" id="finished">✓ I’m finished!</button>
           </div>
+          <p class="cstatus" id="cstatus" role="status" aria-live="polite"></p>
           <p class="tip">Want to send it to someone? Print it, or make a <a href="/greeting-cards/">greeting card</a> with a photo and your own message.</p>
         </div>
       </div>
@@ -103,7 +109,8 @@ const swatches = [
         <button type="button" class="btn btn-outline" id="restart">↻ New game</button>
       </p>
       <p class="feedback" id="feedback" role="status" aria-live="polite">Tap any card to begin.</p>
-      <div class="board" id="board"></div>
+      <p class="gate-msg"><a href="#player">👆 Type your first name above to start playing.</a></p>
+      <div class="board needs-player" id="board"></div>
       <p class="win" id="win" hidden>🎉 You found them all in <strong id="win-turns"></strong> turns! <a href="/memory-lane/">Take a walk down Memory Lane →</a></p>
     </div>
   </section>
@@ -162,6 +169,11 @@ const swatches = [
   :global(.card-m.up)::after, :global(.card-m.done)::after { content: none; }
   :global(.card-m.done) { border-color: var(--blue); background: var(--yellow-soft); }
   .win { font: 600 1.4rem var(--font-head); color: var(--green-ink); margin-top: 1.4rem; }
+  .gate-msg { display: none; font: 600 1.15rem var(--font-head); background: var(--yellow-soft); border: 2px dashed var(--yellow); border-radius: 14px; padding: 12px 16px; margin: 0 0 1rem; }
+  .gate-msg a { color: var(--blue-ink); text-decoration: none; }
+  :global(html:not(.player-ready)) .gate-msg { display: block; }
+  :global(html:not(.player-ready)) .needs-player { opacity: .45; pointer-events: none; filter: grayscale(.3); }
+  .cstatus { min-height: 1.4em; margin: .6rem 0 0; font-weight: 700; color: var(--blue); }
   @media print {
     :global(body > *:not(main)), :global(.page-hero), :global(.wave), .tools, .pages, #match, :global(.cta) { display: none !important; }
     .canvas { border: 0; box-shadow: none; }
@@ -169,6 +181,9 @@ const swatches = [
 </style>
 
 <script>
+  type Cel = (o: { mode?: 'win' | 'done'; name?: string; achievement: string; detail?: string; artwork?: HTMLCanvasElement; fileName?: string; onPlayAgain?: () => void }) => void;
+  const celebrate = (o: Parameters<Cel>[0]) => (window as unknown as { saltCelebrate?: Cel }).saltCelebrate?.(o);
+  const playerName = () => (window as unknown as { saltPlayer?: () => string }).saltPlayer?.() || 'Friend';
   // ---- Coloring book ----
   let color = '#ffae00';
   const history: [SVGElement, string][] = [];
@@ -195,6 +210,46 @@ const swatches = [
   });
   document.getElementById('print')!.addEventListener('click', () => window.print());
 
+  // "I'm finished!" — a completion moment (not a win), once a few shapes are colored.
+  const cstatus = document.getElementById('cstatus')!;
+  document.getElementById('finished')!.addEventListener('click', async () => {
+    const art = [...arts].find((a) => !a.hasAttribute('hidden'));
+    if (!art) return;
+    const filled = [...art.querySelectorAll<SVGElement>('.c')].filter((el) => el.style.fill && el.style.fill !== 'rgb(255, 255, 255)').length;
+    if (filled < 3) { cstatus.textContent = 'Color a few more shapes first, then tap “I’m finished!” again.'; return; }
+    cstatus.textContent = '';
+    const pageName = document.querySelector<HTMLElement>('.pg.on span')?.textContent?.trim() ?? 'coloring page';
+    const canvas = await artworkCanvas(art, playerName());
+    celebrate({ mode: 'done', name: playerName(), achievement: `finished the ${pageName} coloring page`, detail: `${filled} shapes colored`, artwork: canvas, fileName: 'my-salt-coloring-page' });
+  });
+
+  // Turns the colored SVG into a picture with a small caption.
+  async function artworkCanvas(svg: SVGSVGElement, name: string) {
+    const clone = svg.cloneNode(true) as SVGSVGElement;
+    clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    clone.setAttribute('width', '1000'); clone.setAttribute('height', '1000');
+    clone.removeAttribute('hidden');
+    clone.querySelectorAll<SVGElement>('.c').forEach((el) => {
+      const none = el.getAttribute('fill') === 'none';
+      el.setAttribute('fill', none ? 'none' : (el.style.fill || '#ffffff'));
+      el.setAttribute('stroke', '#2b2b2b'); el.setAttribute('stroke-width', '3'); el.setAttribute('stroke-linejoin', 'round');
+    });
+    const url = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(clone)], { type: 'image/svg+xml' }));
+    const img = await new Promise<HTMLImageElement>((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = url; });
+    const c = document.createElement('canvas'); c.width = 1100; c.height = 1260;
+    const x = c.getContext('2d')!;
+    x.fillStyle = '#ffffff'; x.fillRect(0, 0, c.width, c.height);
+    x.strokeStyle = '#223a66'; x.lineWidth = 10; x.strokeRect(20, 20, c.width - 40, c.height - 40);
+    x.drawImage(img, 50, 50, 1000, 1000);
+    URL.revokeObjectURL(url);
+    await document.fonts?.load('600 64px Caveat').catch(() => null);
+    x.textAlign = 'center'; x.fillStyle = '#14213d'; x.font = '600 64px Caveat, cursive';
+    x.fillText(name && name !== 'Friend' ? `Colored by ${name}` : 'My coloring page', c.width / 2, 1135, c.width - 120);
+    x.fillStyle = '#223a66'; x.font = '700 26px Poppins, sans-serif';
+    x.fillText(`Senior and Living Today · ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`, c.width / 2, 1195);
+    return c;
+  }
+
   // ---- Memory match ----
   const ICONS: [string, string][] = [
     ['☎️', 'Telephone'], ['📻', 'Radio'], ['💿', 'Record'], ['📺', 'Television'], ['⌨️', 'Typewriter keys'],
@@ -204,13 +259,14 @@ const swatches = [
   const board = document.getElementById('board')!;
   const $ = (id: string) => document.getElementById(id)!;
   const turnsEl = $('turns'), pairsEl = $('pairs'), totalEl = $('total'), win = $('win'), fb = $('feedback'), bestEl = $('best'), bestN = $('best-n');
-  let open: HTMLButtonElement[] = [], turns = 0, pairs = 0, lock = false, size = 8;
+  let open: HTMLButtonElement[] = [], turns = 0, pairs = 0, lock = false, size = 8, celebrated = false;
+  const LEVEL: Record<number, string> = { 6: 'Easy', 8: 'Normal', 10: 'Challenge' };
   const store = { get: (k: string) => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k: string, v: string) => { try { localStorage.setItem(k, v); } catch { /* private mode */ } } };
   const showBest = () => { const v = store.get(`salt-match-best-${size}`); bestEl.hidden = !v; bestN.textContent = v ?? ''; };
   function deal() {
     const picks = ICONS.slice(0, size);
     const deck = [...picks, ...picks].map((x) => ({ x, r: Math.random() })).sort((p, q) => p.r - q.r).map((o) => o.x);
-    board.innerHTML = ''; open = []; turns = 0; pairs = 0; lock = false; win.hidden = true;
+    board.innerHTML = ''; open = []; turns = 0; pairs = 0; lock = false; celebrated = false; win.hidden = true;
     turnsEl.textContent = '0'; pairsEl.textContent = '0'; totalEl.textContent = String(size);
     board.style.setProperty('--cols', size === 10 ? '5' : '4');
     fb.textContent = 'Tap any card to begin.';
@@ -241,6 +297,18 @@ const swatches = [
         const prev = Number(store.get(`salt-match-best-${size}`) || 0);
         if (!prev || turns < prev) store.set(`salt-match-best-${size}`, String(turns));
         showBest();
+        // Only reached when every pair on the board has really been matched.
+        const allMatched = board.querySelectorAll('.card-m.done').length === size * 2;
+        if (allMatched && !celebrated) {
+          celebrated = true;
+          const isBest = !prev || turns < prev;
+          setTimeout(() => celebrate({
+            mode: 'win', name: playerName(),
+            achievement: `found all ${size} pairs in Memory Match`,
+            detail: `${LEVEL[size]} level · ${turns} turns${isBest && prev ? ' · New personal best!' : ''}`,
+            fileName: 'salt-memory-match-certificate', onPlayAgain: deal,
+          }), 650);
+        }
       }
     } else {
       lock = true;

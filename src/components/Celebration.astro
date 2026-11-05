@@ -1,0 +1,205 @@
+---
+// Winner / completion celebration, shared by every game and activity.
+//
+//   window.saltCelebrate({
+//     mode: 'win' | 'done',         // 'win' only when the game's real winning condition is met
+//     name, achievement, detail,    // shown on screen and on the certificate
+//     artwork?: HTMLCanvasElement,  // for 'done' (e.g. a finished coloring page) instead of a certificate
+//     fileName, onPlayAgain,
+//   })
+//
+// Brand blue and yellow only. Confetti is skipped for visitors who ask for reduced motion.
+---
+<dialog class="celebrate" id="celebrate" aria-labelledby="cel-title" aria-describedby="cel-msg">
+  <canvas class="confetti" aria-hidden="true"></canvas>
+  <div class="cel-card">
+    <div class="sparkles" aria-hidden="true"><span>✦</span><span>★</span><span>✦</span><span>★</span><span>✦</span></div>
+    <p class="cel-kicker" id="cel-kicker">OH YEAH!</p>
+    <h2 id="cel-title">YOU WON!</h2>
+    <p class="cel-msg" id="cel-msg"></p>
+    <p class="cel-score" id="cel-score"></p>
+    <figure class="cel-preview"><img id="cel-img" alt="" /></figure>
+    <div class="cel-acts">
+      <button type="button" class="btn btn-primary" id="cel-again">↻ Play again</button>
+      <button type="button" class="btn btn-berry" id="cel-download">⬇ Download</button>
+      <button type="button" class="btn btn-outline" id="cel-print">🖨️ Print</button>
+    </div>
+    <p class="cel-status" id="cel-status" role="status" aria-live="polite"></p>
+    <button type="button" class="cel-close" id="cel-close" aria-label="Close">✕</button>
+  </div>
+</dialog>
+<div id="cel-print-area" aria-hidden="true"><img id="cel-print-img" alt="" /></div>
+
+<style is:global>
+  dialog.celebrate { position: fixed; inset: 0; width: 100vw; height: 100vh; max-width: none; max-height: none; margin: 0; padding: 16px; border: 0; background: rgba(20,33,61,.62); display: none; place-items: center; overflow: auto; }
+  dialog.celebrate[open] { display: grid; }
+  dialog.celebrate::backdrop { background: transparent; }
+  .celebrate .confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .cel-card { position: relative; width: min(620px, 100%); background: #fff; border-radius: 26px; border: 6px solid var(--yellow); padding: clamp(22px, 5vw, 38px); text-align: center; box-shadow: 0 30px 80px rgba(0,0,0,.35); }
+  .cel-kicker { margin: 0; font: 700 clamp(1.3rem, 4vw, 1.8rem)/1 var(--font-head); letter-spacing: .08em; color: var(--yellow-shadow); }
+  .cel-card h2 { margin: .15em 0 .3em; font-size: clamp(2.4rem, 8vw, 3.6rem); color: var(--blue); }
+  .cel-msg { font-size: 1.3rem; color: var(--blue-ink); margin: 0 0 .4em; }
+  .cel-score { display: inline-block; background: var(--blue-soft); border-radius: 999px; padding: 6px 18px; font: 600 1.1rem var(--font-head); color: var(--blue); }
+  .cel-score:empty { display: none; }
+  .cel-preview { margin: 16px auto 4px; max-width: 420px; }
+  .cel-preview img { width: 100%; border-radius: 10px; border: 2px solid var(--line); }
+  .cel-acts { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 16px; }
+  .cel-status { min-height: 1.4em; margin: 10px 0 0; color: var(--blue); font-weight: 700; }
+  .cel-close { position: absolute; top: 10px; right: 10px; width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--line); background: #fff; font-size: 1.2rem; cursor: pointer; color: var(--blue-ink); }
+  .sparkles { display: flex; justify-content: center; gap: 14px; color: var(--yellow); font-size: 1.5rem; }
+  .sparkles span:nth-child(even) { color: var(--blue); }
+  @media (prefers-reduced-motion: no-preference) {
+    dialog.celebrate[open] .cel-card { animation: cel-pop .55s cubic-bezier(.2,1.4,.4,1); }
+    dialog.celebrate[open] .sparkles span { animation: cel-twinkle 1.4s ease-in-out infinite; }
+    dialog.celebrate[open] .sparkles span:nth-child(2) { animation-delay: .2s; }
+    dialog.celebrate[open] .sparkles span:nth-child(3) { animation-delay: .4s; }
+    dialog.celebrate[open] .sparkles span:nth-child(4) { animation-delay: .6s; }
+    dialog.celebrate[open] .sparkles span:nth-child(5) { animation-delay: .8s; }
+    @keyframes cel-pop { from { transform: scale(.6); opacity: 0; } to { transform: none; opacity: 1; } }
+    @keyframes cel-twinkle { 50% { transform: scale(1.4) rotate(20deg); opacity: .6; } }
+  }
+  #cel-print-area { display: none; }
+  @media print {
+    body.cel-printing > *:not(#cel-print-area) { display: none !important; }
+    body.cel-printing #cel-print-area { display: block !important; }
+    body.cel-printing #cel-print-img { width: 100%; height: auto; }
+    @page { margin: 10mm; }
+  }
+</style>
+
+<script>
+  type CelOptions = {
+    mode?: 'win' | 'done';
+    name?: string;
+    achievement: string;   // e.g. "found all 8 pairs in Memory Match"
+    detail?: string;       // e.g. "Normal level · 12 turns"
+    artwork?: HTMLCanvasElement;
+    fileName?: string;
+    onPlayAgain?: () => void;
+  };
+  const dlg = document.getElementById('celebrate') as HTMLDialogElement;
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const canvasFx = dlg.querySelector<HTMLCanvasElement>('.confetti')!;
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let current: CelOptions | null = null;
+  let resultCanvas: HTMLCanvasElement | null = null;
+  let lastFocus: HTMLElement | null = null;
+  let raf = 0;
+
+  // ---------- Confetti (brand colours only) ----------
+  function confetti() {
+    if (calm.matches) return;
+    const ctx = canvasFx.getContext('2d')!;
+    const W = (canvasFx.width = innerWidth), H = (canvasFx.height = innerHeight);
+    const colours = ['#223a66', '#ffb400', '#ffe14d', '#ffffff', '#3d5f99'];
+    const bits = Array.from({ length: 160 }, () => ({
+      x: W / 2 + (Math.random() - 0.5) * W * 0.3, y: H * 0.35,
+      vx: (Math.random() - 0.5) * 14, vy: -Math.random() * 14 - 4,
+      s: 6 + Math.random() * 8, r: Math.random() * Math.PI, vr: (Math.random() - 0.5) * 0.3,
+      c: colours[(Math.random() * colours.length) | 0], star: Math.random() < 0.25,
+    }));
+    const start = performance.now();
+    cancelAnimationFrame(raf);
+    const tick = (t: number) => {
+      ctx.clearRect(0, 0, W, H);
+      bits.forEach((b) => {
+        b.vy += 0.32; b.vx *= 0.99; b.x += b.vx; b.y += b.vy; b.r += b.vr;
+        ctx.save(); ctx.translate(b.x, b.y); ctx.rotate(b.r); ctx.fillStyle = b.c;
+        if (b.star) { ctx.font = `${b.s * 2}px sans-serif`; ctx.fillText('✦', -b.s, b.s); }
+        else ctx.fillRect(-b.s / 2, -b.s / 4, b.s, b.s / 2);
+        ctx.restore();
+      });
+      if (t - start < 4200) raf = requestAnimationFrame(tick); else ctx.clearRect(0, 0, W, H);
+    };
+    raf = requestAnimationFrame(tick);
+  }
+
+  // ---------- Certificate ----------
+  const loadImg = (src: string) => new Promise<HTMLImageElement>((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = src; });
+  async function certificate(o: CelOptions) {
+    await Promise.all(['700 64px Poppins', '600 140px Caveat', '400 34px "Atkinson Hyperlegible"'].map((f) => document.fonts?.load(f).catch(() => null)));
+    const c = document.createElement('canvas'); c.width = 1600; c.height = 1131;
+    const x = c.getContext('2d')!;
+    x.fillStyle = '#ffffff'; x.fillRect(0, 0, c.width, c.height);
+    x.fillStyle = '#223a66'; x.fillRect(0, 0, c.width, 34); x.fillRect(0, c.height - 34, c.width, 34); x.fillRect(0, 0, 34, c.height); x.fillRect(c.width - 34, 0, 34, c.height);
+    x.strokeStyle = '#ffb400'; x.lineWidth = 8; x.strokeRect(58, 58, c.width - 116, c.height - 116);
+    x.fillStyle = '#f3f7fc'; x.fillRect(66, 66, c.width - 132, 220);
+    try {
+      const logo = await loadImg('/images/logo-512.png');
+      x.fillStyle = '#223a66'; x.beginPath(); x.arc(c.width / 2, 176, 98, 0, Math.PI * 2); x.fill();
+      x.drawImage(logo, c.width / 2 - 88, 88, 176, 176);
+    } catch { /* logo optional */ }
+    x.textAlign = 'center'; x.fillStyle = '#223a66';
+    x.font = '700 64px Poppins, sans-serif'; x.fillText(o.mode === 'win' ? 'CERTIFICATE OF ACHIEVEMENT' : 'CERTIFICATE OF COMPLETION', c.width / 2, 380);
+    x.fillStyle = '#46546a'; x.font = '400 34px "Atkinson Hyperlegible", sans-serif'; x.fillText('Proudly presented to', c.width / 2, 450);
+    x.fillStyle = '#14213d'; x.font = '600 140px Caveat, cursive'; x.fillText(o.name || 'Friend', c.width / 2, 600, c.width - 240);
+    x.strokeStyle = '#ffb400'; x.lineWidth = 4; x.beginPath(); x.moveTo(400, 630); x.lineTo(1200, 630); x.stroke();
+    x.fillStyle = '#1e2a3b'; x.font = '400 40px "Atkinson Hyperlegible", sans-serif';
+    x.fillText(`for having ${o.achievement}`, c.width / 2, 710, c.width - 240);
+    if (o.detail) { x.fillStyle = '#223a66'; x.font = '700 36px Poppins, sans-serif'; x.fillText(o.detail, c.width / 2, 775, c.width - 240); }
+    x.fillStyle = '#46546a'; x.font = '400 30px "Atkinson Hyperlegible", sans-serif';
+    x.fillText(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }), c.width / 2, 900);
+    x.fillStyle = '#223a66'; x.font = '700 34px Poppins, sans-serif'; x.fillText('Senior and Living Today', c.width / 2, 990);
+    x.fillStyle = '#46546a'; x.font = '400 26px "Atkinson Hyperlegible", sans-serif'; x.fillText('seniorandlivingtoday.com', c.width / 2, 1030);
+    x.fillStyle = '#ffb400'; x.font = '48px sans-serif'; x.fillText('★', 260, 900); x.fillText('★', c.width - 260, 900);
+    return c;
+  }
+
+  // ---------- Open ----------
+  async function celebrate(o: CelOptions) {
+    current = o; lastFocus = document.activeElement as HTMLElement;
+    const win = o.mode !== 'done';
+    $('cel-kicker').textContent = win ? 'OH YEAH!' : 'ALL DONE!';
+    $('cel-title').textContent = win ? 'YOU WON!' : 'Beautiful work!';
+    const nm = o.name && o.name !== 'Friend' ? `, ${o.name}` : '';
+    $('cel-msg').textContent = win ? `You did it${nm}! Congratulations on your achievement!` : `Well done${nm}! You finished it.`;
+    $('cel-score').textContent = o.detail ?? '';
+    $('cel-status').textContent = '';
+    $('cel-again').textContent = o.artwork ? '🖍️ Keep coloring' : '↻ Play again';
+    $('cel-download').textContent = o.artwork ? '⬇ Save picture' : '⬇ Download certificate';
+    $('cel-print').textContent = o.artwork ? '🖨️ Print picture' : '🖨️ Print certificate';
+    if (!dlg.open) dlg.showModal();
+    confetti();
+    resultCanvas = o.artwork ?? (await certificate(o));
+    ($('cel-img') as HTMLImageElement).src = resultCanvas.toDataURL('image/png');
+    ($('cel-img') as HTMLImageElement).alt = o.artwork ? 'Your finished picture' : `Certificate for ${o.name || 'you'}`;
+    $('cel-again').focus();
+  }
+  (window as unknown as { saltCelebrate: typeof celebrate }).saltCelebrate = celebrate;
+
+  function close() { cancelAnimationFrame(raf); canvasFx.getContext('2d')?.clearRect(0, 0, canvasFx.width, canvasFx.height); if (dlg.open) dlg.close(); lastFocus?.focus(); }
+  $('cel-close').addEventListener('click', close);
+  dlg.addEventListener('cancel', () => cancelAnimationFrame(raf));
+  dlg.addEventListener('close', () => lastFocus?.focus());
+  $('cel-again').addEventListener('click', () => { const again = current?.onPlayAgain; close(); again?.(); });
+
+  $('cel-download').addEventListener('click', async () => {
+    if (!resultCanvas || !current) return;
+    const base = (current.fileName || 'salt-certificate').replace(/[^a-z0-9-]+/gi, '-');
+    const btn = $<HTMLButtonElement>('cel-download'); btn.disabled = true;
+    try {
+      if (current.artwork) {
+        const a = document.createElement('a'); a.href = resultCanvas.toDataURL('image/png'); a.download = `${base}.png`; a.click();
+      } else {
+        const { jsPDF } = await import('jspdf');
+        const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+        pdf.addImage(resultCanvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, 297, 210);
+        pdf.save(`${base}.pdf`);
+      }
+      $('cel-status').textContent = '✓ Saved! Look in your Downloads folder.';
+    } catch {
+      $('cel-status').textContent = 'Sorry, that didn’t work. Try the Print button instead.';
+    } finally { btn.disabled = false; }
+  });
+
+  $('cel-print').addEventListener('click', () => {
+    if (!resultCanvas) return;
+    const img = $<HTMLImageElement>('cel-print-img');
+    img.src = resultCanvas.toDataURL('image/png');
+    document.body.classList.add('cel-printing');
+    const done = () => { document.body.classList.remove('cel-printing'); $('cel-status').textContent = '✓ Sent to your printer.'; window.removeEventListener('afterprint', done); };
+    window.addEventListener('afterprint', done);
+    const go = () => window.print();
+    if (img.complete) go(); else img.onload = go;
+  });
+</script>

@@ -1,0 +1,157 @@
+---
+// "Before you play" sign-up card: first name + email, a short privacy note,
+// and a SEPARATE, optional box for news and offers (never pre-ticked).
+//
+// Details go only to /api/register, which forwards them to the business's own
+// email system. The browser keeps just the first name for this visit (so the
+// games can say "Well done, Sarah!"); the email address is never stored here.
+//
+// When a visitor is ready to play, the page receives a "salt:player" event and
+// <html> gets the class "player-ready". window.saltPlayer() returns the name.
+interface Props { source?: string; title?: string; intro?: string }
+const {
+  source = 'games',
+  title = 'Before you play, tell us who’s playing',
+  intro = 'We’ll use your first name to cheer you on when you win, and on your certificate.',
+} = Astro.props;
+---
+<section class="signup-wrap" id="player">
+  <div class="wrap">
+    <div class="signup" data-source={source}>
+      <div class="pending">
+        <h2>{title}</h2>
+        <p class="intro">{intro}</p>
+        <form class="sform" novalidate>
+          <div class="row">
+            <label>
+              <span>Your first name</span>
+              <input name="name" autocomplete="given-name" maxlength="80" required />
+            </label>
+            <label>
+              <span>Your email address</span>
+              <input name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" required />
+            </label>
+          </div>
+          <label class="hp" aria-hidden="true">Company <input name="company" tabindex="-1" autocomplete="off" /></label>
+          <label class="check">
+            <input type="checkbox" name="marketing" />
+            <span>Yes, send me occasional news and offers from Senior and Living Today. <small>(Optional. You can unsubscribe at any time.)</small></span>
+          </label>
+          <p class="err" role="alert" hidden></p>
+          <div class="acts">
+            <button class="btn btn-primary" type="submit">Start playing <span aria-hidden="true">→</span></button>
+            <button class="skip-play" type="button">Just play without signing up</button>
+          </div>
+          <p class="privacy">
+            🔒 We only ask for your name and email. We never sell or share them, and we never ask for passwords, bank or Social Security numbers.{' '}
+            <a href="/privacy-policy/#signups">How we use your details</a>
+          </p>
+        </form>
+      </div>
+      <div class="ready" hidden>
+        <p><span class="wave-hand" aria-hidden="true">👋</span> Welcome, <strong class="pname"></strong>! Have fun. <button type="button" class="change">Not you? Change name</button></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .signup-wrap { padding: 28px 0 0; }
+  .signup { background: #fff; border: 2px solid var(--line); border-top: 6px solid var(--yellow); border-radius: 22px; padding: clamp(20px, 4vw, 32px); box-shadow: 0 14px 34px rgba(34,58,102,.08); max-width: 860px; }
+  .signup h2 { font-size: clamp(1.4rem, 3vw, 1.8rem); margin-bottom: .3em; }
+  .intro { color: var(--ink-soft); }
+  .row { display: grid; gap: 14px; }
+  @media (min-width: 680px) { .row { grid-template-columns: 1fr 1.3fr; } }
+  .sform label span { display: block; font: 600 1.05rem var(--font-head); color: var(--blue-ink); margin-bottom: 6px; }
+  .sform input:not([type='checkbox']) { width: 100%; min-height: 54px; font: 1.15rem var(--font-body); padding: 10px 14px; border: 2px solid var(--line); border-radius: 14px; background: #fff; color: var(--ink); }
+  .sform input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 4px rgba(255,180,0,.3); }
+  .sform input[aria-invalid='true'] { border-color: #b3261e; }
+  .check { display: flex; gap: 12px; align-items: flex-start; margin: 16px 0 4px; cursor: pointer; }
+  .check input { width: 26px; height: 26px; margin-top: 2px; flex: none; accent-color: var(--blue); }
+  .check span { font: 1.02rem var(--font-body) !important; color: var(--ink) !important; }
+  .check small { color: var(--ink-soft); }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .err { color: #b3261e; font-weight: 700; margin: 10px 0 0; }
+  .acts { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 16px; }
+  .skip-play { background: none; border: 0; padding: 10px 4px; min-height: 44px; font: 1rem var(--font-body); color: var(--ink-soft); text-decoration: underline; cursor: pointer; }
+  .privacy { font-size: .95rem; color: var(--ink-soft); margin: 14px 0 0; }
+  .ready p { margin: 0; font-size: 1.2rem; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .change { background: none; border: 0; min-height: 44px; font: 1rem var(--font-body); color: var(--blue); text-decoration: underline; cursor: pointer; }
+  .signup.done { border-top-color: var(--blue); padding-top: 18px; padding-bottom: 18px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .wave-hand { display: inline-block; animation: hand-wave 1.6s ease-in-out 2; transform-origin: 70% 70%; }
+    @keyframes hand-wave { 25% { transform: rotate(16deg); } 50% { transform: rotate(-8deg); } 75% { transform: rotate(12deg); } }
+  }
+  @media print { .signup-wrap { display: none !important; } }
+</style>
+
+<script>
+  type PlayerWin = Window & { saltPlayer?: () => string };
+  const KEY = 'salt-player-name'; // first name only, for this visit; the email is never stored in the browser
+  const ss = {
+    get: (k: string) => { try { return sessionStorage.getItem(k); } catch { return null; } },
+    set: (k: string, v: string) => { try { sessionStorage.setItem(k, v); } catch { /* private mode */ } },
+    del: (k: string) => { try { sessionStorage.removeItem(k); } catch { /* private mode */ } },
+  };
+  let player = ss.get(KEY) || '';
+  (window as PlayerWin).saltPlayer = () => player;
+
+  document.querySelectorAll<HTMLElement>('.signup').forEach((box) => {
+    const form = box.querySelector<HTMLFormElement>('.sform')!;
+    const pending = box.querySelector<HTMLElement>('.pending')!;
+    const ready = box.querySelector<HTMLElement>('.ready')!;
+    const err = box.querySelector<HTMLElement>('.err')!;
+    const btn = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    const nameIn = form.elements.namedItem('name') as HTMLInputElement;
+    const emailIn = form.elements.namedItem('email') as HTMLInputElement;
+
+    const go = (name: string) => {
+      player = name;
+      ss.set(KEY, name);
+      box.querySelector('.pname')!.textContent = name;
+      pending.hidden = true; ready.hidden = false; box.classList.add('done');
+      document.documentElement.classList.add('player-ready');
+      document.dispatchEvent(new CustomEvent('salt:player', { detail: { name } }));
+    };
+    const fail = (msg: string, field?: HTMLInputElement) => {
+      err.textContent = msg; err.hidden = false;
+      [nameIn, emailIn].forEach((f) => f.removeAttribute('aria-invalid'));
+      if (field) { field.setAttribute('aria-invalid', 'true'); field.focus(); }
+    };
+
+    if (player) go(player);
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (btn.disabled) return; // no double submissions
+      err.hidden = true;
+      const name = nameIn.value.trim().replace(/\s+/g, ' ').slice(0, 80);
+      const email = emailIn.value.trim();
+      if (!name) return fail('Please type your first name.', nameIn);
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return fail('Please check your email address. It should look like name@example.com.', emailIn);
+      btn.disabled = true; btn.textContent = 'One moment…';
+      try {
+        const r = await fetch('/api/register', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, marketing: (form.elements.namedItem('marketing') as HTMLInputElement).checked, source: box.dataset.source, company: (form.elements.namedItem('company') as HTMLInputElement).value }),
+        });
+        const j = await r.json().catch(() => ({}));
+        if (r.status === 400) { fail(j.message || 'Please check your details.', j.error === 'email' ? emailIn : nameIn); return; }
+        if (r.status === 429) { fail(j.message || 'Please wait a few minutes and try again.'); return; }
+        // 200 = saved. 503/502/network = sign-up not available right now: never block the game.
+        go(name);
+      } catch {
+        go(name);
+      } finally {
+        btn.disabled = false; btn.innerHTML = 'Start playing <span aria-hidden="true">→</span>';
+      }
+    });
+    box.querySelector('.skip-play')!.addEventListener('click', () => go('Friend'));
+    box.querySelector('.change')!.addEventListener('click', () => {
+      ss.del(KEY); player = '';
+      document.documentElement.classList.remove('player-ready');
+      pending.hidden = false; ready.hidden = true; box.classList.remove('done');
+      nameIn.value = ''; nameIn.focus();
+    });
+  });
+</script>
