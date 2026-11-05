@@ -4,6 +4,21 @@
   "trailingSlash": true,
   "redirects": [
     {
+      "source": "/store-credit",
+      "destination": "/coupon-code/",
+      "permanent": true
+    },
+    {
+      "source": "/store-credit/",
+      "destination": "/coupon-code/",
+      "permanent": true
+    },
+    {
+      "source": "/downloads/salt-store-credit-guide.pdf",
+      "destination": "/downloads/salt-coupon-code-guide.pdf",
+      "permanent": true
+    },
+    {
       "source": "/senior-living-in-usa",
       "destination": "/about/",
       "permanent": true

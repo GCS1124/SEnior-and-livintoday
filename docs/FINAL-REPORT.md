@@ -13,12 +13,12 @@ Each stage was built on its own review branch, checked by the owner through a Ve
 | 1. Audit | Full audit of 47 pages and 3,200 links (`docs/audit/STAGE-1-AUDIT.md`, `stage1-external-links.csv`) | Done |
 | 2. Links and brand | Navy blue `#223A66` and golden yellow everywhere; no pink, green or purple. **Buy Now** / **Shop Now** buttons. Discontinued product removed. No Shopify API. | Live |
 | 3. Navigation, motion, games | Gentle fade-ins, floating decorations, Back to top, a friendlier phone menu. Coloring book with named colors. Memory match with 3 levels and kind feedback. Everything respects reduced motion. | Live |
-| 4. Celebrations | Name + email sign-up required to play. "OH YEAH! YOU WON!" celebration with navy/gold confetti. $100 SALT Membership Reward Voucher (PDF download and print), shown only when the win is recorded. "Why we started the SALT Online Store" story, `/store-credit/` guide, Living Legacy Planner **Color Edition** added. | Live |
+| 4. Celebrations | Name + email sign-up required to play. "OH YEAH! YOU WON!" celebration with navy/gold confetti. SALT Membership Reward Voucher for a **$100 coupon code** (PDF download and print), shown only when the win is recorded. "Why we started the SALT Online Store" story, `/coupon-code/` guide, Living Legacy Planner **Color Edition** added. | Live |
 | 4b. Product links | Every product URL re-checked by browsing www.saltonlinestore.com as a shopper. A product no longer listed publicly was replaced. **Shop more at www.saltonlinestore.com** buttons added. | Live |
-| GoHighLevel | Sign-ups and winners saved straight into the "Senior and living today" sub-account as contacts with tags (`website`, source, `marketing-opt-in`, `game-winner`, `reward-100-store-credit`, `reader`, `reading-<book>`, `newsletter`, `resources`) | Live; **needs the key** (see section 4) |
+| GoHighLevel | Sign-ups and winners saved straight into the "Senior and living today" sub-account as contacts with tags (`website`, source, `marketing-opt-in`, `game-winner`, `reward-100-coupon`, `reader`, `reading-<book>`, `newsletter`, `resources`) | Live; **needs the key** (see section 4) |
 | 5. Online reading | `/books/` library (Read Free Online + Buy This Book). `/read/<book>/` reader with page turning, contents, text size, roomier lines, light/cream/dark, progress bar, resume, keys and swipe. Book text only served after sign-up through a signed 30-day pass; never a public file. | Live; real books wait for their text |
 | 6. Email capture | Newsletter sign-up on every page. Privacy policy section. `docs/STAGE-6-EMAIL-AND-REWARDS.md` | Live |
-| 7. Store credit guide and printables | 6-page large-print PDF guide (`/downloads/salt-store-credit-guide.pdf`). `/store-credit/` page matching Shopify's real flow. Video script (`docs/STORE-CREDIT-VIDEO-SCRIPT.md`). `/resources/` Free Printables page (daily planner unlocks after sign-up). | Live |
+| 7. Coupon guide and printables | 5-page large-print PDF guide (`/downloads/salt-coupon-code-guide.pdf`). `/coupon-code/` page following the store's real checkout (sign in by email code, "Discount code or gift card" box). Video script (`docs/COUPON-VIDEO-SCRIPT.md`). `/resources/` Free Printables page (daily planner unlocks after sign-up). | Live |
 | 8. QA | Full test pass and the fixes listed below | On `stage-8-qa` for approval |
 
 ## 2. Stage 8 quality check: results
@@ -31,12 +31,12 @@ Each stage was built on its own review branch, checked by the owner through a Ve
 | Shopify links | All 19 product URLs are publicly listed on www.saltonlinestore.com and open (200). Home page and 2 collections open (200). |
 | New external links | Amazon Color Edition, Library of Congress, store books and knee wrap: all verified |
 | Accessibility (axe-core, WCAG 2.2 AA) | **0 violations** on all 51 pages, desktop and phone, plus after sign-up and with the celebration open |
-| Lighthouse (home, gifts, games, books, store credit) | Performance 94–100 (mobile), 99–100 (desktop). **Accessibility 100. Best practices 100. SEO 100** after fixes. |
+| Lighthouse (home, gifts, games, books, store credit/coupon page) | Performance 94–100 (mobile), 99–100 (desktop). **Accessibility 100. Best practices 100. SEO 100** after fixes. |
 | JavaScript errors, phone overflow | None, on any page, desktop or phone |
 | Keyboard | "Skip to main content" is the first Tab stop. Games play by keyboard. The celebration closes with Escape. The reader turns pages with the arrow keys. |
 | Games, celebration, voucher | Sign-up gate; win only on real completion, sent once per visit; PDF voucher; print shows the voucher only; behaves correctly when GoHighLevel isn't connected |
 | Reading | Gate, all reader controls, resume, phone swipe, end-of-book buy button. Live API confirmed protected (401 without a pass). |
-| Newsletter, printables, store credit PDF | All tested. No email ever stored in the browser. |
+| Newsletter, printables, guide PDF | All tested. No email ever stored in the browser. |
 | Sign-up / reader APIs | Validation, bot trap, origin check, rate limit, pass checks (valid, missing, fake, other book, expired, path tricks) all pass |
 | Sitemap / robots | Sitemap includes new public pages and leaves out noindex reader pages. robots.txt allows crawling. |
 
@@ -52,23 +52,23 @@ Each stage was built on its own review branch, checked by the owner through a Ve
 
 ## 3. Files of note
 
-- **Docs:** `docs/GOHIGHLEVEL-SETUP.md`, `docs/ADDING-BOOKS.md`, `docs/STAGE-6-EMAIL-AND-REWARDS.md`, `docs/STORE-CREDIT-VIDEO-SCRIPT.md`, `docs/audit/`
+- **Docs:** `docs/GOHIGHLEVEL-SETUP.md`, `docs/ADDING-BOOKS.md`, `docs/STAGE-6-EMAIL-AND-REWARDS.md`, `docs/COUPON-VIDEO-SCRIPT.md`, `docs/audit/`
 - **Server:** `api/register.js` (sign-ups to GoHighLevel), `api/read.js` + `api/_lib/reading-pass.js` (reader)
 - **Books:** `books/*.md` → `api/_books/*.json` (built by `scripts/build-books.mjs`)
-- **Store credit guide source:** `guides-src/store-credit-guide.html` → PDF via `scripts/build-guide-pdf.mjs`
+- **Coupon guide source:** `guides-src/coupon-code-guide.html` → PDF via `scripts/build-guide-pdf.mjs`
 
 ## 4. Owner actions still needed
 
 | # | Action | Why |
 |---|---|---|
-| 1 | **Add `GHL_PRIVATE_TOKEN` in Vercel** (steps in `GOHIGHLEVEL-SETUP.md`) | Until then, nothing is saved: winners don't see the $100 voucher, and books can't open |
-| 2 | **Shopify → Settings → Customer accounts → turn on Store credit** (confirm it's on) | Customers can't see or use credit otherwise |
-| 3 | **Decide the 10% rule:** issue credit in small amounts, use a limiting app, or change the promise | Shopify applies the available balance at checkout and has no 10% limit |
+| 1 | **Send the GoHighLevel form link** (or add `GHL_PRIVATE_TOKEN` in Vercel; see `GOHIGHLEVEL-SETUP.md`) | Until then, nothing is saved: winners don't see the voucher, and books can't open |
+| 2 | **Create a $100 discount code** in Shopify for each winner, and email it within 24–48 hours | The reward is sent by hand |
+| 3 | **Choose the coupon code's limits** in Shopify, for example one use per customer | Set in Shopify when creating each code |
 | 4 | **Send the book text** (attach here, or a public Drive link), whole or a few chapters each | Books show "coming soon" until then |
 | 5 | **Send 4–6 inside pages of the Color Edition** | For a "look inside" viewer |
 | 6 | **Review the privacy policy wording** for sign-ups | Legal text |
 | 7 | **Click the Threads link once** in the footer | Threads blocks automated checks |
-| 8 | **Record the store credit video** (script ready) | Optional |
+| 8 | **Record the coupon video** (script ready) | Optional |
 | 9 | **Add the GA4 measurement ID** if you want Google Analytics | Optional; the site is ready for it |
 
 ## 5. Known limitations
@@ -78,3 +78,10 @@ Each stage was built on its own review branch, checked by the owner through a Ve
 - **The free daily planner** lives on a public GoHighLevel link, so the sign-up gate is light.
 - **The PageSpeed Insights website** hit its shared daily limit during testing, so the same Lighthouse engine was run locally against the built site. Re-check at pagespeed.web.dev after launch for real-world numbers.
 - **Facebook posts couldn't be read** by tools. The brand blue was taken from the previous website and the logo.
+
+## 6. Change after Stage 8
+
+- **The reward is now a coupon code worth $100,** emailed by the team by hand. It used to be "store credit".
+  - The voucher, the celebration, the story, the guide page (now `/coupon-code/`, with `/store-credit/` forwarding there), the PDF and the video script were all updated.
+  - The 10%-per-order wording was removed.
+  - GoHighLevel winners are tagged `reward-100-coupon`.
