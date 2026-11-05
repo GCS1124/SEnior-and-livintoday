@@ -1,53 +1,35 @@
-# Connecting the website to GoHighLevel
+# Sign-ups, GoHighLevel and the $100 coupon code
 
-The website adds game players and winners to the **"Senior and living today"** GoHighLevel sub-account (location ID `sbVe09zoUWLiPTabYb5A`). That's all it does. GoHighLevel sends the emails, and the team adds the $100 store credit in Shopify by hand.
+The website collects **first name and email** when people play the games, read online, download printables or join the newsletter. The details go to the **"Senior and living today"** GoHighLevel sub-account (location ID `sbVe09zoUWLiPTabYb5A`).
 
-Until the key below is added, nothing is saved, and winners are asked to call instead of being shown the $100 voucher.
+**Nothing is automated.** The team handles everything after sign-up by hand, including emailing each winner a **coupon code worth $100** for the SALT Online Store.
 
-## 1. Create the key (about 3 minutes)
+## How sign-ups reach GoHighLevel
 
-1. Log in to GoHighLevel and switch to the **Senior and living today** sub-account.
-2. Go to **Settings → Private Integrations → Create new Integration**.
-3. **Name:** `seniorandlivingtoday.com website`.
-4. **Scopes:** tick **View Contacts** (`contacts.readonly`) and **Edit Contacts** (`contacts.write`). Nothing else is needed.
-5. Click **Create**, then **copy the token** (it starts with `pit-`). Keep it private.
+The owner will provide a **GoHighLevel form link**, and the website's sign-up will then be connected to that form. Until then, either of these turns saving on:
 
-## 2. Add the key to Vercel
+- **Option A: your GoHighLevel form** (preferred by the owner). Send the form's link, and the website's sign-up will submit to it.
+- **Option B: a GoHighLevel key** (already built in, about 3 minutes):
+  1. In GoHighLevel, open the Senior and living today sub-account.
+  2. Go to **Settings → Private Integrations → Create new Integration**, tick **View Contacts** and **Edit Contacts**, then create it and copy the token (`pit-…`).
+  3. In **Vercel → Settings → Environment Variables**, add `GHL_PRIVATE_TOKEN` = the token.
+  4. **Redeploy.**
 
-1. Open **Vercel → the website project → Settings → Environment Variables**.
-2. Add **Key:** `GHL_PRIVATE_TOKEN`, **Value:** the token. Tick **Production** and **Preview**.
-3. Go to **Deployments**, open the latest deployment, click **⋯ → Redeploy**.
+Until one of these is in place, nothing is saved. Winners see a friendly "please call us" message instead of the voucher, and books can't open.
 
-## 3. What the website adds to GoHighLevel
+## What arrives (Option B)
 
-| When | Contact | Tags added |
-|---|---|---|
-| Someone signs up on the Games page | Created, or updated if the email already exists, with first name and email | `website`, `games`, plus `marketing-opt-in` if they ticked the news box |
-| Someone wins a game | Same contact | `game-winner`, `reward-100-store-credit` |
+| When | Tags added to the contact |
+|---|---|
+| Sign up on the Games page | `website`, `games` (+ `marketing-opt-in` if ticked) |
+| **Win a game** | `game-winner`, **`reward-100-coupon`** |
+| Sign up to read a book | `website`, `books`, `reader`, `reading-<book>` |
+| Printables page | `website`, `resources` |
+| Newsletter | `website`, `newsletter`, `marketing-opt-in` |
 
-Existing tags are never removed. To find winners, filter contacts by the tag **`reward-100-store-credit`**.
+## The team's manual steps for each winner
 
-## 4. The team's manual steps for each winner
-
-1. **In GoHighLevel:** find the contact with the tag `reward-100-store-credit`. To give only one reward per email, skip anyone you've already marked, for example with a `reward-sent` tag.
-2. **In Shopify admin → Customers:** search for the winner's email.
-   - If the customer doesn't exist yet: click **Add customer**, enter their first name and **the same email**, and save.
-3. **On that customer's page → Store credit:** issue **$100**.
-4. **In GoHighLevel:** add the tag `reward-sent`, and send (or let your automation send) the "how to use your SALT Store Credit" email.
-   - The website guide for customers is at `https://www.seniorandlivingtoday.com/store-credit/`.
-
-The website tells winners their credit arrives **within 24–48 hours**, so please aim to finish these steps in that time.
-
-## 5. Test it
-
-1. Open `https://www.seniorandlivingtoday.com/games/`.
-2. Sign up with your own email and win an Easy game.
-3. Check:
-   - The screen shows the $100 voucher, not "please call us".
-   - In GoHighLevel, the contact appears with the tags `website`, `games`, `game-winner`, `reward-100-store-credit`.
-
-## Notes
-
-- **The website keeps no names or emails.** Everything is in GoHighLevel.
-- **If the key ever leaks,** delete it in Private Integrations and create a new one.
-- **The 10% rule isn't automatic.** Shopify store credit does not limit itself to 10% per order. That rule is handled by how the team issues or monitors the credit.
+1. In GoHighLevel, filter contacts by **`reward-100-coupon`**. Skip anyone already marked (for example with a `reward-sent` tag), because it's one reward per email address.
+2. In **Shopify**, create a discount code worth **$100**. Set the limits you want, for example one use per customer.
+3. Email the winner their code within **24–48 hours**, with your simple steps. The customer guide is at `https://www.seniorandlivingtoday.com/coupon-code/`, and a printable PDF is at `/downloads/salt-coupon-code-guide.pdf`.
+4. Tag the contact `reward-sent`.

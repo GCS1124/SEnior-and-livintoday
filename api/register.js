@@ -13,8 +13,8 @@
 //
 // GoHighLevel result for every visitor: the contact is created or updated by email, then tagged
 //   website · <source> · [marketing-opt-in]   on sign-up
-//   game-winner · reward-100-store-credit      on a win
-// GoHighLevel handles the follow-up emails; the team adds the $100 store credit in Shopify by hand.
+//   game-winner · reward-100-coupon      on a win
+// The team emails each winner a coupon code worth $100 by hand.
 //
 // With nothing configured the endpoint answers 503 "not_configured" and the website
 // lets the visitor carry on without saving anything (and without promising a reward).
@@ -73,9 +73,9 @@ export default async function handler(req, res) {
   const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
   if (limited(ip)) return res.status(429).json({ error: 'busy', message: 'Too many tries in a short time. Please wait a few minutes.' });
 
-  const tags = ['website', source, ...(marketing ? ['marketing-opt-in'] : []), ...(event === 'game_won' ? ['game-winner', 'reward-100-store-credit'] : []), ...(book ? ['reader', `reading-${book}`] : [])];
+  const tags = ['website', source, ...(marketing ? ['marketing-opt-in'] : []), ...(event === 'game_won' ? ['game-winner', 'reward-100-coupon'] : []), ...(book ? ['reader', `reading-${book}`] : [])];
   const ok = () => res.status(200).json({ ok: true, ...(book ? { readPass: readPass(book) } : {}) });
-  const rewardRules = 'Use up to 10% of each order from the credit until the $100 is used. Credited within 24-48 hours to the store account with this email.';
+  const rewardRules = 'Coupon code worth $100 for the SALT Online Store, emailed by the team within 24-48 hours. One reward per email address.';
 
   // Preferred: save straight into GoHighLevel.
   if (process.env.GHL_PRIVATE_TOKEN) {
@@ -108,7 +108,7 @@ export default async function handler(req, res) {
           game, level, turns,
           // The GoHighLevel workflow uses this to send the reward email and to make sure
           // each email address receives the reward only once.
-          reward: '$100 SALT Store Credit',
+          reward: '$100 coupon code (sent manually by email)',
           reward_rules: rewardRules,
         } : {}),
         tags,
@@ -146,6 +146,6 @@ async function saveToGoHighLevel({ name, email, source, tags }) {
   const id = up?.contact?.id;
   if (!id) throw new Error('GoHighLevel upsert returned no contact id');
   // 2. Add tags (keeps any tags the contact already has). Winners get "game-winner" and
-  //    "reward-100-store-credit"; the team then issues the $100 store credit in Shopify by hand.
+  //    "reward-100-coupon"; the team then emails a $100 coupon code by hand.
   await ghl(`/contacts/${encodeURIComponent(id)}/tags`, { tags });
 }

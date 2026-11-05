@@ -51,9 +51,9 @@ const swatches = [
         <li><span>4</span> Print it when you’re done</li>
       </ol>
       <p class="hand">Choose a picture ({COLORING.length} to pick from)</p>
-      <div class="pages" role="tablist" aria-label="Choose a picture">
+      <div class="pages" role="group" aria-label="Choose a picture">
         {COLORING.map((pg, i) => (
-          <button type="button" class:list={['pg', { on: i === 0 }]} data-page={String(i)} aria-label={pg.name}>
+          <button type="button" class:list={['pg', { on: i === 0 }]} data-page={String(i)} aria-label={pg.name} aria-pressed={i === 0 ? 'true' : 'false'}>
             <svg viewBox="0 0 400 400" aria-hidden="true" set:html={pg.svg} />
             <span>{pg.emoji} {pg.name}</span>
           </button>
@@ -61,7 +61,7 @@ const swatches = [
       </div>
       <p class="hand">Color it in! Tap any shape.</p>
       <p class="gate-msg"><a href="#player">👆 Type your first name above to start coloring.</a></p>
-      <div class="studio needs-player">
+      <div class="studio needs-player" inert>
         <div class="canvas" id="canvas">
           {COLORING.map((pg, i) => (
             <svg viewBox="0 0 400 400" data-art={String(i)} role="img" aria-label={`${pg.name} to color`} hidden={i !== 0} set:html={pg.svg} />
@@ -110,7 +110,7 @@ const swatches = [
       </p>
       <p class="feedback" id="feedback" role="status" aria-live="polite">Tap any card to begin.</p>
       <p class="gate-msg"><a href="#player">👆 Type your first name above to start playing.</a></p>
-      <div class="board needs-player" id="board"></div>
+      <div class="board needs-player" id="board" inert></div>
       <p class="win" id="win" hidden>🎉 You found them all in <strong id="win-turns"></strong> turns! <a href="/memory-lane/">Take a walk down Memory Lane →</a></p>
     </div>
   </section>
@@ -187,6 +187,14 @@ const swatches = [
     (window as unknown as { saltReportWin?: (d: { game: string; level?: string; turns?: number }) => Promise<Reward> }).saltReportWin?.(d) ?? Promise.resolve({ recorded: false, emailHint: '' });
   const celebrate = (o: Parameters<Cel>[0]) => (window as unknown as { saltCelebrate?: Cel }).saltCelebrate?.(o);
   const playerName = () => (window as unknown as { saltPlayer?: () => string }).saltPlayer?.() || 'Friend';
+  // Games stay inert (not focusable, ignored by screen readers) until the visitor signs up.
+  const syncGate = () => {
+    const ready = document.documentElement.classList.contains('player-ready');
+    document.querySelectorAll<HTMLElement>('.needs-player').forEach((el) => el.toggleAttribute('inert', !ready));
+  };
+  new MutationObserver(syncGate).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+  syncGate();
+
   // ---- Coloring book ----
   let color = '#ffae00';
   const history: [SVGElement, string][] = [];
@@ -198,7 +206,7 @@ const swatches = [
     (document.getElementById('picked-dot') as HTMLElement).style.background = color;
   }));
   document.querySelectorAll<HTMLButtonElement>('.pg').forEach((b) => b.addEventListener('click', () => {
-    document.querySelectorAll('.pg').forEach((p) => p.classList.toggle('on', p === b));
+    document.querySelectorAll('.pg').forEach((p) => { p.classList.toggle('on', p === b); p.setAttribute('aria-pressed', String(p === b)); });
     arts.forEach((a) => a.toggleAttribute('hidden', a.dataset.art !== b.dataset.page));
     document.getElementById('canvas')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }));
@@ -312,7 +320,7 @@ const swatches = [
               mode: 'win', name: playerName(), reward,
               achievement: `found all ${size} pairs in Memory Match`,
               detail: `${LEVEL[size]} level · ${finalTurns} turns${isBest && prev ? ' · New personal best!' : ''}`,
-              fileName: 'salt-100-store-credit-voucher', onPlayAgain: deal,
+              fileName: 'salt-100-coupon-voucher', onPlayAgain: deal,
             }));
         }
       }

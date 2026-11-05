@@ -14,8 +14,8 @@
 interface Props { source?: string; title?: string; intro?: string; book?: string; buttonLabel?: string; emailNote?: string }
 const {
   source = 'games',
-  title = 'Play, win, and earn a $100 SALT Store Credit',
-  intro = 'Tell us who’s playing. Win a game and we’ll add a $100 SALT Store Credit to your SALT Online Store account.',
+  title = 'Play, win, and earn a $100 coupon code',
+  intro = 'Tell us who’s playing. Win a game and we’ll email you a coupon code worth $100 for the SALT Online Store.',
   book = '',
   buttonLabel = 'Start playing',
   emailNote = 'Please enter your correct email. Your reward is sent to this email, and it’s the email you’ll use to sign in at the SALT Online Store.',
@@ -50,7 +50,7 @@ const {
           </div>
           <p class="privacy">
             🔒 We only ask for your name and email. We never sell or share them, and we never ask for passwords, bank or Social Security numbers.{' '}
-            <a href="/privacy-policy/#signups">How we use your details</a>{!book && <> · <a href="/store-credit/">How the store credit works</a></>}
+            <a href="/privacy-policy/#signups">How we use your details</a>{!book && <> · <a href="/coupon-code/">How the $100 coupon works</a></>}
           </p>
         </form>
       </div>

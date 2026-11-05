@@ -4,7 +4,7 @@
 
 | Place | What they get | GoHighLevel tags | Marketing consent |
 |---|---|---|---|
-| **Games page** (`/games/`), required to play | Play the games; the $100 SALT Store Credit reward when they win | `website`, `games` (+ `game-winner`, `reward-100-store-credit` on a win) | Separate, optional, unticked box |
+| **Games page** (`/games/`), required to play | Play the games; a $100 coupon code reward when they win | `website`, `games` (+ `game-winner`, `reward-100-coupon` on a win) | Separate, optional, unticked box |
 | **Read online** (`/read/<book>/`), required to read | Free online reading | `website`, `books`, `reader`, `reading-<book>` | Separate, optional, unticked box |
 | **Newsletter band** (above the footer on every page) | Tips by email | `website`, `newsletter`, `marketing-opt-in` | The sign-up itself is the consent, stated next to the button |
 | **Downloads** (Stage 7) | Printable resources | `website`, `resources` | Separate, optional box |
@@ -34,18 +34,14 @@ Only **first name and email** are ever asked for.
 
 - **When:** after a visitor wins a game, as long as the win was recorded in GoHighLevel.
 - **On screen:** "OH YEAH! YOU WON!" and a **SALT Membership Reward Voucher** with:
-  - their name and **$100 SALT Store Credit**;
-  - "credited to your SALT Online Store account within 24–48 hours";
+  - their name;
+  - "You won a $100 coupon code!";
+  - "emailed to you within 24–48 hours";
   - their email, partly hidden;
-  - "use up to 10% of each order until the $100 is used";
   - "one reward per email address".
-- **Team process:** filter GoHighLevel by `reward-100-store-credit`. In Shopify, create the customer with the same email if needed, then issue $100 store credit. Tag the contact `reward-sent`.
-- **Customer guide:** `/store-credit/`.
+- **Team process (manual):** filter GoHighLevel by `reward-100-coupon`. Create a $100 discount code in Shopify, email it to the winner, and tag the contact `reward-sent`.
+- **Customer guide:** `/coupon-code/`, plus the printable PDF.
 
-### Open decisions
+### Open decision
 
-1. **The 10% rule isn't automatic.** Shopify store credit does not limit itself to 10% per order. Options:
-   - issue the credit in smaller amounts, for example $10 at a time;
-   - use a Shopify app that limits it;
-   - treat the 10% as a house rule.
-2. **Wins are checked on the player's own device,** so a technical person could fake one. Keep the "one reward per email" check, and glance at new winners before issuing credit.
+- **Wins are checked on the player's own device,** so a technical person could fake one. Keep "one reward per email" and glance at new winners before sending codes.

@@ -1,0 +1,86 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import StoreStory from '../components/StoreStory.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { storeLink } from '../data/site';
+import { faqSchema } from '../data/schema';
+
+const crumbs = [{ name: 'Your $100 Coupon Code', href: '/coupon-code/' }];
+const faqs = [
+  { q: 'How do I get the $100 coupon code?', a: 'Sign up on our Games page with your first name and correct email, then win a game. Our team emails you a coupon code worth $100 for the SALT Online Store within 24 to 48 hours.' },
+  { q: 'Where do I use my coupon code?', a: 'At the SALT Online Store, www.saltonlinestore.com. Add what you love to your cart, go to checkout, and type your code in the “Discount code or gift card” box, then tap Apply.' },
+  { q: 'I won, but I haven’t received my code. What should I do?', a: 'Please wait the full 48 hours and check your email, including the spam or junk folder. Make sure you signed up with your correct email. If it still hasn’t arrived, call Courtney’s team at (888) 416-4264 and we’ll help.' },
+  { q: 'Can I win more than once?', a: 'The $100 coupon code reward is one per email address. You’re always welcome to keep playing just for fun.' },
+  { q: 'Do I need an account to use the code?', a: 'The SALT Online Store asks you to sign in at checkout. Just type your email and the store sends you a short code. There’s no password to remember.' },
+];
+---
+<Base
+  title="Your $100 Coupon Code: How to Use It at the SALT Online Store"
+  description="Win a game on Senior and Living Today and get a coupon code worth $100 for the SALT Online Store. Here’s how to use it, one simple step at a time."
+  breadcrumbs={crumbs}
+  schema={[faqSchema(faqs)]}
+>
+  <PageHero
+    title="How to use your $100 coupon code"
+    kicker="Play, win, shop and save"
+    lead="Win a game on our website and we’ll email you a coupon code worth $100 for the SALT Online Store. Here’s exactly how to use it, one simple step at a time."
+    breadcrumbs={crumbs}
+  >
+    <div class="btn-row">
+      <a class="btn btn-primary" href="/games/">🎮 Play and win</a>
+      <a class="btn btn-outline" href={storeLink('/', 'coupon-page')} target="_blank" rel="noopener">🛍️ Go to www.saltonlinestore.com ↗</a>
+      <a class="btn btn-berry" href="/downloads/salt-coupon-code-guide.pdf" download>⬇ Download the guide (PDF)</a>
+    </div>
+  </PageHero>
+
+  <section class="section">
+    <div class="wrap narrow">
+      <h2>Step by step</h2>
+      <ol class="steps">
+        <li>
+          <h3>Sign up with your correct email, and win</h3>
+          <p>On our <a href="/games/">Games page</a>, type your first name and email. <strong>Please double-check your email</strong>, because that’s where your code is sent. When you win, you’ll see “OH YEAH! YOU WON!” and your SALT Membership Reward Voucher.</p>
+        </li>
+        <li>
+          <h3>Watch your email (24–48 hours)</h3>
+          <p>Our team emails you a <strong>coupon code worth $100</strong> for the SALT Online Store, with simple steps. If you don’t see it, check your spam or junk folder.</p>
+        </li>
+        <li>
+          <h3>Shop at the SALT Online Store</h3>
+          <p>Go to <a href={storeLink('/', 'coupon-page')} target="_blank" rel="noopener">www.saltonlinestore.com</a>, find something you love, choose any options (like color or size), and tap <strong>Add to cart</strong>.</p>
+        </li>
+        <li>
+          <h3>Go to checkout and sign in</h3>
+          <p>Open your cart and tap <strong>Check out</strong>. The store asks you to sign in: type your email, and it sends you a short code to type in. There’s no password to remember.</p>
+        </li>
+        <li>
+          <h3>Enter your coupon code</h3>
+          <p>At checkout, find the box that says <strong>“Discount code or gift card”</strong>. Type your coupon code exactly as it appears in our email, then tap <strong>Apply</strong>. You’ll see the discount in your order summary.</p>
+        </li>
+        <li>
+          <h3>Check the summary and finish</h3>
+          <p>Look over your order. Pay anything left with your usual method and tap <strong>Pay now</strong>. That’s it!</p>
+        </li>
+      </ol>
+      <p class="notice">💡 <strong>Good to know:</strong> one $100 coupon code reward per email address. If your code doesn’t work, call us at <a href="tel:+18884164264">(888) 416-4264</a> and we’ll sort it out together.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="/downloads/salt-coupon-code-guide.pdf" download>⬇ Download the printable guide (PDF)</a>
+        <a class="btn btn-outline" href="/downloads/salt-coupon-code-guide.pdf" target="_blank" rel="noopener">🖨️ Open to print</a>
+      </div>
+    </div>
+  </section>
+
+  <StoreStory campaign="coupon-page" showCreditLink={false} />
+  <Faq items={faqs} />
+  <CtaBand title="Need a hand with your coupon code?" text="Call Courtney’s team and we’ll walk you through it, one step at a time." />
+</Base>
+
+<style>
+  .steps { list-style: none; counter-reset: s; padding: 0; margin: 1.5rem 0 2rem; display: grid; gap: 18px; }
+  .steps li { counter-increment: s; position: relative; background: #fff; border: 2px solid var(--line); border-radius: 18px; padding: 20px 22px 20px 82px; }
+  .steps li::before { content: counter(s); position: absolute; left: 20px; top: 20px; width: 46px; height: 46px; border-radius: 50%; background: var(--yellow); color: var(--blue-ink); display: grid; place-items: center; font: 700 1.35rem var(--font-head); }
+  .steps h3 { margin: 4px 0 .3em; font-size: 1.3rem; }
+  .steps p { margin: 0; }
+</style>

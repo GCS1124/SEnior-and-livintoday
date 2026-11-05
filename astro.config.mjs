@@ -9,7 +9,7 @@ export default defineConfig({
   build: { format: 'directory' },
   integrations: [
     sitemap({
-      filter: (page) => !/\/(thank-you|404)\//.test(page),
+      filter: (page) => !/\/(thank-you|404|read\/[^/]+)\//.test(page), // reader pages are noindex (content behind sign-up)
     }),
   ],
 });

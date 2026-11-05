@@ -28,7 +28,7 @@
     </div>
     <p class="cel-shop" id="cel-shop" hidden>
       <a class="btn btn-green" href="https://www.saltonlinestore.com/?utm_source=seniorandlivingtoday&utm_medium=referral&utm_campaign=game-reward" target="_blank" rel="noopener">🛍️ Shop at www.saltonlinestore.com ↗</a>
-      <a class="cel-how" href="/store-credit/">How to use your SALT Store Credit</a>
+      <a class="cel-how" href="/coupon-code/">How to use your $100 coupon code</a>
     </p>
     <p class="cel-status" id="cel-status" role="status" aria-live="polite"></p>
     <button type="button" class="cel-close" id="cel-close" aria-label="Close">✕</button>
@@ -42,7 +42,7 @@
   dialog.celebrate::backdrop { background: transparent; }
   .celebrate .confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; }
   .cel-card { position: relative; width: min(620px, 100%); background: #fff; border-radius: 26px; border: 6px solid var(--yellow); padding: clamp(22px, 5vw, 38px); text-align: center; box-shadow: 0 30px 80px rgba(0,0,0,.35); }
-  .cel-kicker { margin: 0; font: 700 clamp(1.3rem, 4vw, 1.8rem)/1 var(--font-head); letter-spacing: .08em; color: var(--yellow-shadow); }
+  .cel-kicker { display: inline-block; margin: 0; padding: 6px 18px; border-radius: 999px; background: var(--yellow); font: 700 clamp(1.3rem, 4vw, 1.8rem)/1.1 var(--font-head); letter-spacing: .08em; color: var(--blue-ink); }
   .cel-card h2 { margin: .15em 0 .3em; font-size: clamp(2.4rem, 8vw, 3.6rem); color: var(--blue); }
   .cel-msg { font-size: 1.3rem; color: var(--blue-ink); margin: 0 0 .4em; }
   .cel-score { display: inline-block; background: var(--blue-soft); border-radius: 999px; padding: 6px 18px; font: 600 1.1rem var(--font-head); color: var(--blue); }
@@ -147,7 +147,7 @@
     try { const logo = await loadImg('/images/logo-512.png'); x.drawImage(logo, 196, 110, 240, 240); } catch { /* logo optional */ }
     x.textAlign = 'center';
     x.fillStyle = '#ffe14d'; x.font = '700 190px Poppins, sans-serif'; x.fillText('$100', 316, 560);
-    x.fillStyle = '#ffffff'; x.font = '700 40px Poppins, sans-serif'; x.fillText('SALT STORE CREDIT', 316, 625);
+    x.fillStyle = '#ffffff'; x.font = '700 40px Poppins, sans-serif'; x.fillText('COUPON CODE', 316, 625);
     x.fillStyle = '#c3d0e3'; x.font = '400 28px "Atkinson Hyperlegible", sans-serif'; x.fillText('for the SALT Online Store', 316, 668);
     x.fillStyle = '#ffb400'; x.font = '60px sans-serif'; x.fillText('★ ★ ★', 316, 790);
     // Right panel: member details
@@ -157,12 +157,12 @@
     x.fillStyle = '#ffffff'; x.font = '600 130px Caveat, cursive'; x.fillText(o.name || 'Winner', cx, 330, 900);
     x.strokeStyle = '#ffb400'; x.lineWidth = 4; x.beginPath(); x.moveTo(cx - 330, 360); x.lineTo(cx + 330, 360); x.stroke();
     x.fillStyle = '#ffffff'; x.font = '700 40px Poppins, sans-serif';
-    let y = wrap(x, 'You won a $100 SALT Store Credit!', cx, 430, 900, 52);
+    let y = wrap(x, 'You won a $100 coupon code!', cx, 430, 900, 52);
     x.fillStyle = '#e6edf7'; x.font = '400 30px "Atkinson Hyperlegible", sans-serif';
-    y = wrap(x, 'It will be credited to your SALT Online Store account within 24–48 hours.', cx, y + 6, 880, 40);
+    y = wrap(x, 'Your coupon code, worth $100 at the SALT Online Store, will be emailed to you within 24–48 hours.', cx, y + 6, 880, 40);
     if (o.reward?.emailHint) { x.fillStyle = '#ffe14d'; x.font = '700 30px "Atkinson Hyperlegible", sans-serif'; y = wrap(x, `Account email: ${o.reward.emailHint}`, cx, y + 8, 880, 40); }
     x.fillStyle = '#c3d0e3'; x.font = '400 26px "Atkinson Hyperlegible", sans-serif';
-    y = wrap(x, 'Use up to 10% of each order from your credit until the $100 is used. Sign in at www.saltonlinestore.com with this email to see your balance.', cx, y + 18, 880, 36);
+    y = wrap(x, 'Shop at www.saltonlinestore.com and enter your code at checkout. Your email will explain each simple step.', cx, y + 18, 880, 36);
     if (o.detail) { x.fillStyle = '#ffffff'; x.font = '600 26px Poppins, sans-serif'; wrap(x, `Won: ${o.achievement} · ${o.detail}`, cx, y + 10, 880, 34); }
     x.fillStyle = '#ffb400'; x.font = '700 28px Poppins, sans-serif'; x.fillText('Senior and Living Today  ·  www.saltonlinestore.com', cx, c.height - 120);
     x.fillStyle = '#c3d0e3'; x.font = '400 24px "Atkinson Hyperlegible", sans-serif'; x.fillText(`Issued ${today()}  ·  One reward per email address`, cx, c.height - 80);
@@ -178,11 +178,11 @@
     const nm = o.name && o.name !== 'Friend' ? `, ${o.name}` : '';
     const rewarded = win && !!o.reward?.recorded;
     $('cel-msg').textContent = !win ? `Well done${nm}! You finished it.`
-      : rewarded ? `You did it${nm}! You’ve won a $100 SALT Store Credit!` : `You did it${nm}! Congratulations on your win!`;
+      : rewarded ? `You did it${nm}! You’ve won a $100 coupon code!` : `You did it${nm}! Congratulations on your win!`;
     const rw = $('cel-reward');
     rw.hidden = !win; rw.classList.toggle('warn', win && !rewarded);
     rw.innerHTML = !win ? '' : rewarded
-      ? `🎁 Your <strong>$100 SALT Store Credit</strong> will be added to your SALT Online Store account within <strong>24–48 hours</strong>. Watch for an email at <strong>${o.reward!.emailHint}</strong>.`
+      ? `🎁 Your <strong>coupon code worth $100</strong> for the SALT Online Store will be emailed to <strong>${o.reward!.emailHint}</strong> within <strong>24–48 hours</strong>, with simple steps to use it.`
       : 'We couldn’t record your reward just now, so it hasn’t been added yet. Please call Courtney’s team at <a href="tel:+18884164264">(888) 416-4264</a> and we’ll sort it out.';
     $('cel-shop').hidden = !win;
     ($('cel-download') as HTMLButtonElement).hidden = win && !rewarded;
@@ -200,7 +200,7 @@
     img.parentElement!.hidden = !resultCanvas;
     if (resultCanvas) {
       img.src = resultCanvas.toDataURL('image/png');
-      img.alt = o.artwork ? 'Your finished picture' : `SALT membership reward voucher for ${o.name || 'you'}: $100 SALT Store Credit`;
+      img.alt = o.artwork ? 'Your finished picture' : `SALT membership reward voucher for ${o.name || 'you'}: $100 coupon code`;
     } else img.removeAttribute('src');
     $('cel-again').focus();
   }
