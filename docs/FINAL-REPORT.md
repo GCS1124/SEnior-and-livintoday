@@ -2,7 +2,7 @@
 
 **Website:** https://www.seniorandlivingtoday.com · **Repository:** GCS1124/SEnior-and-livintoday · **Date:** November 5, 2026
 
-Each stage was built on its own review branch, checked by the owner through a Vercel preview, and then merged into `main`, which deploys to the live site. Stages 1–7 are live. Stage 8 (this report and its fixes) is on the `stage-8-qa` branch, waiting for approval.
+Each stage was built on its own review branch, checked by the owner through a Vercel preview, and then merged into `main`, which deploys to the live site. All stages, including Stage 8 (this report and its fixes) and the coupon code change, are live.
 
 ---
 
@@ -19,7 +19,7 @@ Each stage was built on its own review branch, checked by the owner through a Ve
 | 5. Online reading | `/books/` library (Read Free Online + Buy This Book). `/read/<book>/` reader with page turning, contents, text size, roomier lines, light/cream/dark, progress bar, resume, keys and swipe. Book text only served after sign-up through a signed 30-day pass; never a public file. | Live; real books wait for their text |
 | 6. Email capture | Newsletter sign-up on every page. Privacy policy section. `docs/STAGE-6-EMAIL-AND-REWARDS.md` | Live |
 | 7. Coupon guide and printables | 5-page large-print PDF guide (`/downloads/salt-coupon-code-guide.pdf`). `/coupon-code/` page following the store's real checkout (sign in by email code, "Discount code or gift card" box). Video script (`docs/COUPON-VIDEO-SCRIPT.md`). `/resources/` Free Printables page (daily planner unlocks after sign-up). | Live |
-| 8. QA | Full test pass and the fixes listed below | On `stage-8-qa` for approval |
+| 8. QA | Full test pass and the fixes listed below | Live |
 
 ## 2. Stage 8 quality check: results
 
