@@ -183,7 +183,6 @@ export const GIFTS: Product[] = [
   { key: 'card-holder', name: 'Hands-Free Playing Card Holder', why: 'Keeps card night going when fingers get tired.', handle: '2-pack-card-holders-for-playing-cards-playing-card-holder-for-adults-seniors-hands-free-card-game-holder-for-arthritis-litt', tag: 'Game night' },
   { key: 'neck-pillow', name: 'Memory Foam Neck Pillow', why: 'Comfortable support for naps in the recliner, car trips and flights.', handle: 'u-shape-memory-foam-neck-pillow-snail-travel-neck-pillows-portable-cervical-vertebra-airplanes-noon-break-pillow-relax', tag: 'Travel & naps' },
   { key: 'glasses-retro', name: 'Retro Cat-Eye Readers', why: 'Full-frame reading glasses with a vintage look, from +1.0 to +3.5.', handle: 'chic-retro-cat-eye-reading-glasses-for-women-men-full-frame-fashion-glasses-decorative-daily-wear-1-0-to-3-5', tag: 'Memory lane style' },
-  { key: 'glasses-titanium', name: 'Titanium Reading Glasses for Men', why: 'Lightweight and sturdy everyday readers.', handle: 'high-quality-pure-titanium-reading-glasses-for-men-anti-blue-light-presbyopia-eyewear-with-diopter-0-00-4-00', tag: 'For him' },
 ];
 
 export const EPRODUCTS: Product[] = [
@@ -240,7 +239,7 @@ export const RELICS = [
 ];
 
 export const MEMORY_LINKS = [
-  { name: 'Old newspapers (1770–1963)', url: 'https://chroniclingamerica.loc.gov/', note: 'Library of Congress “Chronicling America”: read front pages from the past, free.', icon: '📰' },
+  { name: 'Old newspapers (1770–1963)', url: 'https://www.loc.gov/collections/chronicling-america/', note: 'Library of Congress “Chronicling America”: read front pages from the past, free.', icon: '📰' },
   { name: 'Classic TV & old shows', url: 'https://archive.org/details/classic_tv', note: 'Internet Archive’s free collection of classic television.', icon: '📺' },
   { name: 'Old-time radio shows', url: 'https://archive.org/details/oldtimeradio', note: 'Mysteries, comedies and westerns from radio’s golden age.', icon: '📻' },
   { name: '78 rpm records', url: 'https://great78.archive.org/', note: 'The Great 78 Project: tens of thousands of early records, free to play.', icon: '🎶' },
