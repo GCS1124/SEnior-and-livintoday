@@ -18,7 +18,7 @@ const occasions = [
   { id: 'getwell', label: '💐 Get well' }, { id: 'thinking', label: '🕊️ Thinking of you' }, { id: 'love', label: '❤️ Love' },
   { id: 'anniversary', label: '💍 Anniversary' }, { id: 'congrats', label: '🎉 Congratulations' }, { id: 'sympathy', label: '🌿 Sympathy' },
 ];
-const inks = ['#2f4f33', '#5a1f3c', '#cc3366', '#1d4ed8', '#111111', '#8a5a00', '#ffffff'];
+const inks = ['#223a66', '#5a1f3c', '#cc3366', '#1d4ed8', '#111111', '#8a5a00', '#ffffff'];
 const stickers = ['❤️', '🌸', '🌻', '⭐', '🎈', '🎁', '🎄', '❄️', '🦋', '☕', '🐦', '🍰', '🌈', '🍀', '✨', '🙏'];
 ---
 <Base
@@ -116,7 +116,7 @@ const stickers = ['❤️', '🌸', '🌻', '⭐', '🎈', '🎁', '🎄', '❄�
   .maker > * { min-width: 0; }
   #zoom { min-height: 44px; width: 100%; max-width: 260px; vertical-align: middle; }
   @media (min-width: 980px) { .maker { grid-template-columns: 1fr 1fr; } .preview { position: sticky; top: 150px; } }
-  #card { width: 100%; max-width: 520px; display: block; margin: 0 auto; border-radius: 10px; box-shadow: 0 20px 50px rgba(90,31,60,.22); background: #fff; }
+  #card { width: 100%; max-width: 520px; display: block; margin: 0 auto; border-radius: 10px; box-shadow: 0 20px 50px rgba(34,58,102,.22); background: #fff; }
   .out { justify-content: center; }
   .out .btn { min-height: 50px; padding: 10px 18px; font-size: 1rem; }
   .status { text-align: center; color: var(--green-dark); font-weight: 700; min-height: 1.5em; }
@@ -131,7 +131,7 @@ const stickers = ['❤️', '🌸', '🌻', '⭐', '🎈', '🎁', '🎄', '❄�
   label { display: block; font-weight: 700; margin-top: 12px; }
   input:not([type]), input[type='text'], textarea, select { display: block; width: 100%; margin-top: 6px; font: 1.12rem var(--font-body); padding: 12px 14px; border: 2px solid var(--line); border-radius: 12px; background: var(--paper); }
   textarea { resize: vertical; }
-  input:focus, textarea:focus, select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 4px rgba(255,174,0,.25); }
+  input:focus, textarea:focus, select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 4px rgba(255,180,0,.25); }
   .upload { position: relative; cursor: pointer; margin-top: 4px; }
   .upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
   .row { display: flex; flex-wrap: wrap; gap: 16px; align-items: end; }
@@ -171,7 +171,7 @@ const stickers = ['❤️', '🌸', '🌻', '⭐', '🎈', '🎁', '🎄', '❄�
   const cv = document.getElementById('card') as HTMLCanvasElement;
   const ctx = cv.getContext('2d')!;
   const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
-  const state = { occ: 'birthday', font: 'Caveat', ink: '#2f4f33', photo: null as HTMLImageElement | null, shape: 'round', zoom: 1, stickers: [] as { s: string; x: number; y: number; r: number }[] };
+  const state = { occ: 'birthday', font: 'Caveat', ink: '#223a66', photo: null as HTMLImageElement | null, shape: 'round', zoom: 1, stickers: [] as { s: string; x: number; y: number; r: number }[] };
 
   const W = 1000, H = 1400;
   function wrap(text: string, maxW: number, size: number) {

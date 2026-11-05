@@ -29,11 +29,11 @@ const bibs = GIFTS.filter((g) => g.key.startsWith('bib'));
 </section>
 <style>
   .bibcards { display: grid; justify-items: center; }
-  .bibs { background: linear-gradient(160deg, #fff4d6 0%, #ffe8cf 100%); }
+  .bibs { background: var(--yellow-soft); }
   .quotes { display: grid; gap: 14px; margin-top: 1.2rem; }
-  .q { margin: 0; background: #fff; border-left: 6px solid var(--berry); border-radius: 0 16px 16px 0; padding: 16px 20px; box-shadow: 0 8px 20px rgba(90,31,60,.07); }
+  .q { margin: 0; background: #fff; border-left: 6px solid var(--berry); border-radius: 0 16px 16px 0; padding: 16px 20px; box-shadow: 0 8px 20px rgba(34,58,102,.07); }
   .q p { margin: 0 0 .3rem; font-size: 1.12rem; }
-  .q .stars { color: #e8a000; }
+  .q .stars { color: var(--yellow-shadow); }
   .q footer { font-size: .95rem; color: var(--ink-soft); }
   .more-btn { background: none; border: 0; padding: 10px 0; min-height: 44px; font: 700 1rem var(--font-head); color: var(--berry); cursor: pointer; text-decoration: underline; }
 </style>

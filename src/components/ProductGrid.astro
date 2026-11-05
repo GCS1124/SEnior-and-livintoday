@@ -1,49 +1,39 @@
 ---
+// Product cards. Each card is one plain link to the product's public page on the
+// SALT Online Store (Shopify), where the customer chooses options and checks out.
+// No Shopify API, no embedded checkout: just verified public product URLs.
 import { storeLink, type Product } from '../data/site';
-import STORE_PRODUCTS from '../data/store-products.json';
 
 interface Props { items: Product[]; campaign?: string; cta?: string; single?: boolean }
-const { items, campaign = 'senior-site', cta = 'View & buy', single = false } = Astro.props;
-
-type Variant = { id: number; title: string; price: number };
-type Info = { option: string | null; variants: Variant[] };
-const money = (n: number) => `$${n.toFixed(2)}`;
+const { items, campaign = 'senior-site', cta = 'Buy Now', single = false } = Astro.props;
 ---
 <ul class:list={['pgrid', { single }]}>
-  {items.map((p) => {
-    const vs = (STORE_PRODUCTS as Record<string, Info>)[p.handle]?.variants ?? [];
-    const prices = vs.map((v) => v.price);
-    const min = prices.length ? Math.min(...prices) : 0;
-    const max = prices.length ? Math.max(...prices) : 0;
-    return (
-      <li class="pcard">
-        <a class="pinfo" href={storeLink(`/products/${p.handle}`, campaign)} rel="noopener">
-          {p.tag && <span class="ptag">{p.tag}</span>}
-          <span class="pimg"><img src={`/images/shop/${p.key}.webp`} alt={p.name} width="600" height="600" loading="lazy" decoding="async" /></span>
-          <strong>{p.name}</strong>
-          <span class="why">{p.why}</span>
-          {min > 0 && <span class="price">{min === max ? money(min) : `From ${money(min)}`}</span>}
-          <span class="btn-buy">{cta} <span aria-hidden="true">›</span></span>
-        </a>
-      </li>
-    );
-  })}
+  {items.map((p) => (
+    <li class="pcard">
+      <a class="pinfo" href={storeLink(`/products/${p.handle}`, campaign)} rel="noopener" aria-label={`${cta}: ${p.name} at the SALT Online Store`}>
+        {p.tag && <span class="ptag">{p.tag}</span>}
+        <span class="pimg"><img src={`/images/shop/${p.key}.webp`} alt="" width="600" height="600" loading="lazy" decoding="async" /></span>
+        <strong>{p.name}</strong>
+        <span class="why">{p.why}</span>
+        <span class="btn-buy">{cta} <span aria-hidden="true">›</span></span>
+      </a>
+    </li>
+  ))}
 </ul>
 
 <style>
   .pgrid { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; gap: 22px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
   .pgrid.single { margin-top: 0; max-width: 420px; grid-template-columns: 1fr; }
   .pcard { display: flex; flex-direction: column; background: #fff; border: 2px solid var(--line); border-radius: 20px; padding: 14px 14px 18px; transition: border-color .15s, box-shadow .15s; }
-  .pcard:hover { border-color: var(--gold); box-shadow: 0 14px 30px rgba(90,31,60,.12); }
+  .pcard:hover { border-color: var(--gold); box-shadow: 0 14px 30px rgba(34,58,102,.12); }
   .pinfo { position: relative; height: 100%; display: flex; flex-direction: column; text-decoration: none; color: var(--ink); }
-  .pimg { display: block; border-radius: 14px; overflow: hidden; background: #f7f2ea; aspect-ratio: 1; margin-bottom: 12px; }
+  .pimg { display: block; border-radius: 14px; overflow: hidden; background: var(--blue-pale); aspect-ratio: 1; margin-bottom: 12px; }
   .pimg img { width: 100%; height: 100%; object-fit: contain; transition: transform .2s; }
   .pinfo:hover .pimg img { transform: scale(1.04); }
-  .ptag { position: absolute; top: 8px; left: 8px; z-index: 2; background: var(--berry); color: #fff; font: 600 .9rem var(--font-head); padding: 4px 11px; border-radius: 999px; }
+  .ptag { position: absolute; top: 8px; left: 8px; z-index: 2; background: var(--yellow); color: var(--blue-ink); font: 600 .9rem var(--font-head); padding: 4px 11px; border-radius: 999px; }
   .pinfo strong { font: 600 1.1rem/1.3 var(--font-head); }
   .pinfo:hover strong { color: var(--berry); }
   .why { color: var(--ink-soft); font-size: 1rem; margin: 4px 0 10px; }
-  .price { margin: auto 0 10px; font: 700 1.3rem var(--font-head); color: var(--plum); }
-  .btn-buy { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 50px; padding: 8px 12px; border-radius: 999px; font: 700 1.02rem var(--font-head); text-align: center; background: var(--gold); color: var(--ink); }
-  .pinfo:hover .btn-buy { filter: brightness(.95); }
+  .btn-buy { margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 50px; padding: 8px 12px; border-radius: 999px; font: 700 1.02rem var(--font-head); text-align: center; background: var(--blue); color: #fff; }
+  .pinfo:hover .btn-buy { background: var(--blue-dark); }
 </style>
