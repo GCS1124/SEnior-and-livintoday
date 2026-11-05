@@ -26,7 +26,7 @@ Here’s how I think about gifts for the seniors in your life.
 ## 3. Gifts that keep them safe and on track
 
 - **A big-display calendar clock.** Day, date and time in large letters, with reminder alarms. Wonderful for anyone who loses track of the days.
-- **Self-heating knee supports.** Warmth and support for stiff knees on cold mornings.
+- **A heated knee wrap.** Soothing warmth for stiff knees on cold mornings.
 - **A memory foam neck pillow.** For car trips, doctor waiting rooms and afternoon naps in the recliner.
 
 You’ll find all of these in my [holiday gift guide](/gifts/), straight from our SALT Online Store.
