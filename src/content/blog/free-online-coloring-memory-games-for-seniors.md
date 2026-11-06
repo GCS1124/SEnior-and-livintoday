@@ -1,7 +1,7 @@
 ---
-title: "Free Online Coloring and Memory Games for Seniors (No Sign-Up, Big Buttons)"
+title: "Free Online Coloring and Memory Games for Seniors (Big Buttons, No Ads)"
 seoTitle: "Easy Online Games for Seniors: Coloring & Memory Match"
-description: "Free online coloring pages and a gentle memory match game for seniors: big buttons, no sign-up, no ads, no clock. Color, print and play with the grandkids."
+description: "Free online coloring pages and a gentle memory match game for seniors: big buttons, no ads, no clock. Color, print and play with the grandkids."
 published: 2026-11-03
 image: /images/friends-laughing.webp
 imageAlt: "Older friends laughing together"
@@ -9,7 +9,7 @@ situation: "I want an easy game or something relaxing to do"
 tags: ["activities", "games", "coloring", "grandparents"]
 faqs:
   - q: "Are there free online coloring pages for seniors?"
-    a: "Yes. The Senior and Living Today online coloring book has 16 pictures, from flowers and a cottage to a rotary phone and a classic car. It's free, there's no sign-up, the buttons are big, and you can print your picture when you're done."
+    a: "Yes. The Senior and Living Today online coloring book has 16 pictures, from flowers and a cottage to a rotary phone and a classic car. It's free (you just type your first name and email to start), the buttons are big, and you can print your picture when you're done."
   - q: "What is a good memory game for seniors?"
     a: "A matching game is a good one to start with. You turn over two cards at a time and look for pairs, at your own pace. Our free memory match uses old-time favorites like a rotary phone, a radio and a milk bottle, and there's no timer."
   - q: "Do I need to download anything or create an account?"
@@ -22,7 +22,7 @@ Hi, my Saltines. It's Courtney.
 
 I hear this one a lot: "Courtney, is there anything on the computer that's just *easy*? No passwords, no ads popping up everywhere, no buttons the size of a grain of rice?"
 
-There is, and it's right here on our website. We put together a free **online coloring book** and a **memory match game** for exactly that reason. You don't sign up for anything, you don't download anything, and nobody's timing you. You just open the page and play.
+There is, and it's right here on our website. We put together a free **online coloring book** and a **memory match game** for exactly that reason. You don't download anything and nobody's timing you. Just type your first name and email at the top of the page and start playing, and if you win a game we'll email you a $100 coupon code for the SALT Online Store.
 
 [Take me to the games](/games/)
 
