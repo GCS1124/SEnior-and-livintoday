@@ -59,7 +59,7 @@ export const FAQ_GROUPS: FaqGroup[] = [
     title: 'Using this website',
     items: [
       { q: 'How does the Find Help Near Me tool work?', a: 'Type your ZIP code or city, choose what you need, such as a doctor, an elder law attorney or Medicare help, and we open a Google Maps search for places nearby plus trusted free directories. We don’t endorse any provider, so always check credentials and call ahead.', link: { href: '/find-help/', text: 'Find help near me' } },
-      { q: 'Do you have free games for seniors?', a: 'Yes. There’s a free online coloring book with 16 pictures and a memory match game with old-time favorites. Big buttons, no sign-up, no ads and no clock.', link: { href: '/blog/free-online-coloring-memory-games-for-seniors/', text: 'Coloring and memory games' } },
+      { q: 'Do you have free games for seniors?', a: 'Yes. There’s a free online coloring book with 16 pictures and a memory match game with old-time favorites. Big buttons, no ads and no clock. Just enter your first name and email to start playing.', link: { href: '/blog/free-online-coloring-memory-games-for-seniors/', text: 'Coloring and memory games' } },
       { q: 'Can I make my own greeting card on your site?', a: 'Yes, for free. Pick an occasion, add a photo and your message, then print it, save a PDF or text it to family. Your photos stay on your device.', link: { href: '/blog/make-your-own-greeting-card-online/', text: 'How to make your own card' } },
       { q: 'Are your planners available as printable downloads?', a: 'Yes. The printed planners are sold on Amazon, and fillable PDF e-planners, such as a medication tracker and a daily care log, are instant downloads from the SALT Online Store.', link: { href: '/planners/', text: 'All planners' } },
     ],
