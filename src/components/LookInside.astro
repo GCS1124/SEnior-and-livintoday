@@ -40,11 +40,10 @@ const sectionsOpen = (e: Edition) => e.locked?.sections.filter((s) => s.open).le
               {e.pages.map((p, i) => (
                 <figure class="li-slide" aria-label={`Page ${i + 1} of ${total}: ${p.label}`}>
                   <div class="li-paper">
-                    <img src={p.src} alt={p.alt} {...dims(p)} loading={i === 0 && e.key === initial ? 'eager' : 'lazy'} decoding="async" />
+                    <img src={p.src} alt={p.alt} {...dims(p)} draggable="false" loading={i === 0 && e.key === initial ? 'eager' : 'lazy'} decoding="async" />
                   </div>
                   <figcaption>
                     <span class="li-label">{p.label}</span>
-                    <a class="li-full" href={p.src} target="_blank" rel="noopener">⤢ Open full size<span class="sr-only"> (opens in a new tab)</span></a>
                   </figcaption>
                   {p.text && (
                     <details class="li-text">
@@ -113,7 +112,9 @@ const sectionsOpen = (e: Edition) => e.locked?.sections.filter((s) => s.open).le
   .li-paper img { display: block; height: min(72vh, 820px); width: auto; max-width: 100%; object-fit: contain; border-radius: 4px; background: #fff; box-shadow: 0 2px 0 #fff, 0 6px 0 #f1ede4, 0 18px 40px rgba(20,33,61,.28); }
   @media (max-width: 700px) { .li-paper img { height: auto; width: 100%; } }
   figcaption { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 16px; margin-top: 12px; font: 700 1.05rem var(--font-head); color: var(--blue-ink); }
-  .li-full { font: 600 .95rem var(--font-body); }
+  /* Sample pages are for reading here, not saving (no drag, long-press menu or text selection). */
+  .li-paper, .li-locked { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+  .li-paper img, .li-locked img { -webkit-user-drag: none; pointer-events: auto; }
   .li-text { width: min(760px, 100%); margin-top: 12px; background: #fff; border: 2px solid var(--line); border-radius: 14px; padding: 10px 16px; }
   .li-text summary { cursor: pointer; font: 700 1.05rem var(--font-head); color: var(--blue); min-height: 44px; display: flex; align-items: center; }
   .li-text p { font-size: 1.2rem; line-height: 1.65; }
@@ -144,6 +145,11 @@ const sectionsOpen = (e: Edition) => e.locked?.sections.filter((s) => s.open).le
 <script>
   document.querySelectorAll<HTMLElement>('[data-look]').forEach((root) => {
     const eds = [...root.querySelectorAll<HTMLElement>('.li-ed')];
+    // No "Save image" menu or dragging on the sample pages.
+    root.querySelectorAll<HTMLElement>('.li-paper, .li-locked').forEach((el) => {
+      el.addEventListener('contextmenu', (e) => e.preventDefault());
+      el.addEventListener('dragstart', (e) => e.preventDefault());
+    });
     const edBtns = [...root.querySelectorAll<HTMLButtonElement>('[data-ed-btn]')];
     const updaters = new Map<string, () => void>();
 
