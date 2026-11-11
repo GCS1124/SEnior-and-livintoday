@@ -31,9 +31,14 @@ export const SITE = {
     freePlanner: 'https://storage.googleapis.com/msgsndr/sbVe09zoUWLiPTabYb5A/media/68e8d5088367a0d2b72ca815.pdf',
     quiz: 'https://app.globalcreativeservices.us/widget/quiz/ruBJ8Z1K3m6P3McOkRkS',
     amazonAuthor: 'https://www.amazon.com/s?i=stripbooks&rh=p_27%3ACourtney%2BR%2BJones',
-    livingLegacyPlannerAmazon: 'https://www.amazon.com/dp/B0D4JDBFYQ',
-    livingLegacyPlannerColorAmazon: 'https://www.amazon.com/dp/B0GY1BY1FP', // Color Edition (2nd Edition), paperback; hardcover is offered on the same page
-    militaryPlannerAmazon: 'https://www.amazon.com/dp/B0HFDZMWZX',
+    // Amazon listings for Courtney R. Jones (checked on amazon.com, 2026-11-11).
+    livingLegacyPlannerAmazon: 'https://www.amazon.com/dp/B0D4JDBFYQ',              // 1st Edition, hardcover
+    livingLegacyPlannerColorAmazon: 'https://www.amazon.com/dp/B0GY1BY1FP',         // Color Edition (2nd Edition), paperback
+    livingLegacyPlannerColorHardcoverAmazon: 'https://www.amazon.com/dp/1807382044', // Color Edition (2nd Edition), hardcover
+    militaryPlannerAmazon: 'https://www.amazon.com/dp/B0HFDZMWZX',                   // Military Edition, paperback
+    militaryPlannerHardcoverAmazon: 'https://www.amazon.com/dp/B0HG7YS5JP',          // Military Edition, hardcover
+    dailyBloomAmazon: 'https://www.amazon.com/dp/B0GY143Z4V',                        // The Daily Bloom, paperback
+    dailyBloomHardcoverAmazon: 'https://www.amazon.com/dp/180738215X',               // The Daily Bloom, hardcover
     relicsAmazon: 'https://www.amazon.com/dp/B0DH537CC3',
   },
   // Official profiles (verified 2026-11-03). Add Facebook / Google Business Profile URLs here when ready.
@@ -133,7 +138,7 @@ export const BOOKS: Book[] = [
     alt: 'The Daily Bloom: A Life Balance Guide, cream cover with a blue and gold blossoming tree',
     blurb: 'A gentle daily companion for slowing down, reflecting and keeping your days in balance, with prompts, encouragement and space to track sleep and healthy habits.',
     preview: '/books/#look-bloom',
-    buy: SITE.links.amazonAuthor,
+    buy: SITE.links.dailyBloomAmazon,
     tag: 'Daily planner',
   },
   {

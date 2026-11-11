@@ -44,6 +44,7 @@ const crumbs = [{ name: 'Books & Reading', href: '/books/' }];
                     ? <a class="btn btn-berry" href={b.preview}>👀 Look Inside, free</a>
                     : <span class="soon" aria-disabled="true">📖 Read free online: coming soon</span>}
                 {b.buy && <a class="btn btn-primary" href={b.buy.url} target="_blank" rel="noopener">🛒 Buy This Book <small>({b.buy.where})</small> ↗</a>}
+                {b.amazon?.map((a) => <a class="btn btn-outline" href={a.url} target="_blank" rel="noopener">📦 {a.label} on Amazon ↗</a>)}
                 {!b.buy && b.free && <a class="btn btn-outline" href="/books/living-legacy-planner/">Write it all down: The Living Legacy Planner</a>}
               </div>
             </div>
