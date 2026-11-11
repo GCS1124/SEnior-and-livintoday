@@ -109,7 +109,7 @@ export const EDITIONS: Edition[] = [
       pg('first', '169', 'Final Arrangement Discussion Guide', 'Your Final Arrangement: 10 Point Discussion Guide, the first five questions', 1294, GUIDE),
     ],
     locked: { thumbs: locks('first'), sections: FIRST_SECTIONS },
-    buy: [{ url: SITE.links.livingLegacyPlannerAmazon, label: 'Buy the 1st Edition on Amazon', primary: true }],
+    buy: [{ url: SITE.links.livingLegacyPlannerAmazon, label: 'Buy the 1st Edition on Amazon (hardcover)', primary: true }],
   },
   {
     key: 'second',
@@ -143,7 +143,10 @@ export const EDITIONS: Edition[] = [
       },
     ],
     locked: { thumbs: locks('second'), sections: COLOR_SECTIONS },
-    buy: [{ url: SITE.links.livingLegacyPlannerColorAmazon, label: 'Buy the Color Edition on Amazon', primary: true }],
+    buy: [
+      { url: SITE.links.livingLegacyPlannerColorAmazon, label: 'Paperback on Amazon', primary: true },
+      { url: SITE.links.livingLegacyPlannerColorHardcoverAmazon, label: 'Hardcover on Amazon' },
+    ],
   },
   {
     key: 'military',
@@ -219,7 +222,8 @@ export const EDITIONS: Edition[] = [
     },
     buy: [
       { url: storeLink('/products/living-legacy-planner-military-deployment-family-readiness-edition', 'look-inside'), label: 'Buy from the SALT Online Store', primary: true },
-      { url: SITE.links.militaryPlannerAmazon, label: 'Buy on Amazon' },
+      { url: SITE.links.militaryPlannerAmazon, label: 'Paperback on Amazon' },
+      { url: SITE.links.militaryPlannerHardcoverAmazon, label: 'Hardcover on Amazon' },
     ],
   },
 ];
@@ -270,5 +274,7 @@ export const DAILY_BLOOM: Edition = {
   locked: { thumbs: locks('bloom'), sections: BLOOM_SECTIONS },
   buy: [
     { url: storeLink('/products/the-daily-bloom-life-balance-guide', 'look-inside'), label: 'Buy from the SALT Online Store', primary: true },
+    { url: SITE.links.dailyBloomAmazon, label: 'Paperback on Amazon' },
+    { url: SITE.links.dailyBloomHardcoverAmazon, label: 'Hardcover on Amazon' },
   ],
 };

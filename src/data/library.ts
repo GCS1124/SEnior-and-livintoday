@@ -22,6 +22,7 @@ export interface LibraryBook {
   readable: boolean;   // true when books/<slug>.md exists and may be read online
   free?: boolean;      // a free guide (no purchase needed)
   buy?: { url: string; where: 'SALT Online Store' | 'Amazon' };
+  amazon?: { url: string; label: string }[]; // extra Amazon formats (paperback / hardcover)
   preview?: string;    // a free "Look Inside" page preview (for books that aren't read online)
 }
 
@@ -58,6 +59,7 @@ export const LIBRARY: LibraryBook[] = [
     readable: false,
     preview: '/books/living-legacy-planner/#look-second',
     buy: { url: SITE.links.livingLegacyPlannerColorAmazon, where: 'Amazon' },
+    amazon: [{ url: SITE.links.livingLegacyPlannerColorHardcoverAmazon, label: 'Hardcover' }],
   },
   {
     slug: 'military-edition',
@@ -69,6 +71,7 @@ export const LIBRARY: LibraryBook[] = [
     readable: false,
     preview: '/books/military-edition/#look-inside',
     buy: { url: shop('living-legacy-planner-military-deployment-family-readiness-edition'), where: 'SALT Online Store' },
+    amazon: [{ url: SITE.links.militaryPlannerAmazon, label: 'Paperback' }, { url: SITE.links.militaryPlannerHardcoverAmazon, label: 'Hardcover' }],
   },
   {
     slug: 'daily-bloom',
@@ -80,6 +83,7 @@ export const LIBRARY: LibraryBook[] = [
     readable: false,
     preview: '/books/#look-bloom',
     buy: { url: shop('the-daily-bloom-life-balance-guide'), where: 'SALT Online Store' },
+    amazon: [{ url: SITE.links.dailyBloomAmazon, label: 'Paperback' }, { url: SITE.links.dailyBloomHardcoverAmazon, label: 'Hardcover' }],
   },
   {
     slug: 'relics-of-the-century',
@@ -90,5 +94,6 @@ export const LIBRARY: LibraryBook[] = [
     overview: fromBooks('relics-of-the-century').blurb,
     readable: false,
     buy: { url: shop('relics-of-the-century-book'), where: 'SALT Online Store' },
+    amazon: [{ url: SITE.links.relicsAmazon, label: 'Paperback' }],
   },
 ];
