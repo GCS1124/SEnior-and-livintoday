@@ -1,0 +1,206 @@
+---
+// "Look Inside" book preview: swipe or click through the free pages of a planner, then a
+// final page shows the rest of the book as locked (blurred thumbnails + section list) with
+// buy buttons. One or several editions; links anywhere on the page with
+// data-look-edition="<key>" (and href="#look-inside") switch to that edition.
+// Works without JavaScript too: the pages are a normal sideways-scrolling strip.
+import type { Edition } from '../data/planners';
+interface Props { editions: Edition[]; initial?: Edition['key']; title?: string; intro?: string }
+const { editions, initial = editions[0].key, title = 'Look inside the planner', intro = 'Turn the pages and read a little. When you’re ready, order your own copy.' } = Astro.props;
+const dims = (p: { src: string; w?: number; h?: number }) => (p.w && p.h ? { width: p.w, height: p.h } : p.src.includes('/page-') ? { width: 1000, height: 1304 } : { width: 900, height: 1260 });
+const sectionsOpen = (e: Edition) => e.locked?.sections.filter((s) => s.open).length ?? 0;
+---
+<section class="section li" id="look-inside" data-look aria-labelledby="look-inside-title">
+  <div class="wrap">
+    <div class="li-head">
+      <span class="kicker">Free preview</span>
+      <h2 id="look-inside-title">👀 {title}</h2>
+      <p class="lead">{intro}</p>
+    </div>
+
+    {editions.length > 1 && (
+      <div class="li-eds" role="group" aria-label="Choose an edition">
+        {editions.map((e) => (
+          <button type="button" class="li-edbtn" data-ed-btn={e.key} aria-pressed={String(e.key === initial)} aria-controls={`look-${e.key}`}>
+            <img src={e.cover} alt="" width="60" height="84" loading="lazy" />
+            <span>{e.name}</span>
+          </button>
+        ))}
+      </div>
+    )}
+
+    {editions.map((e) => {
+      const total = e.pages.length;
+      return (
+        <div class="li-ed" id={`look-${e.key}`} data-ed={e.key} hidden={e.key !== initial}>
+          <p class="li-title"><strong>{e.title}</strong> <span class="li-chip">{e.chip}</span></p>
+          <div class="li-stage">
+            <button type="button" class="li-nav li-prev" aria-label="Previous page" disabled><span aria-hidden="true">‹</span></button>
+            <div class="li-track" tabindex="0" role="region" aria-label={`Preview pages of ${e.title}. Use the left and right arrow keys to turn pages.`}>
+              {e.pages.map((p, i) => (
+                <figure class="li-slide" aria-label={`Page ${i + 1} of ${total}: ${p.label}`}>
+                  <div class="li-paper">
+                    <img src={p.src} alt={p.alt} {...dims(p)} loading={i === 0 && e.key === initial ? 'eager' : 'lazy'} decoding="async" />
+                  </div>
+                  <figcaption>
+                    <span class="li-label">{p.label}</span>
+                    <a class="li-full" href={p.src} target="_blank" rel="noopener">⤢ Open full size<span class="sr-only"> (opens in a new tab)</span></a>
+                  </figcaption>
+                  {p.text && (
+                    <details class="li-text">
+                      <summary>🔎 Read this page in large print</summary>
+                      {p.text.map((t) => <p>{t}</p>)}
+                    </details>
+                  )}
+                </figure>
+              ))}
+              <div class="li-slide li-end" aria-label="Order your copy">
+                {e.locked ? (
+                  <div class="li-endbox">
+                    <h3>🔒 The rest of the planner is waiting inside your copy</h3>
+                    <div class="li-locked" aria-hidden="true">
+                      {e.locked.thumbs.map((t) => <img src={t} alt="" width="180" height="235" loading="lazy" />)}
+                      <span class="li-lock">🔒</span>
+                    </div>
+                    <p>You’ve peeked at <strong>{sectionsOpen(e)} of {e.locked.sections.length} sections</strong>. Here’s everything your planner helps you write down:</p>
+                    <ol class="li-sections">
+                      {e.locked.sections.map((s) => <li class={s.open ? 'open' : ''}><span aria-hidden="true">{s.open ? '✓' : '🔒'}</span> {s.name}<span class="sr-only">{s.open ? ' (in this preview)' : ' (inside the book)'}</span></li>)}
+                    </ol>
+                    <div class="btn-row">
+                      {e.buy.map((b) => <a class={`btn ${b.primary ? 'btn-primary' : 'btn-outline'}`} href={b.url} target="_blank" rel="noopener">🛒 {b.label} ↗</a>)}
+                    </div>
+                  </div>
+                ) : (
+                  <div class="li-endbox">
+                    <h3>📖 More pages coming soon</h3>
+                    <p>{e.comingSoon}</p>
+                    <p>{e.who}</p>
+                    <div class="btn-row">
+                      {e.buy.map((b) => <a class={`btn ${b.primary ? 'btn-primary' : 'btn-outline'}`} href={b.url} target="_blank" rel="noopener">🛒 {b.label} ↗</a>)}
+                      {editions.some((x) => x.key === 'military') && <a class="btn btn-outline" href="#look-inside" data-look-edition="military">Peek inside the Military Edition</a>}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            <button type="button" class="li-nav li-next" aria-label="Next page"><span aria-hidden="true">›</span></button>
+          </div>
+          <p class="li-count" aria-live="polite">Page 1 of {total}: {e.pages[0].label}</p>
+          <ol class="li-chips" aria-label="Jump to a page">
+            {e.pages.map((p, i) => <li><button type="button" data-go={i} aria-current={i === 0 ? 'true' : undefined}><b>{i + 1}</b> {p.label}</button></li>)}
+            <li><button type="button" data-go={total} class="li-chip-end">🛒 Get your copy</button></li>
+          </ol>
+        </div>
+      );
+    })}
+  </div>
+</section>
+
+<style>
+  .li { background: linear-gradient(180deg, var(--blue-pale), #fff); }
+  .li-head { max-width: 760px; }
+  .li-eds { display: flex; flex-wrap: wrap; gap: 12px; margin: 1.4rem 0 1rem; }
+  .li-edbtn { display: inline-flex; align-items: center; gap: 12px; min-height: 64px; padding: 8px 18px 8px 8px; border-radius: 16px; border: 2px solid var(--line); background: #fff; color: var(--blue-ink); font: 700 1.05rem var(--font-head); cursor: pointer; }
+  .li-edbtn img { width: 44px; height: auto; border-radius: 4px; box-shadow: 0 3px 8px rgba(20,33,61,.25); }
+  .li-edbtn:hover { border-color: var(--yellow); }
+  .li-edbtn[aria-pressed='true'] { border-color: var(--blue); background: var(--blue); color: #fff; box-shadow: 0 0 0 4px var(--yellow); }
+  .li-title { margin: 1rem 0 .6rem; font-size: 1.1rem; color: var(--blue-ink); }
+  .li-chip { display: inline-block; margin-left: 6px; padding: 3px 12px; border-radius: 999px; background: var(--yellow-soft); border: 1px solid var(--yellow); font: 700 .85rem var(--font-head); color: var(--blue-ink); vertical-align: middle; }
+  .li-stage { position: relative; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px; }
+  .li-track { position: relative; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; overscroll-behavior-x: contain; border-radius: 20px; background: #e9eef6; padding: 18px 0; outline-offset: 4px; scrollbar-width: thin; }
+  @media (prefers-reduced-motion: reduce) { .li-track { scroll-behavior: auto; } }
+  .li-slide { flex: 0 0 100%; scroll-snap-align: center; margin: 0; display: flex; flex-direction: column; align-items: center; padding: 0 12px; }
+  .li-paper img { display: block; height: min(72vh, 820px); width: auto; max-width: 100%; object-fit: contain; border-radius: 4px; background: #fff; box-shadow: 0 2px 0 #fff, 0 6px 0 #f1ede4, 0 18px 40px rgba(20,33,61,.28); }
+  @media (max-width: 700px) { .li-paper img { height: auto; width: 100%; } }
+  figcaption { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 16px; margin-top: 12px; font: 700 1.05rem var(--font-head); color: var(--blue-ink); }
+  .li-full { font: 600 .95rem var(--font-body); }
+  .li-text { width: min(760px, 100%); margin-top: 12px; background: #fff; border: 2px solid var(--line); border-radius: 14px; padding: 10px 16px; }
+  .li-text summary { cursor: pointer; font: 700 1.05rem var(--font-head); color: var(--blue); min-height: 44px; display: flex; align-items: center; }
+  .li-text p { font-size: 1.2rem; line-height: 1.65; }
+  .li-nav { width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--blue); background: #fff; color: var(--blue); font: 700 2.2rem/1 var(--font-head); cursor: pointer; display: grid; place-items: center; padding-bottom: 6px; }
+  .li-nav:hover:not(:disabled) { background: var(--yellow); border-color: var(--yellow-shadow); }
+  .li-nav:disabled { opacity: .35; cursor: default; }
+  @media (max-width: 700px) { .li-stage { grid-template-columns: 1fr; } .li-nav { position: absolute; top: 40%; z-index: 2; width: 48px; height: 48px; box-shadow: 0 4px 12px rgba(20,33,61,.25); } .li-prev { left: 4px; } .li-next { right: 4px; } }
+  .li-count { text-align: center; font: 700 1.1rem var(--font-head); color: var(--blue-ink); margin: 14px 0 8px; }
+  .li-chips { list-style: none; padding: 0; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 980px; }
+  .li-chips button { min-height: 44px; padding: 6px 14px; border-radius: 999px; border: 2px solid var(--line); background: #fff; color: var(--blue-ink); font: 600 .95rem var(--font-body); cursor: pointer; }
+  .li-chips button b { color: var(--blue); margin-right: 2px; }
+  .li-chips button[aria-current='true'] { border-color: var(--blue); background: var(--blue-soft); }
+  .li-chips .li-chip-end { background: var(--yellow); border-color: var(--yellow-shadow); font-weight: 700; }
+  .li-end { justify-content: center; }
+  .li-endbox { width: min(820px, 100%); background: #fff; border: 3px solid var(--yellow); border-radius: 22px; padding: 22px; box-shadow: 0 14px 30px rgba(20,33,61,.12); }
+  .li-endbox h3 { font-size: 1.45rem; margin-top: 0; }
+  .li-locked { position: relative; display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin: 14px 0; }
+  .li-locked img { width: 100%; height: auto; border-radius: 4px; filter: saturate(.7); box-shadow: 0 4px 10px rgba(20,33,61,.18); }
+  .li-lock { position: absolute; inset: 0; display: grid; place-items: center; font-size: 3rem; text-shadow: 0 2px 10px #fff; }
+  @media (max-width: 560px) { .li-locked { grid-template-columns: repeat(4, 1fr); } .li-locked img:nth-child(n+9) { display: none; } }
+  .li-sections { columns: 2 260px; padding-left: 0; list-style: none; margin: 10px 0 18px; }
+  .li-sections li { break-inside: avoid; padding: 4px 0; color: var(--ink-soft); }
+  .li-sections li.open { color: var(--blue-ink); font-weight: 700; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  @media print { .li { display: none; } }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-look]').forEach((root) => {
+    const eds = [...root.querySelectorAll<HTMLElement>('.li-ed')];
+    const edBtns = [...root.querySelectorAll<HTMLButtonElement>('[data-ed-btn]')];
+    const updaters = new Map<string, () => void>();
+
+    eds.forEach((ed) => {
+      const track = ed.querySelector<HTMLElement>('.li-track')!;
+      const slides = [...track.querySelectorAll<HTMLElement>('.li-slide')];
+      const prev = ed.querySelector<HTMLButtonElement>('.li-prev')!;
+      const next = ed.querySelector<HTMLButtonElement>('.li-next')!;
+      const count = ed.querySelector<HTMLElement>('.li-count')!;
+      const chips = [...ed.querySelectorAll<HTMLButtonElement>('[data-go]')];
+      const last = slides.length - 1;
+      let shown = -1;
+      const idx = () => (track.clientWidth ? Math.max(0, Math.min(last, Math.round(track.scrollLeft / track.clientWidth))) : 0);
+      const go = (i: number) => track.scrollTo({ left: Math.max(0, Math.min(last, i)) * track.clientWidth });
+      const update = () => {
+        const i = idx();
+        if (i === shown) return;
+        shown = i;
+        prev.disabled = i === 0;
+        next.disabled = i === last;
+        const label = slides[i].querySelector('.li-label')?.textContent;
+        count.textContent = i === last ? 'The rest is inside your copy' : `Page ${i + 1} of ${last}: ${label}`;
+        chips.forEach((c) => { if (Number(c.dataset.go) === i) c.setAttribute('aria-current', 'true'); else c.removeAttribute('aria-current'); });
+      };
+      let raf = 0;
+      track.addEventListener('scroll', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(update); }, { passive: true });
+      prev.addEventListener('click', () => go(idx() - 1));
+      next.addEventListener('click', () => go(idx() + 1));
+      chips.forEach((c) => c.addEventListener('click', () => go(Number(c.dataset.go))));
+      track.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') { e.preventDefault(); go(idx() + 1); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); go(idx() - 1); }
+        if (e.key === 'Home') { e.preventDefault(); go(0); }
+        if (e.key === 'End') { e.preventDefault(); go(last); }
+      });
+      addEventListener('resize', () => { const i = shown; shown = -1; if (i > 0) track.scrollLeft = i * track.clientWidth; update(); });
+      updaters.set(ed.dataset.ed!, () => { shown = -1; update(); });
+    });
+
+    const show = (key: string) => {
+      if (!eds.some((e) => e.dataset.ed === key)) return false;
+      eds.forEach((e) => { e.hidden = e.dataset.ed !== key; });
+      edBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.edBtn === key)));
+      updaters.get(key)?.();
+      return true;
+    };
+    edBtns.forEach((b) => b.addEventListener('click', () => show(b.dataset.edBtn!)));
+    document.addEventListener('click', (e) => {
+      const a = (e.target as HTMLElement).closest<HTMLElement>('[data-look-edition]');
+      if (a) show(a.dataset.lookEdition!);
+    });
+    // Links like /books/living-legacy-planner/#look-military open that edition.
+    const fromHash = () => {
+      const m = location.hash.match(/^#look-(\w+)$/);
+      if (m && show(m[1])) root.scrollIntoView({ block: 'start' });
+    };
+    fromHash();
+    addEventListener('hashchange', fromHash);
+  });
+</script>

@@ -31,6 +31,7 @@ const crumbs = [{ name: 'Planners', href: '/planners/' }];
             <p>{b.blurb}</p>
             <div class="btn-row">
               <a class="btn btn-primary amzbtn" href={b.buy} rel="noopener" target="_blank">Buy on Amazon ↗</a>
+              {b.preview && <a class="btn btn-berry" href={b.preview}>👀 Look inside</a>}
               {b.page && <a class="btn btn-outline" href={b.page}>More details</a>}
             </div>
           </div>

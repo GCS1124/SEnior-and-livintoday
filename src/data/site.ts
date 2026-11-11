@@ -85,6 +85,7 @@ export const SERVICES = [
 export interface Book {
   slug: string; title: string; subtitle: string; image: string; alt: string;
   blurb: string; buy: string; page?: string; tag: string;
+  preview?: string; // free "Look Inside" preview
 }
 
 export const BOOKS: Book[] = [
@@ -97,6 +98,7 @@ export const BOOKS: Book[] = [
     blurb: 'Final wishes, bank and insurance details, medications, doctors, who fixes the furnace, and the memories you want passed down. So nobody has to guess.',
     buy: SITE.links.livingLegacyPlannerAmazon,
     page: '/books/living-legacy-planner/',
+    preview: '/books/living-legacy-planner/#look-first',
     tag: 'Most loved',
   },
   {
@@ -108,6 +110,7 @@ export const BOOKS: Book[] = [
     blurb: 'Everything you love about The Living Legacy Planner, refreshed in full color: 182 pages, large 8.5 x 11 inch size, in paperback or hardcover.',
     buy: SITE.links.livingLegacyPlannerColorAmazon,
     page: '/books/living-legacy-planner/#color-edition',
+    preview: '/books/living-legacy-planner/#look-second',
     tag: 'New: Color Edition',
   },
   {
@@ -118,6 +121,8 @@ export const BOOKS: Book[] = [
     alt: 'The Living Legacy Planner Military Deployment and Family Readiness Edition cover',
     blurb: 'Written for service members and their families: everything the people at home need while you’re away, organized before deployment day.',
     buy: SITE.links.militaryPlannerAmazon,
+    page: '/books/military-edition/',
+    preview: '/books/military-edition/#look-inside',
     tag: 'New edition',
   },
   {
@@ -125,8 +130,9 @@ export const BOOKS: Book[] = [
     title: 'The Daily Bloom',
     subtitle: 'A life balance guide',
     image: '/images/daily-bloom.webp',
-    alt: 'The Daily Bloom: A Life Balance Guide cover',
-    blurb: 'A gentle daily companion for slowing down, reflecting and keeping your days in balance.',
+    alt: 'The Daily Bloom: A Life Balance Guide, cream cover with a blue and gold blossoming tree',
+    blurb: 'A gentle daily companion for slowing down, reflecting and keeping your days in balance, with prompts, encouragement and space to track sleep and healthy habits.',
+    preview: '/books/#look-bloom',
     buy: SITE.links.amazonAuthor,
     tag: 'Daily planner',
   },

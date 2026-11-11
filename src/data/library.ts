@@ -22,6 +22,7 @@ export interface LibraryBook {
   readable: boolean;   // true when books/<slug>.md exists and may be read online
   free?: boolean;      // a free guide (no purchase needed)
   buy?: { url: string; where: 'SALT Online Store' | 'Amazon' };
+  preview?: string;    // a free "Look Inside" page preview (for books that aren't read online)
 }
 
 const fromBooks = (slug: string) => BOOKS.find((b) => b.slug === slug)!;
@@ -44,6 +45,7 @@ export const LIBRARY: LibraryBook[] = [
     coverAlt: fromBooks('living-legacy-planner').alt,
     overview: fromBooks('living-legacy-planner').blurb,
     readable: false,
+    preview: '/books/living-legacy-planner/#look-first',
     buy: { url: SITE.links.livingLegacyPlannerAmazon, where: 'Amazon' },
   },
   {
@@ -54,6 +56,7 @@ export const LIBRARY: LibraryBook[] = [
     coverAlt: fromBooks('living-legacy-planner-color').alt,
     overview: fromBooks('living-legacy-planner-color').blurb,
     readable: false,
+    preview: '/books/living-legacy-planner/#look-second',
     buy: { url: SITE.links.livingLegacyPlannerColorAmazon, where: 'Amazon' },
   },
   {
@@ -64,6 +67,7 @@ export const LIBRARY: LibraryBook[] = [
     coverAlt: fromBooks('military-edition').alt,
     overview: fromBooks('military-edition').blurb,
     readable: false,
+    preview: '/books/military-edition/#look-inside',
     buy: { url: shop('living-legacy-planner-military-deployment-family-readiness-edition'), where: 'SALT Online Store' },
   },
   {
@@ -74,6 +78,7 @@ export const LIBRARY: LibraryBook[] = [
     coverAlt: fromBooks('daily-bloom').alt,
     overview: fromBooks('daily-bloom').blurb,
     readable: false,
+    preview: '/books/#look-bloom',
     buy: { url: shop('the-daily-bloom-life-balance-guide'), where: 'SALT Online Store' },
   },
   {
