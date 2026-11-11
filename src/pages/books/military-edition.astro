@@ -1,0 +1,83 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Photo from '../../components/Photo.astro';
+import LookInside from '../../components/LookInside.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE } from '../../data/site';
+import { edition } from '../../data/planners';
+import { bookSchema, faqSchema } from '../../data/schema';
+
+const ed = edition('military');
+const path = '/books/military-edition/';
+const crumbs = [{ name: 'Books & Reading', href: '/books/' }, { name: 'The Living Legacy Planner', href: '/books/living-legacy-planner/' }, { name: 'Military Edition', href: path }];
+const description = 'The Living Legacy Planner Military Deployment & Family Readiness Edition, by Courtney R. Jones, a military spouse of 23 years. Look inside free.';
+const buyStore = ed.buy[0].url;
+const faqs = [
+  { q: 'Who is the Military Edition for?', a: 'Enlisted service members, veterans and their families: anyone who wants the people at home to know what to do if they’re deployed, on temporary duty, moving on PCS orders, or suddenly in the hospital.' },
+  { q: 'What’s different from the original planner?', a: 'It adds military sections, such as Service Information, Deployment Readiness, Military Pay, Military Benefits, Important Military Documents and a PCS Moving Checklist, alongside the family, medical, financial and legacy pages.' },
+  { q: 'Is it a will or a legal document?', a: 'No. It organizes your information and wishes so someone you trust can step in. Make your will, powers of attorney and directives with an attorney or your base legal office, then note in the planner where they’re kept.' },
+  { q: 'Where can I buy it?', a: 'From our SALT Online Store, or on Amazon.' },
+];
+---
+<Base
+  title="Living Legacy Planner: Military Edition"
+  {description}
+  image={ed.cover}
+  imageAlt={ed.coverAlt}
+  breadcrumbs={crumbs}
+  schema={[bookSchema({ name: ed.title, description, path, amazonUrl: SITE.links.militaryPlannerAmazon, image: ed.cover }), faqSchema(faqs)]}
+>
+  <PageHero
+    title="The Living Legacy Planner: Military Edition"
+    kicker="Prepare today. Protect tomorrow."
+    lead="The Military Deployment & Family Readiness Edition: everything the people at home need if you’re deployed, moving, or suddenly unavailable."
+    breadcrumbs={crumbs}
+  >
+    <div class="btn-row">
+      <a class="btn btn-primary" href="#look-inside">👀 Look inside, free</a>
+      <a class="btn btn-berry" href={buyStore} target="_blank" rel="noopener">🛒 Buy from our store ↗</a>
+    </div>
+  </PageHero>
+
+  <section class="section">
+    <div class="wrap grid split">
+      <div class="prose">
+        <h2>Written by a military spouse of 23 years</h2>
+        <blockquote class="quote">
+          <p>“I have experienced receiving deployment orders with only a few days’ notice, just one week after relocating to a new state with two children under the age of three.”</p>
+          <p>“There were times I wondered: if something happened to me, or my spouse, would someone stepping in know what to do? Those experiences inspired this planner.”</p>
+          <footer>Courtney R. Jones, from the foreword</footer>
+        </blockquote>
+        <p>Account numbers, insurance, medical details and who to call usually live in our heads or on our phones. This planner puts them in one place, so if someone has to step in for your family, <strong>they won’t have to guess the next move.</strong></p>
+      </div>
+      <Photo src={ed.cover} alt={ed.coverAlt} width={900} height={1260} tilt="r" tape eager />
+    </div>
+  </section>
+
+  <LookInside editions={[ed]} title="Look inside the Military Edition" intro="Turn the pages and read the full foreword. When you’re ready, order your own copy." />
+
+  <section class="section section-cream">
+    <div class="wrap">
+      <h2>28 sections, made for military life</h2>
+      <ol class="secs">
+        {ed.locked!.sections.map((s) => <li>{s.name}</li>)}
+      </ol>
+      <div class="btn-row">
+        {ed.buy.map((b) => <a class={`btn ${b.primary ? 'btn-primary' : 'btn-outline'}`} href={b.url} target="_blank" rel="noopener">🛒 {b.label} ↗</a>)}
+      </div>
+      <p class="hand" style="margin-top:1rem">Also in the family: <a href="/books/living-legacy-planner/#editions">the original and full-color editions</a>.</p>
+    </div>
+  </section>
+
+  <Faq items={faqs} />
+  <CtaBand title="Getting ready for a deployment or a move?" text={`Courtney’s first call is free. Call ${SITE.phoneDisplay} or book a time that suits you.`} />
+</Base>
+
+<style>
+  .quote { margin: 1rem 0 1.4rem; padding: 18px 22px; border-left: 6px solid var(--yellow); background: var(--yellow-soft); border-radius: 0 16px 16px 0; font-size: 1.15rem; }
+  .quote footer { font: 700 1rem var(--font-head); color: var(--blue); margin-top: .4rem; }
+  .secs { columns: 3 240px; margin: 1.2rem 0 1.6rem; padding-left: 1.4em; font-size: 1.08rem; }
+  .secs li { break-inside: avoid; padding: 3px 0; }
+</style>

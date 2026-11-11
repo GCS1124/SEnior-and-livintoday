@@ -2,6 +2,8 @@
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import CtaBand from '../../components/CtaBand.astro';
+import LookInside from '../../components/LookInside.astro';
+import { DAILY_BLOOM } from '../../data/planners';
 import { LIBRARY } from '../../data/library';
 import { SITE } from '../../data/site';
 
@@ -38,7 +40,9 @@ const crumbs = [{ name: 'Books & Reading', href: '/books/' }];
               <div class="btns">
                 {b.readable
                   ? <a class="btn btn-berry" href={`/read/${b.slug}/`}>📖 Read Free Online</a>
-                  : <span class="soon" aria-disabled="true">📖 Read free online: coming soon</span>}
+                  : b.preview
+                    ? <a class="btn btn-berry" href={b.preview}>👀 Look Inside, free</a>
+                    : <span class="soon" aria-disabled="true">📖 Read free online: coming soon</span>}
                 {b.buy && <a class="btn btn-primary" href={b.buy.url} target="_blank" rel="noopener">🛒 Buy This Book <small>({b.buy.where})</small> ↗</a>}
                 {!b.buy && b.free && <a class="btn btn-outline" href="/books/living-legacy-planner/">Write it all down: The Living Legacy Planner</a>}
               </div>
@@ -46,9 +50,11 @@ const crumbs = [{ name: 'Books & Reading', href: '/books/' }];
           </li>
         ))}
       </ul>
-      <p class="note">🔒 To read online, we ask for your first name and email. Reading is free. <a href="/privacy-policy/#signups">How we use your details</a></p>
+      <p class="note">👀 “Look Inside” previews are open to everyone. 🔒 To read a whole book online, we ask for your first name and email. Reading is free. <a href="/privacy-policy/#signups">How we use your details</a></p>
     </div>
   </section>
+
+  <LookInside editions={[DAILY_BLOOM]} title="Look inside The Daily Bloom" intro="Turn the pages and try a few of the prompts. Then treat yourself (or someone you love) to a calmer daily routine." />
 
   <CtaBand title="Want to talk about what you’ve read?" text={`Courtney’s first call is free. Call ${SITE.phoneDisplay} or book a time that suits you.`} />
 </Base>

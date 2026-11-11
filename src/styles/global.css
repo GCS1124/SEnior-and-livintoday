@@ -227,3 +227,18 @@ a.card:hover { border-color: var(--yellow); transform: translateY(-3px); box-sha
   .float { animation: salt-float 9s ease-in-out infinite; }
   .float-slow { animation: salt-float 14s ease-in-out infinite; }
 }
+
+/* Edition cards (components/EditionCards.astro) */
+.eds { list-style: none; padding: 0; margin: 1.6rem 0 0; display: grid; gap: 24px; }
+  @media (min-width: 860px) { .eds { grid-template-columns: repeat(3, 1fr); } }
+  .ed { background: #fff; border: 2px solid var(--line); border-radius: 22px; padding: 20px; display: flex; flex-direction: column; }
+  .ed-cover { display: block; max-width: 230px; margin: 0 auto 14px; }
+  .ed-cover img { width: 100%; height: auto; border-radius: 6px; box-shadow: 0 14px 28px rgba(20,33,61,.28); transition: transform .2s; }
+  .ed-cover:hover img { transform: translateY(-4px) rotate(-1deg); }
+  @media (prefers-reduced-motion: reduce) { .ed-cover:hover img { transform: none; } }
+  .ed-chip { align-self: flex-start; padding: 3px 12px; border-radius: 999px; background: var(--yellow-soft); border: 1px solid var(--yellow); font: 700 .85rem var(--font-head); color: var(--blue-ink); }
+  .ed h3 { font-size: 1.2rem; margin: .5em 0 .3em; }
+  .ed p { flex: 1; }
+  .ed-btns { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .ed-btns .btn { min-height: 50px; padding: 10px 16px; font-size: 1rem; }
+  .ed-more { font-weight: 700; }

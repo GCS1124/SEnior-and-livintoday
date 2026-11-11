@@ -1,0 +1,25 @@
+---
+// Styles live in src/styles/global.css ("Edition cards").
+// Cards comparing the editions of The Living Legacy Planner, each with Look Inside and Buy buttons.
+import type { Edition } from '../data/planners';
+interface Props { editions: Edition[] }
+const { editions } = Astro.props;
+const EDITIONS = editions;
+---
+<ul class="eds">
+{EDITIONS.map((e) => (
+  <li class="ed" id={e.key === 'second' ? 'color-edition' : undefined}>
+<a class="ed-cover" href={`#look-${e.key}`} data-look-edition={e.key} aria-label={`Look inside ${e.title}`}>
+<img src={e.cover} alt={e.coverAlt} width="900" height="1260" loading="lazy" />
+</a>
+<span class="ed-chip">{e.chip}</span>
+<h3>{e.title}</h3>
+<p>{e.who}</p>
+<div class="ed-btns">
+<a class="btn btn-outline" href={`#look-${e.key}`} data-look-edition={e.key}>👀 Look inside</a>
+<a class="btn btn-primary" href={e.buy[0].url} target="_blank" rel="noopener">🛒 {e.buy[0].url.includes('saltonlinestore') ? 'Buy from our store' : 'Buy on Amazon'} ↗</a>
+{e.page && <a class="ed-more" href={e.page}>More about this edition →</a>}
+</div>
+  </li>
+))}
+</ul>

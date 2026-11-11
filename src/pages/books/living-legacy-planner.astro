@@ -5,17 +5,21 @@ import Photo from '../../components/Photo.astro';
 import Reviews from '../../components/Reviews.astro';
 import Faq from '../../components/Faq.astro';
 import CtaBand from '../../components/CtaBand.astro';
+import LookInside from '../../components/LookInside.astro';
+import EditionCards from '../../components/EditionCards.astro';
 import { SITE } from '../../data/site';
+import { EDITIONS } from '../../data/planners';
 import { bookSchema, faqSchema } from '../../data/schema';
 
 const path = '/books/living-legacy-planner/';
 const crumbs = [{ name: 'Planners', href: '/planners/' }, { name: 'The Living Legacy Planner', href: path }];
-const description = 'The Living Legacy Planner by Courtney Jones: a large, hardback end-of-life and personal records planner for final wishes, finances, medical details and memories.';
+const description = 'The Living Legacy Planner by Courtney Jones in three editions: the original, the full-color 2nd Edition and the Military Edition. Look inside free.';
 const faqs = [
   { q: 'Is The Living Legacy Planner a will?', a: 'No. It organizes your information and wishes, but it doesn’t replace a will, trust, power of attorney or advance directive. Make those with an attorney, then write in your planner where they’re kept.' },
   { q: 'Is it only for seniors?', a: 'No. As one reader put it, the unexpected can happen to anyone at any age. It’s especially helpful for seniors, people who live alone, caregivers and families.' },
   { q: 'Can I update it later?', a: 'Yes. There’s room to make changes as your decisions or health change, so you don’t need a new book.' },
-  { q: 'Is there a version for military families?', a: 'Yes. The Military Deployment and Family Readiness Edition is written for service members and their families.' },
+  { q: 'Which edition should I choose?', a: 'The 1st Edition is the original planner. The 2nd Edition is the same caring planner in full color, in a large 8.5 x 11 inch size. The Military Deployment and Family Readiness Edition is written for service members, veterans and their families, with sections for deployment, military pay and benefits, and PCS moves.' },
+  { q: 'Can I see inside before I buy?', a: 'Yes. Use the free Look Inside preview on this page to turn the pages and read the foreword. The rest of the planner is waiting inside your copy.' },
 ];
 ---
 <Base
@@ -33,9 +37,8 @@ const faqs = [
     breadcrumbs={crumbs}
   >
     <div class="btn-row">
-      <a class="btn btn-primary" href={SITE.links.livingLegacyPlannerAmazon} rel="noopener">Buy on Amazon</a>
-      <a class="btn btn-berry" href="#color-edition">New: Color Edition</a>
-      <a class="btn btn-outline" href="/planners/">See all editions</a>
+      <a class="btn btn-primary" href="#look-inside">👀 Look inside, free</a>
+      <a class="btn btn-berry" href="#editions">Compare the 3 editions</a>
     </div>
   </PageHero>
 
@@ -51,24 +54,15 @@ const faqs = [
     </div>
   </section>
 
-  <section class="section section-green" id="color-edition">
-    <div class="wrap grid split">
-      <Photo src="/images/living-legacy-planner-2nd.webp" alt="The Living Legacy Planner Color Edition, 2nd Edition, cover" width={458} height={651} tilt="l" tape />
-      <div>
-        <span class="kicker">New 2nd Edition</span>
-        <h2>The Living Legacy Planner: Color Edition</h2>
-        <p class="lead">The Living Legacy Planner, now in full color.</p>
-        <ul class="checklist">
-          <li><strong>182 pages</strong> of thoughtful prompts for medical care, funeral arrangements, finances, legacy planning and personal messages to loved ones.</li>
-          <li><strong>Large 8.5 x 11 inch size</strong>, easy to read and write in.</li>
-          <li><strong>Paperback or hardcover</strong>, sold and shipped by Amazon.</li>
-        </ul>
-        <div class="btn-row">
-          <a class="btn btn-primary" href={SITE.links.livingLegacyPlannerColorAmazon} rel="noopener" target="_blank">Buy the Color Edition on Amazon ↗</a>
-        </div>
-      </div>
+  <section class="section section-green" id="editions">
+    <div class="wrap">
+      <span class="kicker">One caring planner, three editions</span>
+      <h2>Choose the edition that fits your family</h2>
+      <EditionCards editions={EDITIONS} />
     </div>
   </section>
+
+  <LookInside editions={EDITIONS} initial="second" intro="Turn the pages, read Courtney’s foreword, and see how the planner is laid out. When you’re ready, order your own copy." />
 
   <section class="section section-cream">
     <div class="wrap">
