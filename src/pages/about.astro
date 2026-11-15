@@ -4,11 +4,12 @@ import PageHero from '../components/PageHero.astro';
 import Photo from '../components/Photo.astro';
 import Video from '../components/Video.astro';
 import CtaBand from '../components/CtaBand.astro';
+import TeamSection from '../components/TeamSection.astro';
 import { SITE, BOOKS } from '../data/site';
-const crumbs = [{ name: 'About Courtney', href: '/about/' }];
+const crumbs = [{ name: 'About us', href: '/about/' }];
 ---
 <Base
-  title="About Courtney Jones, the Caregiver’s Caregiver"
+  title="About Us: Courtney Jones, the Caregiver’s Caregiver"
   description="Meet Courtney Jones: 30+ years around senior care, hospital and medical billing experience, author of The Living Legacy Planner, founder of S.A.L.T."
   image="/images/courtney-portrait.webp"
   breadcrumbs={crumbs}
@@ -16,7 +17,7 @@ const crumbs = [{ name: 'About Courtney', href: '/about/' }];
 >
   <PageHero title="Hi, I’m Courtney" kicker="The caregiver’s caregiver" breadcrumbs={crumbs} />
 
-  <section class="section">
+  <section class="section" id="courtney">
     <div class="wrap grid split">
       <div class="prose">
         <p class="lead">I started Senior and Living Today, S.A.L.T. for short, because I kept seeing the same thing: good, loving people trying to take care of someone, and nobody taking care of <em>them</em>.</p>
@@ -42,6 +43,22 @@ const crumbs = [{ name: 'About Courtney', href: '/about/' }];
         </ul>
       </div>
       <Video id="WhVr1HWaXgw" title="How Not to Hesitate: it’s okay to ask for help" length="7:33" note="This one says a lot about who I am." />
+    </div>
+  </section>
+
+  <TeamSection />
+
+  <section class="section section-green" id="our-standards" aria-labelledby="standards-title">
+    <div class="wrap">
+      <span class="kicker">Our promise to you</span>
+      <h2 id="standards-title">How we create our resources</h2>
+      <ul class="standards">
+        <li><span aria-hidden="true">💛</span><h3>From real experience</h3><p>Courtney writes from more than {SITE.founder.yearsExperience} years around senior care, hospital and medical billing work, and her own time as a patient and a caregiver.</p></li>
+        <li><span aria-hidden="true">🔗</span><h3>Trusted sources</h3><p>When we point you to help, we link to official sources first, such as Medicare.gov, the Eldercare Locator and BenefitsCheckUp.</p></li>
+        <li><span aria-hidden="true">🩺</span><h3>Professional review, clearly labeled</h3><p>When a licensed professional reviews or contributes to a resource, we say so on that page, with their name and credential.</p></li>
+        <li><span aria-hidden="true">🧭</span><h3>Honest about our limits</h3><p>We share practical guidance and education, not medical, legal or financial advice. For your own situation, talk with your doctor or a licensed professional. <a href="/disclaimer/">Read our disclaimer</a>.</p></li>
+        <li><span aria-hidden="true">✏️</span><h3>Kept up to date</h3><p>Spot something that’s out of date? Email <a href={`mailto:${SITE.email}`}>{SITE.email}</a> or call {SITE.phoneDisplay}, and we’ll fix it.</p></li>
+      </ul>
     </div>
   </section>
 
