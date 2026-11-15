@@ -5,20 +5,67 @@ import Photo from '../components/Photo.astro';
 import Video from '../components/Video.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { SITE, BOOKS } from '../data/site';
-const crumbs = [{ name: 'About Courtney', href: '/about/' }];
+import { BRITTNEY as B } from '../data/team';
+const crumbs = [{ name: 'About us', href: '/about/' }];
 ---
 <Base
-  title="About Courtney Jones, the Caregiver’s Caregiver"
-  description="Meet Courtney Jones: 30+ years around senior care, hospital and medical billing experience, author of The Living Legacy Planner, founder of S.A.L.T."
+  title="About Us: Courtney Jones & Brittney Sherman, RN"
+  description="Meet the people behind S.A.L.T.: founder Courtney Jones, 30+ years around senior care, and Brittney Sherman, RN, our Registered Nurse Consultant."
   image="/images/courtney-portrait.webp"
   breadcrumbs={crumbs}
-  schema={[{ '@type': 'AboutPage', url: 'https://www.seniorandlivingtoday.com/about/', about: { '@id': 'https://www.seniorandlivingtoday.com/#organization' }, mainEntity: { '@id': 'https://www.seniorandlivingtoday.com/#courtney-jones' } }]}
+  schema={[
+    { '@type': 'AboutPage', url: 'https://www.seniorandlivingtoday.com/about/', about: { '@id': 'https://www.seniorandlivingtoday.com/#organization' }, mainEntity: [{ '@id': 'https://www.seniorandlivingtoday.com/#courtney-jones' }, { '@id': 'https://www.seniorandlivingtoday.com/#brittney-sherman' }] },
+    { '@type': 'Person', '@id': 'https://www.seniorandlivingtoday.com/#brittney-sherman', name: `${B.name}, ${B.credential}`, jobTitle: B.title, image: `https://www.seniorandlivingtoday.com${B.photo}`, url: 'https://www.seniorandlivingtoday.com/about/#brittney', knowsAbout: B.focus, hasCredential: { '@type': 'EducationalOccupationalCredential', credentialCategory: 'license', name: 'Registered Nurse (RN)', recognizedBy: { '@type': 'Organization', name: 'Ohio Board of Nursing' } } },
+  ]}
 >
-  <PageHero title="Hi, I’m Courtney" kicker="The caregiver’s caregiver" breadcrumbs={crumbs} />
+  <PageHero
+    title="About Senior and Living Today"
+    kicker="The caregiver’s caregiver"
+    lead="S.A.L.T. is a senior lifestyle, wellness and resource platform for adults 55 and older and the families who love them, built on real-world caregiving experience and professional nursing knowledge."
+    breadcrumbs={crumbs}
+  >
+    <ul class="ab-trust" aria-label="Why families trust S.A.L.T.">
+      <li><strong>{SITE.founder.yearsExperience}+ years</strong><span>around senior care</span></li>
+      <li><strong>Registered Nurse</strong><span>consultant on our team</span></li>
+      <li><strong>{BOOKS.length} books &amp; planners</strong><span>written by Courtney</span></li>
+      <li><strong>Dayton, Ohio</strong><span>helping families nationwide</span></li>
+    </ul>
+  </PageHero>
 
-  <section class="section">
+  <section class="section ab-people" aria-labelledby="people-title">
+    <img class="ab-seal" src="/images/logo-512.png" alt="" width="512" height="510" aria-hidden="true" loading="lazy" />
+    <div class="wrap">
+      <span class="kicker">Two strengths, one mission</span>
+      <h2 id="people-title">The people behind S.A.L.T.</h2>
+      <p class="lead">Courtney brings the vision, the leadership and decades of experience helping seniors and families. Brittney brings professional nursing knowledge and a healthcare perspective.</p>
+      <ul class="ab-cards">
+        <li class="ab-card">
+          <img src="/images/courtney-portrait.webp" alt="Courtney Jones" width="599" height="900" loading="eager" />
+          <div>
+            <p class="ab-role">Founder</p>
+            <h3>Courtney R. Jones</h3>
+            <p>{SITE.founder.yearsExperience}+ years around senior care, hospital work and medical billing. Author of The Living Legacy Planner. The caregiver’s caregiver.</p>
+            <a class="btn btn-outline" href="#courtney">Meet Courtney ↓</a>
+          </div>
+        </li>
+        <li class="ab-card">
+          <img src={B.photo} alt={`${B.name}, ${B.credential}`} width={B.photoW} height={B.photoH} loading="eager" />
+          <div>
+            <p class="ab-role">{B.title}</p>
+            <h3>{B.name}, {B.credential}</h3>
+            <p>Registered nurse with a background in substance use disorder treatment, patient-centered care, mental health and recovery.</p>
+            <a class="btn btn-outline" href="#brittney">Meet Brittney ↓</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-cream" id="courtney">
     <div class="wrap grid split">
       <div class="prose">
+        <span class="kicker">Our founder</span>
+        <h2>Hi, I’m Courtney</h2>
         <p class="lead">I started Senior and Living Today, S.A.L.T. for short, because I kept seeing the same thing: good, loving people trying to take care of someone, and nobody taking care of <em>them</em>.</p>
         <p>I’ve spent more than {SITE.founder.yearsExperience} years around senior care. I’ve worked in a hospital. I spent years in medical billing, so I know how those bills and policies work, and how to ask for help with them. I’ve also been the patient lying in the bed, in too much pain to speak, grateful that someone was there to speak for me.</p>
         <p>So I call myself the <strong>caregiver’s caregiver</strong>. S.A.L.T. is for anyone 55 and older, and for everyone who plays a part in a senior’s everyday life: sons and daughters, spouses, neighbors, friends.</p>
@@ -29,7 +76,7 @@ const crumbs = [{ name: 'About Courtney', href: '/about/' }];
     </div>
   </section>
 
-  <section class="section section-cream">
+  <section class="section">
     <div class="wrap grid split split-rev">
       <div>
         <h2>What I believe</h2>
@@ -42,6 +89,40 @@ const crumbs = [{ name: 'About Courtney', href: '/about/' }];
         </ul>
       </div>
       <Video id="WhVr1HWaXgw" title="How Not to Hesitate: it’s okay to ask for help" length="7:33" note="This one says a lot about who I am." />
+    </div>
+  </section>
+
+  <section class="section section-cream ab-nurse" id="brittney" aria-labelledby="brittney-title">
+    <div class="wrap grid split split-rev">
+      <div class="prose">
+        <span class="kicker">Our {B.title}</span>
+        <h2 id="brittney-title">Meet {B.name}, {B.credential}</h2>
+        {B.bio.map((t, i) => <p class={i === 0 ? 'lead' : undefined}>{t}</p>)}
+        <ul class="ab-focus" aria-label="Areas of nursing focus">{B.focus.map((f) => <li>{f}</li>)}</ul>
+        <p class="ab-verified"><span aria-hidden="true">✓</span> {B.verified}</p>
+      </div>
+      <Photo src={B.photo} alt={B.photoAlt} width={B.photoW} height={B.photoH} tilt="l" tape />
+    </div>
+    <div class="wrap">
+      <h3 class="ab-brings-title">What Brittney brings to S.A.L.T.</h3>
+      <ul class="ab-brings">
+        {B.brings.map((x) => <li><h4>{x.title}</h4><p>{x.text}</p></li>)}
+      </ul>
+      <p class="ab-note">Brittney’s insights on S.A.L.T. are for general education. For advice about your own health, please talk with your doctor or nurse.</p>
+    </div>
+  </section>
+
+  <section class="section ab-standards" id="our-standards" aria-labelledby="standards-title">
+    <div class="wrap">
+      <span class="kicker">Our promise to you</span>
+      <h2 id="standards-title">How we create our resources</h2>
+      <ul class="standards">
+        <li><span aria-hidden="true">💛</span><h3>From real experience</h3><p>Courtney writes from more than {SITE.founder.yearsExperience} years around senior care, hospital and medical billing work, and her own time as a patient and a caregiver.</p></li>
+        <li><span aria-hidden="true">🔗</span><h3>Trusted sources</h3><p>When we point you to help, we link to official sources first, such as Medicare.gov, the Eldercare Locator and BenefitsCheckUp.</p></li>
+        <li><span aria-hidden="true">🩺</span><h3>Nursing perspective</h3><p>Our Registered Nurse Consultant, Brittney Sherman, RN, brings professional nursing knowledge to our health and wellness education. When a professional reviews a resource, we say so on that page.</p></li>
+        <li><span aria-hidden="true">🧭</span><h3>Honest about our limits</h3><p>We share practical guidance and education, not medical, legal or financial advice. For your own situation, talk with your doctor or a licensed professional. <a href="/disclaimer/">Read our disclaimer</a>.</p></li>
+        <li><span aria-hidden="true">✏️</span><h3>Kept up to date</h3><p>Spot something that’s out of date? Email <a href={`mailto:${SITE.email}`}>{SITE.email}</a> or call {SITE.phoneDisplay}, and we’ll fix it.</p></li>
+      </ul>
     </div>
   </section>
 

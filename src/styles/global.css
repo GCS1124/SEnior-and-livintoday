@@ -242,3 +242,42 @@ a.card:hover { border-color: var(--yellow); transform: translateY(-3px); box-sha
   .ed-btns { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
   .ed-btns .btn { min-height: 50px; padding: 10px 16px; font-size: 1rem; }
   .ed-more { font-weight: 700; }
+
+/* About page (src/pages/about.astro). Brand tokens only: navy, golden yellow, logo yellow, neutrals. */
+.ab-trust { list-style: none; padding: 0; margin: 1.6rem 0 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); max-width: 900px; }
+.ab-trust li { background: #fff; border: 2px solid var(--line); border-top: 5px solid var(--yellow); border-radius: 14px; padding: 12px 16px; }
+.ab-trust strong { display: block; font: 700 1.15rem var(--font-head); color: var(--blue); }
+.ab-trust span { color: var(--ink-soft); font-size: .98rem; }
+.ab-people { position: relative; overflow: hidden; }
+.ab-seal { position: absolute; right: -60px; top: 20px; width: 420px; height: auto; opacity: .08; pointer-events: none; }
+@media (max-width: 700px) { .ab-seal { width: 260px; right: -70px; top: 10px; } }
+.ab-people .wrap { position: relative; }
+.ab-cards { list-style: none; padding: 0; margin: 1.6rem 0 0; display: grid; gap: 24px; }
+@media (min-width: 900px) { .ab-cards { grid-template-columns: 1fr 1fr; } }
+.ab-card { display: grid; grid-template-columns: 150px 1fr; gap: 22px; align-items: center; background: #fff; border: 2px solid var(--line); border-radius: 22px; padding: 22px; box-shadow: 0 10px 26px rgba(20,33,61,.08); }
+@media (max-width: 520px) { .ab-card { grid-template-columns: 1fr; text-align: center; } .ab-card img { margin: 0 auto; } }
+.ab-card img { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; object-position: center 18%; border: 5px solid var(--yellow); box-shadow: 0 8px 18px rgba(20,33,61,.18); }
+.ab-card h3 { font-size: 1.4rem; margin: 0 0 .35em; }
+.ab-card p { margin: 0 0 .9em; }
+.ab-role { display: inline-block; margin: 0 0 .5em !important; padding: 3px 12px; border-radius: 999px; background: var(--blue); color: var(--sun); font: 700 .85rem var(--font-head); letter-spacing: .02em; }
+.ab-focus, .prose .ab-focus { list-style: none; padding: 0 !important; margin: 1em 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.ab-focus li::before { content: none !important; display: none !important; }
+.ab-focus li { margin: 0 !important; padding: 5px 13px; border-radius: 999px; background: #fff; border: 2px solid var(--blue-soft); color: var(--blue-ink); font: 600 .92rem var(--font-body); }
+.ab-verified { display: inline-flex; gap: 8px; align-items: center; padding: 8px 14px; border-radius: 12px; background: #fff; border: 2px solid var(--line); font-size: .98rem; color: var(--blue-ink); }
+.ab-verified span { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--blue); color: var(--sun); font-weight: 700; }
+.ab-brings-title { margin-top: 2rem; font-size: 1.35rem; }
+.ab-brings { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+.ab-brings li { background: #fff; border: 2px solid var(--line); border-left: 6px solid var(--yellow); border-radius: 14px; padding: 16px 18px; }
+.ab-brings h4 { font: 700 1.1rem var(--font-head); color: var(--blue); margin: 0 0 .3em; }
+.ab-brings p { margin: 0; }
+.ab-note { margin-top: 1.2rem; color: var(--ink-soft); font-size: .98rem; }
+.ab-standards { background: var(--blue); color: var(--on-dark); }
+.ab-standards h2, .ab-standards .kicker { color: #fff; }
+.ab-standards .kicker { color: var(--sun); }
+.standards { list-style: none; padding: 0; margin: 1.5rem 0 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.standards a { overflow-wrap: anywhere; }
+.standards li { background: #fff; color: var(--ink); border-radius: 18px; padding: 18px 20px; border-top: 5px solid var(--yellow); }
+.standards li > span { font-size: 1.8rem; }
+.standards h3 { font-size: 1.12rem; margin: .4em 0 .3em; color: var(--blue-ink); }
+.standards p { margin: 0; }
+
