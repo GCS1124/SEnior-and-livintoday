@@ -1,38 +1,30 @@
-// People shown on the About page.
+// The people behind Senior and Living Today, as shown on /about/.
 //
-// Courtney's own story stays at the top of /about/. Professional contributors appear in
-// "The people behind S.A.L.T." ONLY when every approval below is true. Until then the
-// section stays hidden, so nothing about a person goes live without their say-so.
-//
-// BEFORE ADDING OR PUBLISHING A CONTRIBUTOR (the GitHub repository is public, so do not commit
-// their details until step 1 is done):
-//   1. permission: written OK from the person to use their name, credentials, biography and
-//      the exact wording of their role on this site.
-//   2. photo: written OK to use their photo (ideally the original file sent by them), or leave
-//      `photo` out to show their initials.
-//   3. licenseVerified: credential checked on the official state board lookup (for nurses in
-//      Ohio: elicense.ohio.gov, or nursys.com QuickConfirm). Record the date in `verified`.
-//   4. involvementConfirmed: the `involvement` sentence matches what they actually do here.
-// Never mention a contributor's employer in a way that suggests it is connected to S.A.L.T.
+// Brittney Sherman, RN: written permission to publish her name, title, RN credential,
+// biography and photo confirmed by the owner on 2026-11-15. Ohio RN license RN.524872
+// verified Active (no board action, expires 2027-10-31) on the Ohio Board of Nursing's
+// official lookup (elicense.ohio.gov) on 2026-11-15. Re-check before 2027-10-31.
+// Her biography is original wording. Do not name or link her employer here: it is not
+// affiliated with Senior and Living Today.
 
-export interface Contributor {
-  slug: string;
-  name: string;            // as the person spells it
-  credential?: string;     // e.g. 'RN' (shown only when licenseVerified)
-  role: string;            // their actual role on this site, in plain words
-  photo?: string;          // only with photo permission
-  photoAlt?: string;
-  bio: string[];           // original wording; never copied from an employer's site
-  focus: string[];         // short topic chips
-  involvement: string;     // exactly what they do for S.A.L.T.
-  independence: string;    // what they are NOT (employee, medical director, etc.)
-  verified?: string;       // e.g. 'Ohio RN license verified on elicense.ohio.gov, 2026-11-20'
-  approvals: { permission: boolean; photo: boolean; licenseVerified: boolean; involvementConfirmed: boolean };
-}
-
-export const CONTRIBUTORS: Contributor[] = [];
-
-export const publishable = (c: Contributor) =>
-  c.approvals.permission && c.approvals.licenseVerified && c.approvals.involvementConfirmed;
-
-export const PUBLISHED_CONTRIBUTORS = CONTRIBUTORS.filter(publishable);
+export const BRITTNEY = {
+  slug: 'brittney',
+  name: 'Brittney Sherman',
+  credential: 'RN',
+  title: 'Registered Nurse Consultant',
+  photo: '/images/brittney-sherman-rn.webp',
+  photoW: 800,
+  photoH: 877,
+  photoAlt: 'Brittney Sherman, RN, smiling, with curly dark hair and glasses',
+  bio: [
+    'Brittney Sherman is a registered nurse based in Dayton, Ohio, and the Registered Nurse Consultant for Senior and Living Today. Her nursing work has centered on substance use disorder treatment and patient-centered care, and she brings a deep commitment to supporting people through mental health challenges and recovery.',
+    'Brittney believes good care starts with listening: making every person feel safe, respected and free from judgment, and explaining health information clearly so they can make confident choices about their own well-being.',
+  ],
+  brings: [
+    { title: 'A nurse’s perspective', text: 'Professional nursing knowledge behind S.A.L.T.’s health and wellness education, so it stays clear, accurate and practical.' },
+    { title: 'Mental health & recovery', text: 'Experience with substance use disorder treatment and recovery: topics that touch many older adults and families, yet are often hard to talk about.' },
+    { title: 'Care without judgment', text: 'Compassionate, patient-centered health education that meets people with respect.' },
+  ],
+  focus: ['Registered nursing', 'Patient-centered care', 'Substance use disorder treatment', 'Mental health & recovery', 'Health education'],
+  verified: 'Ohio RN license active, verified on the Ohio Board of Nursing’s official lookup (November 2026).',
+};
