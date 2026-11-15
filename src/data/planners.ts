@@ -278,3 +278,38 @@ export const DAILY_BLOOM: Edition = {
     { url: SITE.links.dailyBloomHardcoverAmazon, label: 'Hardcover on Amazon' },
   ],
 };
+
+// Seal the Deal Buyers Journal (a home buying journal by Courtney R. Jones), previewed on the Books page.
+const DEAL_SECTIONS: Section[] = [
+  { name: 'Introduction', open: true }, { name: 'Financing', open: true }, { name: 'Real Estate Professional', open: true },
+  { name: 'Properties With Submitted Offers' }, { name: 'Time to Schedule Your Inspection', open: true }, { name: 'Time to Schedule Your Appraisal' },
+  { name: 'Time to Insure Your Property' }, { name: 'Time for a Title Search' }, { name: 'Last But Not Least: closing day' },
+  { name: 'Important Numbers', open: true }, { name: 'Notes pages' },
+];
+export const SEAL_THE_DEAL: Edition = {
+  key: 'deal',
+  name: 'Seal the Deal',
+  title: 'Seal the Deal Buyers Journal',
+  chip: 'Home buying journal',
+  who: 'For first-time home buyers, and a thoughtful gift from family or real estate professionals.',
+  cover: `${P}/deal/front.webp`,
+  coverAlt: 'Seal the Deal Buyers Journal cover: a hand passing house keys under a gold Seal the Deal emblem',
+  pages: [
+    { src: `${P}/deal/front.webp`, w: 900, h: 1165, label: 'Front cover', alt: 'Front cover of the Seal the Deal Buyers Journal, with a hand passing a set of house keys' },
+    pg('deal', '01', 'Life is but a dream', 'Opening page: Life is but a dream! Have patience with the process. Don’t forget to breathe.', 1294),
+    pg('deal', '03', 'Introduction', 'Introduction: The Seal the Deal Properties Home Buying Journal', 1294, [
+      'This journal has been created to help simplify your home buying journey.',
+      'This step-by-step journal is designed to guide you through the essential stages of purchasing your first residential property. Inside, you will find helpful prompts, notes, and space to document your progress as you move through the home-buying process. The journal will take you from finding a trusted realtor to understanding the bank’s lending process. From there it will move you on to navigating the moment when your offer is accepted, selecting a reliable home inspector and preparing for your appraisal.',
+      'The journey does not stop at the contract. This journal also helps you stay organized through the final steps leading up to closing and even provides guidance on what to do immediately after you receive the keys to your new home.',
+      'Whether you are beginning your home search or are already in the process, this journal serves as a practical companion to keep your thoughts, questions, and important information all in one place. It also makes a thoughtful gift for anyone preparing to purchase their first home. Real Estate professionals may also find it a valuable resource to share with clients as they walk through this journey with them.',
+      'Owning a home is more than a transaction: it is the beginning of a dream taking shape. Life is but a dream.',
+    ]),
+    pg('deal', '04', 'Financing', 'Financing page: tips on credit, lenders and loan programs, with lines for your lender’s details', 1294),
+    pg('deal', '05', 'Real Estate Professional', 'Real Estate Professional page: how to choose an experienced agent', 1294),
+    pg('deal', '12', 'Time to schedule your inspection', 'Congratulations, your offer has been accepted: time to schedule your inspection, with lines for the inspection company and date', 1294),
+    pg('deal', '17', 'Important Numbers', 'Important Numbers page: gas, oil, water, garbage, electricity and internet companies', 1294),
+  ],
+  locked: { thumbs: Array.from({ length: 6 }, (_, i) => `${P}/deal/locked-${String(i + 1).padStart(2, '0')}.webp`), sections: DEAL_SECTIONS },
+  buy: [{ url: SITE.links.sealTheDealAmazon, label: 'Buy on Amazon (paperback)', primary: true }],
+};
+

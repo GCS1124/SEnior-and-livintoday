@@ -96,4 +96,15 @@ export const LIBRARY: LibraryBook[] = [
     buy: { url: shop('relics-of-the-century-book'), where: 'SALT Online Store' },
     amazon: [{ url: SITE.links.relicsAmazon, label: 'Paperback' }],
   },
+  {
+    slug: 'seal-the-deal-journal',
+    title: fromBooks('seal-the-deal-journal').title,
+    author: 'Courtney R. Jones',
+    cover: fromBooks('seal-the-deal-journal').image,
+    coverAlt: fromBooks('seal-the-deal-journal').alt,
+    overview: fromBooks('seal-the-deal-journal').blurb,
+    readable: false,
+    preview: '/books/#look-deal',
+    buy: { url: SITE.links.sealTheDealAmazon, where: 'Amazon' },
+  },
 ];

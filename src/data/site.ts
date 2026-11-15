@@ -40,6 +40,7 @@ export const SITE = {
     dailyBloomAmazon: 'https://www.amazon.com/dp/B0GY143Z4V',                        // The Daily Bloom, paperback
     dailyBloomHardcoverAmazon: 'https://www.amazon.com/dp/180738215X',               // The Daily Bloom, hardcover
     relicsAmazon: 'https://www.amazon.com/dp/B0DH537CC3',
+    sealTheDealAmazon: 'https://www.amazon.com/dp/B0GXKVB7BF',                      // Seal The Deal Buyers Journal, paperback
   },
   // Official profiles (verified 2026-11-03). Add Facebook / Google Business Profile URLs here when ready.
   sameAs: [
@@ -151,6 +152,17 @@ export const BOOKS: Book[] = [
     buy: SITE.links.relicsAmazon,
     page: '/books/relics-of-the-century/',
     tag: 'Memory lane',
+  },
+  {
+    slug: 'seal-the-deal-journal',
+    title: 'Seal the Deal Buyers Journal',
+    subtitle: 'A home buying journal',
+    image: '/images/seal-the-deal-journal.webp',
+    alt: 'Seal the Deal Buyers Journal cover: a hand passing house keys under a gold Seal the Deal emblem',
+    blurb: 'A step-by-step home buying journal: from finding a realtor and getting financing to inspection, appraisal, closing and the important numbers for your new home.',
+    buy: SITE.links.sealTheDealAmazon,
+    preview: '/books/#look-deal',
+    tag: 'For home buyers',
   },
 ];
 

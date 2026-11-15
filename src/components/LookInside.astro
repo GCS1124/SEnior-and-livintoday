@@ -56,12 +56,12 @@ const sectionsOpen = (e: Edition) => e.locked?.sections.filter((s) => s.open).le
               <div class="li-slide li-end" aria-label="Order your copy">
                 {e.locked ? (
                   <div class="li-endbox">
-                    <h3>🔒 The rest of the planner is waiting inside your copy</h3>
+                    <h3>🔒 The rest of the book is waiting inside your copy</h3>
                     <div class="li-locked" aria-hidden="true">
                       {e.locked.thumbs.map((t) => <img src={t} alt="" width="180" height="235" loading="lazy" />)}
                       <span class="li-lock">🔒</span>
                     </div>
-                    <p>You’ve peeked at <strong>{sectionsOpen(e)} of {e.locked.sections.length} sections</strong>. Here’s everything your planner helps you write down:</p>
+                    <p>You’ve peeked at <strong>{sectionsOpen(e)} of {e.locked.sections.length} sections</strong>. Here’s everything inside:</p>
                     <ol class="li-sections">
                       {e.locked.sections.map((s) => <li class={s.open ? 'open' : ''}><span aria-hidden="true">{s.open ? '✓' : '🔒'}</span> {s.name}<span class="sr-only">{s.open ? ' (in this preview)' : ' (inside the book)'}</span></li>)}
                     </ol>
