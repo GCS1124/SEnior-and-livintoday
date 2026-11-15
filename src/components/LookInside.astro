@@ -1,9 +1,17 @@
 ---
-// "Look Inside" book preview: swipe or click through the free pages of a planner, then a
-// final page shows the rest of the book as locked (blurred thumbnails + section list) with
-// buy buttons. One or several editions; links anywhere on the page with
-// data-look-edition="<key>" (and href="#look-inside") switch to that edition.
-// Works without JavaScript too: the pages are a normal sideways-scrolling strip.
+// "Read Now" book preview, shown as an open book.
+//
+// Wide screens: two pages side by side with a center spine, turning in pairs (1–2, 3–4, 5–6…).
+// Narrow screens: one page at a time, so nothing is too small to read.
+// After the free pages comes a final "page" showing the rest of the book as locked (blurred
+// thumbnails + section list) with buy buttons. With an odd number of free pages it sits on the
+// right-hand side of the last spread.
+//
+// Pages are images already watermarked with the official SALT seal (see docs/ADDING-BOOKS.md).
+// Navigate with the arrow buttons, by clicking the left or right page, the arrow keys, a swipe,
+// or the numbered page buttons. One or several books; links anywhere on the page with
+// data-look-edition="<key>" (and href="#look-inside") switch to that book.
+// Without JavaScript every page is simply shown in order.
 import type { Edition } from '../data/planners';
 interface Props { editions: Edition[]; initial?: Edition['key']; title?: string; intro?: string }
 const { editions, initial = editions[0].key, title = 'Look inside the planner', intro = 'Turn the pages and read a little. When you’re ready, order your own copy.' } = Astro.props;
@@ -14,12 +22,12 @@ const sectionsOpen = (e: Edition) => e.locked?.sections.filter((s) => s.open).le
   <div class="wrap">
     <div class="li-head">
       <span class="kicker">Free preview</span>
-      <h2 id="look-inside-title">👀 {title}</h2>
+      <h2 id="look-inside-title">📖 {title}</h2>
       <p class="lead">{intro}</p>
     </div>
 
     {editions.length > 1 && (
-      <div class="li-eds" role="group" aria-label="Choose an edition">
+      <div class="li-eds" role="group" aria-label="Choose a book">
         {editions.map((e) => (
           <button type="button" class="li-edbtn" data-ed-btn={e.key} aria-pressed={String(e.key === initial)} aria-controls={`look-${e.key}`}>
             <img src={e.cover} alt="" width="60" height="84" loading="lazy" />
@@ -32,60 +40,61 @@ const sectionsOpen = (e: Edition) => e.locked?.sections.filter((s) => s.open).le
     {editions.map((e) => {
       const total = e.pages.length;
       return (
-        <div class="li-ed" id={`look-${e.key}`} data-ed={e.key} hidden={e.key !== initial}>
+        <div class="li-ed" id={`look-${e.key}`} data-ed={e.key} data-total={total} hidden={e.key !== initial}>
           <p class="li-title"><strong>{e.title}</strong> <span class="li-chip">{e.chip}</span></p>
           <div class="li-stage">
-            <button type="button" class="li-nav li-prev" aria-label="Previous page" disabled><span aria-hidden="true">‹</span></button>
-            <div class="li-track" tabindex="0" role="region" aria-label={`Preview pages of ${e.title}. Use the left and right arrow keys to turn pages.`}>
-              {e.pages.map((p, i) => (
-                <figure class="li-slide" aria-label={`Page ${i + 1} of ${total}: ${p.label}`}>
-                  <div class="li-paper">
-                    <img src={p.src} alt={p.alt} {...dims(p)} draggable="false" loading={i === 0 && e.key === initial ? 'eager' : 'lazy'} decoding="async" />
-                  </div>
-                  <figcaption>
-                    <span class="li-label">{p.label}</span>
-                  </figcaption>
-                  {p.text && (
-                    <details class="li-text">
-                      <summary>🔎 Read this page in large print</summary>
-                      {p.text.map((t) => <p>{t}</p>)}
-                    </details>
+            <button type="button" class="li-nav li-prev" aria-label="Previous pages" disabled><span aria-hidden="true">‹</span></button>
+            <div class="li-book" tabindex="0" role="region" aria-roledescription="book" aria-label={`${e.title}, free preview. Use the left and right arrow keys to turn the pages.`}>
+              <div class="li-spread">
+                {e.pages.map((p, i) => (
+                  <figure class="li-page" data-i={i} aria-label={`Page ${i + 1} of ${total}: ${p.label}`}>
+                    <div class="li-paper">
+                      <img src={p.src} alt={p.alt} {...dims(p)} draggable="false" loading={i < 2 && e.key === initial ? 'eager' : 'lazy'} decoding="async" />
+                    </div>
+                    <figcaption><span class="li-num">{i + 1}</span> <span class="li-label">{p.label}</span></figcaption>
+                  </figure>
+                ))}
+                <div class="li-page li-end" data-i={total} aria-label="Order your copy">
+                  {e.locked ? (
+                    <div class="li-endbox">
+                      <h3>🔒 The rest of the book is waiting inside your copy</h3>
+                      <div class="li-locked" aria-hidden="true">
+                        {e.locked.thumbs.map((t) => <img src={t} alt="" width="180" height="235" loading="lazy" />)}
+                        <span class="li-lock">🔒</span>
+                      </div>
+                      <p>You’ve read <strong>{sectionsOpen(e)} of {e.locked.sections.length} sections</strong>. Here’s everything inside:</p>
+                      <ol class="li-sections">
+                        {e.locked.sections.map((s) => <li class={s.open ? 'open' : ''}><span aria-hidden="true">{s.open ? '✓' : '🔒'}</span> {s.name}<span class="sr-only">{s.open ? ' (in this preview)' : ' (inside the book)'}</span></li>)}
+                      </ol>
+                      <div class="btn-row">
+                        {e.buy.map((b) => <a class={`btn ${b.primary ? 'btn-primary' : 'btn-outline'}`} href={b.url} target="_blank" rel="noopener">🛒 {b.label} ↗</a>)}
+                      </div>
+                    </div>
+                  ) : (
+                    <div class="li-endbox">
+                      <h3>📖 More pages coming soon</h3>
+                      <p>{e.comingSoon}</p>
+                      <p>{e.who}</p>
+                      <div class="btn-row">
+                        {e.buy.map((b) => <a class={`btn ${b.primary ? 'btn-primary' : 'btn-outline'}`} href={b.url} target="_blank" rel="noopener">🛒 {b.label} ↗</a>)}
+                      </div>
+                    </div>
                   )}
-                </figure>
-              ))}
-              <div class="li-slide li-end" aria-label="Order your copy">
-                {e.locked ? (
-                  <div class="li-endbox">
-                    <h3>🔒 The rest of the book is waiting inside your copy</h3>
-                    <div class="li-locked" aria-hidden="true">
-                      {e.locked.thumbs.map((t) => <img src={t} alt="" width="180" height="235" loading="lazy" />)}
-                      <span class="li-lock">🔒</span>
-                    </div>
-                    <p>You’ve peeked at <strong>{sectionsOpen(e)} of {e.locked.sections.length} sections</strong>. Here’s everything inside:</p>
-                    <ol class="li-sections">
-                      {e.locked.sections.map((s) => <li class={s.open ? 'open' : ''}><span aria-hidden="true">{s.open ? '✓' : '🔒'}</span> {s.name}<span class="sr-only">{s.open ? ' (in this preview)' : ' (inside the book)'}</span></li>)}
-                    </ol>
-                    <div class="btn-row">
-                      {e.buy.map((b) => <a class={`btn ${b.primary ? 'btn-primary' : 'btn-outline'}`} href={b.url} target="_blank" rel="noopener">🛒 {b.label} ↗</a>)}
-                    </div>
-                  </div>
-                ) : (
-                  <div class="li-endbox">
-                    <h3>📖 More pages coming soon</h3>
-                    <p>{e.comingSoon}</p>
-                    <p>{e.who}</p>
-                    <div class="btn-row">
-                      {e.buy.map((b) => <a class={`btn ${b.primary ? 'btn-primary' : 'btn-outline'}`} href={b.url} target="_blank" rel="noopener">🛒 {b.label} ↗</a>)}
-                      {editions.some((x) => x.key === 'military') && <a class="btn btn-outline" href="#look-inside" data-look-edition="military">Peek inside the Military Edition</a>}
-                    </div>
-                  </div>
-                )}
+                </div>
               </div>
             </div>
-            <button type="button" class="li-nav li-next" aria-label="Next page"><span aria-hidden="true">›</span></button>
+            <button type="button" class="li-nav li-next" aria-label="Next pages"><span aria-hidden="true">›</span></button>
           </div>
           <p class="li-count" aria-live="polite">Page 1 of {total}: {e.pages[0].label}</p>
-          <ol class="li-chips" aria-label="Jump to a page">
+          <div class="li-texts">
+            {e.pages.map((p, i) => p.text && (
+              <details class="li-text" data-i={i}>
+                <summary>🔎 Read page {i + 1} ({p.label}) in large print</summary>
+                {p.text.map((t) => <p>{t}</p>)}
+              </details>
+            ))}
+          </div>
+          <ol class="li-chips" aria-label="Go to a page">
             {e.pages.map((p, i) => <li><button type="button" data-go={i} aria-current={i === 0 ? 'true' : undefined}><b>{i + 1}</b> {p.label}</button></li>)}
             <li><button type="button" data-go={total} class="li-chip-end">🛒 Get your copy</button></li>
           </ol>
@@ -105,31 +114,68 @@ const sectionsOpen = (e: Edition) => e.locked?.sections.filter((s) => s.open).le
   .li-edbtn[aria-pressed='true'] { border-color: var(--blue); background: var(--blue); color: #fff; box-shadow: 0 0 0 4px var(--yellow); }
   .li-title { margin: 1rem 0 .6rem; font-size: 1.1rem; color: var(--blue-ink); }
   .li-chip { display: inline-block; margin-left: 6px; padding: 3px 12px; border-radius: 999px; background: var(--yellow-soft); border: 1px solid var(--yellow); font: 700 .85rem var(--font-head); color: var(--blue-ink); vertical-align: middle; }
-  .li-stage { position: relative; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px; }
-  .li-track { position: relative; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; overscroll-behavior-x: contain; border-radius: 20px; background: #e9eef6; padding: 18px 0; outline-offset: 4px; scrollbar-width: thin; }
-  @media (prefers-reduced-motion: reduce) { .li-track { scroll-behavior: auto; } }
-  .li-slide { flex: 0 0 100%; scroll-snap-align: center; margin: 0; display: flex; flex-direction: column; align-items: center; padding: 0 12px; }
-  .li-paper img { display: block; height: min(72vh, 820px); width: auto; max-width: 100%; object-fit: contain; border-radius: 4px; background: #fff; box-shadow: 0 2px 0 #fff, 0 6px 0 #f1ede4, 0 18px 40px rgba(20,33,61,.28); }
-  @media (max-width: 700px) { .li-paper img { height: auto; width: 100%; } }
-  figcaption { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 16px; margin-top: 12px; font: 700 1.05rem var(--font-head); color: var(--blue-ink); }
+
+  /* The book */
+  .li-stage { position: relative; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; }
+  .li-book { --ph: min(70vh, 680px, calc((min(100vw, 1180px) - 300px) * 0.72)); border-radius: 18px; background: #e9eef6; padding: 22px 12px 16px; outline-offset: 4px; overflow: hidden; }
+  .li-spread { display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 24px; }
+  .li-page { margin: 0; display: flex; flex-direction: column; align-items: center; }
+  .li-paper { position: relative; background: #fff; box-shadow: 0 16px 36px rgba(20,33,61,.22); }
+  .li-paper img { display: block; width: auto; height: var(--ph); max-width: 100%; object-fit: contain; }
+  figcaption { display: flex; gap: 8px; align-items: center; justify-content: center; margin-top: 12px; font: 700 1rem var(--font-head); color: var(--blue-ink); text-align: center; }
+  .li-num { display: inline-grid; place-items: center; min-width: 30px; height: 30px; padding: 0 8px; border-radius: 999px; background: var(--blue); color: var(--sun); font-size: .9rem; }
+
+  /* Open-book mode (set by the script): two facing pages joined at a soft spine */
+  .li-ed.js .li-spread { flex-wrap: nowrap; gap: 0; }
+  .li-ed.js .li-page[hidden] { display: none; }
+  .li-ed.two .li-page { flex: 0 1 auto; max-width: 50%; }
+  .li-ed.two .li-page.left .li-paper { border-radius: 6px 0 0 6px; box-shadow: -10px 16px 30px rgba(20,33,61,.18); }
+  .li-ed.two .li-page.right .li-paper { border-radius: 0 6px 6px 0; box-shadow: 10px 16px 30px rgba(20,33,61,.18); }
+  .li-ed.two .li-page.left .li-paper::after,
+  .li-ed.two .li-page.right .li-paper::after { content: ''; position: absolute; top: 0; bottom: 0; width: 34px; pointer-events: none; }
+  .li-ed.two .li-page.left .li-paper::after { right: 0; background: linear-gradient(to left, rgba(20,33,61,.16), rgba(20,33,61,0)); }
+  .li-ed.two .li-page.right .li-paper::after { left: 0; background: linear-gradient(to right, rgba(20,33,61,.16), rgba(20,33,61,0)); }
+  .li-ed.two .li-page.left { cursor: w-resize; }
+  .li-ed.two .li-page.right { cursor: e-resize; }
+  .li-ed.two .li-page.left:first-child:not(.right) { cursor: default; }
+  .li-ed.one .li-page { width: 100%; }
+  .li-ed.one .li-paper img { height: auto; width: 100%; max-height: 80vh; object-fit: contain; }
+  @media (prefers-reduced-motion: no-preference) {
+    .li-spread.turn-next .li-page:not([hidden]) { animation: li-turn-next .38s ease-out; transform-origin: left center; }
+    .li-spread.turn-prev .li-page:not([hidden]) { animation: li-turn-prev .38s ease-out; transform-origin: right center; }
+  }
+  @keyframes li-turn-next { from { opacity: .2; transform: perspective(1800px) rotateY(-10deg); } to { opacity: 1; transform: none; } }
+  @keyframes li-turn-prev { from { opacity: .2; transform: perspective(1800px) rotateY(10deg); } to { opacity: 1; transform: none; } }
+
   /* Sample pages are for reading here, not saving (no drag, long-press menu or text selection). */
   .li-paper, .li-locked { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
-  .li-paper img, .li-locked img { -webkit-user-drag: none; pointer-events: auto; }
-  .li-text { width: min(760px, 100%); margin-top: 12px; background: #fff; border: 2px solid var(--line); border-radius: 14px; padding: 10px 16px; }
+  .li-paper img, .li-locked img { -webkit-user-drag: none; }
+
+  .li-texts { display: grid; gap: 10px; justify-items: center; margin-top: 10px; }
+  .li-text { width: min(760px, 100%); background: #fff; border: 2px solid var(--line); border-radius: 14px; padding: 10px 16px; }
   .li-text summary { cursor: pointer; font: 700 1.05rem var(--font-head); color: var(--blue); min-height: 44px; display: flex; align-items: center; }
   .li-text p { font-size: 1.2rem; line-height: 1.65; }
   .li-nav { width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--blue); background: #fff; color: var(--blue); font: 700 2.2rem/1 var(--font-head); cursor: pointer; display: grid; place-items: center; padding-bottom: 6px; }
   .li-nav:hover:not(:disabled) { background: var(--yellow); border-color: var(--yellow-shadow); }
   .li-nav:disabled { opacity: .35; cursor: default; }
-  @media (max-width: 700px) { .li-stage { grid-template-columns: 1fr; } .li-nav { position: absolute; top: 40%; z-index: 2; width: 48px; height: 48px; box-shadow: 0 4px 12px rgba(20,33,61,.25); } .li-prev { left: 4px; } .li-next { right: 4px; } }
+  /* Phones and small tablets: arrows sit in a row under the page, never on top of the text. */
+  @media (max-width: 899px) { .li-stage { grid-template-columns: 1fr 1fr; grid-template-areas: 'book book' 'prev next'; row-gap: 12px; } .li-book { grid-area: book; } .li-prev { grid-area: prev; justify-self: end; margin-right: 12px; } .li-next { grid-area: next; justify-self: start; margin-left: 12px; } }
   .li-count { text-align: center; font: 700 1.1rem var(--font-head); color: var(--blue-ink); margin: 14px 0 8px; }
-  .li-chips { list-style: none; padding: 0; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 980px; }
+  .li-chips { list-style: none; padding: 0; margin: 14px auto 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 980px; }
   .li-chips button { min-height: 44px; padding: 6px 14px; border-radius: 999px; border: 2px solid var(--line); background: #fff; color: var(--blue-ink); font: 600 .95rem var(--font-body); cursor: pointer; }
   .li-chips button b { color: var(--blue); margin-right: 2px; }
   .li-chips button[aria-current='true'] { border-color: var(--blue); background: var(--blue-soft); }
   .li-chips .li-chip-end { background: var(--yellow); border-color: var(--yellow-shadow); font-weight: 700; }
+
+  /* The final "rest of the book" page */
   .li-end { justify-content: center; }
   .li-endbox { width: min(820px, 100%); background: #fff; border: 3px solid var(--yellow); border-radius: 22px; padding: 22px; box-shadow: 0 14px 30px rgba(20,33,61,.12); }
+  .li-ed.two .li-end.right .li-endbox { width: calc(var(--ph) * .77); height: var(--ph); overflow: auto; border-radius: 0 10px 10px 0; padding: 18px; }
+  .li-ed.two .li-end.right .li-locked { grid-template-columns: repeat(4, 1fr); }
+  .li-ed.two .li-end.right .li-locked img:nth-child(n+9) { display: none; }
+  .li-ed.two .li-end.right .li-sections { columns: 1; }
+  .li-ed.two .li-end.right h3 { font-size: 1.2rem; }
+  .li-ed.two .li-end.solo { max-width: 100%; }
   .li-endbox h3 { font-size: 1.45rem; margin-top: 0; }
   .li-locked { position: relative; display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin: 14px 0; }
   .li-locked img { width: 100%; height: auto; border-radius: 4px; filter: saturate(.7); box-shadow: 0 4px 10px rgba(20,33,61,.18); }
@@ -143,6 +189,9 @@ const sectionsOpen = (e: Edition) => e.locked?.sections.filter((s) => s.open).le
 </style>
 
 <script>
+  const wide = matchMedia('(min-width: 900px)');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+
   document.querySelectorAll<HTMLElement>('[data-look]').forEach((root) => {
     const eds = [...root.querySelectorAll<HTMLElement>('.li-ed')];
     // No "Save image" menu or dragging on the sample pages.
@@ -151,49 +200,93 @@ const sectionsOpen = (e: Edition) => e.locked?.sections.filter((s) => s.open).le
       el.addEventListener('dragstart', (e) => e.preventDefault());
     });
     const edBtns = [...root.querySelectorAll<HTMLButtonElement>('[data-ed-btn]')];
-    const updaters = new Map<string, () => void>();
+    const refreshers = new Map<string, () => void>();
 
     eds.forEach((ed) => {
-      const track = ed.querySelector<HTMLElement>('.li-track')!;
-      const slides = [...track.querySelectorAll<HTMLElement>('.li-slide')];
+      const book = ed.querySelector<HTMLElement>('.li-book')!;
+      const spread = ed.querySelector<HTMLElement>('.li-spread')!;
+      const items = [...spread.querySelectorAll<HTMLElement>('.li-page')]; // free pages + the final page
+      const total = Number(ed.dataset.total); // free pages only
       const prev = ed.querySelector<HTMLButtonElement>('.li-prev')!;
       const next = ed.querySelector<HTMLButtonElement>('.li-next')!;
       const count = ed.querySelector<HTMLElement>('.li-count')!;
+      const texts = [...ed.querySelectorAll<HTMLElement>('.li-text')];
       const chips = [...ed.querySelectorAll<HTMLButtonElement>('[data-go]')];
-      const last = slides.length - 1;
-      let shown = -1;
-      const idx = () => (track.clientWidth ? Math.max(0, Math.min(last, Math.round(track.scrollLeft / track.clientWidth))) : 0);
-      const go = (i: number) => track.scrollTo({ left: Math.max(0, Math.min(last, i)) * track.clientWidth });
-      const update = () => {
-        const i = idx();
-        if (i === shown) return;
-        shown = i;
-        prev.disabled = i === 0;
-        next.disabled = i === last;
-        const label = slides[i].querySelector('.li-label')?.textContent;
-        count.textContent = i === last ? 'The rest is inside your copy' : `Page ${i + 1} of ${last}: ${label}`;
-        chips.forEach((c) => { if (Number(c.dataset.go) === i) c.setAttribute('aria-current', 'true'); else c.removeAttribute('aria-current'); });
+      let per = wide.matches ? 2 : 1;
+      let first = 0; // index of the first item on screen
+
+      const lastStart = () => Math.floor((items.length - 1) / per) * per;
+      const render = (dir = 0) => {
+        ed.classList.add('js');
+        ed.classList.toggle('two', per === 2);
+        ed.classList.toggle('one', per === 1);
+        first = Math.max(0, Math.min(lastStart(), Math.floor(first / per) * per));
+        const onScreen = items.slice(first, first + per);
+        items.forEach((it) => { it.hidden = !onScreen.includes(it); it.classList.remove('left', 'right', 'solo'); });
+        if (per === 2) {
+          if (onScreen.length === 2) { onScreen[0].classList.add('left'); onScreen[1].classList.add('right'); }
+          else onScreen[0].classList.add('solo');
+        }
+        const nums = onScreen.map((it) => Number(it.dataset.i)).filter((i) => i < total);
+        texts.forEach((t) => { t.hidden = !nums.includes(Number(t.dataset.i)); });
+        prev.disabled = first === 0;
+        next.disabled = first >= lastStart();
+        const label = (i: number) => items[i].querySelector('.li-label')?.textContent ?? '';
+        if (!nums.length) count.textContent = 'The rest is inside your copy';
+        else if (nums.length === 2) count.textContent = `Pages ${nums[0] + 1}–${nums[1] + 1} of ${total}`;
+        else count.textContent = `Page ${nums[0] + 1} of ${total}: ${label(nums[0])}`;
+        chips.forEach((c) => {
+          const i = Number(c.dataset.go);
+          if (i >= first && i < first + per) c.setAttribute('aria-current', 'true'); else c.removeAttribute('aria-current');
+        });
+        if (dir && !reduce.matches) {
+          spread.classList.remove('turn-next', 'turn-prev');
+          void spread.offsetWidth; // restart the animation
+          spread.classList.add(dir > 0 ? 'turn-next' : 'turn-prev');
+        }
       };
-      let raf = 0;
-      track.addEventListener('scroll', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(update); }, { passive: true });
-      prev.addEventListener('click', () => go(idx() - 1));
-      next.addEventListener('click', () => go(idx() + 1));
-      chips.forEach((c) => c.addEventListener('click', () => go(Number(c.dataset.go))));
-      track.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') { e.preventDefault(); go(idx() + 1); }
-        if (e.key === 'ArrowLeft') { e.preventDefault(); go(idx() - 1); }
-        if (e.key === 'Home') { e.preventDefault(); go(0); }
-        if (e.key === 'End') { e.preventDefault(); go(last); }
+      const go = (to: number) => {
+        const target = Math.max(0, Math.min(lastStart(), Math.floor(to / per) * per));
+        if (target === first) return;
+        const dir = target > first ? 1 : -1;
+        first = target;
+        render(dir);
+      };
+
+      prev.addEventListener('click', () => go(first - per));
+      next.addEventListener('click', () => go(first + per));
+      chips.forEach((c) => c.addEventListener('click', () => { go(Number(c.dataset.go)); book.focus({ preventScroll: true }); }));
+      // Click the left page to go back, the right page to go forward (open-book mode).
+      spread.addEventListener('click', (e) => {
+        if (per !== 2 || (e.target as HTMLElement).closest('a, button, summary')) return;
+        const page = (e.target as HTMLElement).closest<HTMLElement>('.li-page');
+        if (page?.classList.contains('left')) go(first - per);
+        else if (page?.classList.contains('right')) go(first + per);
       });
-      addEventListener('resize', () => { const i = shown; shown = -1; if (i > 0) track.scrollLeft = i * track.clientWidth; update(); });
-      updaters.set(ed.dataset.ed!, () => { shown = -1; update(); });
+      book.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') { e.preventDefault(); go(first + per); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); go(first - per); }
+        if (e.key === 'Home') { e.preventDefault(); go(0); }
+        if (e.key === 'End') { e.preventDefault(); go(items.length - 1); }
+      });
+      // Swipe on touch screens.
+      let x0: number | null = null;
+      book.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') x0 = e.clientX; });
+      book.addEventListener('pointerup', (e) => {
+        if (x0 === null) return;
+        const dx = e.clientX - x0; x0 = null;
+        if (Math.abs(dx) > 50) go(first + (dx < 0 ? per : -per));
+      });
+      wide.addEventListener('change', () => { per = wide.matches ? 2 : 1; render(); });
+      refreshers.set(ed.dataset.ed!, () => render());
+      render();
     });
 
     const show = (key: string) => {
       if (!eds.some((e) => e.dataset.ed === key)) return false;
       eds.forEach((e) => { e.hidden = e.dataset.ed !== key; });
       edBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.edBtn === key)));
-      updaters.get(key)?.();
+      refreshers.get(key)?.();
       return true;
     };
     edBtns.forEach((b) => b.addEventListener('click', () => show(b.dataset.edBtn!)));
@@ -201,7 +294,7 @@ const sectionsOpen = (e: Edition) => e.locked?.sections.filter((s) => s.open).le
       const a = (e.target as HTMLElement).closest<HTMLElement>('[data-look-edition]');
       if (a) show(a.dataset.lookEdition!);
     });
-    // Links like /books/living-legacy-planner/#look-military open that edition.
+    // Links like /books/living-legacy-planner/#look-military open that book.
     const fromHash = () => {
       const m = location.hash.match(/^#look-(\w+)$/);
       if (m && show(m[1])) root.scrollIntoView({ block: 'start' });
