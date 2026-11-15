@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import LookInside from '../../components/LookInside.astro';
-import { DAILY_BLOOM } from '../../data/planners';
+import { DAILY_BLOOM, SEAL_THE_DEAL } from '../../data/planners';
 import { LIBRARY } from '../../data/library';
 import { SITE } from '../../data/site';
 
@@ -55,7 +55,7 @@ const crumbs = [{ name: 'Books & Reading', href: '/books/' }];
     </div>
   </section>
 
-  <LookInside editions={[DAILY_BLOOM]} title="Look inside The Daily Bloom" intro="Turn the pages and try a few of the prompts. Then treat yourself (or someone you love) to a calmer daily routine." />
+  <LookInside editions={[DAILY_BLOOM, SEAL_THE_DEAL]} title="Look inside our journals" intro="Turn the pages of The Daily Bloom and the Seal the Deal Buyers Journal. When you find the one you need, order your own copy." />
 
   <CtaBand title="Want to talk about what you’ve read?" text={`Courtney’s first call is free. Call ${SITE.phoneDisplay} or book a time that suits you.`} />
 </Base>
