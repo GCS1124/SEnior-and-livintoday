@@ -4,8 +4,10 @@
 // biography and photo confirmed by the owner on 2026-11-15. Ohio RN license RN.524872
 // verified Active (no board action, expires 2027-10-31) on the Ohio Board of Nursing's
 // official lookup (elicense.ohio.gov) on 2026-11-15. Re-check before 2027-10-31.
-// Her biography is original wording. Do not name or link her employer here: it is not
-// affiliated with Senior and Living Today.
+// Biography updated 2026-11-15 from facts supplied by the owner. At the owner's request it focuses on
+// her caregiving background, dialysis and gastroenterology nursing and patient-centered care, for a
+// senior and family audience. Do not invent other experience. Do not name or link her employer here:
+// it is not affiliated with Senior and Living Today.
 
 export const BRITTNEY = {
   slug: 'brittney',
@@ -17,14 +19,15 @@ export const BRITTNEY = {
   photoH: 877,
   photoAlt: 'Brittney Sherman, RN, smiling, with curly dark hair and glasses',
   bio: [
-    'Brittney Sherman is a registered nurse based in Dayton, Ohio, and the Registered Nurse Consultant for Senior and Living Today. Her nursing work has centered on substance use disorder treatment and patient-centered care, and she brings a deep commitment to supporting people through mental health challenges and recovery.',
-    'Brittney believes good care starts with listening: making every person feel safe, respected and free from judgment, and explaining health information clearly so they can make confident choices about their own well-being.',
+    'Brittney Sherman, RN, brings a valuable combination of hands-on caregiving experience and professional nursing knowledge to Senior and Living Today. Her journey began in caregiving before she advanced into nursing, building experience across dialysis and gastroenterology nursing, along with other areas of patient care.',
+    'Her background has given her a deep appreciation for compassionate care: listening to patients, understanding individual needs, and helping people feel respected and supported throughout their healthcare journey.',
+    'As Registered Nurse Consultant for Senior and Living Today, Brittney brings a professional nursing perspective that complements our commitment to providing helpful information and resources for seniors, families and caregivers.',
   ],
   brings: [
-    { title: 'A nurse’s perspective', text: 'Professional nursing knowledge behind S.A.L.T.’s health and wellness education, so it stays clear, accurate and practical.' },
-    { title: 'Mental health & recovery', text: 'Experience with substance use disorder treatment and recovery: topics that touch many older adults and families, yet are often hard to talk about.' },
-    { title: 'Care without judgment', text: 'Compassionate, patient-centered health education that meets people with respect.' },
+    { title: 'From caregiver to nurse', text: 'Brittney began in caregiving, so she understands both the everyday reality families face and the professional side of care.' },
+    { title: 'Broad nursing experience', text: 'Experience across dialysis and gastroenterology nursing, along with other areas of patient care.' },
+    { title: 'Compassionate, patient-centered care', text: 'A focus on listening, understanding individual needs and helping people feel respected and supported.' },
   ],
-  focus: ['Registered nursing', 'Patient-centered care', 'Substance use disorder treatment', 'Mental health & recovery', 'Health education'],
+  focus: ['Caregiving background', 'Registered nursing', 'Dialysis nursing', 'Gastroenterology nursing', 'Patient-centered care'],
   verified: 'Ohio RN license active, verified on the Ohio Board of Nursing’s official lookup (November 2026).',
 };
