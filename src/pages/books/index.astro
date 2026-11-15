@@ -41,7 +41,7 @@ const crumbs = [{ name: 'Books & Reading', href: '/books/' }];
                 {b.readable
                   ? <a class="btn btn-berry" href={`/read/${b.slug}/`}>📖 Read Free Online</a>
                   : b.preview
-                    ? <a class="btn btn-berry" href={b.preview}>👀 Look Inside, free</a>
+                    ? <a class="btn btn-berry" href={b.preview}>📖 Read Now</a>
                     : <span class="soon" aria-disabled="true">📖 Read free online: coming soon</span>}
                 {b.buy && <a class="btn btn-primary" href={b.buy.url} target="_blank" rel="noopener">🛒 Buy This Book <small>({b.buy.where})</small> ↗</a>}
                 {b.amazon?.map((a) => <a class="btn btn-outline" href={a.url} target="_blank" rel="noopener">📦 {a.label} on Amazon ↗</a>)}
@@ -51,7 +51,7 @@ const crumbs = [{ name: 'Books & Reading', href: '/books/' }];
           </li>
         ))}
       </ul>
-      <p class="note">👀 “Look Inside” previews are open to everyone. 🔒 To read a whole book online, we ask for your first name and email. Reading is free. <a href="/privacy-policy/#signups">How we use your details</a></p>
+      <p class="note">📖 “Read Now” previews are open to everyone. 🔒 To read a whole book online, we ask for your first name and email. Reading is free. <a href="/privacy-policy/#signups">How we use your details</a></p>
     </div>
   </section>
 

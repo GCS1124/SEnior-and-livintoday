@@ -36,7 +36,7 @@ The library is at `/books/` and each readable book opens at `/read/<slug>/`. Vis
 - **Sign-up must be working.** Reading passes need sign-up to be working, which means the `GHL_PRIVATE_TOKEN` setting in Vercel (see `GOHIGHLEVEL-SETUP.md`). Until then, readers see "Online reading is being set up right now".
 - **Optional separate secret:** add `READER_SECRET` in Vercel with any long random text to sign reading passes separately from the GoHighLevel key.
 
-## "Look Inside" previews (planners and The Daily Bloom)
+## "Read Now" previews (open-book reader)
 
 Book pages can be previewed without signing up: readers turn a few free pages, then see the rest of the book as locked, blurred thumbnails with a list of every section and the Buy buttons.
 
@@ -54,3 +54,11 @@ Book pages can be previewed without signing up: readers turn a few free pages, t
   2. Save it as WebP in the edition's folder.
   3. Add it to `pages` in `planners.ts`.
   4. Mark its section `open: true`.
+
+### Open-book reader and watermark (updated)
+
+- **Layout:** on wide screens (900 px and up) the reader shows two pages side by side like an open book, turning in pairs (1–2, 3–4, …). Narrower screens show one page at a time. The "rest of the book" page comes after the last free page.
+- **Watermark:** every free sample page carries the official SALT seal (`public/images/logo-512.png`), centered at 35% opacity and about 46% of the page width, with its original colors and proportions. Covers are not watermarked.
+- **To add a page,** watermark it the same way from a clean export, not from an already-watermarked image.
+- **No PDFs are published.** Only these sample images are public. Right-click saving and dragging are blocked on them, as a deterrent; screenshots are always possible.
+
