@@ -1,0 +1,342 @@
+---
+// Business partnership landing page for cold outreach (/partners/).
+// The inquiry form posts to /api/partner, which saves the lead in GoHighLevel (tags + a note).
+// It never promises shipment: the team reviews each complimentary-copy request first, and asks
+// for a shipping address only after approval.
+// Email campaigns can preselect an interest with ?interest=meeting (or bulk, reseller, affiliate,
+// media, overview-pdf, complimentary-copy); utm_* values are passed along with the inquiry.
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Reviews from '../components/Reviews.astro';
+import Faq from '../components/Faq.astro';
+import { SITE, BOOKS } from '../data/site';
+import { EDITIONS as LLP } from '../data/planners';
+import { BRITTNEY } from '../data/team';
+import { faqSchema } from '../data/schema';
+import { ORG_TYPES, INTERESTS, EDITIONS } from '../../api/_lib/partner-options.js';
+
+const path = '/partners/';
+const crumbs = [{ name: 'Partner with us', href: path }];
+const first = LLP.find((e) => e.key === 'first')!;
+const second = LLP.find((e) => e.key === 'second')!;
+
+const ways = [
+  { icon: '📚', title: 'Institutional & bulk purchasing', text: 'Copies of our books for your residents, patients, clients, members or staff. Tell us what you need and we’ll put together options for your organization.', interest: 'bulk' },
+  { icon: '🤝', title: 'Authorized reseller & distribution', text: 'Offer Senior and Living Today books to your customers, in your community, store or catalog, as an authorized reseller or distribution partner.', interest: 'reseller' },
+  { icon: '🔗', title: 'Affiliate partnerships', text: 'Recommend our books to your audience and earn a commission. Commissions are agreed individually with each partner.', interest: 'affiliate' },
+  { icon: '🎙️', title: 'Media & strategic collaborations', text: 'Interviews, features, events, co-created content and other collaborations that bring helpful planning resources to older adults and families.', interest: 'media' },
+];
+const audiences = [
+  'Senior living communities', 'Assisted living', 'Nursing homes', 'Hospice organizations', 'Senior rehabilitation centers',
+  'Healthcare organizations', 'Home care agencies', 'Senior care providers', 'Senior-focused nonprofits', 'Community organizations',
+  'Retirement service providers', 'Businesses with older adult customers', 'Distributors & resellers', 'Media houses & publishers',
+];
+const faqs = [
+  { q: 'Is the complimentary copy really free?', a: 'Yes. Approved businesses receive one printed copy of The Living Legacy Planner at no cost, so you can see the book for yourself. There’s no obligation to buy or partner.' },
+  { q: 'How is a request approved?', a: 'Our team reviews each request and confirms which edition is available before arranging shipment. If your request is approved, we’ll contact you to confirm the details and your shipping address.' },
+  { q: 'Which edition should I choose?', a: 'The First Edition is printed in black and white. The Second Edition is the same caring planner in full color. Choose the one you’d like to review, or let us know either is fine.' },
+  { q: 'Who can become a partner?', a: 'We focus on businesses and organizations that serve or reach older adults and their families, but we welcome inquiries from any relevant business, distributor or media organization.' },
+  { q: 'Do you offer pricing for larger orders?', a: 'Yes. For institutional and bulk purchases, tell us roughly how many copies you need and we’ll discuss options for your organization.' },
+  { q: 'How do affiliate commissions work?', a: 'Commissions are agreed individually with each affiliate partner, based on your audience and how you’d like to work together.' },
+  { q: 'Can I see the book before requesting a copy?', a: 'Yes. You can read sample pages of both editions online right now, and we can send a book overview and partnership proposal as a PDF on request.' },
+  { q: 'Where can individuals buy the books?', a: 'Individual readers can buy our books on Amazon and through the SALT Online Store. This page is for businesses and organizations.' },
+];
+---
+<Base
+  title="Partner with Senior and Living Today"
+  description="Partner with Senior and Living Today: bulk and institutional purchasing, reseller, affiliate and media partnerships. Request a complimentary copy of our book."
+  image={second.cover}
+  imageAlt={second.coverAlt}
+  breadcrumbs={crumbs}
+  schema={[faqSchema(faqs)]}
+>
+  <PageHero
+    title="Partner with Senior and Living Today"
+    kicker="Business partnerships"
+    lead="We help older adults and the families who care for them plan ahead, stay organized and live well. If your business serves or reaches that community, let’s explore what we can do together."
+    breadcrumbs={crumbs}
+  >
+    <div class="btn-row">
+      <a class="btn btn-primary" href="#request" data-pick="complimentary-copy">Request Your Complimentary Copy</a>
+      <a class="btn btn-outline" href="#meet">Schedule a partnership call</a>
+    </div>
+    <ul class="ab-trust pt-trust" aria-label="About Senior and Living Today">
+      <li><strong>{SITE.founder.yearsExperience}+ years</strong><span>around senior care</span></li>
+      <li><strong>{BOOKS.length} published titles</strong><span>available on Amazon</span></li>
+      <li><strong>Registered Nurse</strong><span>consultant on our team</span></li>
+      <li><strong>Dayton, Ohio</strong><span>partnering nationwide</span></li>
+    </ul>
+  </PageHero>
+
+  <section class="section" aria-labelledby="why-title">
+    <div class="wrap grid split">
+      <div class="prose">
+        <span class="kicker">Who we are</span>
+        <h2 id="why-title">A trusted resource brand for older adults and their families</h2>
+        <p class="lead">Senior and Living Today (S.A.L.T.) creates practical, compassionate books and resources that help people plan for the future, organize important information and navigate the journey of aging with dignity.</p>
+        <p>Our founder, <strong>Courtney R. Jones</strong>, brings more than {SITE.founder.yearsExperience} years of experience around senior care, hospital work and medical billing. Our Registered Nurse Consultant, <strong>{BRITTNEY.name}, {BRITTNEY.credential}</strong>, brings a professional nursing perspective.</p>
+        <p>We’re looking for partners who share our goal: getting helpful, easy-to-use planning resources into the hands of the people who need them.</p>
+      </div>
+      <ul class="pt-why">
+        <li><span aria-hidden="true">💛</span><div><h3>Made for your community</h3><p>Large, clear books written for older adults, families and caregivers.</p></div></li>
+        <li><span aria-hidden="true">🩺</span><div><h3>Experience you can trust</h3><p>Created by a senior care advocate, with a nursing professional on our team.</p></div></li>
+        <li><span aria-hidden="true">🤝</span><div><h3>Flexible ways to work together</h3><p>From bulk orders to reselling, affiliate programs and media collaborations.</p></div></li>
+        <li><span aria-hidden="true">⭐</span><div><h3>Loved by readers</h3><p>Five-star reviews from readers on Amazon.</p></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-cream pt-copy" id="complimentary-copy" aria-labelledby="copy-title">
+    <div class="wrap">
+      <span class="kicker">Our invitation to you</span>
+      <h2 id="copy-title">Get to Know Our Book Before You Become Our Partner.</h2>
+      <p class="lead">We believe in building partnerships through trust and experience. That’s why we’re happy to offer interested businesses a complimentary copy of Senior and Living Today’s <strong>The Living Legacy Planner</strong> to explore before making a partnership decision.</p>
+      <ul class="pt-eds">
+        <li class="pt-ed">
+          <img src={first.cover} alt={first.coverAlt} width="900" height="1285" loading="lazy" />
+          <div>
+            <span class="pt-edtag">First Edition · Black &amp; White</span>
+            <h3>The Living Legacy Planner</h3>
+            <p>The original planner: final wishes, finances, medical details, key contacts and memories, all in one book, so families never have to guess.</p>
+            <a class="pt-read" href="/books/living-legacy-planner/#look-first">📖 Read sample pages</a>
+          </div>
+        </li>
+        <li class="pt-ed">
+          <img src={second.cover} alt={second.coverAlt} width="900" height="1218" loading="lazy" />
+          <div>
+            <span class="pt-edtag">Second Edition · Full Color</span>
+            <h3>The Living Legacy Planner: Color Edition</h3>
+            <p>The same caring planner, refreshed in full color with warm illustrations throughout, guiding readers through every important detail.</p>
+            <a class="pt-read" href="/books/living-legacy-planner/#look-second">📖 Read sample pages</a>
+          </div>
+        </li>
+      </ul>
+      <div class="pt-note">
+        <p><strong>How it works:</strong> tell us which edition you’d prefer. Our team reviews each request and confirms availability before arranging shipment. If your request is approved, we’ll contact you to confirm your shipping details.</p>
+        <a class="btn btn-primary" href="#request" data-pick="complimentary-copy">Request Your Complimentary Copy</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="ways-title">
+    <div class="wrap">
+      <span class="kicker">Partnership opportunities</span>
+      <h2 id="ways-title">Ways we can work together</h2>
+      <ul class="pt-ways">
+        {ways.map((w) => (
+          <li>
+            <span aria-hidden="true">{w.icon}</span>
+            <h3>{w.title}</h3>
+            <p>{w.text}</p>
+            <a href="#request" data-pick={w.interest}>I’m interested →</a>
+          </li>
+        ))}
+      </ul>
+      <p class="pt-pdf">📄 Want the details first? <a href="#request" data-pick="overview-pdf">Request our book overview and partnership proposal</a> as a PDF.</p>
+    </div>
+  </section>
+
+  <section class="section ab-standards pt-who" aria-labelledby="who-title">
+    <div class="wrap">
+      <span class="kicker">Who we partner with</span>
+      <h2 id="who-title">Businesses and organizations that serve older adults</h2>
+      <ul class="pt-chips">{audiences.map((a) => <li>{a}</li>)}</ul>
+      <p class="pt-welcome">Don’t see your business here? If you have a relevant audience, customer base or distribution opportunity, we’d love to hear from you.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="steps-title">
+    <div class="wrap">
+      <span class="kicker">Simple and personal</span>
+      <h2 id="steps-title">How partnering with us works</h2>
+      <ol class="pt-steps">
+        <li><h3>Tell us about your organization</h3><p>Share a few details and what interests you, using the short form below.</p></li>
+        <li><h3>We review and reach out</h3><p>Our team reviews your inquiry and contacts you personally to talk about next steps.</p></li>
+        <li><h3>Explore the book</h3><p>Approved businesses receive a complimentary copy of The Living Legacy Planner to review.</p></li>
+        <li><h3>Build the partnership</h3><p>We agree on the arrangement that fits your organization, your audience and your goals.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section-cream" id="request" aria-labelledby="form-title">
+    <div class="wrap pt-formwrap">
+      <div class="pt-formintro">
+        <span class="kicker">Let’s connect</span>
+        <h2 id="form-title">Request your complimentary copy or start a partnership conversation</h2>
+        <p>It takes about two minutes. Fields marked <span class="req" aria-hidden="true">*</span><span class="sr-only">with an asterisk</span> are required.</p>
+        <p class="pt-small">We use your details only to respond to your inquiry. We won’t ask for a shipping address until your request is approved. <a href="/privacy-policy/">Privacy policy</a></p>
+      </div>
+      <form class="pt-form" id="partner-form" novalidate>
+        <div class="pt-ok" id="pt-ok" hidden tabindex="-1">
+          <h3>✅ Thank you<span id="pt-okname"></span>!</h3>
+          <p>We’ve received your inquiry. Our team will review it and reach out to you by email to talk about next steps.</p>
+          <p>Want to talk sooner? <a href={SITE.links.bookCall30} target="_blank" rel="noopener">Schedule a partnership call ↗</a> or call <a href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a>.</p>
+        </div>
+        <div class="pt-fields" id="pt-fields">
+          <div class="pt-row">
+            <label>First name <span class="req" aria-hidden="true">*</span><input name="firstName" autocomplete="given-name" required maxlength="60" /></label>
+            <label>Last name <span class="req" aria-hidden="true">*</span><input name="lastName" autocomplete="family-name" required maxlength="60" /></label>
+          </div>
+          <div class="pt-row">
+            <label>Business email <span class="req" aria-hidden="true">*</span><input name="email" type="email" autocomplete="email" required maxlength="254" /></label>
+            <label>Phone <span class="opt">(optional)</span><input name="phone" type="tel" autocomplete="tel" maxlength="30" /></label>
+          </div>
+          <div class="pt-row">
+            <label>Organization name <span class="req" aria-hidden="true">*</span><input name="organization" autocomplete="organization" required maxlength="120" /></label>
+            <label>Your role or title <span class="opt">(optional)</span><input name="role" autocomplete="organization-title" maxlength="80" /></label>
+          </div>
+          <div class="pt-row">
+            <label>Type of organization <span class="req" aria-hidden="true">*</span>
+              <select name="orgType" required>
+                <option value="">Choose one…</option>
+                {Object.entries(ORG_TYPES).map(([k, v]) => <option value={k}>{v}</option>)}
+              </select>
+            </label>
+            <label>Website <span class="opt">(optional)</span><input name="website" type="text" inputmode="url" autocomplete="url" maxlength="200" placeholder="www.example.com" /></label>
+          </div>
+          <label class="pt-wide">City and state <span class="opt">(optional)</span><input name="location" autocomplete="address-level2" maxlength="80" placeholder="e.g. Dayton, OH" /></label>
+
+          <fieldset class="pt-set" id="pt-interests">
+            <legend>How would you like to work with us? <span class="req" aria-hidden="true">*</span> <span class="opt">Choose all that apply.</span></legend>
+            <div class="pt-checks">
+              {Object.entries(INTERESTS).map(([k, v]) => (
+                <label class="pt-check"><input type="checkbox" name="interests" value={k} checked={k === 'complimentary-copy'} /> <span>{v}</span></label>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset class="pt-set" id="pt-edition">
+            <legend>Preferred edition for your complimentary copy <span class="req" aria-hidden="true">*</span></legend>
+            <div class="pt-radios">
+              {Object.entries(EDITIONS).map(([k, v]) => (
+                <label class="pt-check"><input type="radio" name="edition" value={k} /> <span>{v}</span></label>
+              ))}
+            </div>
+            <p class="pt-small">Our team will confirm availability before arranging shipment.</p>
+          </fieldset>
+
+          <label class="pt-wide" id="pt-qty">Estimated number of copies <span class="opt">(optional, for bulk purchasing)</span><input name="quantity" maxlength="40" placeholder="e.g. 25, 100, 500+" /></label>
+          <label class="pt-wide">Tell us a little about your organization and goals <span class="opt">(optional)</span><textarea name="message" rows="4" maxlength="2000"></textarea></label>
+          <label class="pt-hp" aria-hidden="true">Fax <input name="fax" tabindex="-1" autocomplete="off" /></label>
+          <label class="pt-check pt-consent"><input type="checkbox" name="consent" required /> <span>I agree that Senior and Living Today may contact me about this inquiry. <span class="req" aria-hidden="true">*</span></span></label>
+
+          <p class="pt-err" id="pt-err" role="alert" hidden></p>
+          <button class="btn btn-primary pt-submit" type="submit">Send my request</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="section" id="meet" aria-labelledby="meet-title">
+    <div class="wrap">
+      <span class="kicker">Prefer to talk?</span>
+      <h2 id="meet-title">Schedule a partnership conversation</h2>
+      <p class="lead">Pick a time that works for you. We’ll learn about your organization and share how a partnership could work.</p>
+      <ul class="pt-meet">
+        <li>
+          <h3>Quick introduction</h3>
+          <p>A short, friendly call to get to know each other and see if we’re a good fit.</p>
+          <a class="btn btn-outline" href={SITE.links.bookCall} target="_blank" rel="noopener">Book an intro call ↗</a>
+        </li>
+        <li>
+          <h3>30-minute partnership call</h3>
+          <p>Time to talk through bulk purchasing, reselling, affiliate or media opportunities in detail.</p>
+          <a class="btn btn-primary" href={SITE.links.bookCall30} target="_blank" rel="noopener">Book a 30-minute call ↗</a>
+        </li>
+      </ul>
+      <p class="pt-small">Or call <a href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a> · email <a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="reviews-title">
+    <div class="wrap">
+      <h2 id="reviews-title">What readers say about The Living Legacy Planner</h2>
+      <div style="margin-top:1.5rem"><Reviews limit={3} /></div>
+    </div>
+  </section>
+
+  <Faq items={faqs} title="Partnership questions" />
+
+  <section class="section pt-final">
+    <div class="wrap">
+      <h2>Let’s bring helpful resources to the people you serve.</h2>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="#request" data-pick="complimentary-copy">Request Your Complimentary Copy</a>
+        <a class="btn btn-outline" href="#meet">Schedule a partnership call</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const form = document.getElementById('partner-form') as HTMLFormElement;
+  const fields = document.getElementById('pt-fields')!;
+  const ok = document.getElementById('pt-ok')!;
+  const err = document.getElementById('pt-err')!;
+  const editionSet = document.getElementById('pt-edition')!;
+  const qty = document.getElementById('pt-qty')!;
+  const btn = form.querySelector<HTMLButtonElement>('.pt-submit')!;
+  const boxes = () => [...form.querySelectorAll<HTMLInputElement>('input[name="interests"]')];
+  const sync = () => {
+    const on = boxes().filter((b) => b.checked).map((b) => b.value);
+    editionSet.hidden = !on.includes('complimentary-copy');
+    qty.hidden = !on.includes('bulk') && !on.includes('reseller');
+  };
+  const pick = (interest?: string | null) => {
+    const box = boxes().find((b) => b.value === interest);
+    if (box) { box.checked = true; sync(); }
+  };
+  form.addEventListener('change', sync);
+  document.querySelectorAll<HTMLElement>('[data-pick]').forEach((a) => a.addEventListener('click', () => pick(a.dataset.pick)));
+  pick(new URLSearchParams(location.search).get('interest'));
+  sync();
+
+  const utm = [...new URLSearchParams(location.search)].filter(([k]) => k.startsWith('utm_')).map(([k, v]) => `${k}=${v}`).join('&').slice(0, 200);
+  const fail = (msg: string, name?: string) => {
+    err.textContent = msg; err.hidden = false;
+    form.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
+    const target = name === 'interests' ? boxes()[0] : name === 'edition' ? form.querySelector<HTMLInputElement>('input[name="edition"]') : name ? form.querySelector<HTMLElement>(`[name="${name}"]`) : null;
+    if (target) { target.setAttribute('aria-invalid', 'true'); target.focus(); }
+  };
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (btn.disabled) return;
+    err.hidden = true;
+    const f = new FormData(form);
+    const val = (k: string) => String(f.get(k) ?? '').trim();
+    const interests = f.getAll('interests').map(String);
+    const data = {
+      firstName: val('firstName'), lastName: val('lastName'), email: val('email'), phone: val('phone'),
+      organization: val('organization'), role: val('role'), orgType: val('orgType'), website: val('website'), location: val('location'),
+      interests, edition: interests.includes('complimentary-copy') ? val('edition') : '', quantity: val('quantity'), message: val('message'),
+      consent: (form.elements.namedItem('consent') as HTMLInputElement).checked, fax: val('fax'), utm,
+    };
+    if (!data.firstName) return fail('Please enter your first name.', 'firstName');
+    if (!data.lastName) return fail('Please enter your last name.', 'lastName');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email)) return fail('Please enter a valid business email address.', 'email');
+    if (!data.organization) return fail('Please enter your organization’s name.', 'organization');
+    if (!data.orgType) return fail('Please choose the type of organization.', 'orgType');
+    if (!interests.length) return fail('Please choose at least one way you’d like to work with us.', 'interests');
+    if (interests.includes('complimentary-copy') && !data.edition) return fail('Please choose your preferred edition.', 'edition');
+    if (!data.consent) return fail('Please agree to be contacted about your inquiry.', 'consent');
+
+    btn.disabled = true; btn.textContent = 'Sending…';
+    try {
+      const r = await fetch('/api/partner', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok) {
+        document.getElementById('pt-okname')!.textContent = `, ${data.firstName}`;
+        fields.hidden = true; ok.hidden = false; ok.focus();
+        return;
+      }
+      if (r.status === 400) return fail(j.message || 'Please check the form.', j.error);
+      if (r.status === 429) return fail(j.message || 'Please wait a few minutes and try again.');
+      fail('Sorry, we couldn’t send your request just now. Please email info@seniorandlivingtoday.com or call (888) 416-4264, and we’ll take care of it.');
+    } catch {
+      fail('Sorry, we couldn’t send your request just now. Please email info@seniorandlivingtoday.com or call (888) 416-4264, and we’ll take care of it.');
+    } finally {
+      btn.disabled = false; btn.textContent = 'Send my request';
+    }
+  });
+</script>
