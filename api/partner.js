@@ -150,18 +150,26 @@ export default async function handler(req, res) {
   } catch (e) {
     // A partly saved application is still reported to the visitor as not sent (502), so they use the
     // email/phone fallback; the log says what was saved so the team can finish it by hand.
-    console.error('partner inquiry save failed:', JSON.stringify({
-      ref,
+    const diagnostics = {
       step,                                   // contact_upsert | tags | note
       ghlStatus: e.ghlStatus ?? null,         // GoHighLevel HTTP status, null if no response
       reason: e.ghlReason || failureKind(e),  // sanitized GoHighLevel message, or timeout/network
       contactSaved, tagsSaved,
       location: process.env.GHL_LOCATION_ID ? (process.env.GHL_LOCATION_ID === SALT_LOCATION_ID ? 'env (SALT)' : 'env (NOT SALT)') : 'default (SALT)',
+    };
+    console.error('partner inquiry save failed:', JSON.stringify({
+      ref, ...diagnostics,
       sent: { lastName: !!lastName, phone: !!phone, website: !!website, company: !!organization }, // which optional fields were sent (yes/no only)
     }));
-    return res.status(502).json({ error: 'unavailable', ref });
+    // Preview deployments only (behind Vercel login): also return the same sanitized diagnostics,
+    // so a failed test can be read in the browser's Network tab. Production and local responses
+    // stay exactly { error, ref }.
+    return res.status(502).json({ error: 'unavailable', ref, ...(isPreview() ? { diagnostics } : {}) });
   }
 }
+
+// True only on Vercel Preview deployments (VERCEL_ENV is set by Vercel: production | preview | development).
+const isPreview = () => process.env.VERCEL_ENV === 'preview';
 
 // Kind of failure when GoHighLevel never answered. Error class/codes only, no request data.
 function failureKind(e) {
