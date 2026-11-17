@@ -89,7 +89,7 @@ export default async function handler(req, res) {
 
   const requestType = interests.includes('complimentary-copy') ? 'Complimentary copy request' : interests.includes('meeting') ? 'Partnership meeting request' : 'Partnership inquiry';
   const tags = [
-    'website', 'partner-lead',
+    'partner-lead',
     ...(interests.includes('complimentary-copy') ? ['complimentary-copy-request', `partner-edition-${edition}`] : []),
     ...(interests.includes('meeting') ? ['partnership-meeting'] : []),
     ...(interests.includes('overview-pdf') ? ['book-overview-request'] : []),
