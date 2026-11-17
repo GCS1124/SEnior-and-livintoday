@@ -1,0 +1,13 @@
+---
+// A real book cover shown as a gently turned 3D book (spine + page edges drawn in CSS).
+// Styles live in src/styles/partners.css. Static for visitors who prefer reduced motion.
+interface Props { src: string; alt: string; width: number; height: number; eager?: boolean; class?: string; id?: string }
+const { src, alt, width, height, eager = false, class: cls, id } = Astro.props;
+---
+<div class:list={['b3d', cls]} id={id}>
+  <div class="b3d-book">
+    <img class="b3d-cover" {src} {alt} {width} {height} loading={eager ? 'eager' : 'lazy'} decoding="async" draggable="false" />
+    <span class="b3d-pages" aria-hidden="true"></span>
+    <span class="b3d-back" aria-hidden="true"></span>
+  </div>
+</div>

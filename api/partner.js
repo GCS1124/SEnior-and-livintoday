@@ -13,7 +13,7 @@
 // endpoint answers 503 "not_configured" and the page asks the visitor to email or call.
 // Never logs personal details.
 import { ghl, locationId, addTags, addNote } from './_lib/ghl.js';
-import { ORG_TYPES, INTERESTS, EDITIONS } from './_lib/partner-options.js';
+import { ORG_TYPES, INTERESTS, EDITIONS, AUDIENCE_SIZES, US_STATES } from './_lib/partner-options.js';
 
 const ALLOWED = [/^https:\/\/(www\.)?seniorandlivingtoday\.com$/, /^https:\/\/[a-z0-9-]+\.vercel\.app$/, /^http:\/\/localhost(:\d+)?$/];
 const EMAIL = /^[^\s@<>()[\]\\,;:"]{1,64}@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,24}$/;
@@ -51,6 +51,7 @@ export default async function handler(req, res) {
   const role = oneLine(b.role, 80);
   const website = oneLine(b.website, 200);
   const location = oneLine(b.location, 80);
+  const state = US_STATES.includes(b.state) ? b.state : '';
   const orgType = ORG_TYPES[b.orgType] ? b.orgType : '';
   const interests = [...new Set((Array.isArray(b.interests) ? b.interests : []).filter((i) => INTERESTS[i]))];
   const edition = EDITIONS[b.edition] ? b.edition : '';
@@ -58,6 +59,18 @@ export default async function handler(req, res) {
   const message = clean(b.message, 2000);
   const consent = b.consent === true;
   const utm = oneLine(b.utm, 200).replace(/[^\w=&.\-%+]/g, '');
+  // Questions that depend on the chosen partnership model (all optional).
+  const q = (k, n = 160) => oneLine(b[k], n);
+  const answers = [
+    ['Affiliate: audience size', AUDIENCE_SIZES[b.audienceSize] || ''],
+    ['Affiliate: how they would share', q('channels')],
+    ['Wholesale: type of store', q('storeType', 80)],
+    ['Wholesale: expected order size', q('orderSize', 60)],
+    ['Institutional: people served', q('peopleServed', 60)],
+    ['Institutional: copies needed', q('copies', 60)],
+    ['Corporate: recipients', q('recipients', 120)],
+    ['Corporate: occasion or program', q('occasion', 120)],
+  ].filter(([, v]) => v);
 
   const bad = (field, message) => res.status(400).json({ error: field, message });
   if (!firstName) return bad('firstName', 'Please enter your first name.');
@@ -65,6 +78,7 @@ export default async function handler(req, res) {
   if (!EMAIL.test(email)) return bad('email', 'Please enter a valid business email address.');
   if (!organization) return bad('organization', 'Please enter your organization’s name.');
   if (!orgType) return bad('orgType', 'Please choose the type of organization.');
+  if (b.requireState === true && !state) return bad('state', 'Please choose your state.');
   if (!interests.length) return bad('interests', 'Please choose at least one way you’d like to work with us.');
   if (interests.includes('complimentary-copy') && !edition) return bad('edition', 'Please choose your preferred edition.');
   if (!consent) return bad('consent', 'Please agree to be contacted about your inquiry.');
@@ -92,7 +106,8 @@ export default async function handler(req, res) {
     `Organization: ${organization}`,
     `Organization type: ${ORG_TYPES[orgType]}`,
     `Website: ${website || '—'}`,
-    `City / state: ${location || '—'}`,
+    `State: ${state || '—'}`,
+    ...(location ? [`City / area: ${location}`] : []),
     `Email: ${email}`,
     `Phone: ${phone || '—'}`,
     ``,
@@ -100,6 +115,7 @@ export default async function handler(req, res) {
     ...interests.map((i) => `  • ${INTERESTS[i]}`),
     ...(edition ? [`Preferred edition: ${EDITIONS[edition]}`] : []),
     ...(quantity ? [`Estimated quantity: ${quantity}`] : []),
+    ...(answers.length ? [``, `Details:`, ...answers.map(([k, v]) => `  • ${k}: ${v}`)] : []),
     ``,
     ...(utm ? [`Campaign: ${utm}`, ``] : []),
     `Message:`,

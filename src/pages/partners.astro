@@ -1,342 +1,551 @@
 ---
-// Business partnership landing page for cold outreach (/partners/).
-// The inquiry form posts to /api/partner, which saves the lead in GoHighLevel (tags + a note).
-// It never promises shipment: the team reviews each complimentary-copy request first, and asks
-// for a shipping address only after approval.
-// Email campaigns can preselect an interest with ?interest=meeting (or bulk, reseller, affiliate,
-// media, overview-pdf, complimentary-copy); utm_* values are passed along with the inquiry.
+// The Senior and Living Today Partner Network (/partners/).
+// A business partnership funnel for cold outreach: brand → books → partnership models →
+// complimentary sample → three-step application (saved to GoHighLevel via /api/partner).
+//
+// Content and pending commercial terms live in src/data/partner-program.ts.
+// Styles live in src/styles/partners.css (brand tokens only).
+// Campaign links can preselect a model or request: ?model=affiliate|reseller|bulk|corporate,
+// ?interest=complimentary-copy|meeting|overview-pdf, and utm_* values are saved with the application.
+// Conversion events fire only if a GA4 ID is configured in src/data/site.ts (none is set today).
+import '../styles/partners.css';
 import Base from '../layouts/Base.astro';
-import PageHero from '../components/PageHero.astro';
+import Book3D from '../components/Book3D.astro';
+import LookInside from '../components/LookInside.astro';
 import Reviews from '../components/Reviews.astro';
 import Faq from '../components/Faq.astro';
-import { SITE, BOOKS } from '../data/site';
-import { EDITIONS as LLP } from '../data/planners';
+import { SITE } from '../data/site';
+import { EDITIONS as READER_EDITIONS } from '../data/planners';
 import { BRITTNEY } from '../data/team';
 import { faqSchema } from '../data/schema';
-import { ORG_TYPES, INTERESTS, EDITIONS } from '../../api/_lib/partner-options.js';
+import { TERMS, PENDING, SHOWCASE, MORE_TITLES, WHY, AUDIENCES, MODELS, FAQS } from '../data/partner-program';
+import { ORG_TYPES, EDITIONS, AUDIENCE_SIZES, US_STATES } from '../../api/_lib/partner-options.js';
 
 const path = '/partners/';
-const crumbs = [{ name: 'Partner with us', href: path }];
-const first = LLP.find((e) => e.key === 'first')!;
-const second = LLP.find((e) => e.key === 'second')!;
-
-const ways = [
-  { icon: '📚', title: 'Institutional & bulk purchasing', text: 'Copies of our books for your residents, patients, clients, members or staff. Tell us what you need and we’ll put together options for your organization.', interest: 'bulk' },
-  { icon: '🤝', title: 'Authorized reseller & distribution', text: 'Offer Senior and Living Today books to your customers, in your community, store or catalog, as an authorized reseller or distribution partner.', interest: 'reseller' },
-  { icon: '🔗', title: 'Affiliate partnerships', text: 'Recommend our books to your audience and earn a commission. Commissions are agreed individually with each partner.', interest: 'affiliate' },
-  { icon: '🎙️', title: 'Media & strategic collaborations', text: 'Interviews, features, events, co-created content and other collaborations that bring helpful planning resources to older adults and families.', interest: 'media' },
-];
-const audiences = [
-  'Senior living communities', 'Assisted living', 'Nursing homes', 'Hospice organizations', 'Senior rehabilitation centers',
-  'Healthcare organizations', 'Home care agencies', 'Senior care providers', 'Senior-focused nonprofits', 'Community organizations',
-  'Retirement service providers', 'Businesses with older adult customers', 'Distributors & resellers', 'Media houses & publishers',
-];
-const faqs = [
-  { q: 'Is the complimentary copy really free?', a: 'Yes. Approved businesses receive one printed copy of The Living Legacy Planner at no cost, so you can see the book for yourself. There’s no obligation to buy or partner.' },
-  { q: 'How is a request approved?', a: 'Our team reviews each request and confirms which edition is available before arranging shipment. If your request is approved, we’ll contact you to confirm the details and your shipping address.' },
-  { q: 'Which edition should I choose?', a: 'The First Edition is printed in black and white. The Second Edition is the same caring planner in full color. Choose the one you’d like to review, or let us know either is fine.' },
-  { q: 'Who can become a partner?', a: 'We focus on businesses and organizations that serve or reach older adults and their families, but we welcome inquiries from any relevant business, distributor or media organization.' },
-  { q: 'Do you offer pricing for larger orders?', a: 'Yes. For institutional and bulk purchases, tell us roughly how many copies you need and we’ll discuss options for your organization.' },
-  { q: 'How do affiliate commissions work?', a: 'Commissions are agreed individually with each affiliate partner, based on your audience and how you’d like to work together.' },
-  { q: 'Can I see the book before requesting a copy?', a: 'Yes. You can read sample pages of both editions online right now, and we can send a book overview and partnership proposal as a PDF on request.' },
-  { q: 'Where can individuals buy the books?', a: 'Individual readers can buy our books on Amazon and through the SALT Online Store. This page is for businesses and organizations.' },
-];
+const crumbs = [{ name: 'Partner Network', href: path }];
+const reader = ['second', 'first', 'military'].map((k) => READER_EDITIONS.find((e) => e.key === k)!).filter(Boolean);
+const [color, first] = SHOWCASE;
+const CTA: Record<string, string> = { affiliate: 'Apply as an affiliate partner', reseller: 'Apply as a wholesale partner', bulk: 'Apply as an institutional partner', corporate: 'Apply as a corporate partner' };
+const calculatorReady = TERMS.approved && TERMS.retailPrices.length > 0 && (TERMS.affiliateCommissionPct != null || TERMS.wholesaleDiscountPct != null);
 ---
 <Base
-  title="Partner with Senior and Living Today"
-  description="Partner with Senior and Living Today: bulk and institutional purchasing, reseller, affiliate and media partnerships. Request a complimentary copy of our book."
-  image={second.cover}
-  imageAlt={second.coverAlt}
+  title="Partner Network for Senior-Focused Businesses"
+  description="Partner with Senior and Living Today to refer, resell or buy The Living Legacy Planner for the older adults you serve. Request a complimentary sample."
+  image={color.cover}
+  imageAlt={color.alt}
   breadcrumbs={crumbs}
-  schema={[faqSchema(faqs)]}
+  schema={[faqSchema(FAQS)]}
 >
-  <PageHero
-    title="Partner with Senior and Living Today"
-    kicker="Business partnerships"
-    lead="We help older adults and the families who care for them plan ahead, stay organized and live well. If your business serves or reaches that community, let’s explore what we can do together."
-    breadcrumbs={crumbs}
-  >
-    <div class="btn-row">
-      <a class="btn btn-primary" href="#request" data-pick="complimentary-copy">Request Your Complimentary Copy</a>
-      <a class="btn btn-outline" href="#meet">Schedule a partnership call</a>
-    </div>
-    <ul class="ab-trust pt-trust" aria-label="About Senior and Living Today">
-      <li><strong>{SITE.founder.yearsExperience}+ years</strong><span>around senior care</span></li>
-      <li><strong>{BOOKS.length} published titles</strong><span>available on Amazon</span></li>
-      <li><strong>Registered Nurse</strong><span>consultant on our team</span></li>
-      <li><strong>Dayton, Ohio</strong><span>partnering nationwide</span></li>
-    </ul>
-  </PageHero>
-
-  <section class="section" aria-labelledby="why-title">
-    <div class="wrap grid split">
-      <div class="prose">
-        <span class="kicker">Who we are</span>
-        <h2 id="why-title">A trusted resource brand for older adults and their families</h2>
-        <p class="lead">Senior and Living Today (S.A.L.T.) creates practical, compassionate books and resources that help people plan for the future, organize important information and navigate the journey of aging with dignity.</p>
-        <p>Our founder, <strong>Courtney R. Jones</strong>, brings more than {SITE.founder.yearsExperience} years of experience around senior care, hospital work and medical billing. Our Registered Nurse Consultant, <strong>{BRITTNEY.name}, {BRITTNEY.credential}</strong>, brings a professional nursing perspective.</p>
-        <p>We’re looking for partners who share our goal: getting helpful, easy-to-use planning resources into the hands of the people who need them.</p>
-      </div>
-      <ul class="pt-why">
-        <li><span aria-hidden="true">💛</span><div><h3>Made for your community</h3><p>Large, clear books written for older adults, families and caregivers.</p></div></li>
-        <li><span aria-hidden="true">🩺</span><div><h3>Experience you can trust</h3><p>Created by a senior care advocate, with a nursing professional on our team.</p></div></li>
-        <li><span aria-hidden="true">🤝</span><div><h3>Flexible ways to work together</h3><p>From bulk orders to reselling, affiliate programs and media collaborations.</p></div></li>
-        <li><span aria-hidden="true">⭐</span><div><h3>Loved by readers</h3><p>Five-star reviews from readers on Amazon.</p></div></li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="section section-cream pt-copy" id="complimentary-copy" aria-labelledby="copy-title">
-    <div class="wrap">
-      <span class="kicker">Our invitation to you</span>
-      <h2 id="copy-title">Get to Know Our Book Before You Become Our Partner.</h2>
-      <p class="lead">We believe in building partnerships through trust and experience. That’s why we’re happy to offer interested businesses a complimentary copy of Senior and Living Today’s <strong>The Living Legacy Planner</strong> to explore before making a partnership decision.</p>
-      <ul class="pt-eds">
-        <li class="pt-ed">
-          <img src={first.cover} alt={first.coverAlt} width="900" height="1285" loading="lazy" />
-          <div>
-            <span class="pt-edtag">First Edition · Black &amp; White</span>
-            <h3>The Living Legacy Planner</h3>
-            <p>The original planner: final wishes, finances, medical details, key contacts and memories, all in one book, so families never have to guess.</p>
-            <a class="pt-read" href="/books/living-legacy-planner/#look-first">📖 Read sample pages</a>
+  <div class="pn">
+    <!-- 1. HERO -->
+    <section class="pn-hero" aria-labelledby="pn-title">
+      <img class="pn-seal" src="/images/logo-512.png" alt="" width="512" height="510" aria-hidden="true" />
+      <div class="wrap pn-hero-grid">
+        <div class="pn-hero-copy">
+          <p class="pn-eyebrow"><img src="/images/logo.png" alt="" width="40" height="40" aria-hidden="true" /> The Senior and Living Today Partner Network</p>
+          <h1 id="pn-title">Our Brand.<br /> Our Book.<br /> <span>Your Opportunity.</span></h1>
+          <p class="pn-lead">Bring meaningful books and resources to the senior community while exploring a business partnership with Senior and Living Today, the publisher of <em>The Living Legacy Planner</em>.</p>
+          <div class="pn-ctas">
+            <a class="btn btn-primary pn-btn" href="#models" data-track="cta_explore">Explore Partnership Opportunities</a>
+            <a class="btn pn-btn pn-btn-ghost" href="#sample" data-track="cta_sample">Request a Complimentary Book Sample</a>
           </div>
-        </li>
-        <li class="pt-ed">
-          <img src={second.cover} alt={second.coverAlt} width="900" height="1218" loading="lazy" />
-          <div>
-            <span class="pt-edtag">Second Edition · Full Color</span>
-            <h3>The Living Legacy Planner: Color Edition</h3>
-            <p>The same caring planner, refreshed in full color with warm illustrations throughout, guiding readers through every important detail.</p>
-            <a class="pt-read" href="/books/living-legacy-planner/#look-second">📖 Read sample pages</a>
-          </div>
-        </li>
-      </ul>
-      <div class="pt-note">
-        <p><strong>How it works:</strong> tell us which edition you’d prefer. Our team reviews each request and confirms availability before arranging shipment. If your request is approved, we’ll contact you to confirm your shipping details.</p>
-        <a class="btn btn-primary" href="#request" data-pick="complimentary-copy">Request Your Complimentary Copy</a>
+          <ul class="pn-proof" aria-label="About us">
+            <li>Original publications by Courtney R. Jones</li>
+            <li>{SITE.founder.yearsExperience}+ years around senior care</li>
+            <li>Registered Nurse Consultant on our team</li>
+          </ul>
+        </div>
+        <div class="pn-hero-books" aria-label="Book covers">
+          <Book3D class="pn-hb-back" src={first.cover} alt={first.alt} width={first.coverW} height={first.coverH} eager />
+          <Book3D class="pn-hb-front" src={color.cover} alt={color.alt} width={color.coverW} height={color.coverH} eager />
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="section" aria-labelledby="ways-title">
-    <div class="wrap">
-      <span class="kicker">Partnership opportunities</span>
-      <h2 id="ways-title">Ways we can work together</h2>
-      <ul class="pt-ways">
-        {ways.map((w) => (
-          <li>
-            <span aria-hidden="true">{w.icon}</span>
-            <h3>{w.title}</h3>
-            <p>{w.text}</p>
-            <a href="#request" data-pick={w.interest}>I’m interested →</a>
-          </li>
+    <!-- 2. WHY PARTNER -->
+    <section class="pn-sec" id="why" aria-labelledby="why-title">
+      <div class="wrap pn-why">
+        <div class="pn-why-intro">
+          <p class="pn-kicker">Why partner with us</p>
+          <h2 id="why-title" class="pn-h2">The brand behind the books.</h2>
+          <p class="pn-text">Senior and Living Today creates practical, compassionate resources for older adults and the people who support them. Our books are our own original publications, and our Partner Network invites businesses to bring them to the communities they already serve.</p>
+          <a class="pn-link" href="#books">See the books →</a>
+        </div>
+        <ol class="pn-why-list">
+          {WHY.map((w, i) => <li><span class="pn-num">{String(i + 1).padStart(2, '0')}</span><div><h3>{w.title}</h3><p>{w.text}</p></div></li>)}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 3. WHO CAN PARTNER -->
+    <section class="pn-sec pn-cream" id="who" aria-labelledby="who-title">
+      <div class="wrap">
+        <p class="pn-kicker">Who can partner with us</p>
+        <h2 id="who-title" class="pn-h2">Built for organizations that serve older adults.</h2>
+        <p class="pn-text pn-narrow">If the people you serve include older adults, families or caregivers, our books may be a natural fit. Every application is reviewed individually, and not every organization will be the right match.</p>
+        <ul class="pn-aud">
+          {AUDIENCES.map((a) => <li><span aria-hidden="true">{a.icon}</span><div><h3>{a.title}</h3><p>{a.why}</p></div></li>)}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. BOOK SHOWCASE -->
+    <section class="pn-sec" id="books" aria-labelledby="books-title">
+      <div class="wrap">
+        <p class="pn-kicker">Our publications</p>
+        <h2 id="books-title" class="pn-h2">Meet <em>The Living Legacy Planner</em>.</h2>
+        <p class="pn-text pn-narrow">One caring planner for final wishes, health details, finances, key contacts and memories, so families never have to guess. Choose an edition to explore.</p>
+        <div class="pn-ed-tabs" role="group" aria-label="Choose an edition">
+          {SHOWCASE.map((b, i) => <button type="button" class="pn-ed-tab" data-ed={b.key} data-look-edition={b.key} aria-pressed={String(i === 0)}>{b.tab}</button>)}
+        </div>
+        {SHOWCASE.map((b, i) => (
+          <div class="pn-show" data-show={b.key} hidden={i !== 0}>
+            <Book3D class="pn-show-book" src={b.cover} alt={b.alt} width={b.coverW} height={b.coverH} />
+            <div class="pn-show-info">
+              <p class="pn-tag">{b.edition}</p>
+              <h3>{b.title}</h3>
+              <p class="pn-by">by {b.author} · Published by Senior and Living Today</p>
+              <p>{b.text}</p>
+              <p class="pn-formats"><strong>Available as:</strong> {b.formats.join(' · ')}</p>
+              <div class="pn-show-btns">
+                <a class="btn btn-primary" href="#look-inside" data-look-edition={b.key} data-track="cta_read_inside">📖 Read inside</a>
+                <a class="btn btn-outline" href={b.buy} target="_blank" rel="noopener">{b.buyLabel} ↗</a>
+              </div>
+              <a class="pn-link" href={b.page}>Full details about this edition →</a>
+            </div>
+          </div>
         ))}
-      </ul>
-      <p class="pt-pdf">📄 Want the details first? <a href="#request" data-pick="overview-pdf">Request our book overview and partnership proposal</a> as a PDF.</p>
-    </div>
-  </section>
-
-  <section class="section ab-standards pt-who" aria-labelledby="who-title">
-    <div class="wrap">
-      <span class="kicker">Who we partner with</span>
-      <h2 id="who-title">Businesses and organizations that serve older adults</h2>
-      <ul class="pt-chips">{audiences.map((a) => <li>{a}</li>)}</ul>
-      <p class="pt-welcome">Don’t see your business here? If you have a relevant audience, customer base or distribution opportunity, we’d love to hear from you.</p>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="steps-title">
-    <div class="wrap">
-      <span class="kicker">Simple and personal</span>
-      <h2 id="steps-title">How partnering with us works</h2>
-      <ol class="pt-steps">
-        <li><h3>Tell us about your organization</h3><p>Share a few details and what interests you, using the short form below.</p></li>
-        <li><h3>We review and reach out</h3><p>Our team reviews your inquiry and contacts you personally to talk about next steps.</p></li>
-        <li><h3>Explore the book</h3><p>Approved businesses receive a complimentary copy of The Living Legacy Planner to review.</p></li>
-        <li><h3>Build the partnership</h3><p>We agree on the arrangement that fits your organization, your audience and your goals.</p></li>
-      </ol>
-    </div>
-  </section>
-
-  <section class="section section-cream" id="request" aria-labelledby="form-title">
-    <div class="wrap pt-formwrap">
-      <div class="pt-formintro">
-        <span class="kicker">Let’s connect</span>
-        <h2 id="form-title">Request your complimentary copy or start a partnership conversation</h2>
-        <p>It takes about two minutes. Fields marked <span class="req" aria-hidden="true">*</span><span class="sr-only">with an asterisk</span> are required.</p>
-        <p class="pt-small">We use your details only to respond to your inquiry. We won’t ask for a shipping address until your request is approved. <a href="/privacy-policy/">Privacy policy</a></p>
-      </div>
-      <form class="pt-form" id="partner-form" novalidate>
-        <div class="pt-ok" id="pt-ok" hidden tabindex="-1">
-          <h3>✅ Thank you<span id="pt-okname"></span>!</h3>
-          <p>We’ve received your inquiry. Our team will review it and reach out to you by email to talk about next steps.</p>
-          <p>Want to talk sooner? <a href={SITE.links.bookCall30} target="_blank" rel="noopener">Schedule a partnership call ↗</a> or call <a href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a>.</p>
+        <div class="pn-more">
+          <h3>Also from Senior and Living Today</h3>
+          <ul>
+            {MORE_TITLES.map((t) => <li><img src={t.cover} alt="" width="120" height="170" loading="lazy" /><div><a href={t.href}><strong>{t.title}</strong></a><p>{t.note}</p></div></li>)}
+          </ul>
         </div>
-        <div class="pt-fields" id="pt-fields">
-          <div class="pt-row">
-            <label>First name <span class="req" aria-hidden="true">*</span><input name="firstName" autocomplete="given-name" required maxlength="60" /></label>
-            <label>Last name <span class="req" aria-hidden="true">*</span><input name="lastName" autocomplete="family-name" required maxlength="60" /></label>
+      </div>
+    </section>
+    <div class="pn-reader">
+      <LookInside editions={reader} initial="second" title="Read inside the planner" intro="These are genuine pages from the book. Turn them like a real book: two pages at a time on larger screens." />
+    </div>
+
+    <!-- 5. PARTNERSHIP MODELS -->
+    <section class="pn-sec pn-navy" id="models" aria-labelledby="models-title">
+      <div class="wrap">
+        <p class="pn-kicker">Choose your partnership model</p>
+        <h2 id="models-title" class="pn-h2">Four ways to work with us.</h2>
+        <div class="pn-mtabs" role="tablist" aria-label="Partnership models">
+          {MODELS.map((m, i) => <button type="button" role="tab" id={`tab-${m.key}`} aria-controls={`panel-${m.key}`} aria-selected={String(i === 0)} tabindex={i === 0 ? 0 : -1} data-model={m.key}>{m.tab}</button>)}
+        </div>
+        {MODELS.map((m, i) => (
+          <div class="pn-mpanel" role="tabpanel" id={`panel-${m.key}`} aria-labelledby={`tab-${m.key}`} hidden={i !== 0} tabindex="0">
+            <div>
+              <h3>{m.title}</h3>
+              <p class="pn-mwho">{m.who}</p>
+              <ol class="pn-msteps">{m.how.map((h) => <li>{h}</li>)}</ol>
+            </div>
+            <div class="pn-mside">
+            <dl class="pn-mfacts">
+              <div><dt>How you benefit</dt><dd>{m.earn}</dd></div>
+              <div><dt>Terms</dt><dd class:list={[{ 'pn-pending': m.rate() === PENDING }]}>{m.rate()}</dd></div>
+              <div><dt>Your part</dt><dd>{m.you}</dd></div>
+            </dl>
+            <a class="btn btn-primary" href="#apply" data-pick-model={m.key} data-track="cta_apply_model">{CTA[m.key]}</a>
+            </div>
           </div>
-          <div class="pt-row">
-            <label>Business email <span class="req" aria-hidden="true">*</span><input name="email" type="email" autocomplete="email" required maxlength="254" /></label>
-            <label>Phone <span class="opt">(optional)</span><input name="phone" type="tel" autocomplete="tel" maxlength="30" /></label>
+        ))}
+        <div class="pn-compare" role="table" aria-label="How each model works">
+          <div role="row" class="pn-crow pn-chead"><span role="columnheader"></span><span role="columnheader">Affiliate</span><span role="columnheader">Wholesale</span><span role="columnheader">Institutional &amp; corporate</span></div>
+          <div role="row" class="pn-crow"><span role="rowheader">Who buys the books</span><span role="cell">Your customers, directly from us</span><span role="cell">You, at a wholesale price</span><span role="cell">Your organization</span></div>
+          <div role="row" class="pn-crow"><span role="rowheader">How you benefit</span><span role="cell">Commission per referred sale</span><span role="cell">Resale margin per copy</span><span role="cell">Books for your community, clients or team</span></div>
+          <div role="row" class="pn-crow"><span role="rowheader">Inventory</span><span role="cell">None</span><span role="cell">You stock and sell</span><span role="cell">Delivered for your program or occasion</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. COMMERCIAL OPPORTUNITY -->
+    <section class="pn-sec pn-cream" id="opportunity" aria-labelledby="opp-title">
+      <div class="wrap">
+        <p class="pn-kicker">The commercial picture</p>
+        <h2 id="opp-title" class="pn-h2">How partners participate commercially.</h2>
+        <ul class="pn-flows">
+          <li><h3>Referral</h3><ol><li>You recommend</li><li>Customer buys</li><li>You earn a commission</li></ol></li>
+          <li><h3>Wholesale</h3><ol><li>You buy at wholesale</li><li>You sell at retail</li><li>You keep the margin</li></ol></li>
+          <li><h3>Institutional &amp; corporate</h3><ol><li>You choose titles</li><li>We prepare your order</li><li>Your people receive them</li></ol></li>
+        </ul>
+        {calculatorReady ? (
+          <div class="pn-calc" id="pn-calc" data-terms={JSON.stringify(TERMS)}>
+            <h3>Illustrative earnings estimate</h3>
+            <p class="pn-small">Illustrative only, based on approved terms. Not a guarantee of sales or income.</p>
           </div>
-          <div class="pt-row">
-            <label>Organization name <span class="req" aria-hidden="true">*</span><input name="organization" autocomplete="organization" required maxlength="120" /></label>
+        ) : (
+          <div class="pn-pendingbox">
+            <div>
+              <h3>Commission rates and wholesale pricing</h3>
+              <p>Partner terms are shared individually with approved partners. An interactive earnings estimate will appear here once our program terms are published.</p>
+            </div>
+            <a class="btn btn-primary" href="#apply" data-track="cta_apply_terms">Apply to receive partner terms</a>
+          </div>
+        )}
+      </div>
+    </section>
+
+    <!-- 7. COMPLIMENTARY SAMPLE -->
+    <section class="pn-sec" id="sample" aria-labelledby="sample-title">
+      <div class="wrap pn-sample">
+        <div class="pn-sample-books">
+          <Book3D class="pn-sb1" src={first.cover} alt={first.alt} width={first.coverW} height={first.coverH} />
+          <Book3D class="pn-sb2" src={color.cover} alt={color.alt} width={color.coverW} height={color.coverH} />
+        </div>
+        <div>
+          <p class="pn-kicker">Complimentary sample</p>
+          <h2 id="sample-title" class="pn-h2">Get to know the book before you partner with us.</h2>
+          <p class="pn-text">We believe partnerships are built on trust and experience. Qualified prospective partners can request a complimentary printed copy of <em>The Living Legacy Planner</em> to evaluate before deciding.</p>
+          <dl class="pn-sample-facts">
+            <div><dt>Who can request</dt><dd>Businesses and organizations exploring a partnership with us.</dd></div>
+            <div><dt>Choose an edition</dt><dd>First Edition (Black &amp; White) or Second Edition (Full Color).</dd></div>
+            <div><dt>What to look for</dt><dd>The print quality, how it reads, and how it would serve your residents, clients or customers.</dd></div>
+            <div><dt>What happens next</dt><dd>Our team reviews each request and confirms availability and the edition. If approved, we’ll contact you for your shipping details.</dd></div>
+          </dl>
+          {TERMS.sampleShippingNote && <p class="pn-small">{TERMS.sampleShippingNote}</p>}
+          <a class="btn btn-primary pn-btn" href="#apply" data-pick="complimentary-copy" data-track="cta_sample">Request Your Complimentary Book Sample</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. WHY IT MAKES SENSE -->
+    <section class="pn-sec pn-navy" id="fit" aria-labelledby="fit-title">
+      <div class="wrap">
+        <p class="pn-kicker">Why this partnership makes sense</p>
+        <h2 id="fit-title" class="pn-h2">A meaningful product for the people you already serve.</h2>
+        <div class="pn-fit">
+          <ul class="pn-fit-list">
+            <li><strong>Relevant.</strong> Planning ahead, organizing important information and preserving memories matter to older adults and their families.</li>
+            <li><strong>Helpful.</strong> Give residents, clients, families and caregivers a practical resource they can use right away.</li>
+            <li><strong>Additive.</strong> Bring an original product into your existing services, store or community programs.</li>
+            <li><strong>Direct.</strong> Build a relationship with the publisher itself.</li>
+          </ul>
+          <div class="pn-team">
+            <figure><img src="/images/courtney-portrait.webp" alt="Courtney R. Jones" width="599" height="900" loading="lazy" /><figcaption><strong>Courtney R. Jones</strong><span>Founder &amp; author</span></figcaption></figure>
+            <figure><img src={BRITTNEY.photo} alt={`${BRITTNEY.name}, ${BRITTNEY.credential}`} width={BRITTNEY.photoW} height={BRITTNEY.photoH} loading="lazy" /><figcaption><strong>{BRITTNEY.name}, {BRITTNEY.credential}</strong><span>{BRITTNEY.title}</span></figcaption></figure>
+            <a class="pn-link" href="/about/">About Senior and Living Today →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="pn-sec pn-reviews" aria-labelledby="rev-title">
+      <div class="wrap">
+        <p class="pn-kicker">From readers</p>
+        <h2 id="rev-title" class="pn-h2">What readers say about <em>The Living Legacy Planner</em>.</h2>
+        <p class="pn-small">Product reviews written by readers on Amazon, not partner testimonials.</p>
+        <div style="margin-top:1.2rem"><Reviews limit={3} /></div>
+      </div>
+    </section>
+
+    <!-- 9. FAQ -->
+    <div id="faq"><Faq items={FAQS} title="Partner questions" /></div>
+
+    <!-- 10. FINAL CTA -->
+    <section class="pn-sec pn-final" aria-labelledby="final-title">
+      <div class="wrap">
+        <h2 id="final-title" class="pn-h2">Let’s build a meaningful partnership.</h2>
+        <p class="pn-text">Whether you want to introduce our books to your customers, offer them through your business, or bring them into a senior-focused community, we’d love to explore the possibilities with you.</p>
+        <div class="pn-ctas">
+          <a class="btn btn-primary pn-btn" href="#apply" data-track="cta_become_partner">Become a Partner</a>
+          <a class="btn pn-btn pn-btn-ghost" href="#apply" data-pick="complimentary-copy" data-track="cta_sample">Request a Book Sample</a>
+        </div>
+        <p class="pn-small">Prefer to talk first? <a href={SITE.links.bookCall30} target="_blank" rel="noopener">Book a 30-minute partnership call ↗</a> or call <a href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a>.</p>
+      </div>
+    </section>
+
+    <!-- 11. APPLICATION -->
+    <section class="pn-sec pn-cream" id="apply" aria-labelledby="apply-title">
+      <div class="wrap pn-apply">
+        <div class="pn-apply-intro">
+          <p class="pn-kicker">Partner application</p>
+          <h2 id="apply-title" class="pn-h2">Apply to the Partner Network.</h2>
+          <p class="pn-text">Three short steps. Our team reviews every application personally. No obligation.</p>
+          <p class="pn-small">We use your details only to respond to your application. We won’t ask for a shipping address unless a sample request is approved. <a href="/privacy-policy/">Privacy policy</a></p>
+        </div>
+        <form class="pn-form" id="pn-form" novalidate>
+          <div class="pn-progress" aria-hidden="true"><span id="pn-bar"></span></div>
+          <ol class="pn-steps-nav" aria-label="Application steps">
+            <li data-stepnav="1" aria-current="step">About you</li><li data-stepnav="2">Partnership</li><li data-stepnav="3">Finish</li>
+          </ol>
+          <p class="sr-only" aria-live="polite" id="pn-steplive">Step 1 of 3: About you</p>
+
+          <fieldset class="pn-step" data-step="1">
+            <legend class="sr-only">Step 1 of 3: About you</legend>
+            <div class="pn-row">
+              <label>First name <span class="req" aria-hidden="true">*</span><input name="firstName" autocomplete="given-name" required maxlength="60" /></label>
+              <label>Last name <span class="req" aria-hidden="true">*</span><input name="lastName" autocomplete="family-name" required maxlength="60" /></label>
+            </div>
+            <div class="pn-row">
+              <label>Business email <span class="req" aria-hidden="true">*</span><input name="email" type="email" autocomplete="email" required maxlength="254" /></label>
+              <label>Phone <span class="opt">(optional)</span><input name="phone" type="tel" autocomplete="tel" maxlength="30" /></label>
+            </div>
+            <div class="pn-row">
+              <label>Business or organization <span class="req" aria-hidden="true">*</span><input name="organization" autocomplete="organization" required maxlength="120" /></label>
+              <label>Website <span class="opt">(optional)</span><input name="website" inputmode="url" autocomplete="url" maxlength="200" placeholder="www.example.com" /></label>
+            </div>
+            <div class="pn-row">
+              <label>Business type <span class="req" aria-hidden="true">*</span>
+                <select name="orgType" required><option value="">Choose one…</option>{Object.entries(ORG_TYPES).map(([k, v]) => <option value={k}>{v}</option>)}</select>
+              </label>
+              <label>State <span class="req" aria-hidden="true">*</span>
+                <select name="state" required autocomplete="address-level1"><option value="">Choose your state…</option>{US_STATES.map((s) => <option value={s}>{s}</option>)}</select>
+              </label>
+            </div>
             <label>Your role or title <span class="opt">(optional)</span><input name="role" autocomplete="organization-title" maxlength="80" /></label>
-          </div>
-          <div class="pt-row">
-            <label>Type of organization <span class="req" aria-hidden="true">*</span>
-              <select name="orgType" required>
-                <option value="">Choose one…</option>
-                {Object.entries(ORG_TYPES).map(([k, v]) => <option value={k}>{v}</option>)}
-              </select>
-            </label>
-            <label>Website <span class="opt">(optional)</span><input name="website" type="text" inputmode="url" autocomplete="url" maxlength="200" placeholder="www.example.com" /></label>
-          </div>
-          <label class="pt-wide">City and state <span class="opt">(optional)</span><input name="location" autocomplete="address-level2" maxlength="80" placeholder="e.g. Dayton, OH" /></label>
+          </fieldset>
 
-          <fieldset class="pt-set" id="pt-interests">
-            <legend>How would you like to work with us? <span class="req" aria-hidden="true">*</span> <span class="opt">Choose all that apply.</span></legend>
-            <div class="pt-checks">
-              {Object.entries(INTERESTS).map(([k, v]) => (
-                <label class="pt-check"><input type="checkbox" name="interests" value={k} checked={k === 'complimentary-copy'} /> <span>{v}</span></label>
-              ))}
+          <fieldset class="pn-step" data-step="2" hidden>
+            <legend class="sr-only">Step 2 of 3: Partnership</legend>
+            <div class="pn-set" id="pn-models">
+              <p class="pn-q">Which partnership interests you? <span class="req" aria-hidden="true">*</span> <span class="opt">Choose all that apply.</span></p>
+              <div class="pn-cards">
+                {MODELS.map((m) => <label class="pn-card"><input type="checkbox" name="models" value={m.key} /><span><strong>{m.tab}</strong><small>{m.earn}</small></span></label>)}
+              </div>
+            </div>
+            <div class="pn-cond" data-for="affiliate" hidden>
+              <p class="pn-q">About your audience</p>
+              <div class="pn-row">
+                <label>Approximate audience size <span class="opt">(optional)</span><select name="audienceSize"><option value="">Choose…</option>{Object.entries(AUDIENCE_SIZES).map(([k, v]) => <option value={k}>{v}</option>)}</select></label>
+                <label>How would you share our books? <span class="opt">(optional)</span><input name="channels" maxlength="160" placeholder="e.g. newsletter, client meetings, website" /></label>
+              </div>
+            </div>
+            <div class="pn-cond" data-for="reseller" hidden>
+              <p class="pn-q">About your store</p>
+              <div class="pn-row">
+                <label>Type of store <span class="opt">(optional)</span><input name="storeType" maxlength="80" placeholder="e.g. independent bookstore, gift shop, online" /></label>
+                <label>Expected order size <span class="opt">(optional)</span><input name="orderSize" maxlength="60" placeholder="e.g. 10–25 copies" /></label>
+              </div>
+            </div>
+            <div class="pn-cond" data-for="bulk" hidden>
+              <p class="pn-q">About your community</p>
+              <div class="pn-row">
+                <label>Residents, clients or members served <span class="opt">(optional)</span><input name="peopleServed" maxlength="60" placeholder="e.g. 120 residents" /></label>
+                <label>Copies you might need <span class="opt">(optional)</span><input name="copies" maxlength="60" placeholder="e.g. 50" /></label>
+              </div>
+            </div>
+            <div class="pn-cond" data-for="corporate" hidden>
+              <p class="pn-q">About your gift or program</p>
+              <div class="pn-row">
+                <label>Who are the recipients? <span class="opt">(optional)</span><input name="recipients" maxlength="120" placeholder="e.g. employees, clients, members" /></label>
+                <label>Occasion or program <span class="opt">(optional)</span><input name="occasion" maxlength="120" placeholder="e.g. holiday gifts, caregiver benefit" /></label>
+              </div>
+            </div>
+            <div class="pn-set">
+              <p class="pn-q">Would you also like…</p>
+              <label class="pn-check"><input type="checkbox" name="extras" value="complimentary-copy" /> <span>A complimentary sample of <em>The Living Legacy Planner</em></span></label>
+              <div class="pn-cond pn-edition" id="pn-edition" hidden>
+                <p class="pn-q">Preferred edition <span class="req" aria-hidden="true">*</span></p>
+                {Object.entries(EDITIONS).map(([k, v]) => <label class="pn-check"><input type="radio" name="edition" value={k} /> <span>{v}</span></label>)}
+                <p class="pn-small">Our team confirms availability before arranging anything.</p>
+              </div>
+              <label class="pn-check"><input type="checkbox" name="extras" value="overview-pdf" /> <span>Our book overview and partnership proposal (PDF)</span></label>
+              <label class="pn-check"><input type="checkbox" name="extras" value="meeting" /> <span>A partnership call</span></label>
             </div>
           </fieldset>
 
-          <fieldset class="pt-set" id="pt-edition">
-            <legend>Preferred edition for your complimentary copy <span class="req" aria-hidden="true">*</span></legend>
-            <div class="pt-radios">
-              {Object.entries(EDITIONS).map(([k, v]) => (
-                <label class="pt-check"><input type="radio" name="edition" value={k} /> <span>{v}</span></label>
-              ))}
-            </div>
-            <p class="pt-small">Our team will confirm availability before arranging shipment.</p>
+          <fieldset class="pn-step" data-step="3" hidden>
+            <legend class="sr-only">Step 3 of 3: Finish</legend>
+            <label>Anything else we should know? <span class="opt">(optional)</span><textarea name="message" rows="5" maxlength="2000" placeholder="Tell us about your business, your audience and what you have in mind."></textarea></label>
+            <div class="pn-review" id="pn-review" aria-live="polite"></div>
+            <label class="pn-hp" aria-hidden="true">Fax <input name="fax" tabindex="-1" autocomplete="off" /></label>
+            <label class="pn-check"><input type="checkbox" name="consent" required /> <span>I agree that Senior and Living Today may contact me about this application. <span class="req" aria-hidden="true">*</span></span></label>
           </fieldset>
 
-          <label class="pt-wide" id="pt-qty">Estimated number of copies <span class="opt">(optional, for bulk purchasing)</span><input name="quantity" maxlength="40" placeholder="e.g. 25, 100, 500+" /></label>
-          <label class="pt-wide">Tell us a little about your organization and goals <span class="opt">(optional)</span><textarea name="message" rows="4" maxlength="2000"></textarea></label>
-          <label class="pt-hp" aria-hidden="true">Fax <input name="fax" tabindex="-1" autocomplete="off" /></label>
-          <label class="pt-check pt-consent"><input type="checkbox" name="consent" required /> <span>I agree that Senior and Living Today may contact me about this inquiry. <span class="req" aria-hidden="true">*</span></span></label>
+          <p class="pn-err" id="pn-err" role="alert" hidden></p>
+          <div class="pn-nav">
+            <button type="button" class="btn btn-outline" id="pn-back" hidden>← Back</button>
+            <button type="button" class="btn btn-primary" id="pn-next">Continue →</button>
+            <button type="submit" class="btn btn-primary" id="pn-submit" hidden>Submit application</button>
+          </div>
 
-          <p class="pt-err" id="pt-err" role="alert" hidden></p>
-          <button class="btn btn-primary pt-submit" type="submit">Send my request</button>
-        </div>
-      </form>
-    </div>
-  </section>
-
-  <section class="section" id="meet" aria-labelledby="meet-title">
-    <div class="wrap">
-      <span class="kicker">Prefer to talk?</span>
-      <h2 id="meet-title">Schedule a partnership conversation</h2>
-      <p class="lead">Pick a time that works for you. We’ll learn about your organization and share how a partnership could work.</p>
-      <ul class="pt-meet">
-        <li>
-          <h3>Quick introduction</h3>
-          <p>A short, friendly call to get to know each other and see if we’re a good fit.</p>
-          <a class="btn btn-outline" href={SITE.links.bookCall} target="_blank" rel="noopener">Book an intro call ↗</a>
-        </li>
-        <li>
-          <h3>30-minute partnership call</h3>
-          <p>Time to talk through bulk purchasing, reselling, affiliate or media opportunities in detail.</p>
-          <a class="btn btn-primary" href={SITE.links.bookCall30} target="_blank" rel="noopener">Book a 30-minute call ↗</a>
-        </li>
-      </ul>
-      <p class="pt-small">Or call <a href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a> · email <a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="reviews-title">
-    <div class="wrap">
-      <h2 id="reviews-title">What readers say about The Living Legacy Planner</h2>
-      <div style="margin-top:1.5rem"><Reviews limit={3} /></div>
-    </div>
-  </section>
-
-  <Faq items={faqs} title="Partnership questions" />
-
-  <section class="section pt-final">
-    <div class="wrap">
-      <h2>Let’s bring helpful resources to the people you serve.</h2>
-      <div class="btn-row">
-        <a class="btn btn-primary" href="#request" data-pick="complimentary-copy">Request Your Complimentary Copy</a>
-        <a class="btn btn-outline" href="#meet">Schedule a partnership call</a>
+          <div class="pn-ok" id="pn-ok" hidden tabindex="-1">
+            <canvas class="pn-confetti" id="pn-confetti" aria-hidden="true"></canvas>
+            <img src="/images/logo-512.png" alt="" width="96" height="96" aria-hidden="true" />
+            <h3>Thank you<span id="pn-okname"></span>. Your application is in.</h3>
+            <p>Our team will review it personally and contact you by email about next steps. Nothing is automatic, and there’s no obligation.</p>
+            <p id="pn-oksample" hidden>We’ve noted your sample request. If it’s approved, we’ll contact you to confirm the edition and your shipping details.</p>
+            <p>Want to talk sooner? <a href={SITE.links.bookCall30} target="_blank" rel="noopener">Book a 30-minute partnership call ↗</a></p>
+          </div>
+        </form>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <a class="pn-sticky" id="pn-sticky" href="#apply" data-track="cta_become_partner">Become a Partner</a>
+  </div>
 </Base>
 
 <script>
-  const form = document.getElementById('partner-form') as HTMLFormElement;
-  const fields = document.getElementById('pt-fields')!;
-  const ok = document.getElementById('pt-ok')!;
-  const err = document.getElementById('pt-err')!;
-  const editionSet = document.getElementById('pt-edition')!;
-  const qty = document.getElementById('pt-qty')!;
-  const btn = form.querySelector<HTMLButtonElement>('.pt-submit')!;
-  const boxes = () => [...form.querySelectorAll<HTMLInputElement>('input[name="interests"]')];
-  const sync = () => {
-    const on = boxes().filter((b) => b.checked).map((b) => b.value);
-    editionSet.hidden = !on.includes('complimentary-copy');
-    qty.hidden = !on.includes('bulk') && !on.includes('reseller');
-  };
-  const pick = (interest?: string | null) => {
-    const box = boxes().find((b) => b.value === interest);
-    if (box) { box.checked = true; sync(); }
-  };
-  form.addEventListener('change', sync);
-  document.querySelectorAll<HTMLElement>('[data-pick]').forEach((a) => a.addEventListener('click', () => pick(a.dataset.pick)));
-  pick(new URLSearchParams(location.search).get('interest'));
-  sync();
+  type W = Window & { gtag?: (...a: unknown[]) => void };
+  // Conversion events: sent only if Google Analytics is configured on the site (no new services).
+  const track = (name: string, params: Record<string, unknown> = {}) => { try { (window as W).gtag?.('event', name, params); } catch { /* ignore */ } };
+  document.querySelectorAll<HTMLElement>('[data-track]').forEach((el) => el.addEventListener('click', () => track(el.dataset.track!, { location: el.closest('section')?.id || 'page' })));
 
-  const utm = [...new URLSearchParams(location.search)].filter(([k]) => k.startsWith('utm_')).map(([k, v]) => `${k}=${v}`).join('&').slice(0, 200);
+  // ---- Edition showcase ----
+  const edTabs = [...document.querySelectorAll<HTMLButtonElement>('.pn-ed-tab')];
+  const shows = [...document.querySelectorAll<HTMLElement>('.pn-show')];
+  const showEd = (key: string) => {
+    edTabs.forEach((t) => t.setAttribute('aria-pressed', String(t.dataset.ed === key)));
+    shows.forEach((s) => { s.hidden = s.dataset.show !== key; });
+  };
+  edTabs.forEach((t) => t.addEventListener('click', () => { showEd(t.dataset.ed!); track('edition_select', { edition: t.dataset.ed }); }));
+
+  // ---- Partnership model tabs (WAI-ARIA tabs) ----
+  const tabs = [...document.querySelectorAll<HTMLButtonElement>('.pn-mtabs [role=tab]')];
+  const selectTab = (tab: HTMLButtonElement, focus = false) => {
+    tabs.forEach((t) => { const on = t === tab; t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1; document.getElementById(t.getAttribute('aria-controls')!)!.hidden = !on; });
+    if (focus) tab.focus();
+    track('partnership_model_select', { model: tab.dataset.model });
+  };
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => selectTab(t));
+    t.addEventListener('keydown', (e) => {
+      const k = e.key; let j = -1;
+      if (k === 'ArrowRight') j = (i + 1) % tabs.length; else if (k === 'ArrowLeft') j = (i - 1 + tabs.length) % tabs.length; else if (k === 'Home') j = 0; else if (k === 'End') j = tabs.length - 1;
+      if (j >= 0) { e.preventDefault(); selectTab(tabs[j], true); }
+    });
+  });
+
+  // ---- Sticky mobile CTA after the hero ----
+  const sticky = document.getElementById('pn-sticky')!;
+  const hero = document.querySelector('.pn-hero')!;
+  const apply = document.getElementById('apply')!;
+  let pastHero = false, atForm = false;
+  const syncSticky = () => sticky.classList.toggle('show', pastHero && !atForm);
+  new IntersectionObserver(([e]) => { pastHero = !e.isIntersecting; syncSticky(); }).observe(hero);
+  new IntersectionObserver(([e]) => { atForm = e.isIntersecting; syncSticky(); }, { rootMargin: '0px 0px -30% 0px' }).observe(apply);
+
+  // ---- Three-step application ----
+  const form = document.getElementById('pn-form') as HTMLFormElement;
+  const steps = [...form.querySelectorAll<HTMLElement>('.pn-step')];
+  const navItems = [...form.querySelectorAll<HTMLElement>('[data-stepnav]')];
+  const bar = document.getElementById('pn-bar')!;
+  const live = document.getElementById('pn-steplive')!;
+  const err = document.getElementById('pn-err')!;
+  const back = document.getElementById('pn-back') as HTMLButtonElement;
+  const next = document.getElementById('pn-next') as HTMLButtonElement;
+  const submit = document.getElementById('pn-submit') as HTMLButtonElement;
+  const names = ['About you', 'Partnership', 'Finish'];
+  let step = 1, started = false;
+
+  const val = (n: string) => String((form.elements.namedItem(n) as HTMLInputElement | null)?.value ?? '').trim();
+  const checked = (n: string) => [...form.querySelectorAll<HTMLInputElement>(`input[name="${n}"]:checked`)].map((i) => i.value);
+  const syncCond = () => {
+    const models = checked('models');
+    form.querySelectorAll<HTMLElement>('.pn-cond[data-for]').forEach((c) => { c.hidden = !models.includes(c.dataset.for!); });
+    (document.getElementById('pn-edition') as HTMLElement).hidden = !checked('extras').includes('complimentary-copy');
+  };
+  const show = (n: number) => {
+    step = n;
+    steps.forEach((s) => { s.hidden = Number(s.dataset.step) !== n; });
+    navItems.forEach((li) => { const k = Number(li.dataset.stepnav); li.classList.toggle('done', k < n); if (k === n) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current'); });
+    bar.style.width = `${(n / 3) * 100}%`;
+    live.textContent = `Step ${n} of 3: ${names[n - 1]}`;
+    back.hidden = n === 1; next.hidden = n === 3; submit.hidden = n !== 3;
+    err.hidden = true;
+    if (n === 3) renderReview();
+  };
   const fail = (msg: string, name?: string) => {
     err.textContent = msg; err.hidden = false;
     form.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
-    const target = name === 'interests' ? boxes()[0] : name === 'edition' ? form.querySelector<HTMLInputElement>('input[name="edition"]') : name ? form.querySelector<HTMLElement>(`[name="${name}"]`) : null;
-    if (target) { target.setAttribute('aria-invalid', 'true'); target.focus(); }
+    const t = name ? form.querySelector<HTMLElement>(`[name="${name}"]`) : null;
+    if (t) { t.setAttribute('aria-invalid', 'true'); t.focus(); }
+    return false;
+  };
+  const check = (n: number): boolean => {
+    if (n === 1) {
+      if (!val('firstName')) return fail('Please enter your first name.', 'firstName');
+      if (!val('lastName')) return fail('Please enter your last name.', 'lastName');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val('email'))) return fail('Please enter a valid business email address.', 'email');
+      if (!val('organization')) return fail('Please enter your business or organization name.', 'organization');
+      if (!val('orgType')) return fail('Please choose your business type.', 'orgType');
+      if (!val('state')) return fail('Please choose your state.', 'state');
+    }
+    if (n === 2) {
+      if (!checked('models').length && !checked('extras').length) return fail('Please choose at least one partnership model or request.', 'models');
+      if (checked('extras').includes('complimentary-copy') && !checked('edition').length) return fail('Please choose your preferred edition for the sample.', 'edition');
+    }
+    if (n === 3 && !(form.elements.namedItem('consent') as HTMLInputElement).checked) return fail('Please agree to be contacted about your application.', 'consent');
+    err.hidden = true; return true;
+  };
+  const MODEL_NAMES: Record<string, string> = Object.fromEntries([...form.querySelectorAll<HTMLInputElement>('input[name=models]')].map((i) => [i.value, i.closest('label')!.querySelector('strong')!.textContent!]));
+  const renderReview = () => {
+    const box = document.getElementById('pn-review')!;
+    const items = [`${val('firstName')} ${val('lastName')}, ${val('organization')}`, ...checked('models').map((m) => MODEL_NAMES[m]),
+      ...(checked('extras').includes('complimentary-copy') ? ['Complimentary sample'] : []), ...(checked('extras').includes('overview-pdf') ? ['Book overview PDF'] : []), ...(checked('extras').includes('meeting') ? ['Partnership call'] : [])];
+    box.innerHTML = '<p class="pn-q">Your application</p><ul></ul>';
+    const ul = box.querySelector('ul')!;
+    items.forEach((t) => { const li = document.createElement('li'); li.textContent = t; ul.appendChild(li); });
+  };
+
+  form.addEventListener('input', () => { if (!started) { started = true; track('partner_application_start'); } });
+  form.addEventListener('change', syncCond);
+  next.addEventListener('click', () => { if (check(step)) { show(step + 1); steps[step - 1].querySelector<HTMLElement>('input, select, textarea')?.focus(); } });
+  back.addEventListener('click', () => show(step - 1));
+  form.addEventListener('keydown', (e) => { if (e.key === 'Enter' && step < 3 && (e.target as HTMLElement).tagName !== 'TEXTAREA') { e.preventDefault(); next.click(); } });
+
+  // Preselect from buttons and campaign links.
+  const pickModel = (m?: string | null) => { const b = form.querySelector<HTMLInputElement>(`input[name=models][value="${m}"]`); if (b) b.checked = true; syncCond(); };
+  const pickExtra = (x?: string | null) => { const b = form.querySelector<HTMLInputElement>(`input[name=extras][value="${x}"]`); if (b) b.checked = true; syncCond(); };
+  document.querySelectorAll<HTMLElement>('[data-pick-model]').forEach((a) => a.addEventListener('click', () => pickModel(a.dataset.pickModel)));
+  document.querySelectorAll<HTMLElement>('[data-pick]').forEach((a) => a.addEventListener('click', () => { pickExtra(a.dataset.pick); if (a.dataset.pick === 'complimentary-copy') track('book_sample_request_click'); }));
+  const qs = new URLSearchParams(location.search);
+  pickModel(qs.get('model')); pickExtra(qs.get('interest')); pickModel(qs.get('interest'));
+  const utm = [...qs].filter(([k]) => k.startsWith('utm_')).map(([k, v]) => `${k}=${v}`).join('&').slice(0, 200);
+
+  const confetti = () => {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const c = document.getElementById('pn-confetti') as HTMLCanvasElement; const ctx = c.getContext('2d'); if (!ctx) return;
+    const r = c.getBoundingClientRect(); c.width = r.width; c.height = r.height;
+    const colors = ['#ffb400', '#ffe14d', '#223a66', '#ffffff'];
+    const ps = Array.from({ length: 90 }, () => ({ x: c.width / 2, y: c.height * 0.35, vx: (Math.random() - 0.5) * 9, vy: -Math.random() * 9 - 3, s: 4 + Math.random() * 5, a: Math.random() * 6, col: colors[Math.floor(Math.random() * colors.length)] }));
+    let t = 0;
+    const tick = () => {
+      ctx.clearRect(0, 0, c.width, c.height);
+      ps.forEach((p) => { p.vy += 0.28; p.x += p.vx; p.y += p.vy; p.a += 0.2; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.fillStyle = p.col; ctx.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); ctx.restore(); });
+      if (++t < 110) requestAnimationFrame(tick); else ctx.clearRect(0, 0, c.width, c.height);
+    };
+    tick();
   };
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (btn.disabled) return;
-    err.hidden = true;
-    const f = new FormData(form);
-    const val = (k: string) => String(f.get(k) ?? '').trim();
-    const interests = f.getAll('interests').map(String);
+    if (submit.disabled) return;
+    for (const n of [1, 2, 3]) if (!check(n)) { if (n !== step) { show(n); check(n); } return; }
+    const extras = checked('extras');
     const data = {
       firstName: val('firstName'), lastName: val('lastName'), email: val('email'), phone: val('phone'),
-      organization: val('organization'), role: val('role'), orgType: val('orgType'), website: val('website'), location: val('location'),
-      interests, edition: interests.includes('complimentary-copy') ? val('edition') : '', quantity: val('quantity'), message: val('message'),
+      organization: val('organization'), role: val('role'), orgType: val('orgType'), website: val('website'), state: val('state'), requireState: true,
+      interests: [...checked('models'), ...extras], edition: extras.includes('complimentary-copy') ? (checked('edition')[0] ?? '') : '',
+      audienceSize: val('audienceSize'), channels: val('channels'), storeType: val('storeType'), orderSize: val('orderSize'),
+      peopleServed: val('peopleServed'), copies: val('copies'), recipients: val('recipients'), occasion: val('occasion'),
+      quantity: val('copies') || val('orderSize'), message: val('message'),
       consent: (form.elements.namedItem('consent') as HTMLInputElement).checked, fax: val('fax'), utm,
     };
-    if (!data.firstName) return fail('Please enter your first name.', 'firstName');
-    if (!data.lastName) return fail('Please enter your last name.', 'lastName');
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email)) return fail('Please enter a valid business email address.', 'email');
-    if (!data.organization) return fail('Please enter your organization’s name.', 'organization');
-    if (!data.orgType) return fail('Please choose the type of organization.', 'orgType');
-    if (!interests.length) return fail('Please choose at least one way you’d like to work with us.', 'interests');
-    if (interests.includes('complimentary-copy') && !data.edition) return fail('Please choose your preferred edition.', 'edition');
-    if (!data.consent) return fail('Please agree to be contacted about your inquiry.', 'consent');
-
-    btn.disabled = true; btn.textContent = 'Sending…';
+    submit.disabled = true; submit.textContent = 'Submitting…';
     try {
       const r = await fetch('/api/partner', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
       const j = await r.json().catch(() => ({}));
       if (r.ok) {
-        document.getElementById('pt-okname')!.textContent = `, ${data.firstName}`;
-        fields.hidden = true; ok.hidden = false; ok.focus();
+        track('partner_application_submit', { models: checked('models').join(','), sample: extras.includes('complimentary-copy') });
+        if (extras.includes('complimentary-copy')) track('book_sample_request');
+        document.getElementById('pn-okname')!.textContent = `, ${data.firstName}`;
+        (document.getElementById('pn-oksample') as HTMLElement).hidden = !extras.includes('complimentary-copy');
+        form.querySelectorAll<HTMLElement>('.pn-step, .pn-nav, .pn-progress, .pn-steps-nav').forEach((el) => { el.hidden = true; });
+        const ok = document.getElementById('pn-ok')!; ok.hidden = false; ok.focus(); confetti();
         return;
       }
-      if (r.status === 400) return fail(j.message || 'Please check the form.', j.error);
+      if (r.status === 400) { const map: Record<string, number> = { firstName: 1, lastName: 1, email: 1, organization: 1, orgType: 1, state: 1, interests: 2, edition: 2, consent: 3 }; if (map[j.error] && map[j.error] !== step) show(map[j.error]); return fail(j.message || 'Please check the form.', j.error === 'interests' ? 'models' : j.error); }
       if (r.status === 429) return fail(j.message || 'Please wait a few minutes and try again.');
-      fail('Sorry, we couldn’t send your request just now. Please email info@seniorandlivingtoday.com or call (888) 416-4264, and we’ll take care of it.');
+      fail('Sorry, we couldn’t send your application just now. Please email info@seniorandlivingtoday.com or call (888) 416-4264, and we’ll take care of it.');
     } catch {
-      fail('Sorry, we couldn’t send your request just now. Please email info@seniorandlivingtoday.com or call (888) 416-4264, and we’ll take care of it.');
+      fail('Sorry, we couldn’t send your application just now. Please email info@seniorandlivingtoday.com or call (888) 416-4264, and we’ll take care of it.');
     } finally {
-      btn.disabled = false; btn.textContent = 'Send my request';
+      submit.disabled = false; submit.textContent = 'Submit application';
     }
   });
+  syncCond();
+  show(1);
 </script>
