@@ -12,7 +12,7 @@
 // Needs GHL_PRIVATE_TOKEN in Vercel (the same key the rest of the site uses). Without it the
 // endpoint answers 503 "not_configured" and the page asks the visitor to email or call.
 // Never logs personal details.
-import { ghl, locationId, addTags, addNote } from './_lib/ghl.js';
+import { ghl, locationId, addTags, addNote, SALT_LOCATION_ID } from './_lib/ghl.js';
 import { ORG_TYPES, INTERESTS, EDITIONS, AUDIENCE_SIZES, US_STATES } from './_lib/partner-options.js';
 
 const ALLOWED = [/^https:\/\/(www\.)?seniorandlivingtoday\.com$/, /^https:\/\/[a-z0-9-]+\.vercel\.app$/, /^http:\/\/localhost(:\d+)?$/];
@@ -124,6 +124,11 @@ export default async function handler(req, res) {
     `Next step for the team: review and approve before contacting about shipping. No shipping address was collected.`,
   ].join('\n');
 
+  // Diagnostics: if a step fails, log ONE structured line saying which step, GoHighLevel's status
+  // and a sanitized reason, plus what was already saved. Never names, emails, phones, answers or
+  // the token. The visitor only gets a short reference to quote, never the error details.
+  const ref = crypto.randomUUID().slice(0, 8);
+  let step = 'contact_upsert', contactSaved = false, tagsSaved = false;
   try {
     const up = await ghl('POST', '/contacts/upsert', {
       locationId: locationId(),
@@ -134,12 +139,34 @@ export default async function handler(req, res) {
       source: 'Website (partners)',
     });
     const id = up?.contact?.id;
-    if (!id) throw new Error('GoHighLevel upsert returned no contact id');
+    if (!id) throw Object.assign(new Error('GoHighLevel upsert returned no contact id'), { ghlReason: 'no contact id in response' });
+    contactSaved = true;
+    step = 'tags';
     await addTags(id, tags);
+    tagsSaved = true;
+    step = 'note';
     await addNote(id, note);
     return res.status(200).json({ ok: true });
   } catch (e) {
-    console.error('partner inquiry save failed:', e.message); // never log personal details
-    return res.status(502).json({ error: 'unavailable' });
+    // A partly saved application is still reported to the visitor as not sent (502), so they use the
+    // email/phone fallback; the log says what was saved so the team can finish it by hand.
+    console.error('partner inquiry save failed:', JSON.stringify({
+      ref,
+      step,                                   // contact_upsert | tags | note
+      ghlStatus: e.ghlStatus ?? null,         // GoHighLevel HTTP status, null if no response
+      reason: e.ghlReason || failureKind(e),  // sanitized GoHighLevel message, or timeout/network
+      contactSaved, tagsSaved,
+      location: process.env.GHL_LOCATION_ID ? (process.env.GHL_LOCATION_ID === SALT_LOCATION_ID ? 'env (SALT)' : 'env (NOT SALT)') : 'default (SALT)',
+      sent: { lastName: !!lastName, phone: !!phone, website: !!website, company: !!organization }, // which optional fields were sent (yes/no only)
+    }));
+    return res.status(502).json({ error: 'unavailable', ref });
   }
+}
+
+// Kind of failure when GoHighLevel never answered. Error class/codes only, no request data.
+function failureKind(e) {
+  if (e?.name === 'TimeoutError' || e?.name === 'AbortError') return 'timeout (no answer within 8s)';
+  const code = e?.cause?.code;
+  if (code) return `network error (${String(code).replace(/[^\w-]/g, '').slice(0, 30)})`;
+  return `${e?.name || 'Error'} without a GoHighLevel response`;
 }
