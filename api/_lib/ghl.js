@@ -35,6 +35,8 @@ export const getContact = async (id) => (await ghl('GET', `/contacts/${encodeURI
 export const addTags = (id, tags) => ghl('POST', `/contacts/${encodeURIComponent(id)}/tags`, { tags });
 export const removeTags = (id, tags) => ghl('DELETE', `/contacts/${encodeURIComponent(id)}/tags`, { tags });
 export const setCustomFields = (id, customFields) => ghl('PUT', `/contacts/${encodeURIComponent(id)}`, { customFields });
+/** Save free text on the contact's Notes tab (visible only inside GoHighLevel). */
+export const addNote = (id, body) => ghl('POST', `/contacts/${encodeURIComponent(id)}/notes`, { body });
 
 // Contact custom fields the reward email uses. Created once by the team in GoHighLevel:
 //   "SALT Coupon Code"     (key contact.salt_coupon_code)      required
