@@ -6,6 +6,7 @@ import Reviews from '../../components/Reviews.astro';
 import Faq from '../../components/Faq.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import LookInside from '../../components/LookInside.astro';
+import WorkWithUsBand from '../../components/WorkWithUsBand.astro';
 import EditionCards from '../../components/EditionCards.astro';
 import { SITE } from '../../data/site';
 import { EDITIONS } from '../../data/planners';
@@ -62,7 +63,8 @@ const faqs = [
     </div>
   </section>
 
-  <LookInside editions={EDITIONS} initial="second" intro="Turn the pages, read Courtney’s foreword, and see how the planner is laid out. When you’re ready, order your own copy." />
+  <LookInside editions={EDITIONS} initial="second" intro="Turn the pages, read Courtney’s foreword, and see how the planner is laid out. When you’re ready, order your own copy." flip zoom />
+  <WorkWithUsBand variant="llp" />
 
   <section class="section section-cream">
     <div class="wrap">

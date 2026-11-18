@@ -1,0 +1,61 @@
+/* Work With Us hub (/work-with-us/). Uses the main site's own tokens (blue, yellow, cream) and fonts;
+   scoped under .wwu so no other page is affected. */
+.wwu .wwu-paths { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.wwu .wwu-path { display: flex; flex-direction: column; gap: .55rem; background: #fff; border: 2px solid var(--line); border-top: 6px solid var(--yellow); border-radius: var(--radius); padding: clamp(20px, 3vw, 30px); box-shadow: 0 12px 30px rgba(20,33,61,.08); }
+.wwu .wwu-path-wide { grid-column: 1 / -1; order: -1; border-top-color: var(--blue); }
+.wwu .wwu-path h3 { margin: 0; font-size: clamp(1.35rem, 2.4vw, 1.7rem); color: var(--blue-ink); }
+.wwu .wwu-path p { margin: 0; line-height: 1.65; }
+.wwu .wwu-path .btn { align-self: flex-start; margin-top: auto; }
+.wwu .wwu-ico { font-size: 1.9rem; line-height: 1; }
+.wwu .wwu-list { margin: .2rem 0 .3rem; padding-left: 1.2rem; line-height: 1.7; }
+.wwu .wwu-note { font-size: .95rem; color: var(--ink-soft); }
+.wwu .wwu-editions { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: .6rem 0 .2rem; }
+.wwu .wwu-ed { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; padding: 16px; border-radius: 14px; text-decoration: none; color: var(--ink); background: var(--blue-pale); border: 2px solid transparent; transition: border-color .2s, transform .2s; }
+.wwu .wwu-ed:hover { border-color: var(--blue); transform: translateY(-2px); }
+.wwu .wwu-ed-mil { background: #efe6d6; }                       /* Military Edition cover parchment */
+.wwu .wwu-ed-mil:hover { border-color: #46351c; }
+.wwu .wwu-covers { display: flex; }
+.wwu .wwu-covers img { width: 74px; height: auto; border-radius: 3px; box-shadow: 6px 8px 16px rgba(20,33,61,.25); }
+.wwu .wwu-covers img + img { margin-left: -22px; transform: rotate(4deg); }
+.wwu .wwu-ed-text { display: grid; gap: .3rem; line-height: 1.5; }
+.wwu .wwu-ed-text strong { font: 700 1.15rem var(--font-head); color: var(--blue-ink); }
+.wwu .wwu-ed-mil .wwu-ed-text strong { color: #46351c; }
+.wwu .wwu-go { font-weight: 700; color: var(--blue); }
+.wwu .wwu-ed-mil .wwu-go { color: #46351c; }
+
+/* interest form */
+.wwu .wwu-formwrap { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(24px, 4vw, 56px); align-items: start; }
+.wwu .wwu-form { background: #fff; border: 2px solid var(--line); border-top: 6px solid var(--yellow); border-radius: var(--radius); padding: clamp(20px, 3vw, 32px); box-shadow: 0 16px 40px rgba(20,33,61,.1); }
+.wwu .wwu-form label { display: block; font-weight: 700; color: var(--blue-ink); margin-bottom: 1rem; }
+.wwu .wwu-form input:not([type=checkbox]), .wwu .wwu-form select, .wwu .wwu-form textarea { display: block; width: 100%; margin-top: .35rem; min-height: 48px; padding: .7rem .85rem; font: 400 1rem var(--font-body); color: var(--ink); background: #fff; border: 2px solid var(--line); border-radius: 12px; }
+.wwu .wwu-form input:focus, .wwu .wwu-form select:focus, .wwu .wwu-form textarea:focus { border-color: var(--blue); outline: 3px solid var(--yellow-soft); outline-offset: 0; }
+.wwu .wwu-form [aria-invalid='true'] { border-color: #b3261e; }
+.wwu .wwu-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; }
+.wwu .req { color: #b3261e; }
+.wwu .opt { font-weight: 400; color: var(--ink-soft); font-size: .9rem; }
+.wwu .wwu-check { display: flex !important; gap: .6rem; align-items: flex-start; font-weight: 400 !important; color: var(--ink) !important; line-height: 1.45; }
+.wwu .wwu-check input { width: 22px; height: 22px; margin-top: .1rem; flex: none; accent-color: var(--blue); }
+.wwu .wwu-hp { position: absolute !important; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.wwu .wwu-err { margin: 0 0 1rem; padding: .8rem 1rem; border-radius: 12px; background: var(--blue-pale); border-left: 4px solid #b3261e; color: #b3261e; font-weight: 700; }
+.wwu .wwu-route { margin-top: .4rem; padding: 1.1rem 1.2rem; border-radius: 14px; background: var(--yellow-soft); border: 2px dashed var(--yellow); }
+.wwu .wwu-route p { margin: 0 0 .9rem; line-height: 1.6; }
+.wwu .wwu-ok { text-align: center; padding: 1.4rem .5rem; outline: none; }
+.wwu .wwu-ok-star { font-size: 2.2rem; color: var(--yellow); margin: 0; }
+.wwu .wwu-ok h3 { color: var(--blue-ink); }
+
+/* faq */
+.wwu .wwu-faq { display: grid; gap: .6rem; margin-top: 1rem; }
+.wwu .wwu-faq details { background: #fff; border: 2px solid var(--line); border-radius: 14px; }
+.wwu .wwu-faq summary { cursor: pointer; padding: 1rem 1.2rem; font: 700 1.05rem var(--font-head); color: var(--blue-ink); min-height: 44px; }
+.wwu .wwu-faq details p { margin: 0; padding: 0 1.2rem 1.1rem; line-height: 1.7; }
+
+@media (max-width: 900px) {
+  .wwu .wwu-paths, .wwu .wwu-formwrap { grid-template-columns: 1fr; }
+  .wwu .wwu-path-wide { grid-column: auto; }
+}
+@media (max-width: 640px) {
+  .wwu .wwu-editions, .wwu .wwu-row { grid-template-columns: 1fr; }
+  .wwu .wwu-ed { grid-template-columns: 1fr; justify-items: start; }
+  .wwu .wwu-covers img { width: 64px; }
+  .wwu .wwu-path .btn { align-self: stretch; text-align: center; justify-content: center; }
+}

@@ -65,6 +65,7 @@ export const NAV = [
   { href: '/memory-lane/', label: 'Memory Lane', icon: '📻' },
   { href: '/games/', label: 'Fun & Cards', icon: '🎨' },
   { href: '/about/', label: 'About', icon: '👋' },
+  { href: '/work-with-us/', label: 'Work With Us', icon: '🤝' },
 ];
 
 export const SERVICES = [

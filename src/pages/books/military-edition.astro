@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import Photo from '../../components/Photo.astro';
 import LookInside from '../../components/LookInside.astro';
+import WorkWithUsBand from '../../components/WorkWithUsBand.astro';
 import Faq from '../../components/Faq.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { SITE } from '../../data/site';
@@ -56,7 +57,8 @@ const faqs = [
     </div>
   </section>
 
-  <LookInside editions={[ed]} title="Look inside the Military Edition" intro="Turn the pages and read the full foreword. When you’re ready, order your own copy." />
+  <LookInside editions={[ed]} title="Look inside the Military Edition" intro="Turn the pages and read the full foreword. When you’re ready, order your own copy." flip zoom />
+  <WorkWithUsBand variant="military" />
 
   <section class="section section-cream">
     <div class="wrap">

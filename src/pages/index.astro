@@ -6,6 +6,7 @@ import Reviews from '../components/Reviews.astro';
 import ProductGrid from '../components/ProductGrid.astro';
 import SearchSource from '../components/SearchSource.astro';
 import CtaBand from '../components/CtaBand.astro';
+import WorkWithUsBand from '../components/WorkWithUsBand.astro';
 import BibSpotlight from '../components/BibSpotlight.astro';
 import { SITE, SERVICES, BOOKS, VIDEOS, GIFTS, RELICS, storeLink } from '../data/site';
 import { faqSchema } from '../data/schema';
@@ -113,11 +114,14 @@ const faqs = [
       </div>
       <div class="btn-row">
         <a class="btn btn-green" href="/planners/">Compare the planners</a>
+        <a class="btn btn-outline" href="/books/living-legacy-planner/#look-inside">📖 Read inside the planner</a>
         <a class="btn btn-outline" href="/gifts/#instant">Instant-download e-planners</a>
       </div>
       <div style="margin-top:3rem"><Reviews limit={3} /></div>
     </div>
   </section>
+
+  <WorkWithUsBand />
 
   <section class="section section-cream">
     <div class="wrap grid split">

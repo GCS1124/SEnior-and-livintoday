@@ -212,6 +212,25 @@ const sectionsOpen = (e: Edition) => e.locked?.sections.filter((s) => s.open).le
   :global(.li-face::after) { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: var(--shade, 0); background: linear-gradient(90deg, rgba(0,0,0,.35), rgba(0,0,0,0) 60%); }
   :global(.li-face.back::after) { background: linear-gradient(270deg, rgba(0,0,0,.35), rgba(0,0,0,0) 60%); }
 
+  /* ---- The Military Edition keeps its own cover colours wherever it appears on the main site
+     (espresso #382818, ink #46351c, parchment #e6d7bf, sepia #9d7f59, gold #d3c59e). Other editions
+     keep the site's blue and yellow. ---- */
+  .li:has(.li-ed[data-ed='military']:not([hidden])) { background: linear-gradient(180deg, #efe6d6, #f6f0e6); }
+  .li-ed[data-ed='military'] .li-title, .li-ed[data-ed='military'] .li-count, .li-ed[data-ed='military'] figcaption { color: #46351c; }
+  .li-ed[data-ed='military'] .li-chip { background: #fffaf0; border-color: #9d7f59; color: #382818; }
+  .li-ed[data-ed='military'] .li-book { background: #e6d7bf; }
+  .li-ed[data-ed='military'] .li-num { background: #382818; color: #f1e8d9; }
+  .li-ed[data-ed='military'] .li-nav { border-color: #382818; color: #382818; background: #fffaf0; }
+  .li-ed[data-ed='military'] .li-nav:hover:not(:disabled) { background: #382818; border-color: #382818; color: #f1e8d9; }
+  .li-ed[data-ed='military'] .li-chips button { border-color: #c4b394; color: #46351c; background: #fffaf0; }
+  .li-ed[data-ed='military'] .li-chips button b { color: #382818; }
+  .li-ed[data-ed='military'] .li-chips button[aria-current='true'] { border-color: #382818; background: #e6d7bf; }
+  .li-ed[data-ed='military'] .li-chips .li-chip-end { background: #382818; border-color: #382818; color: #f1e8d9; }
+  .li-ed[data-ed='military'] .li-chips .li-chip-end b { color: #f1e8d9; }
+  .li-ed[data-ed='military'] .li-endbox { border-color: #9d7f59; }
+  .li-ed[data-ed='military'] .li-text summary { color: #382818; }
+  .li-ed[data-ed='military'] .li-zoom { color: #382818; }
+
   /* ---- opt-in: zoom (data-zoom) ---- */
   .li-zoom { margin-left: 8px; min-height: 36px; padding: 4px 12px; border-radius: 999px; border: 2px solid currentColor; background: transparent; color: inherit; font: 700 .85rem var(--font-head); cursor: zoom-in; }
   dialog.li-lb { width: 100vw; height: 100vh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: rgba(20,20,20,.95); color: #fff; }

@@ -1,0 +1,246 @@
+---
+// Work With Us (/work-with-us/): the main site's hub for the ways individuals and organizations can
+// work with Senior and Living Today. It uses the regular site design (header, footer, colours).
+//
+// 1. Affiliate partnerships → the interest form below (saved by /api/work-with-us).
+// 2. Wholesale & institutional → the two existing landing pages (no duplicate pages or forms):
+//      First & Second Editions → /partners/        Military Edition → /team-up-with-us/
+// 3. 1099 independent contractors → the interest form below.
+// No commission rates, affiliate terms, pay, guaranteed work or benefits are stated anywhere.
+import '../styles/work-with-us.css';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { SITE } from '../data/site';
+import { faqSchema } from '../data/schema';
+import { WWU_TYPES, WWU_CHANNELS, WWU_SERVICES, US_STATES } from '../../api/_lib/work-with-us-options.js';
+
+const path = '/work-with-us/';
+const crumbs = [{ name: 'Work With Us', href: path }];
+const routes = Object.fromEntries(Object.entries(WWU_TYPES).filter(([, v]) => v.route).map(([k, v]) => [k, v.route]));
+const faqs = [
+  { q: 'What is the difference between the three ways to work with us?', a: 'Affiliate partners recommend Senior and Living Today products to their audience. Wholesale and institutional partners are organizations that purchase our books in quantity to sell, distribute or give to the people they serve. Independent contractors offer their own services, such as business development, partnerships, sales or outreach, on a 1099 contract basis.' },
+  { q: 'What are the affiliate terms?', a: 'Affiliate arrangements are discussed individually. Tell us a little about yourself and where you would share our products, and we’ll follow up personally.' },
+  { q: 'Are the independent contractor opportunities jobs?', a: 'No. These are independent contractor (1099) arrangements, not employee positions. They are discussed individually, and there is no guarantee of work, earnings or benefits.' },
+  { q: 'Where do bookstores and organizations inquire about wholesale?', a: 'Use the dedicated pages: the First and Second Edition partner page for The Living Legacy Planner, or the Military Edition page for military bookstores and military family organizations. Each has its own inquiry form.' },
+  { q: 'What happens after I send my details?', a: `Our team reviews every inquiry personally and replies by email. Nothing is automatic. You can also reach us at ${SITE.email} or ${SITE.phoneDisplay}.` },
+];
+---
+<Base
+  title="Work With Us: Affiliate, Wholesale & 1099 Opportunities"
+  description="Ways to work with Senior and Living Today: affiliate partnerships, wholesale and institutional book partnerships, and 1099 independent contractor opportunities."
+  breadcrumbs={crumbs}
+  schema={[faqSchema(faqs)]}
+>
+  <PageHero
+    title="Work with Senior and Living Today"
+    kicker="Partners & opportunities"
+    lead="Help us bring The Living Legacy Planner and our resources to more seniors and families. There are three ways to work with us: choose the one that fits you."
+    breadcrumbs={crumbs}
+  />
+
+  <div class="wwu">
+    <!-- THE THREE PATHS -->
+    <section class="section" aria-labelledby="paths-title">
+      <div class="wrap">
+        <h2 id="paths-title" class="sr-only">Three ways to work with us</h2>
+        <div class="wwu-paths">
+          <article class="wwu-path" id="affiliate">
+            <span class="wwu-ico" aria-hidden="true">🔗</span>
+            <span class="kicker">For individuals &amp; creators</span>
+            <h3>Affiliate partnerships</h3>
+            <p>For individuals, creators, community members and other partners who would like to recommend Senior and Living Today products to their audience through an affiliate arrangement.</p>
+            <ul class="wwu-list"><li>Bloggers, creators and podcasters</li><li>Community and club leaders</li><li>Professionals who serve seniors and families</li></ul>
+            <p class="wwu-note">Affiliate terms are discussed individually.</p>
+            <a class="btn btn-primary" href="#interest" data-type="affiliate" data-track="wwu_cta_affiliate">Explore Affiliate Opportunities</a>
+          </article>
+
+          <article class="wwu-path wwu-path-wide" id="wholesale">
+            <span class="wwu-ico" aria-hidden="true">📚</span>
+            <span class="kicker">For businesses &amp; organizations</span>
+            <h3>Wholesale &amp; institutional partnerships</h3>
+            <p>For bookstores, wholesale distributors, retailers, senior living organizations, military bookstores, military family organizations, institutional buyers and other businesses that would like to purchase our books in quantity.</p>
+            <div class="wwu-editions">
+              <a class="wwu-ed" href="/partners/" data-track="wwu_cta_partners">
+                <span class="wwu-covers" aria-hidden="true"><img src="/images/planners/llp-1st-front.webp" alt="" width="900" height="1285" loading="lazy" /><img src="/images/planners/llp-2nd-front.webp" alt="" width="900" height="1218" loading="lazy" /></span>
+                <span class="wwu-ed-text"><strong>First &amp; Second Editions</strong><span>The Living Legacy Planner, for bookstores, retailers, distributors and senior-focused organizations.</span><span class="wwu-go">Explore First and Second Editions →</span></span>
+              </a>
+              <a class="wwu-ed wwu-ed-mil" href="/team-up-with-us/" data-track="wwu_cta_military">
+                <span class="wwu-covers" aria-hidden="true"><img src="/images/planners/llp-military-front.webp" alt="" width="900" height="1261" loading="lazy" /></span>
+                <span class="wwu-ed-text"><strong>Military Edition</strong><span>For military bookstores, military family and veteran organizations, and institutional buyers.</span><span class="wwu-go">Explore Military Edition →</span></span>
+              </a>
+            </div>
+            <p class="wwu-note">Each page has its own book preview and wholesale inquiry form. Pricing and terms are discussed directly with each organization.</p>
+          </article>
+
+          <article class="wwu-path" id="contractors">
+            <span class="wwu-ico" aria-hidden="true">🧭</span>
+            <span class="kicker">For independent professionals</span>
+            <h3>1099 independent contractor opportunities</h3>
+            <p>We would like to connect with independent contractors interested in working with Senior and Living Today on a 1099 contract basis.</p>
+            <ul class="wwu-list"><li>Business development</li><li>Partnerships</li><li>Sales and outreach</li><li>Other relevant services</li></ul>
+            <p class="wwu-note">These are independent contractor arrangements, not employee positions. There is no guarantee of work, earnings or benefits.</p>
+            <a class="btn btn-primary" href="#interest" data-type="contractor" data-track="wwu_cta_contractor">Express Your Interest</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section section-cream" aria-labelledby="how-title">
+      <div class="wrap narrow">
+        <h2 id="how-title">How it works</h2>
+        <ol class="steps">
+          <li><strong>Choose your path.</strong> Organizations interested in buying books go straight to the right partner page. Affiliates and contractors use the short form below.</li>
+          <li><strong>Tell us about yourself.</strong> Just enough for us to understand your interest and contact you.</li>
+          <li><strong>We reply personally.</strong> Our team reviews every inquiry and follows up by email. Nothing is automatic.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- INTEREST FORM -->
+    <section class="section" id="interest" aria-labelledby="interest-title">
+      <div class="wrap wwu-formwrap">
+        <div>
+          <span class="kicker">Tell us how you’d like to work with us</span>
+          <h2 id="interest-title">Express your interest</h2>
+          <p class="lead">Choose an opportunity and leave your details. Bookstores, distributors and organizations will be pointed to the right partner form.</p>
+          <p class="wwu-note">Prefer email or phone? <a href={`mailto:${SITE.email}`}>{SITE.email}</a> · <a href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a></p>
+        </div>
+
+        <form class="wwu-form" id="wwu-form" novalidate data-routes={JSON.stringify(routes)}>
+          <div data-body>
+            <label>How would you like to work with us? <span class="req" aria-hidden="true">*</span>
+              <select name="type" required><option value="">Choose an opportunity…</option>{Object.entries(WWU_TYPES).map(([k, v]) => <option value={k}>{v.label}</option>)}</select>
+            </label>
+
+            <div class="wwu-route" id="wwu-route" hidden role="status">
+              <p><strong>Great: this has its own partner page.</strong> <span id="wwu-route-text"></span></p>
+              <a class="btn btn-primary" id="wwu-route-link" href="/partners/#inquiry">Go to the partner form →</a>
+            </div>
+
+            <div class="wwu-fields" id="wwu-fields" hidden>
+              <div class="wwu-row">
+                <label>Full name <span class="req" aria-hidden="true">*</span><input name="fullName" autocomplete="name" required maxlength="120" /></label>
+                <label>Email <span class="req" aria-hidden="true">*</span><input name="email" type="email" autocomplete="email" required maxlength="254" /></label>
+              </div>
+              <div class="wwu-row">
+                <label>Phone <span class="opt">(optional)</span><input name="phone" type="tel" autocomplete="tel" maxlength="30" /></label>
+                <label>State / country <span class="req" aria-hidden="true">*</span>
+                  <select name="state" required autocomplete="address-level1"><option value="">Choose…</option>{US_STATES.map((s) => <option value={s}>{s}</option>)}</select>
+                </label>
+              </div>
+              <label data-country hidden>Country <span class="req" aria-hidden="true">*</span><input name="country" autocomplete="country-name" maxlength="60" /></label>
+              <div class="wwu-row">
+                <label>Organization or business <span class="opt">(optional)</span><input name="organization" autocomplete="organization" maxlength="120" /></label>
+                <label>Website or social profile <span class="opt">(optional)</span><input name="link" inputmode="url" maxlength="200" placeholder="e.g. www.example.com" /></label>
+              </div>
+              <label data-for="affiliate" hidden>Where would you share our products? <span class="opt">(optional)</span>
+                <select name="channel"><option value="">Choose…</option>{Object.entries(WWU_CHANNELS).map(([k, v]) => <option value={k}>{v}</option>)}</select>
+              </label>
+              <label data-for="contractor" hidden>Which area interests you? <span class="opt">(optional)</span>
+                <select name="service"><option value="">Choose…</option>{Object.entries(WWU_SERVICES).map(([k, v]) => <option value={k}>{v}</option>)}</select>
+              </label>
+              <p class="wwu-note" data-for="contractor" hidden>Independent contractor (1099) arrangements only. This is not an employee position, and there is no guarantee of work, earnings or benefits.</p>
+              <label>Anything else we should know? <span class="opt">(optional)</span><textarea name="message" rows="4" maxlength="2000" placeholder="Tell us a little about yourself and what you have in mind."></textarea></label>
+              <label class="wwu-hp" aria-hidden="true">Fax <input name="fax" tabindex="-1" autocomplete="off" /></label>
+              <label class="wwu-check"><input type="checkbox" name="consent" required /> <span>I agree that Senior and Living Today may contact me about this inquiry. <span class="req" aria-hidden="true">*</span></span></label>
+              <p class="wwu-err" id="wwu-err" role="alert" hidden></p>
+              <button type="submit" class="btn btn-primary" id="wwu-submit">Send my details</button>
+              <p class="wwu-note">We use your details only to reply to your inquiry. <a href="/privacy-policy/">Privacy policy</a></p>
+            </div>
+          </div>
+          <div class="wwu-ok" id="wwu-ok" hidden tabindex="-1">
+            <p class="wwu-ok-star" aria-hidden="true">★</p>
+            <h3>Thank you<span id="wwu-okname"></span>. We’ve received your details.</h3>
+            <p>Our team will review them and reply personally by email. Nothing is automatic, and there’s no obligation.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section section-cream" aria-labelledby="wwu-faq-title">
+      <div class="wrap narrow">
+        <h2 id="wwu-faq-title">Questions</h2>
+        <div class="wwu-faq">
+          {faqs.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
+        </div>
+      </div>
+    </section>
+  </div>
+</Base>
+
+<script>
+  type W = Window & { gtag?: (...a: unknown[]) => void };
+  const track = (name: string, params: Record<string, unknown> = {}) => { try { (window as W).gtag?.('event', name, params); } catch { /* ignore */ } };
+  document.querySelectorAll<HTMLElement>('[data-track]').forEach((el) => el.addEventListener('click', () => track(el.dataset.track!)));
+
+  const form = document.getElementById('wwu-form') as HTMLFormElement;
+  const routes: Record<string, string> = JSON.parse(form.dataset.routes || '{}');
+  const typeSel = form.querySelector<HTMLSelectElement>('[name=type]')!;
+  const fields = document.getElementById('wwu-fields')!;
+  const route = document.getElementById('wwu-route')!;
+  const routeLink = document.getElementById('wwu-route-link') as HTMLAnchorElement;
+  const routeText = document.getElementById('wwu-route-text')!;
+  const err = document.getElementById('wwu-err')!;
+  const submit = document.getElementById('wwu-submit') as HTMLButtonElement;
+  const countryWrap = form.querySelector<HTMLElement>('[data-country]')!;
+  const val = (n: string) => String((form.elements.namedItem(n) as HTMLInputElement | null)?.value ?? '').trim();
+  const outside = () => val('state') === 'Outside the United States';
+  const ROUTE_TEXT: Record<string, string> = {
+    wholesale: 'Bookstores, retailers and distributors use the wholesale form on our First and Second Edition partner page, where you can also preview both books.',
+    institutional: 'Institutional buyers and organizations use the wholesale form on our First and Second Edition partner page, where you can also preview both books.',
+    military: 'Military bookstores and military family organizations use the form on our Military Edition page, where you can also preview the book.',
+  };
+  const sync = () => {
+    const t = typeSel.value;
+    const r = routes[t];
+    route.hidden = !r; fields.hidden = !t || !!r;
+    if (r) { routeLink.href = r; routeLink.textContent = t === 'military' ? 'Go to the Military Edition form →' : 'Go to the partner form →'; routeText.textContent = ROUTE_TEXT[t] || ''; track('wwu_route', { type: t }); }
+    form.querySelectorAll<HTMLElement>('[data-for]').forEach((el) => { el.hidden = el.dataset.for !== t; });
+    err.hidden = true;
+  };
+  typeSel.addEventListener('change', sync);
+  form.querySelector('[name=state]')!.addEventListener('change', () => { countryWrap.hidden = !outside(); });
+  // Path buttons preselect the opportunity.
+  document.querySelectorAll<HTMLElement>('a[data-type]').forEach((a) => a.addEventListener('click', () => { typeSel.value = a.dataset.type!; sync(); }));
+  const pre = new URLSearchParams(location.search).get('type');
+  if (pre && typeSel.querySelector(`option[value="${pre}"]`)) { typeSel.value = pre; }
+  sync();
+
+  const fail = (msg: string, name?: string) => {
+    err.textContent = msg; err.hidden = false;
+    form.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
+    const t = name ? form.querySelector<HTMLElement>(`[name="${name}"]`) : null;
+    if (t) { t.setAttribute('aria-invalid', 'true'); t.focus(); }
+  };
+  const fallback = 'Sorry, we couldn’t send your details just now. Please email info@seniorandlivingtoday.com or call (888) 416-4264, and we’ll take care of it.';
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault(); if (submit.disabled || routes[typeSel.value]) return;
+    if (!typeSel.value) return fail('Please choose how you would like to work with us.', 'type');
+    if (!val('fullName')) return fail('Please enter your full name.', 'fullName');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val('email'))) return fail('Please enter a valid email address.', 'email');
+    if (!val('state')) return fail('Please choose your state, or “Outside the United States”.', 'state');
+    if (outside() && !val('country')) return fail('Please enter your country.', 'country');
+    if (!(form.elements.namedItem('consent') as HTMLInputElement).checked) return fail('Please agree to be contacted about your inquiry.', 'consent');
+    err.hidden = true;
+    const utm = [...new URLSearchParams(location.search)].filter(([k]) => k.startsWith('utm_')).map(([k, v]) => `${k}=${v}`).join('&').slice(0, 200);
+    const data = { type: typeSel.value, fullName: val('fullName'), email: val('email'), phone: val('phone'), state: val('state'), country: val('country'), organization: val('organization'), link: val('link'), channel: val('channel'), service: val('service'), message: val('message'), consent: true, fax: val('fax'), utm };
+    submit.disabled = true; submit.textContent = 'Sending…';
+    try {
+      const r = await fetch('/api/work-with-us', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok) {
+        track('wwu_submit', { type: data.type });
+        document.getElementById('wwu-okname')!.textContent = `, ${data.fullName.split(' ')[0]}`;
+        (form.querySelector('[data-body]') as HTMLElement).hidden = true;
+        const ok = document.getElementById('wwu-ok')!; ok.hidden = false; ok.focus();
+        return;
+      }
+      if (r.status === 400) return fail(j.message || 'Please check the form.', j.error);
+      if (r.status === 429) return fail(j.message || 'Please wait a few minutes and try again.');
+      fail(fallback);
+    } catch { fail(fallback); }
+    finally { submit.disabled = false; submit.textContent = 'Send my details'; }
+  });
+</script>
