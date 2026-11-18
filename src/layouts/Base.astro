@@ -20,6 +20,7 @@ interface Props {
   schema?: Record<string, unknown>[]; // extra JSON-LD nodes for this page
   publishedTime?: string;
   modifiedTime?: string;
+  standalone?: boolean;       // landing pages: no site header, newsletter, footer, Ask S.A.L.T. or site scripts
 }
 
 const {
@@ -33,6 +34,7 @@ const {
   schema = [],
   publishedTime,
   modifiedTime,
+  standalone = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
@@ -163,14 +165,18 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': [...
   </head>
   <body>
     <a class="skip" href="#main">Skip to main content</a>
-    <Header />
+    {!standalone && <Header />}
     <main id="main">
       <slot />
     </main>
-    <NewsletterSignup />
-    <Footer />
-    <AskSalt />
-    <Motion />
-    <Celebration />
+    {!standalone && (
+      <>
+        <NewsletterSignup />
+        <Footer />
+        <AskSalt />
+        <Motion />
+        <Celebration />
+      </>
+    )}
   </body>
 </html>
