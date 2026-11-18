@@ -1,0 +1,354 @@
+---
+// The Living Legacy Planner – Military Edition: landing page for military families and for
+// wholesale, retail and institutional buyers (/military-family-planner/).
+//
+// Content: src/data/military-landing.ts (taken from the actual planner and its foreword).
+// Styles: src/styles/military.css (palette sampled from the Military Edition cover).
+// Wholesale inquiries post to /api/military-wholesale (existing GoHighLevel connection).
+// Conversion events fire only if a GA4 ID is configured in src/data/site.ts.
+import '../styles/military.css';
+import Base from '../layouts/Base.astro';
+import Book3D from '../components/Book3D.astro';
+import { SITE } from '../data/site';
+import { bookSchema, faqSchema } from '../data/schema';
+import { MIL_BOOK as B, MIL_SECTIONS, MIL_MILITARY_SECTIONS, MIL_PAGES, MIL_VALUE, MIL_AUDIENCES, MIL_PARTNERS, MIL_INTERESTS, MIL_FAQS } from '../data/military-landing';
+import { MIL_ORG_TYPES, MIL_QUANTITIES, US_STATES } from '../../api/_lib/military-options.js';
+
+const path = '/military-family-planner/';
+const description = 'A military family planner by a military spouse of 23 years. Preview The Living Legacy Planner Military Edition. Wholesale and bookstore inquiries welcome.';
+const crumbs = [{ name: 'Books & Reading', href: '/books/' }, { name: 'Military Family Planner', href: path }];
+const [lastAud, ...firstAuds] = [MIL_AUDIENCES[MIL_AUDIENCES.length - 1], ...MIL_AUDIENCES.slice(0, -1)];
+---
+<Base
+  title="Military Family Planner: Living Legacy Military Edition"
+  {description}
+  image={B.cover}
+  imageAlt={B.coverAlt}
+  breadcrumbs={crumbs}
+  schema={[bookSchema({ name: B.title, description, path, amazonUrl: SITE.links.militaryPlannerAmazon, image: B.cover }), faqSchema(MIL_FAQS)]}
+>
+  <div class="mlp">
+    <!-- 1. HERO -->
+    <section class="m-hero" aria-labelledby="m-title">
+      <div class="wrap m-hero-grid">
+        <div>
+          <p class="m-eyebrow">★ The Living Legacy Planner · Military Edition ★</p>
+          <h1 id="m-title">A Legacy Worth Protecting. <span>A Family Story Worth Preserving.</span></h1>
+          <p class="m-lead">Created with military families in mind, <em>The Living Legacy Planner – Military Edition</em> helps families organize important information, preserve meaningful memories, and keep the details that matter together in one place.</p>
+          <div class="m-ctas">
+            <a class="m-btn m-btn-solid" href="#edition" data-track="mil_cta_explore">Explore the Military Edition</a>
+            <a class="m-btn m-btn-line" href="#inside" data-track="mil_cta_preview">Preview the Inside Pages</a>
+            <a class="m-btn m-btn-line" href="#wholesale" data-track="mil_cta_wholesale">Wholesale &amp; Institutional Inquiries</a>
+          </div>
+          <ul class="m-trust" aria-label="About this edition">
+            <li>By Courtney R. Jones, military spouse (1984–2007)</li>
+            <li>Published by Senior and Living Today</li>
+            <li>Paperback &amp; hardcover</li>
+          </ul>
+        </div>
+        <div class="m-hero-book">
+          <Book3D src={B.cover} alt={B.coverAlt} width={B.coverW} height={B.coverH} eager />
+        </div>
+      </div>
+      <p class="m-band" aria-hidden="true">★ Plan today. &nbsp;Protect tomorrow. &nbsp;Leave a legacy. ★</p>
+    </section>
+
+    <!-- 2. CENTRAL MESSAGE -->
+    <section class="m-message m-dark" aria-label="Our message to military families">
+      <div class="wrap">
+        <blockquote>A military family is built on commitment, connection, sacrifice, and memories. Those stories, and the important details of family life, deserve to be preserved.</blockquote>
+      </div>
+    </section>
+
+    <!-- 3. AUTHOR STORY -->
+    <section class="m-sec" id="story" aria-labelledby="story-title">
+      <div class="wrap m-story">
+        <figure class="m-portrait" data-reveal>
+          <img src="/images/courtney-portrait.webp" alt="Courtney R. Jones, author of the Military Edition and a military spouse from 1984 to 2007" width="599" height="900" loading="lazy" />
+          <figcaption><strong>Courtney R. Jones</strong>Military spouse (1984–2007) · Founder, Senior and Living Today · Author of the Military Edition</figcaption>
+        </figure>
+        <div class="m-story-text">
+          <p class="m-kicker">From one military family to another</p>
+          <h2 id="story-title" class="m-h2">The military spouse behind the planner</h2>
+          <p class="m-drop">For 23 years, from 1984 to 2007, Courtney R. Jones was part of a military family. Those years taught her, as she puts it, “resilience, flexibility, patience, and the importance of being prepared for the unexpected.”</p>
+          <p>She knows how quickly military family life can change. In the planner’s foreword she remembers receiving deployment orders with only a few days’ notice, just one week after relocating to a new state with two children under the age of three. She went through pack-ups, cross-country moves and home inspections, and all the uncertainty that can come with military life.</p>
+          <blockquote class="m-pull">“Like so many military spouses, I learned by doing.”<cite>— Courtney R. Jones, from the foreword</cite></blockquote>
+          <p>There were times she wished for one place to keep everything she needed to remember, instead of searching through cabinets, notebooks and loose scraps of paper. And there were quiet moments when she wondered: if something happened to her, or to her spouse, would the person stepping in know what to do?</p>
+          <p>Those experiences became this planner. Courtney wanted to give military families something more meaningful than another book on a shelf: a practical place to bring together the information, the memories and the family details that matter most, and something a family can keep, use and pass forward.</p>
+          <div class="m-honor">
+            <h3 class="m-serif">For the whole military family</h3>
+            <p>For the spouses who keep the home steady, the children who change schools and start over, the parents and caregivers who wait and support, and the service members and veterans who served: this edition was written with all of you in mind.</p>
+          </div>
+          <p class="m-sign">“It is my sincere hope that this planner serves you and your family as faithfully as you served ours.”<strong>Courtney R. Jones</strong></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. WHY IT MATTERS -->
+    <section class="m-sec m-parch" id="why" aria-labelledby="why-title">
+      <div class="wrap">
+        <p class="m-kicker">A planner for military families</p>
+        <h2 id="why-title" class="m-h2">Military life involves many changes. The important things about your family deserve a place that stays with you.</h2>
+        <p class="m-lead">New orders arrive. Deployments happen. Families relocate. Household responsibilities can change overnight. No planner can remove the challenges of military life, but it can keep the details your family depends on together, ready for whoever needs them.</p>
+        <ul class="m-values">
+          {MIL_VALUE.map((v) => <li data-reveal><span class="m-ico" aria-hidden="true">{v.icon}</span><h3>{v.title}</h3><p>{v.text}</p><small>In the planner: {v.sections}</small></li>)}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 5. THE EDITION -->
+    <section class="m-sec" id="edition" aria-labelledby="edition-title">
+      <div class="wrap m-edition">
+        <div>
+          <p class="m-kicker">Inside the military family planner</p>
+          <h2 id="edition-title" class="m-h2">28 sections, from service details to letters to loved ones</h2>
+          <p class="m-lead"><em>{B.title}</em> keeps family, service, deployment, medical, financial and household information alongside the memories and messages that make a family’s story its own. Sections marked ★ were written specifically for military life.</p>
+          <ol class="m-sections">
+            {MIL_SECTIONS.map((s) => <li class:list={[{ 'm-mil': MIL_MILITARY_SECTIONS.includes(s) }]}>{s}</li>)}
+          </ol>
+          <div class="m-formats" aria-label="Formats">{B.formats.map((f) => <span>{f}</span>)}</div>
+          <div class="m-ctas">
+            {B.buy.map((b) => <a class:list={['m-btn', b.primary ? 'm-btn-solid' : 'm-btn-line']} href={b.url} target="_blank" rel="noopener" data-track="mil_buy">{b.label} ↗</a>)}
+          </div>
+          <p class="m-small">Prefer the standard book page? See <a href="/books/military-edition/">the Military Edition</a> or the original <a href="/books/living-legacy-planner/">Living Legacy Planner</a>.</p>
+        </div>
+        <figure class="m-back" data-reveal>
+          <img src={B.back} alt={B.backAlt} width={B.backW} height={B.backH} loading="lazy" />
+          <figcaption>The back cover: “Prepare today. Protect tomorrow.”</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 6. INSIDE PAGES -->
+    <section class="m-sec m-char" id="inside" aria-labelledby="inside-title">
+      <div class="wrap">
+        <div class="m-center">
+          <p class="m-kicker">Preview the inside</p>
+          <h2 id="inside-title" class="m-h2">Genuine pages from the Military Edition</h2>
+          <p class="m-lead">Ten real pages from the planner, exactly as printed. Select a page, then tap it to enlarge and zoom.</p>
+        </div>
+        <div class="m-gallery" data-gallery>
+          <div class="m-stage">
+            <button type="button" class="m-stage-btn" data-open aria-label="Enlarge this page">
+              <img data-stage-img src={MIL_PAGES[0].src} alt={MIL_PAGES[0].alt} width="1000" height="1305" draggable="false" />
+              <span class="m-zoomhint" aria-hidden="true">🔍 Tap to enlarge</span>
+            </button>
+            <div class="m-stage-bar">
+              <button type="button" class="m-nav" data-prev aria-label="Previous page">‹</button>
+              <p class="m-stage-cap" aria-live="polite"><strong data-stage-title>{MIL_PAGES[0].title}</strong><span data-stage-note>{MIL_PAGES[0].note}</span><br /><span data-stage-count>Page 1 of {MIL_PAGES.length}</span></p>
+              <button type="button" class="m-nav" data-next aria-label="Next page">›</button>
+            </div>
+          </div>
+          <ul class="m-thumbs" aria-label="Choose a page">
+            {MIL_PAGES.map((p, i) => <li><button type="button" data-thumb={i} aria-current={String(i === 0)} aria-label={`Show page: ${p.title}`}><img src={p.src} alt="" width="1000" height="1305" loading="lazy" draggable="false" /><span>{p.title}</span></button></li>)}
+          </ul>
+        </div>
+        <p class="m-small m-center m-protect">Sample pages only, marked with the Senior and Living Today seal. The complete planner is available in paperback and hardcover.</p>
+      </div>
+      <dialog class="m-lightbox" data-lightbox aria-label="Enlarged page">
+        <div class="m-lb-top"><strong data-lb-title></strong><div class="m-lb-tools"><button type="button" data-zoom aria-pressed="false">Zoom in</button><button type="button" data-close aria-label="Close">✕</button></div></div>
+        <div class="m-lb-view" data-lb-view><img data-lb-img src={MIL_PAGES[0].src} alt="" draggable="false" /></div>
+        <div class="m-lb-bottom"><button type="button" data-lb-prev aria-label="Previous page">‹ Prev</button><span data-lb-count></span><button type="button" data-lb-next aria-label="Next page">Next ›</button></div>
+      </dialog>
+    </section>
+
+    <!-- 7. WHO IT'S FOR -->
+    <section class="m-sec" id="for" aria-labelledby="for-title">
+      <div class="wrap">
+        <p class="m-kicker">Who this edition is for</p>
+        <h2 id="for-title" class="m-h2">Written for the whole military family</h2>
+        <p class="m-lead">Service touches everyone at home. This edition is meant to be useful to every member of a military-connected family, and to the organizations that support them.</p>
+        <ul class="m-aud">
+          {firstAuds.map((a) => <li data-reveal><span aria-hidden="true">{a.icon}</span><h3>{a.title}</h3><p>{a.text}</p></li>)}
+          <li class="m-aud-wide" data-reveal><span aria-hidden="true">{lastAud.icon}</span><div><h3>{lastAud.title}</h3><p>{lastAud.text}</p></div></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 8. WHOLESALE -->
+    <section class="m-sec m-dark m-night" id="wholesale" aria-labelledby="wholesale-title">
+      <div class="wrap m-whole">
+        <div>
+          <p class="m-kicker">Wholesale &amp; institutional partnerships</p>
+          <h2 id="wholesale-title" class="m-h2">Bring the Military Edition to More Military Families</h2>
+          <p class="m-lead">We welcome conversations with organizations that serve, supply or support military families and would like to purchase the Military Edition in quantity, to distribute it, or to offer it to their customers and members.</p>
+          <div class="m-lists">
+            <div><h3>Who we work with</h3><ul>{MIL_PARTNERS.map((p) => <li>{p}</li>)}</ul></div>
+            <div><h3>We welcome inquiries about</h3><ul>{MIL_INTERESTS.map((p) => <li>{p}</li>)}</ul></div>
+          </div>
+          <p class="m-terms">Wholesale pricing, quantities and partnership arrangements are discussed directly with each organization. Tell us about your organization and what you have in mind, and our team will reply personally.</p>
+          <p class="m-small">Prefer email or phone? <a href={`mailto:${SITE.email}`} style="color:var(--m-gold)">{SITE.email}</a> · <a href={`tel:${SITE.phone}`} style="color:var(--m-gold)">{SITE.phoneDisplay}</a></p>
+        </div>
+
+        <form class="m-form" id="m-form" novalidate>
+          <div data-form-body>
+            <h3>Discuss a wholesale partnership</h3>
+            <p>No obligation. Fields marked <span class="req">*</span> are required.</p>
+            <div class="m-fields">
+              <div class="m-row">
+                <label>Full name <span class="req" aria-hidden="true">*</span><input name="fullName" autocomplete="name" required maxlength="120" /></label>
+                <label>Organization / business name <span class="req" aria-hidden="true">*</span><input name="organization" autocomplete="organization" required maxlength="120" /></label>
+              </div>
+              <div class="m-row">
+                <label>Business email <span class="req" aria-hidden="true">*</span><input name="email" type="email" autocomplete="email" required maxlength="254" /></label>
+                <label>Phone number <span class="opt">(optional)</span><input name="phone" type="tel" autocomplete="tel" maxlength="30" /></label>
+              </div>
+              <div class="m-row">
+                <label>Organization type <span class="req" aria-hidden="true">*</span>
+                  <select name="orgType" required><option value="">Choose one…</option>{Object.entries(MIL_ORG_TYPES).map(([k, v]) => <option value={k}>{v}</option>)}</select>
+                </label>
+                <label>Estimated quantity of books <span class="req" aria-hidden="true">*</span>
+                  <select name="quantity" required><option value="">Choose a range…</option>{Object.entries(MIL_QUANTITIES).map(([k, v]) => <option value={k}>{v}</option>)}</select>
+                </label>
+              </div>
+              <div class="m-row">
+                <label>State / country <span class="req" aria-hidden="true">*</span>
+                  <select name="state" required autocomplete="address-level1"><option value="">Choose…</option>{US_STATES.map((s) => <option value={s}>{s}</option>)}</select>
+                </label>
+                <label data-country hidden>Country <span class="req" aria-hidden="true">*</span><input name="country" autocomplete="country-name" maxlength="60" /></label>
+              </div>
+              <label>Message / partnership interest <span class="opt">(optional)</span><textarea name="message" rows="4" maxlength="2000" placeholder="Tell us about your organization, the families you serve, and what you have in mind."></textarea></label>
+              <label class="m-hp" aria-hidden="true">Fax <input name="fax" tabindex="-1" autocomplete="off" /></label>
+              <label class="m-check"><input type="checkbox" name="consent" required /> <span>I agree that Senior and Living Today may contact me about this inquiry. <span class="req" aria-hidden="true">*</span></span></label>
+            </div>
+            <p class="m-err" id="m-err" role="alert" hidden></p>
+            <button type="submit" class="m-btn m-btn-solid" id="m-submit">Discuss a Wholesale Partnership</button>
+            <p class="m-small" style="margin:.8rem 0 0">We use your details only to reply to your inquiry. <a href="/privacy-policy/">Privacy policy</a></p>
+          </div>
+          <div class="m-ok" id="m-ok" hidden tabindex="-1">
+            <div class="m-star" aria-hidden="true">★</div>
+            <h3>Thank you<span id="m-okname"></span>. Your inquiry has been received.</h3>
+            <p>Our team will review it and reply personally by email. Nothing is automatic, and there’s no obligation.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 9. FAQ -->
+    <section class="m-sec m-parch" id="faq" aria-labelledby="faq-title">
+      <div class="wrap">
+        <div class="m-center">
+          <p class="m-kicker">Questions</p>
+          <h2 id="faq-title" class="m-h2">Military Edition questions, answered</h2>
+        </div>
+        <div class="m-faq">
+          {MIL_FAQS.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. FINAL CTA -->
+    <section class="m-sec m-dark m-final" aria-labelledby="final-title">
+      <div class="wrap">
+        <p class="m-kicker">Plan today. Protect tomorrow. Leave a legacy.</p>
+        <h2 id="final-title" class="m-h2">Help military families keep what matters together</h2>
+        <p class="m-lead">Whether you are a military family looking for your own copy, or an organization ready to bring the Military Edition to the families you serve, we would be honored to hear from you.</p>
+        <div class="m-ctas">
+          <a class="m-btn m-btn-gold" href="#wholesale" data-track="mil_cta_wholesale">Discuss a Wholesale Partnership</a>
+          <a class="m-btn m-btn-line" href={B.buy[0].url} target="_blank" rel="noopener" data-track="mil_buy">Get Your Copy ↗</a>
+        </div>
+        <a class="m-brand" href="/about/"><img src="/images/logo-registered-small.png" alt="Senior and Living Today logo" width="56" height="56" loading="lazy" /> Published by Senior and Living Today</a>
+      </div>
+    </section>
+  </div>
+</Base>
+
+<script>
+  import { MIL_PAGES } from '../data/military-landing';
+  type W = Window & { gtag?: (...a: unknown[]) => void };
+  const track = (name: string, params: Record<string, unknown> = {}) => { try { (window as W).gtag?.('event', name, params); } catch { /* ignore */ } };
+  document.querySelectorAll<HTMLElement>('[data-track]').forEach((el) => el.addEventListener('click', () => track(el.dataset.track!, { location: el.closest('section')?.id || 'page' })));
+
+  // ---- Inside-page gallery + lightbox ----
+  const g = document.querySelector<HTMLElement>('[data-gallery]')!;
+  const stageImg = g.querySelector<HTMLImageElement>('[data-stage-img]')!;
+  const titleEl = g.querySelector('[data-stage-title]')!, noteEl = g.querySelector('[data-stage-note]')!, countEl = g.querySelector('[data-stage-count]')!;
+  const thumbs = [...g.querySelectorAll<HTMLButtonElement>('[data-thumb]')];
+  const lb = document.querySelector<HTMLDialogElement>('[data-lightbox]')!;
+  const lbImg = lb.querySelector<HTMLImageElement>('[data-lb-img]')!, lbView = lb.querySelector<HTMLElement>('[data-lb-view]')!;
+  const lbTitle = lb.querySelector('[data-lb-title]')!, lbCount = lb.querySelector('[data-lb-count]')!, zoomBtn = lb.querySelector<HTMLButtonElement>('[data-zoom]')!;
+  const N = MIL_PAGES.length; let cur = 0;
+  const show = (i: number) => {
+    cur = (i + N) % N; const p = MIL_PAGES[cur];
+    stageImg.src = p.src; stageImg.alt = p.alt; titleEl.textContent = p.title; noteEl.textContent = p.note; countEl.textContent = `Page ${cur + 1} of ${N}`;
+    thumbs.forEach((t, k) => t.setAttribute('aria-current', String(k === cur)));
+    lbImg.src = p.src; lbImg.alt = p.alt; lbTitle.textContent = p.title; lbCount.textContent = `${cur + 1} / ${N}`; setZoom(false);
+    const next = new Image(); next.src = MIL_PAGES[(cur + 1) % N].src; // preload the next page
+  };
+  thumbs.forEach((t) => t.addEventListener('click', () => { show(Number(t.dataset.thumb)); track('mil_preview_page', { page: MIL_PAGES[cur].title }); }));
+  g.querySelector('[data-prev]')!.addEventListener('click', () => show(cur - 1));
+  g.querySelector('[data-next]')!.addEventListener('click', () => show(cur + 1));
+  g.querySelector('[data-open]')!.addEventListener('click', () => { lb.showModal(); track('mil_preview_open', { page: MIL_PAGES[cur].title }); });
+  lb.querySelector('[data-close]')!.addEventListener('click', () => lb.close());
+  lb.querySelector('[data-lb-prev]')!.addEventListener('click', () => show(cur - 1));
+  lb.querySelector('[data-lb-next]')!.addEventListener('click', () => show(cur + 1));
+  lb.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') show(cur + 1); else if (e.key === 'ArrowLeft') show(cur - 1); });
+  // Zoom: 2.2x around the point you tap; drag (or move the mouse) to look around.
+  let zoomed = false, ox = 0, oy = 0, drag: { x: number; y: number; ox: number; oy: number } | null = null; const Z = 2.2;
+  const apply = () => { lbImg.style.transform = zoomed ? `translate(${ox}px, ${oy}px) scale(${Z})` : ''; lbView.classList.toggle('zoomed', zoomed); zoomBtn.setAttribute('aria-pressed', String(zoomed)); zoomBtn.textContent = zoomed ? 'Zoom out' : 'Zoom in'; };
+  function setZoom(on: boolean, cx?: number, cy?: number) {
+    zoomed = on;
+    if (on) { const r = lbImg.getBoundingClientRect(); const px = (cx ?? r.left + r.width / 2) - r.left, py = (cy ?? r.top + r.height / 3) - r.top; ox = -px * (Z - 1); oy = -py * (Z - 1); } else { ox = oy = 0; }
+    apply();
+  }
+  zoomBtn.addEventListener('click', () => setZoom(!zoomed));
+  lbImg.addEventListener('click', (e) => { if (!drag || (Math.abs(drag.ox - ox) < 4 && Math.abs(drag.oy - oy) < 4)) setZoom(!zoomed, e.clientX, e.clientY); });
+  lbView.addEventListener('pointerdown', (e) => { drag = { x: e.clientX, y: e.clientY, ox, oy }; if (zoomed) lbView.setPointerCapture(e.pointerId); });
+  lbView.addEventListener('pointermove', (e) => { if (!drag || !zoomed) return; ox = drag.ox + (e.clientX - drag.x); oy = drag.oy + (e.clientY - drag.y); apply(); });
+  lbView.addEventListener('pointerup', (e) => {
+    if (drag && !zoomed) { const dx = e.clientX - drag.x; if (Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1)); } // swipe when not zoomed
+    setTimeout(() => { drag = null; }, 0);
+  });
+  // Sample pages: discourage saving (screenshots are always possible).
+  g.closest('section')!.addEventListener('contextmenu', (e) => { if ((e.target as HTMLElement).tagName === 'IMG') e.preventDefault(); });
+  lb.addEventListener('contextmenu', (e) => e.preventDefault());
+  show(0);
+
+  // ---- Wholesale inquiry form ----
+  const form = document.getElementById('m-form') as HTMLFormElement;
+  const err = document.getElementById('m-err')!;
+  const submit = document.getElementById('m-submit') as HTMLButtonElement;
+  const countryWrap = form.querySelector<HTMLElement>('[data-country]')!;
+  const val = (n: string) => String((form.elements.namedItem(n) as HTMLInputElement | null)?.value ?? '').trim();
+  const outside = () => val('state') === 'Outside the United States';
+  form.querySelector('[name=state]')!.addEventListener('change', () => { countryWrap.hidden = !outside(); });
+  let started = false;
+  form.addEventListener('input', () => { if (!started) { started = true; track('mil_wholesale_start'); } });
+  const fail = (msg: string, name?: string) => {
+    err.textContent = msg; err.hidden = false;
+    form.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
+    const t = name ? form.querySelector<HTMLElement>(`[name="${name}"]`) : null;
+    if (t) { t.setAttribute('aria-invalid', 'true'); t.focus(); }
+  };
+  const fallback = `Sorry, we couldn’t send your inquiry just now. Please email ${'info@seniorandlivingtoday.com'} or call (888) 416-4264, and we’ll take care of it.`;
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault(); if (submit.disabled) return;
+    if (!val('fullName')) return fail('Please enter your full name.', 'fullName');
+    if (!val('organization')) return fail('Please enter your organization or business name.', 'organization');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val('email'))) return fail('Please enter a valid business email address.', 'email');
+    if (!val('orgType')) return fail('Please choose your organization type.', 'orgType');
+    if (!val('quantity')) return fail('Please choose an estimated quantity.', 'quantity');
+    if (!val('state')) return fail('Please choose your state, or “Outside the United States”.', 'state');
+    if (outside() && !val('country')) return fail('Please enter your country.', 'country');
+    if (!(form.elements.namedItem('consent') as HTMLInputElement).checked) return fail('Please agree to be contacted about your inquiry.', 'consent');
+    err.hidden = true;
+    const utm = [...new URLSearchParams(location.search)].filter(([k]) => k.startsWith('utm_')).map(([k, v]) => `${k}=${v}`).join('&').slice(0, 200);
+    const data = { fullName: val('fullName'), organization: val('organization'), email: val('email'), phone: val('phone'), orgType: val('orgType'), quantity: val('quantity'), state: val('state'), country: val('country'), message: val('message'), consent: true, fax: val('fax'), utm };
+    submit.disabled = true; submit.textContent = 'Sending…';
+    try {
+      const r = await fetch('/api/military-wholesale', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok) {
+        track('mil_wholesale_submit', { org_type: data.orgType, quantity: data.quantity });
+        document.getElementById('m-okname')!.textContent = `, ${data.fullName.split(' ')[0]}`;
+        (form.querySelector('[data-form-body]') as HTMLElement).hidden = true;
+        const ok = document.getElementById('m-ok')!; ok.hidden = false; ok.focus();
+        return;
+      }
+      if (r.status === 400) return fail(j.message || 'Please check the form.', j.error);
+      if (r.status === 429) return fail(j.message || 'Please wait a few minutes and try again.');
+      fail(fallback);
+    } catch { fail(fallback); }
+    finally { submit.disabled = false; submit.textContent = 'Discuss a Wholesale Partnership'; }
+  });
+</script>
