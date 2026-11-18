@@ -18,7 +18,7 @@ import WholesaleForm from '../components/WholesaleForm.astro';
 import { SITE } from '../data/site';
 import { BRITTNEY } from '../data/team';
 import { bookSchema, faqSchema } from '../data/schema';
-import { P_BOOKS, P_READER_FIRST, P_READER_SECOND, P_VALUE, P_PHOTOS, P_AUDIENCES, P_PARTNERS, P_INTERESTS, P_FAQS } from '../data/partners-landing';
+import { P_BOOKS, P_READER_FIRST, P_READER_SECOND, P_VALUE, P_AUDIENCES, P_PARTNERS, P_INTERESTS, P_FAQS } from '../data/partners-landing';
 import { WHOLESALE_ORG_TYPES, WHOLESALE_QUANTITIES, WHOLESALE_EDITIONS, EDITIONS as SAMPLE_EDITIONS } from '../../api/_lib/partner-options.js';
 
 const path = '/partners/';
@@ -108,9 +108,6 @@ const [first, second] = P_BOOKS;
           {P_VALUE.map((v) => <li><span class="m-ico" aria-hidden="true">{v.icon}</span><h3>{v.title}</h3><p>{v.text}</p><small>{v.sections}</small></li>)}
         </ul>
 
-        <ul class="m-photos" aria-label="The people the planner is for">
-          {P_PHOTOS.map((p) => <li><figure><img src={p.src} alt={p.alt} width={p.w} height={p.h} loading="lazy" /><figcaption>{p.title}</figcaption></figure></li>)}
-        </ul>
         <div class="m-family-grid">
           <div class="m-family-why">
             <h3 class="m-serif">The people behind the planner</h3>

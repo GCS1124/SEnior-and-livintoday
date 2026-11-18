@@ -50,13 +50,7 @@ export const P_VALUE = [
   { icon: '🏷️', title: 'Straight from the publisher', text: 'Original publications by Courtney R. Jones, published by Senior and Living Today. You work directly with the source.', sections: 'Published by Senior and Living Today' },
 ];
 
-// People the planner is for (shown with photos). Owned site photographs.
-export const P_PHOTOS = [
-  { src: '/images/seniors-group.webp', w: 1344, h: 768, title: 'Older adults', alt: 'A group of smiling older friends with their hands joined together' },
-  { src: '/images/friends-laughing.webp', w: 626, h: 391, title: 'Friends and neighbors', alt: 'Three older women laughing together outdoors' },
-  { src: '/images/garden-family.webp', w: 1200, h: 900, title: 'Families', alt: 'A family taking a selfie together in a garden' },
-  { src: '/images/park-group.webp', w: 825, h: 1100, title: 'Caregivers and communities', alt: 'Courtney Jones standing with friends in a park' },
-];
+// People the planner is for.
 export const P_AUDIENCES = [
   { title: 'Seniors planning ahead', text: 'Wishes, health details and records, written down while they can be shared calmly.' },
   { title: 'Adult children and families', text: 'One place to find what they need, instead of guessing at a difficult time.' },
