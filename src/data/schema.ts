@@ -56,6 +56,6 @@ export function articleSchema(opts: {
     author: PERSON,
     publisher: ORG,
     inLanguage: 'en-US',
-    image: new URL(opts.image ?? '/og-default.png', SITE.url).href,
+    image: new URL(opts.image ?? '/og-default-registered.png', SITE.url).href,
   };
 }

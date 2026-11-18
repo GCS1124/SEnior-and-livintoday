@@ -11,7 +11,7 @@ const files = [];
 const routes = new Set(files.map((f) => '/' + path.relative(DIST, f).replace(/index\.html$/, '').replace(/\\/g, '/')));
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 const redirects = new Set(vercel.redirects.map((r) => r.source + '/'));
-const publicFiles = new Set(['/robots.txt', '/llms.txt', '/rss.xml', '/sitemap-index.xml', '/favicon.svg', '/og-default.png']);
+const publicFiles = new Set(['/robots.txt', '/llms.txt', '/rss.xml', '/sitemap-index.xml', '/favicon.svg', '/og-default.png', '/og-default-registered.png']);
 
 const titles = new Map(); const descs = new Map();
 let errors = 0, warnings = 0;

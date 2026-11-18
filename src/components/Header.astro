@@ -12,7 +12,7 @@ const current = (href: string) => (path.startsWith(href) || (href === '/games/' 
 <header class="site-header">
   <div class="wrap bar">
     <a href="/" class="brand" aria-label="Senior and Living Today home">
-      <img src="/images/logo.png" width="64" height="64" alt="" />
+      <img src="/images/logo-registered-small.png" width="64" height="64" alt="" />
       <span>
         <strong>Senior and Living Today</strong>
         <small>the caregiver’s caregiver</small>
@@ -52,7 +52,7 @@ const current = (href: string) => (path.startsWith(href) || (href === '/games/' 
   .site-header { background: #fff; position: sticky; top: 0; z-index: 30; box-shadow: 0 4px 18px rgba(34,58,102,.06); }
   .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 84px; }
   .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-  .brand img { width: 60px; height: 60px; border-radius: 50%; }
+  .brand img { width: 60px; height: 60px; } /* no circle crop: the ® sits just outside the round logo */
   .brand strong { display: block; font: 700 1.2rem/1.1 var(--font-head); color: var(--green-ink); }
   .brand small { display: block; font: 600 1.35rem/1 var(--font-hand); color: var(--berry); }
   /* Small phones: keep the sticky header compact so it doesn't eat the screen. */

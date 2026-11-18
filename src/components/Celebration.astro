@@ -144,7 +144,7 @@
     x.strokeStyle = 'rgba(255,225,77,.45)'; x.lineWidth = 3; x.strokeRect(56, 56, c.width - 112, c.height - 112);
     // Left panel: logo + $100
     x.fillStyle = '#182b4d'; x.fillRect(56, 56, 520, c.height - 112);
-    try { const logo = await loadImg('/images/logo-512.png'); x.drawImage(logo, 196, 110, 240, 240); } catch { /* logo optional */ }
+    try { const logo = await loadImg('/images/logo-512-registered.png'); x.drawImage(logo, 196, 110, 240, 240); } catch { /* logo optional */ }
     x.textAlign = 'center';
     x.fillStyle = '#ffe14d'; x.font = '700 190px Poppins, sans-serif'; x.fillText('$100', 316, 560);
     x.fillStyle = '#ffffff'; x.font = '700 40px Poppins, sans-serif'; x.fillText('COUPON CODE', 316, 625);
