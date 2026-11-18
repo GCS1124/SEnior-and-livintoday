@@ -16,8 +16,9 @@ import type { Edition } from '../data/planners';
 // Opt-in extras (off by default, so existing book pages are unchanged):
 //   flip — realistic page turn in two-page view (the page lifts and swings over the spine)
 //   zoom — a Zoom button on every page that opens it full screen, with zoom, pan and page stepping
-interface Props { editions: Edition[]; initial?: Edition['key']; title?: string; intro?: string; flip?: boolean; zoom?: boolean; id?: string }
-const { editions, initial = editions[0].key, title = 'Look inside the planner', intro = 'Turn the pages and read a little. When you’re ready, order your own copy.', flip = false, zoom = false, id = 'look-inside' } = Astro.props;  // id: only needed when a page shows more than one reader
+//   belowFold — the reader sits well down the page: don't load its first pages eagerly
+interface Props { editions: Edition[]; initial?: Edition['key']; title?: string; intro?: string; flip?: boolean; zoom?: boolean; id?: string; belowFold?: boolean }
+const { editions, initial = editions[0].key, title = 'Look inside the planner', intro = 'Turn the pages and read a little. When you’re ready, order your own copy.', flip = false, zoom = false, id = 'look-inside', belowFold = false } = Astro.props;  // id: only needed when a page shows more than one reader
 // Buy buttons: links to a section on the same page (#…) stay in this tab.
 const ext = (url: string) => (url.startsWith('#') ? {} : { target: '_blank', rel: 'noopener' });
 const buyLabel = (b: { url: string; label: string }) => (b.url.startsWith('#') ? b.label : `🛒 ${b.label} ↗`);
@@ -55,7 +56,7 @@ const sectionsOpen = (e: Edition) => e.locked?.sections.filter((s) => s.open).le
                 {e.pages.map((p, i) => (
                   <figure class="li-page" data-i={i} aria-label={`Page ${i + 1} of ${total}: ${p.label}`}>
                     <div class="li-paper">
-                      <img src={p.src} alt={p.alt} {...dims(p)} draggable="false" loading={i < 2 && e.key === initial ? 'eager' : 'lazy'} decoding="async" />
+                      <img src={p.src} alt={p.alt} {...dims(p)} draggable="false" loading={i < 2 && e.key === initial && !belowFold ? 'eager' : 'lazy'} decoding="async" />
                     </div>
                     <figcaption><span class="li-num">{i + 1}</span> <span class="li-label">{p.label}</span>{zoom && <button type="button" class="li-zoom" data-zoom-i={i} aria-label={`Zoom into page ${i + 1}: ${p.label}`}>🔍 Zoom</button>}</figcaption>
                   </figure>

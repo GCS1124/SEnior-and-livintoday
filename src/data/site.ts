@@ -68,6 +68,69 @@ export const NAV = [
   { href: '/work-with-us/', label: 'Work With Us', icon: '🤝' },
 ];
 
+// Main header menu (desktop dropdowns and the mobile accordion). Every link is an existing page.
+// `match` lists the path prefixes that mark the item as the current section.
+export interface MenuLink { href: string; label: string; note?: string; external?: boolean; cover?: string; coverH?: number }
+export interface MenuItem { href: string; label: string; icon: string; match: string[]; feature?: boolean; links?: MenuLink[]; foot?: MenuLink }
+export const MENU: MenuItem[] = [
+  { href: '/', label: 'Home', icon: '🏠', match: [] },
+  {
+    href: '/books/', label: 'Books & Planners', icon: '📘', feature: true, match: ['/books/', '/planners/', '/read/'],
+    links: [
+      { href: '/books/living-legacy-planner/', label: 'The Living Legacy Planner, 1st Edition', note: 'The original planner', cover: '/images/planners/llp-1st-front.webp', coverH: 1285 },
+      { href: '/books/living-legacy-planner/#color-edition', label: 'The Living Legacy Planner, 2nd Edition', note: 'Full color, paperback & hardcover', cover: '/images/planners/llp-2nd-front.webp', coverH: 1218 },
+      { href: '/books/military-edition/', label: 'The Living Legacy Planner, Military Edition', note: 'Deployment & family readiness', cover: '/images/planners/llp-military-front.webp', coverH: 1261 },
+    ],
+    foot: { href: '/books/', label: 'All books by Courtney' },
+  },
+  {
+    href: '/help/', label: 'Senior Living Resources', icon: '🧭', match: ['/help/', '/find-help/', '/guides/', '/resources/', '/blog/', '/services/', '/memory-lane/', '/games/', '/greeting-cards/'],
+    links: [
+      { href: '/help/', label: 'What do I do when…?', note: 'Courtney’s advice for real situations' },
+      { href: '/find-help/', label: 'Find help near me', note: 'Doctors, lawyers & Medicare help by ZIP' },
+      { href: '/guides/types-of-senior-living/', label: 'Senior living options, explained' },
+      { href: '/resources/', label: 'Free printables & downloads' },
+      { href: '/services/', label: 'One-on-one help from Courtney', note: 'Consulting, virtual assistant, caregiver support' },
+      { href: '/blog/', label: 'Blog & articles' },
+      { href: '/memory-lane/', label: 'Memory Lane' },
+      { href: '/games/', label: 'Fun & cards', note: 'Coloring, games and greeting cards' },
+    ],
+  },
+  {
+    href: '/community/', label: 'Courses & Learning', icon: '🎓', match: ['/community/', '/videos/'],
+    links: [
+      { href: '/community/', label: 'S.A.L.T. Academy courses', note: 'Free courses & webinars in our community' },
+      { href: '/videos/', label: 'Courtney’s videos', note: 'Real-talk lessons on YouTube' },
+      { href: '/resources/final-arrangements-discussion-guide/', label: '10-point discussion guide', note: 'Talk through final arrangements' },
+    ],
+  },
+  {
+    href: '/gifts/', label: 'Shop', icon: '🛍️', match: ['/gifts/', '/coupon-code/'],
+    links: [
+      { href: '/gifts/', label: 'Gift guide', note: 'Hand-picked from the SALT Online Store' },
+      { href: '/gifts/#instant', label: 'Instant-download e-planners' },
+      { href: '/coupon-code/', label: 'Your $100 coupon code' },
+      { href: 'https://www.saltonlinestore.com/', label: 'SALT Online Store', note: 'Browse every product', external: true },
+    ],
+  },
+  {
+    href: '/about/', label: 'About Us', icon: '👋', match: ['/about/', '/contact/', '/faq/'],
+    links: [
+      { href: '/about/', label: 'About Courtney' },
+      { href: '/faq/', label: 'Questions & answers' },
+      { href: '/contact/', label: 'Contact & free call' },
+    ],
+  },
+  {
+    href: '/work-with-us/', label: 'Work With Us', icon: '🤝', match: ['/work-with-us/'],
+    links: [
+      { href: '/work-with-us/', label: 'All ways to work with us', note: 'Affiliate, wholesale & 1099 opportunities' },
+      { href: '/partners/', label: 'First & Second Edition partners', note: 'Bookstores, retailers & organizations' },
+      { href: '/team-up-with-us/', label: 'Military Edition partners', note: 'Military bookstores & organizations' },
+    ],
+  },
+];
+
 export const SERVICES = [
   {
     href: '/services/senior-care-consulting/',

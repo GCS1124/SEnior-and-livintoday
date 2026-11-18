@@ -35,7 +35,7 @@
   // 1. Soft entrance animations
   function setupReveal() {
     if (calm.matches || !('IntersectionObserver' in window)) return;
-    const sections = [...document.querySelectorAll<HTMLElement>('main > section')].slice(1); // never the first (hero) section
+    const sections = [...document.querySelectorAll<HTMLElement>('main > section, main > .home > section')].slice(1); // never the first (hero) section
     const targets: HTMLElement[] = [];
     sections.forEach((sec) => {
       const wrap = sec.querySelector<HTMLElement>(':scope > .wrap') ?? sec;
