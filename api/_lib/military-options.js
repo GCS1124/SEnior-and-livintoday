@@ -1,4 +1,4 @@
-// Options for the Military Edition wholesale inquiry form (/military-family-planner/).
+// Options for the Military Edition wholesale inquiry form (/team-up-with-us/).
 // Shared by the page and the server (api/military-wholesale.js) so the two always agree.
 // Keys are stored in GoHighLevel tags, so keep them short and stable.
 export { US_STATES } from './partner-options.js';

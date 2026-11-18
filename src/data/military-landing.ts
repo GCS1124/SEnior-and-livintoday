@@ -1,4 +1,4 @@
-// Military Edition landing page (/military-family-planner/): all content in one place.
+// Military Edition landing page (/team-up-with-us/): all content in one place.
 //
 // Every statement about the book is taken from the actual Military Edition planner (contents page,
 // section pages, foreword and back cover). The author's story uses only what Courtney R. Jones wrote
@@ -41,7 +41,8 @@ export const MIL_MILITARY_SECTIONS = ['Service Information', 'Deployment Readine
 // watermarked with the approved Senior and Living Today ® seal (35% opacity, centered).
 // Only these sample pages are published, never the full PDF.
 const PG = '/images/military-family';
-const FW_TEXT = Object.fromEntries((edition('military').pages ?? []).filter((p) => p.text).map((p) => [p.src.slice(-7, -5), p.text!])); // large-print text the site already has for the foreword
+const noYears = (t: string) => t.replace(/,? from 1984 to 2007,?/g, '').replace(/\s*\(1984[–-]2007\)\.?/g, '.').replace(/\.\./g, '.');
+const FW_TEXT = Object.fromEntries((edition('military').pages ?? []).filter((p) => p.text).map((p) => [p.src.slice(-7, -5), p.text!.map(noYears)])); // large-print text the site already has for the foreword
 const pg = (n: string, label: string, alt: string) => ({ src: `${PG}/page-${n}.webp`, w: 1000, h: 1305, label, alt, ...(FW_TEXT[n] ? { text: FW_TEXT[n] } : {}) });
 const OPEN = ['Foreword', 'Personal Family Information', 'Service Information', 'Family Emergency Plan', 'If I Am Temporarily Disabled… Then Who?', 'Deployment Readiness', 'Military Pay Information', 'Military Benefits', 'Important Military Documents', 'PCS Moving Checklist', 'Special Memories or Family Traditions', 'Letters to Loved Ones'];
 export const MIL_READER: Edition = {
@@ -52,13 +53,13 @@ export const MIL_READER: Edition = {
   who: 'For service members, veterans and their families.',
   cover: '/images/planners/llp-military-front.webp',
   coverAlt: 'The Living Legacy Planner, Military Deployment and Family Readiness Edition',
-  page: '/military-family-planner/',
+  page: '/team-up-with-us/',
   pages: [
     { src: '/images/planners/llp-military-front.webp', w: 900, h: 1261, label: 'Front cover', alt: 'Front cover: The Living Legacy Planner, Military Deployment and Family Readiness Edition. Protect your family, preserve what matters, prepare with confidence, leave a legacy of love.' },
     pg('05', 'Contents', 'Contents page listing the 28 sections of the Military Edition, from Foreword and Service Information to Letters to Loved Ones and Biography'),
     pg('07', 'Foreword', 'Foreword: Prepare Families. Stronger Futures. Courtney R. Jones writes about 23 years as part of a military family'),
     pg('08', 'Foreword (continued)', 'Foreword continued: why the planner was created for military members and their families'),
-    pg('09', 'Foreword (continued)', 'Foreword continued, signed Courtney R. Jones, Military Spouse 1984 to 2007'),
+    pg('09', 'Foreword (continued)', 'Foreword continued, signed Courtney R. Jones, military spouse'),
     pg('13', 'Personal Family Information', 'Personal Family Information page with spaces for names, birth details, phones, address, spouse and children'),
     pg('15', 'Service Information', 'Service Information page with spaces for branch of service, rank, unit and duty station'),
     pg('16', 'Service Information (continued)', 'Service Information continued: military ID number, dates of enlistment and retirement eligibility, chain of command and command contacts'),

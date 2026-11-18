@@ -4,6 +4,16 @@
   "trailingSlash": true,
   "redirects": [
     {
+      "source": "/military-family-planner",
+      "destination": "/team-up-with-us/",
+      "permanent": true
+    },
+    {
+      "source": "/military-family-planner/",
+      "destination": "/team-up-with-us/",
+      "permanent": true
+    },
+    {
       "source": "/store-credit",
       "destination": "/coupon-code/",
       "permanent": true

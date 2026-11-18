@@ -1,4 +1,4 @@
-// Military Edition wholesale & institutional inquiries from /military-family-planner/ (Vercel Function).
+// Military Edition wholesale & institutional inquiries from /team-up-with-us/ (Vercel Function).
 //
 // Uses the site's existing GoHighLevel client and key (api/_lib/ghl.js, GHL_PRIVATE_TOKEN), the same
 // connection as the sign-up and partner forms. For each inquiry it:
@@ -69,7 +69,7 @@ export default async function handler(req, res) {
 
   const tags = ['military-wholesale-lead', 'military-edition', `military-org-${orgType}`, `military-qty-${quantity}`];
   const note = [
-    `MILITARY EDITION WHOLESALE / INSTITUTIONAL INQUIRY (seniorandlivingtoday.com/military-family-planner)`,
+    `MILITARY EDITION WHOLESALE / INSTITUTIONAL INQUIRY (seniorandlivingtoday.com/team-up-with-us)`,
     `Submitted: ${new Date().toISOString()}`,
     ``,
     `Name: ${fullName}`,
