@@ -35,3 +35,33 @@ export const EDITIONS = {
 };
 export const AUDIENCE_SIZES = { 'under-1k': 'Under 1,000', '1k-10k': '1,000 – 10,000', '10k-50k': '10,000 – 50,000', '50k-plus': '50,000+', unsure: 'Not sure yet' };
 export const US_STATES = ['Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','District of Columbia','Florida','Georgia','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia','Wisconsin','Wyoming','Puerto Rico','Outside the United States'];
+
+// Wholesale inquiry form on the redesigned /partners/ page (api/partner-wholesale.js).
+// Same structure as the Military Edition form; keys go into GoHighLevel tags (partner-type-<key>).
+export const WHOLESALE_ORG_TYPES = {
+  bookstore: 'Bookstore',
+  'independent-retailer': 'Independent retailer',
+  distributor: 'Wholesale distributor',
+  'senior-living': 'Senior living organization',
+  'senior-care': 'Senior care provider',
+  'community-org': 'Community organization',
+  institutional: 'Institutional buyer',
+  'business-partner': 'Business partner',
+  other: 'Other',
+};
+// Rough order size, so the team can prepare. No pricing is implied by these ranges.
+export const WHOLESALE_QUANTITIES = {
+  'under-25': 'Fewer than 25 copies',
+  '25-99': '25 – 99 copies',
+  '100-249': '100 – 249 copies',
+  '250-499': '250 – 499 copies',
+  '500-plus': '500 copies or more',
+  unsure: 'Not sure yet',
+};
+// Which edition the organization is interested in.
+export const WHOLESALE_EDITIONS = {
+  first: 'First Edition (Black & White)',
+  second: 'Second Edition (Full Color)',
+  both: 'Both editions',
+  unsure: 'Not sure yet',
+};

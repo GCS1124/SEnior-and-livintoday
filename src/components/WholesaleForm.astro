@@ -1,0 +1,135 @@
+---
+// Wholesale inquiry form used on /partners/. Same layout, fields, validation and submission
+// experience as the Military Edition form (src/components/MilitaryWholesaleForm.astro, left as is),
+// with the endpoint and choices passed in. Kept as its own component so it can be swapped for an
+// externally hosted GoHighLevel form later without touching the rest of the page.
+// The on-screen "thank you" only means the server answered OK; whether the contact reached the
+// intended GoHighLevel account has to be confirmed in GoHighLevel itself.
+// Styles: .m-form … in the page's stylesheet (src/styles/partners.css).
+import { US_STATES } from '../../api/_lib/partner-options.js';
+
+interface Props {
+  endpoint: string;                                // e.g. /api/partner-wholesale
+  orgTypes: Record<string, string>;
+  quantities: Record<string, string>;
+  editions?: Record<string, string>;               // "Which editions?" dropdown (optional)
+  sampleEditions?: Record<string, string>;         // optional complimentary sample request
+  title?: string;
+  trackPrefix?: string;                            // analytics event prefix
+}
+const { endpoint, orgTypes, quantities, editions, sampleEditions, title = 'Discuss a wholesale partnership', trackPrefix = 'wholesale' } = Astro.props;
+---
+<form class="m-form" id="m-form" novalidate data-endpoint={endpoint} data-track-prefix={trackPrefix}>
+  <div data-form-body>
+    <h3>{title}</h3>
+    <p>No obligation. Fields marked <span class="req">*</span> are required.</p>
+    <div class="m-fields">
+      <div class="m-row">
+        <label>Full name <span class="req" aria-hidden="true">*</span><input name="fullName" autocomplete="name" required maxlength="120" /></label>
+        <label>Organization / business name <span class="req" aria-hidden="true">*</span><input name="organization" autocomplete="organization" required maxlength="120" /></label>
+      </div>
+      <div class="m-row">
+        <label>Business email <span class="req" aria-hidden="true">*</span><input name="email" type="email" autocomplete="email" required maxlength="254" /></label>
+        <label>Phone number <span class="opt">(optional)</span><input name="phone" type="tel" autocomplete="tel" maxlength="30" /></label>
+      </div>
+      <div class="m-row">
+        <label>Organization type <span class="req" aria-hidden="true">*</span>
+          <select name="orgType" required><option value="">Choose one…</option>{Object.entries(orgTypes).map(([k, v]) => <option value={k}>{v}</option>)}</select>
+        </label>
+        <label>Estimated quantity of books <span class="req" aria-hidden="true">*</span>
+          <select name="quantity" required><option value="">Choose a range…</option>{Object.entries(quantities).map(([k, v]) => <option value={k}>{v}</option>)}</select>
+        </label>
+      </div>
+      <div class="m-row">
+        <label>State / country <span class="req" aria-hidden="true">*</span>
+          <select name="state" required autocomplete="address-level1"><option value="">Choose…</option>{US_STATES.map((s) => <option value={s}>{s}</option>)}</select>
+        </label>
+        <label data-country hidden>Country <span class="req" aria-hidden="true">*</span><input name="country" autocomplete="country-name" maxlength="60" /></label>
+        {editions && (
+          <label data-editions>Editions of interest <span class="opt">(optional)</span>
+            <select name="books"><option value="">Choose…</option>{Object.entries(editions).map(([k, v]) => <option value={k}>{v}</option>)}</select>
+          </label>
+        )}
+      </div>
+      {sampleEditions && (
+        <div class="m-sample">
+          <label class="m-check"><input type="checkbox" name="sample" /> <span>I’d like a complimentary sample copy to evaluate before ordering <span class="opt">(our team confirms availability first)</span></span></label>
+          <label data-sample-ed hidden>Which edition? <span class="req" aria-hidden="true">*</span>
+            <select name="sampleEdition"><option value="">Choose…</option>{Object.entries(sampleEditions).map(([k, v]) => <option value={k}>{v}</option>)}</select>
+          </label>
+        </div>
+      )}
+      <label>Message / partnership interest <span class="opt">(optional)</span><textarea name="message" rows="4" maxlength="2000" placeholder="Tell us about your organization, the people you serve, and what you have in mind."></textarea></label>
+      <label class="m-hp" aria-hidden="true">Fax <input name="fax" tabindex="-1" autocomplete="off" /></label>
+      <label class="m-check"><input type="checkbox" name="consent" required /> <span>I agree that Senior and Living Today may contact me about this inquiry. <span class="req" aria-hidden="true">*</span></span></label>
+    </div>
+    <p class="m-err" id="m-err" role="alert" hidden></p>
+    <button type="submit" class="m-btn m-btn-solid" id="m-submit">Discuss a Wholesale Partnership</button>
+    <p class="m-small" style="margin:.8rem 0 0">We use your details only to reply to your inquiry. <a href="/privacy-policy/">Privacy policy</a></p>
+  </div>
+  <div class="m-ok" id="m-ok" hidden tabindex="-1">
+    <div class="m-star" aria-hidden="true">★</div>
+    <h3>Thank you<span id="m-okname"></span>. Your inquiry has been received.</h3>
+    <p>Our team will review it and reply personally by email. Nothing is automatic, and there’s no obligation.</p>
+    <p id="m-oksample" hidden>We’ve noted your sample request. If it’s approved, we’ll contact you to confirm the edition and your shipping details.</p>
+  </div>
+</form>
+
+<script>
+  type W = Window & { gtag?: (...a: unknown[]) => void };
+  const form = document.getElementById('m-form') as HTMLFormElement;
+  const endpoint = form.dataset.endpoint!;
+  const prefix = form.dataset.trackPrefix || 'wholesale';
+  const track = (name: string, params: Record<string, unknown> = {}) => { try { (window as W).gtag?.('event', `${prefix}_${name}`, params); } catch { /* ignore */ } };
+  const err = document.getElementById('m-err')!;
+  const submit = document.getElementById('m-submit') as HTMLButtonElement;
+  const countryWrap = form.querySelector<HTMLElement>('[data-country]')!;
+  const sampleBox = form.querySelector<HTMLInputElement>('[name=sample]');
+  const sampleEd = form.querySelector<HTMLElement>('[data-sample-ed]');
+  const val = (n: string) => String((form.elements.namedItem(n) as HTMLInputElement | null)?.value ?? '').trim();
+  const outside = () => val('state') === 'Outside the United States';
+  form.querySelector('[name=state]')!.addEventListener('change', () => { countryWrap.hidden = !outside(); });
+  sampleBox?.addEventListener('change', () => { if (sampleEd) sampleEd.hidden = !sampleBox.checked; });
+  let started = false;
+  form.addEventListener('input', () => { if (!started) { started = true; track('start'); } });
+  const fail = (msg: string, name?: string) => {
+    err.textContent = msg; err.hidden = false;
+    form.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
+    const t = name ? form.querySelector<HTMLElement>(`[name="${name}"]`) : null;
+    if (t) { t.setAttribute('aria-invalid', 'true'); t.focus(); }
+  };
+  const fallback = 'Sorry, we couldn’t send your inquiry just now. Please email info@seniorandlivingtoday.com or call (888) 416-4264, and we’ll take care of it.';
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault(); if (submit.disabled) return;
+    if (!val('fullName')) return fail('Please enter your full name.', 'fullName');
+    if (!val('organization')) return fail('Please enter your organization or business name.', 'organization');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val('email'))) return fail('Please enter a valid business email address.', 'email');
+    if (!val('orgType')) return fail('Please choose your organization type.', 'orgType');
+    if (!val('quantity')) return fail('Please choose an estimated quantity.', 'quantity');
+    if (!val('state')) return fail('Please choose your state, or “Outside the United States”.', 'state');
+    if (outside() && !val('country')) return fail('Please enter your country.', 'country');
+    const sample = !!sampleBox?.checked;
+    if (sample && !val('sampleEdition')) return fail('Please choose which edition you would like as a sample.', 'sampleEdition');
+    if (!(form.elements.namedItem('consent') as HTMLInputElement).checked) return fail('Please agree to be contacted about your inquiry.', 'consent');
+    err.hidden = true;
+    const utm = [...new URLSearchParams(location.search)].filter(([k]) => k.startsWith('utm_')).map(([k, v]) => `${k}=${v}`).join('&').slice(0, 200);
+    const data = { fullName: val('fullName'), organization: val('organization'), email: val('email'), phone: val('phone'), orgType: val('orgType'), quantity: val('quantity'), state: val('state'), country: val('country'), books: val('books'), sample, sampleEdition: sample ? val('sampleEdition') : '', message: val('message'), consent: true, fax: val('fax'), utm };
+    submit.disabled = true; submit.textContent = 'Sending…';
+    try {
+      const r = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok) {
+        track('submit', { org_type: data.orgType, quantity: data.quantity, sample });
+        document.getElementById('m-okname')!.textContent = `, ${data.fullName.split(' ')[0]}`;
+        (document.getElementById('m-oksample') as HTMLElement).hidden = !sample;
+        (form.querySelector('[data-form-body]') as HTMLElement).hidden = true;
+        const ok = document.getElementById('m-ok')!; ok.hidden = false; ok.focus();
+        return;
+      }
+      if (r.status === 400) return fail(j.message || 'Please check the form.', j.error);
+      if (r.status === 429) return fail(j.message || 'Please wait a few minutes and try again.');
+      fail(fallback);
+    } catch { fail(fallback); }
+    finally { submit.disabled = false; submit.textContent = 'Discuss a Wholesale Partnership'; }
+  });
+</script>

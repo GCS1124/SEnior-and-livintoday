@@ -16,19 +16,19 @@ import type { Edition } from '../data/planners';
 // Opt-in extras (off by default, so existing book pages are unchanged):
 //   flip — realistic page turn in two-page view (the page lifts and swings over the spine)
 //   zoom — a Zoom button on every page that opens it full screen, with zoom, pan and page stepping
-interface Props { editions: Edition[]; initial?: Edition['key']; title?: string; intro?: string; flip?: boolean; zoom?: boolean }
-const { editions, initial = editions[0].key, title = 'Look inside the planner', intro = 'Turn the pages and read a little. When you’re ready, order your own copy.', flip = false, zoom = false } = Astro.props;
+interface Props { editions: Edition[]; initial?: Edition['key']; title?: string; intro?: string; flip?: boolean; zoom?: boolean; id?: string }
+const { editions, initial = editions[0].key, title = 'Look inside the planner', intro = 'Turn the pages and read a little. When you’re ready, order your own copy.', flip = false, zoom = false, id = 'look-inside' } = Astro.props;  // id: only needed when a page shows more than one reader
 // Buy buttons: links to a section on the same page (#…) stay in this tab.
 const ext = (url: string) => (url.startsWith('#') ? {} : { target: '_blank', rel: 'noopener' });
 const buyLabel = (b: { url: string; label: string }) => (b.url.startsWith('#') ? b.label : `🛒 ${b.label} ↗`);
 const dims = (p: { src: string; w?: number; h?: number }) => (p.w && p.h ? { width: p.w, height: p.h } : p.src.includes('/page-') ? { width: 1000, height: 1304 } : { width: 900, height: 1260 });
 const sectionsOpen = (e: Edition) => e.locked?.sections.filter((s) => s.open).length ?? 0;
 ---
-<section class="section li" id="look-inside" data-look data-flip={flip ? '' : undefined} data-zoom={zoom ? '' : undefined} aria-labelledby="look-inside-title">
+<section class="section li" id={id} data-look data-flip={flip ? '' : undefined} data-zoom={zoom ? '' : undefined} aria-labelledby={`${id}-title`}>
   <div class="wrap">
     <div class="li-head">
       <span class="kicker">Free preview</span>
-      <h2 id="look-inside-title">📖 {title}</h2>
+      <h2 id={`${id}-title`}>📖 {title}</h2>
       <p class="lead">{intro}</p>
     </div>
 
