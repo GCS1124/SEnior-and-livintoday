@@ -72,7 +72,7 @@
 .h-pillars .go { font: 700 .92rem var(--font-head); color: var(--blue); }
 
 /* ---------- 2. the planner (flagship) ---------- */
-.h-planner { background: linear-gradient(180deg, var(--paper) 0%, #fffaf0 100%); }
+.h-planner { background: linear-gradient(180deg, var(--paper) 0%, var(--blue-pale) 100%); }
 .h-plan-intro { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(24px, 4vw, 60px); align-items: start; margin-bottom: clamp(36px, 5vw, 60px); }
 .h-plan-intro h2 { font-size: clamp(2rem, 4.4vw, 3.2rem); line-height: 1.1; }
 .h-inside { list-style: none; margin: 1.4rem 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: .7rem 1.4rem; }
@@ -139,7 +139,7 @@
 /* ---------- games & memory lane ---------- */
 .h-play { background:
     radial-gradient(circle, rgba(255,180,0,.22) 0 2px, transparent 2.6px) 0 0 / 38px 38px,
-    linear-gradient(180deg, var(--yellow-soft) 0%, #fffaf0 100%); }
+    linear-gradient(180deg, var(--blue-soft) 0%, var(--blue-pale) 100%); }
 .h-games { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
 .h-game { display: flex; flex-direction: column; gap: .5rem; height: 100%; padding: 22px 22px 24px; background: #fff; border: 2px solid var(--line); border-radius: 22px; text-decoration: none; color: var(--ink); box-shadow: 0 14px 34px rgba(20,33,61,.08); transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
 .h-game:hover, .h-game:focus-visible { transform: translateY(-6px); border-color: var(--yellow); box-shadow: 0 22px 44px rgba(20,33,61,.14); }

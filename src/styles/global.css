@@ -17,7 +17,7 @@
   --yellow: #ffb400;       /* brand golden yellow (logo shadow, buttons) */
   --yellow-hover: #ffc433;
   --yellow-shadow: #d99600;
-  --yellow-soft: #fff5d6;  /* soft yellow panels */
+  --yellow-soft: var(--blue-soft); /* soft panels: brand pale blue (the old cream #fff5d6 is not a brand colour); yellow stays as borders and accents */
   --sun: #ffe14d;          /* logo yellow, for text and accents on navy */
 
   /* Neutrals */
