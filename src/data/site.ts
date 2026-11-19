@@ -106,11 +106,12 @@ export const MENU: MenuItem[] = [
     ],
   },
   {
-    href: '/community/', label: 'Courses & Learning', icon: '🎓', match: ['/community/', '/videos/'],
+    href: '/courses/', label: 'Courses & Learning', icon: '🎓', match: ['/courses/', '/community/', '/videos/'],
     links: [
-      { href: '/community/', label: 'S.A.L.T. Academy courses', note: 'Free courses & webinars in our community' },
-      { href: '/videos/', label: 'Courtney’s videos', note: 'Real-talk lessons on YouTube' },
+      { href: '/videos/', label: 'Courtney’s videos', note: 'Real-talk lessons on YouTube, available now' },
+      { href: '/courses/', label: 'S.A.L.T. Academy courses: coming soon', note: 'Tell us which courses you’d like' },
       { href: '/resources/final-arrangements-discussion-guide/', label: '10-point discussion guide', note: 'Talk through final arrangements' },
+      { href: '/community/', label: 'Free online community', note: 'Discussions with people who’ve been there' },
     ],
   },
   {

@@ -235,11 +235,12 @@
 .h-learn h2, .h-learn h3 { color: #fff; }
 .h-learn .h-kicker { color: var(--sun); }
 .h-learn .h-lead { color: var(--on-dark-soft); }
-.h-academy { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(24px, 4vw, 56px); align-items: start; }
+.h-academy { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(24px, 4vw, 56px); align-items: start; margin-top: clamp(44px, 6vw, 72px); padding-top: clamp(32px, 4vw, 48px); border-top: 1px solid rgba(255,255,255,.18); }
 .h-courses { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
-.h-courses li { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; padding: 18px 20px; border-radius: 16px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14); transition: background .2s ease, transform .2s ease; }
+.h-courses li { display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: center; padding: 18px 20px; border-radius: 16px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14); transition: background .2s ease, transform .2s ease; }
 .h-courses li:hover { background: rgba(255,255,255,.1); transform: translateX(4px); }
 .h-courses .n { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 12px; background: var(--yellow); color: var(--blue-ink); font: 700 1.2rem var(--serif); }
+.h-courses .soon { align-self: center; padding: .3rem .7rem; border-radius: 999px; background: var(--yellow); color: var(--blue-ink); font: 700 .75rem/1.2 var(--font-head); letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
 .h-courses strong { display: block; font: 700 1.15rem/1.3 var(--font-head); color: #fff; }
 .h-courses span { font-size: .98rem; color: var(--on-dark-soft); }
 .h-learn .btn-light { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.75); }

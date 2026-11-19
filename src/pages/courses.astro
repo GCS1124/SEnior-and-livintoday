@@ -1,0 +1,199 @@
+---
+// Courses & Learning (/courses/). Courtney's videos first (available now), then S.A.L.T. Academy
+// courses marked "Coming soon", and a short form where visitors tell us which courses they'd like.
+// The form posts to /api/course-interest (existing GoHighLevel connection, tag course-interest).
+// No launch dates, prices or enrollment are promised. Styles: src/styles/courses.css (scoped .crs).
+import '../styles/courses.css';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Video from '../components/Video.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE, VIDEOS } from '../data/site';
+import { faqSchema } from '../data/schema';
+import { COURSE_TOPICS, COURSE_ACADEMY, COURSE_FORMATS, COURSE_ROLES } from '../../api/_lib/course-options.js';
+
+const crumbs = [{ name: 'Courses & Learning', href: '/courses/' }];
+const academy = [
+  { key: 'medicare', icon: '🩺', text: 'Medicare, made easier to understand.' },
+  { key: 'health', icon: '🥗', text: 'Planning ahead for health and nutrition.' },
+  { key: 'finance', icon: '📊', text: 'Money matters and estate planning.' },
+];
+const others = Object.keys(COURSE_TOPICS).filter((k) => !COURSE_ACADEMY.includes(k));
+const faqs = [
+  { q: 'When will S.A.L.T. Academy courses be available?', a: 'The courses are coming soon. We are choosing the first topics now, and your suggestions help us decide what to offer first.' },
+  { q: 'What can I learn from right now?', a: 'Courtney’s videos are available today: real-talk lessons on hospital stays, Medicare letters, staying safe at home and much more. You can also read our articles, guides and free printables.' },
+  { q: 'What happens after I share my course ideas?', a: 'Our team reads every suggestion. If you agreed to be contacted, we may reach out personally about the courses you asked for. We do not sign you up for anything.' },
+  { q: 'Can I suggest a course that is not on the list?', a: 'Yes. Use the “Your own course idea” box in the form and tell us what you would like to learn.' },
+];
+---
+<Base
+  title="Courses & Learning: Videos & S.A.L.T. Academy (Coming Soon)"
+  description="Learn with Courtney’s videos today, and help shape S.A.L.T. Academy: tell us which senior living, caregiving and planning courses you’d like us to introduce."
+  image="/images/courtney-portrait.webp"
+  breadcrumbs={crumbs}
+  schema={[faqSchema(faqs)]}
+>
+  <PageHero
+    title="Courses & Learning"
+    kicker="Learn with Courtney"
+    lead="Start with Courtney’s videos today. S.A.L.T. Academy courses are coming soon, and we’d love to know what you want to learn."
+    breadcrumbs={crumbs}
+  />
+
+  <div class="crs">
+    <!-- 1. Available now: Courtney's videos -->
+    <section class="section" id="videos" aria-labelledby="vid-title">
+      <div class="wrap">
+        <p class="crs-badge crs-now">Available now</p>
+        <h2 id="vid-title">Courtney’s videos</h2>
+        <p class="lead">Pull up a chair. Real-talk lessons on hospital stays, Medicare letters, staying safe at home and the everyday things nobody explains.</p>
+        <div class="grid grid-3">
+          {VIDEOS.slice(0, 3).map((v) => <Video id={v.id} title={v.title} length={v.length} note={v.note} />)}
+        </div>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="/videos/">Watch all of Courtney’s videos</a>
+          <a class="btn btn-outline" href={SITE.links.youtubeSubscribe} rel="noopener" target="_blank">Subscribe on YouTube ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Coming soon: S.A.L.T. Academy -->
+    <section class="section crs-soon" id="academy" aria-labelledby="ac-title">
+      <div class="wrap">
+        <p class="crs-badge">Coming soon</p>
+        <h2 id="ac-title">S.A.L.T. Academy courses</h2>
+        <p class="lead">Easy-to-follow courses for seniors, families and caregivers. Here are the first courses we’re planning.</p>
+        <ul class="crs-courses">
+          {academy.map((c) => (
+            <li>
+              <span class="crs-ribbon">Coming soon</span>
+              <span class="crs-ic" aria-hidden="true">{c.icon}</span>
+              <h3>{COURSE_TOPICS[c.key]}</h3>
+              <p>{c.text}</p>
+            </li>
+          ))}
+        </ul>
+        <div class="btn-row"><a class="btn btn-primary" href="#interest">Tell us which courses you want</a></div>
+      </div>
+    </section>
+
+    <!-- 3. Interest form -->
+    <section class="section" id="interest" aria-labelledby="int-title">
+      <div class="wrap crs-formwrap">
+        <div>
+          <p class="crs-badge">Help us choose</p>
+          <h2 id="int-title">Which courses should we introduce?</h2>
+          <p class="lead">Tick the courses you’d like, or tell us your own idea. It takes about a minute, and our team reads every suggestion.</p>
+          <ul class="checklist">
+            <li>No sign-up or payment</li>
+            <li>We don’t share your details</li>
+            <li>Prefer to talk? Call {SITE.phoneDisplay}</li>
+          </ul>
+        </div>
+        <form class="crs-form" id="crs-form" novalidate>
+          <div id="crs-fields">
+            <p class="crs-err" id="crs-err" role="alert" hidden></p>
+            <fieldset>
+              <legend>Courses you’d like <span class="opt">(choose any)</span></legend>
+              <p class="crs-group">S.A.L.T. Academy, coming soon</p>
+              <div class="crs-checks">
+                {COURSE_ACADEMY.map((k) => <label class="crs-check"><input type="checkbox" name="topics" value={k} /> <span>{COURSE_TOPICS[k]}</span></label>)}
+              </div>
+              <p class="crs-group">More ideas</p>
+              <div class="crs-checks">
+                {others.map((k) => <label class="crs-check"><input type="checkbox" name="topics" value={k} /> <span>{COURSE_TOPICS[k]}</span></label>)}
+              </div>
+            </fieldset>
+            <label>Your own course idea <span class="opt">(optional)</span>
+              <textarea name="idea" rows="3" maxlength="1500" placeholder="What would you like to learn?"></textarea>
+            </label>
+            <fieldset>
+              <legend>How would you like to learn? <span class="opt">(optional)</span></legend>
+              <div class="crs-checks">
+                {Object.entries(COURSE_FORMATS).map(([k, v]) => <label class="crs-check"><input type="checkbox" name="formats" value={k} /> <span>{v}</span></label>)}
+              </div>
+            </fieldset>
+            <label>Who are you learning for? <span class="opt">(optional)</span>
+              <select name="role">
+                <option value="">Choose one…</option>
+                {Object.entries(COURSE_ROLES).map(([k, v]) => <option value={k}>{v}</option>)}
+              </select>
+            </label>
+            <div class="crs-row">
+              <label>Your name <span class="req" aria-hidden="true">*</span>
+                <input name="fullName" autocomplete="name" maxlength="120" required />
+              </label>
+              <label>Email <span class="req" aria-hidden="true">*</span>
+                <input name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" required />
+              </label>
+            </div>
+            <label class="crs-hp" aria-hidden="true">Fax <input name="fax" tabindex="-1" autocomplete="off" /></label>
+            <label class="crs-check crs-consent"><input type="checkbox" name="consent" required /> <span>I agree that Senior and Living Today may contact me about courses. <a href="/privacy-policy/">Privacy policy</a></span></label>
+            <button class="btn btn-primary" type="submit" id="crs-submit">Send my course ideas</button>
+          </div>
+          <div class="crs-ok" id="crs-ok" tabindex="-1" hidden>
+            <p class="crs-ok-star" aria-hidden="true">★</p>
+            <h3>Thank you<span id="crs-name"></span>!</h3>
+            <p>We’ve received your course ideas. They help us decide which S.A.L.T. Academy courses to introduce first.</p>
+            <a class="btn btn-outline" href="/videos/">Watch Courtney’s videos while you wait</a>
+          </div>
+          <p class="crs-fail" id="crs-fail" role="alert" hidden>Sorry, we couldn’t save that just now. Please try again in a minute, email <a href={`mailto:${SITE.email}`}>{SITE.email}</a> or call {SITE.phoneDisplay}.</p>
+        </form>
+      </div>
+    </section>
+
+    <section class="section section-cream" aria-labelledby="faq-title">
+      <div class="wrap narrow">
+        <h2 id="faq-title">Questions about courses</h2>
+        <div class="crs-faq">
+          {faqs.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
+        </div>
+        <p class="crs-more">Looking for our free online community? <a href="/community/">Visit the S.A.L.T. community</a>.</p>
+      </div>
+    </section>
+  </div>
+  <CtaBand />
+</Base>
+
+<script>
+  const form = document.getElementById('crs-form') as HTMLFormElement | null;
+  if (form) {
+    const err = document.getElementById('crs-err')!;
+    const fail = document.getElementById('crs-fail')!;
+    const btn = document.getElementById('crs-submit') as HTMLButtonElement;
+    const show = (msg: string, field?: string) => {
+      err.textContent = msg; err.hidden = false;
+      form.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
+      if (field) { const el = form.querySelector<HTMLElement>(`[name="${field}"]`); el?.setAttribute('aria-invalid', 'true'); el?.focus(); }
+    };
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault(); err.hidden = true; fail.hidden = true;
+      const fd = new FormData(form);
+      const data = {
+        fullName: String(fd.get('fullName') || '').trim(), email: String(fd.get('email') || '').trim(),
+        topics: fd.getAll('topics').map(String), formats: fd.getAll('formats').map(String),
+        role: String(fd.get('role') || ''), idea: String(fd.get('idea') || '').trim(), fax: String(fd.get('fax') || ''),
+        consent: (form.elements.namedItem('consent') as HTMLInputElement).checked,
+      };
+      if (!data.topics.length && !data.idea) return show('Please choose at least one course, or tell us your own idea.', 'topics');
+      if (!data.fullName) return show('Please enter your name.', 'fullName');
+      if (!/^\S+@\S+\.\S{2,}$/.test(data.email)) return show('Please enter a valid email address.', 'email');
+      if (!data.consent) return show('Please agree to be contacted about courses.', 'consent');
+      btn.disabled = true; btn.textContent = 'Sending…';
+      try {
+        const r = await fetch('/api/course-interest', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+        const j = await r.json().catch(() => ({}));
+        if (r.ok && j.ok) {
+          document.getElementById('crs-fields')!.hidden = true;
+          document.getElementById('crs-name')!.textContent = data.fullName ? `, ${data.fullName.split(' ')[0]}` : '';
+          const ok = document.getElementById('crs-ok')!; ok.hidden = false; ok.focus();
+          return;
+        }
+        if (r.status === 400 && j.message) show(j.message, j.error);
+        else if (r.status === 429 && j.message) show(j.message);
+        else fail.hidden = false;
+      } catch { fail.hidden = false; }
+      btn.disabled = false; btn.textContent = 'Send my course ideas';
+    });
+  }
+</script>

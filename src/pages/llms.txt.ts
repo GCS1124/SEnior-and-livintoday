@@ -15,7 +15,8 @@ Contact: ${SITE.phoneDisplay} · ${SITE.email}
 ## Services
 ${SERVICES.map((s) => `- [${s.short}](${SITE.url}${s.href}): ${s.summary}`).join('\n')}
 - [Caregiver Connection](${SITE.url}/caregiver-connection/): curated daily-living products for seniors.
-- [Free community & S.A.L.T. Academy](${SITE.url}/community/): discussions, webinars and courses.
+- [Free community](${SITE.url}/community/): discussions and webinars.
+- [Courses & learning](${SITE.url}/courses/): Courtney’s videos now; S.A.L.T. Academy courses coming soon, with a form to suggest courses.
 
 ## Books and resources
 - [The Living Legacy Planner](${SITE.url}/books/living-legacy-planner/): end-of-life and personal records planner.

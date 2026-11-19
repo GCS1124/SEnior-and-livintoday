@@ -37,7 +37,7 @@ const pillars = [
   { href: '#planner', icon: '📘', title: 'Books & legacy planning', text: 'The Living Legacy Planner, in three editions.' },
   { href: '#resources', icon: '🧭', title: 'Senior living resources', text: 'Real answers, local help and free guides.' },
   { href: '#play', icon: '🎲', title: 'Games & Memory Lane', text: 'Coloring, memory match, cards and “remember when?”' },
-  { href: '#learning', icon: '🎓', title: 'Courses & learning', text: 'S.A.L.T. Academy courses and Courtney’s videos.' },
+  { href: '#learning', icon: '🎓', title: 'Courses & learning', text: 'Courtney’s videos now; S.A.L.T. Academy coming soon.' },
   { href: '#shop', icon: '🛍️', title: 'Helpful products', text: 'Gifts and everyday helpers from our store.' },
 ];
 
@@ -60,7 +60,6 @@ const courses = [
   { title: 'Medicare Simplified', text: 'Medicare, made easier to understand.' },
   { title: 'Health & Nutritional Planning', text: 'Planning ahead for health and nutrition.' },
   { title: 'Smart Financial & Estate Planning', text: 'Money matters and estate planning.' },
-  { title: 'Webinars', text: 'Ask-the-Expert sessions and a peer conversation hour.' },
 ];
 
 const faqs = [
@@ -315,28 +314,32 @@ const faqs = [
     <!-- 6. Courses & learning -->
     <section class="h-sec h-learn section-dark" id="learning" aria-labelledby="learn-title">
       <div class="wrap">
-        <div class="h-academy">
-          <div class="h-head">
-            <p class="h-kicker">Courses &amp; learning</p>
-            <h2 class="h-display" id="learn-title">Learn with S.A.L.T. Academy</h2>
-            <p class="h-lead">Our free online community includes courses and webinars for seniors and caregivers, alongside discussions with people who’ve been there.</p>
-            <div class="btn-row">
-              <a class="btn btn-primary" href="/community/">Explore S.A.L.T. Academy</a>
-              <a class="btn btn-light" href={SITE.links.community} rel="noopener" target="_blank">Join the free community ↗</a>
-            </div>
-          </div>
-          <ul class="h-courses">
-            {courses.map((c, i) => <li><span class="n" aria-hidden="true">{i + 1}</span><div><strong>{c.title}</strong><span>{c.text}</span></div></li>)}
-          </ul>
+        <div class="h-head">
+          <p class="h-kicker">Courses &amp; learning</p>
+          <h2 class="h-display" id="learn-title">Pull up a chair. I’ve made hundreds of these.</h2>
+          <p class="h-lead">Courtney’s videos: real-talk lessons on hospital stays, Medicare letters, staying safe at home and much more.</p>
         </div>
-        <p class="h-kicker h-sub-kicker">Watch &amp; learn with Courtney</p>
-        <h2 class="h-sub" style="margin-top:0">Pull up a chair. I’ve made hundreds of these.</h2>
         <div class="grid grid-3">
           {VIDEOS.slice(0, 3).map((v) => <Video id={v.id} title={v.title} length={v.length} note={v.note} />)}
         </div>
         <div class="btn-row">
           <a class="btn btn-primary" href="/videos/">More of Courtney’s videos</a>
           <a class="btn btn-light" href={SITE.links.youtubeSubscribe} rel="noopener" target="_blank">Subscribe on YouTube</a>
+        </div>
+
+        <div class="h-academy">
+          <div>
+            <p class="h-kicker h-sub-kicker">Coming soon</p>
+            <h2 class="h-sub" style="margin-top:0">Learn with S.A.L.T. Academy</h2>
+            <p class="h-lead">Easy-to-follow courses for seniors, families and caregivers are coming soon. Tell us which ones you’d like us to introduce first.</p>
+            <div class="btn-row">
+              <a class="btn btn-primary" href="/courses/#interest">Tell us what you’d like to learn</a>
+              <a class="btn btn-light" href="/courses/">See the planned courses</a>
+            </div>
+          </div>
+          <ul class="h-courses">
+            {courses.map((c, i) => <li><span class="n" aria-hidden="true">{i + 1}</span><div><strong>{c.title}</strong><span>{c.text}</span></div><span class="soon">Coming soon</span></li>)}
+          </ul>
         </div>
       </div>
     </section>
