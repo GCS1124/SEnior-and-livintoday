@@ -71,7 +71,7 @@ export const NAV = [
 // Main header menu (desktop dropdowns and the mobile accordion). Every link is an existing page.
 // `match` lists the path prefixes that mark the item as the current section.
 export interface MenuLink { href: string; label: string; note?: string; external?: boolean; cover?: string; coverH?: number }
-export interface MenuItem { href: string; label: string; icon: string; match: string[]; feature?: boolean; links?: MenuLink[]; foot?: MenuLink }
+export interface MenuItem { href: string; label: string; icon: string; match: string[]; feature?: boolean; mobileOpen?: boolean; links?: MenuLink[]; foot?: MenuLink }
 export const MENU: MenuItem[] = [
   { href: '/', label: 'Home', icon: '🏠', match: [] },
   {
@@ -84,7 +84,18 @@ export const MENU: MenuItem[] = [
     foot: { href: '/books/', label: 'All books by Courtney' },
   },
   {
-    href: '/help/', label: 'Senior Living Resources', icon: '🧭', match: ['/help/', '/find-help/', '/guides/', '/resources/', '/blog/', '/services/', '/memory-lane/', '/games/', '/greeting-cards/'],
+    href: '/games/', label: 'Games & Memory Lane', icon: '🎲', mobileOpen: true, match: ['/games/', '/memory-lane/', '/greeting-cards/', '/coupon-code/'],
+    links: [
+      { href: '/games/#color', label: 'Online coloring book', note: '16 pictures to color, then print or save' },
+      { href: '/games/#match', label: 'Memory match: old-time favorites', note: 'Flip the cards and find the pairs' },
+      { href: '/greeting-cards/', label: 'Make a greeting card', note: 'Add a photo and your wishes' },
+      { href: '/coupon-code/', label: 'Win a $100 coupon code', note: 'Play, win and save at our store' },
+      { href: '/memory-lane/', label: 'Memory Lane', note: '“Remember when?” cards, old newspapers, TV & radio' },
+      { href: '/books/relics-of-the-century/', label: 'Relics of the Century', note: 'Courtney’s book of the things we grew up with' },
+    ],
+  },
+  {
+    href: '/help/', label: 'Senior Living Resources', icon: '🧭', match: ['/help/', '/find-help/', '/guides/', '/resources/', '/blog/', '/services/'],
     links: [
       { href: '/help/', label: 'What do I do when…?', note: 'Courtney’s advice for real situations' },
       { href: '/find-help/', label: 'Find help near me', note: 'Doctors, lawyers & Medicare help by ZIP' },
@@ -92,8 +103,6 @@ export const MENU: MenuItem[] = [
       { href: '/resources/', label: 'Free printables & downloads' },
       { href: '/services/', label: 'One-on-one help from Courtney', note: 'Consulting, virtual assistant, caregiver support' },
       { href: '/blog/', label: 'Blog & articles' },
-      { href: '/memory-lane/', label: 'Memory Lane' },
-      { href: '/games/', label: 'Fun & cards', note: 'Coloring, games and greeting cards' },
     ],
   },
   {
@@ -105,7 +114,7 @@ export const MENU: MenuItem[] = [
     ],
   },
   {
-    href: '/gifts/', label: 'Shop', icon: '🛍️', match: ['/gifts/', '/coupon-code/'],
+    href: '/gifts/', label: 'Shop', icon: '🛍️', match: ['/gifts/'],
     links: [
       { href: '/gifts/', label: 'Gift guide', note: 'Hand-picked from the SALT Online Store' },
       { href: '/gifts/#instant', label: 'Instant-download e-planners' },

@@ -15,7 +15,8 @@ import WorkWithUsBand from '../components/WorkWithUsBand.astro';
 import BibSpotlight from '../components/BibSpotlight.astro';
 import Book3D from '../components/Book3D.astro';
 import LookInside from '../components/LookInside.astro';
-import { SITE, SERVICES, BOOKS, VIDEOS, GIFTS, RELICS, REVIEWS, storeLink } from '../data/site';
+import { SITE, SERVICES, BOOKS, VIDEOS, GIFTS, RELICS, REVIEWS, MEMORY_LINKS, storeLink } from '../data/site';
+import { COLORING } from '../data/coloring';
 import { EDITIONS } from '../data/planners';
 import { faqSchema } from '../data/schema';
 import { getCollection } from 'astro:content';
@@ -35,6 +36,7 @@ const moreBooks = BOOKS.filter((b) => !['living-legacy-planner', 'living-legacy-
 const pillars = [
   { href: '#planner', icon: '📘', title: 'Books & legacy planning', text: 'The Living Legacy Planner, in three editions.' },
   { href: '#resources', icon: '🧭', title: 'Senior living resources', text: 'Real answers, local help and free guides.' },
+  { href: '#play', icon: '🎲', title: 'Games & Memory Lane', text: 'Coloring, memory match, cards and “remember when?”' },
   { href: '#learning', icon: '🎓', title: 'Courses & learning', text: 'S.A.L.T. Academy courses and Courtney’s videos.' },
   { href: '#shop', icon: '🛍️', title: 'Helpful products', text: 'Gifts and everyday helpers from our store.' },
 ];
@@ -49,6 +51,10 @@ const tiles = [
   { href: '/games/', icon: '🎨', title: 'Coloring & games', text: '16 pictures to color, plus a memory game.' },
   { href: '/greeting-cards/', icon: '💌', title: 'Make a greeting card', text: 'Add a photo and your wishes. Print, PDF or share.' },
 ];
+
+// Games & Memory Lane: real pictures from the coloring book and the memory-match game's own favorites.
+const colorPics = ['flowers', 'cottage', 'phone'].map((id) => COLORING.find((c) => c.id === id)!).filter(Boolean);
+const matchCards = [['☎️', 'Telephone'], ['📻', 'Radio'], ['💿', 'Record'], ['📺', 'Television']];
 
 const courses = [
   { title: 'Medicare Simplified', text: 'Medicare, made easier to understand.' },
@@ -76,7 +82,7 @@ const faqs = [
     <section class="h-hero" aria-labelledby="h-title">
       <div class="wrap h-hero-in">
         <div class="h-hero-copy">
-          <p class="h-eyebrow">Books · Legacy planning · Senior living education</p>
+          <p class="h-eyebrow">Books · Legacy planning · Games &amp; memories · Senior living education</p>
           <h1 id="h-title">Helping Families Plan, Preserve, and <em>Live Their Legacy.</em></h1>
           <p class="h-lead">Explore thoughtful planners, practical resources, and educational experiences designed to help individuals and families organize important details, preserve meaningful memories, and make informed decisions about senior living.</p>
           <div class="h-ctas">
@@ -182,7 +188,81 @@ const faqs = [
       </div>
     </section>
 
-    <!-- 4. Senior living resources -->
+    <!-- 4. Games & Memory Lane -->
+    <section class="h-sec h-play" id="play" aria-labelledby="play-title">
+      <div class="wrap">
+        <div class="h-head center">
+          <p class="h-kicker">Games &amp; fun</p>
+          <h2 class="h-display" id="play-title">Play, remember and have some fun</h2>
+          <p class="h-lead">Color a picture, play memory match, make a greeting card for someone you love, and take a walk down Memory Lane. All free, with big, easy buttons on a phone, tablet or computer.</p>
+        </div>
+        <ul class="h-games">
+          <li>
+            <a class="h-game" href="/games/#color">
+              <span class="h-game-art h-color" aria-hidden="true">
+                {colorPics.map((c, i) => <svg viewBox="0 0 400 400" class={`cp cp-${i}`} set:html={c.svg} />)}
+              </span>
+              <strong>Online coloring book</strong>
+              <span>16 pictures to color: flowers, a cozy cottage, a rotary phone and more. Print it or save it when you’re done.</span>
+              <span class="h-game-go">🖍️ Start coloring</span>
+            </a>
+          </li>
+          <li>
+            <a class="h-game" href="/games/#match">
+              <span class="h-game-art h-match" aria-hidden="true">
+                {matchCards.map(([e], i) => <span class:list={['mc', { up: i === 0 || i === 3 }]}>{(i === 0 || i === 3) ? e : '?'}</span>)}
+                {matchCards.map(([e], i) => <span class:list={['mc', { up: i === 3 }]}>{i === 3 ? e : '?'}</span>)}
+              </span>
+              <strong>Memory match: old-time favorites</strong>
+              <span>Flip the cards and find the pairs: telephones, radios, records and more. How few turns can you do it in?</span>
+              <span class="h-game-go">🧠 Play memory match</span>
+            </a>
+          </li>
+          <li>
+            <a class="h-game" href="/greeting-cards/">
+              <span class="h-game-art h-card" aria-hidden="true">
+                <span class="gc"><span class="gc-top">💐</span><span class="gc-msg">Thinking of you!</span><span class="gc-sig">Love, Mom</span></span>
+              </span>
+              <strong>Make a greeting card</strong>
+              <span>Pick an occasion, add a photo and write your wishes, then print it, download a PDF or share it with family.</span>
+              <span class="h-game-go">💌 Make a card</span>
+            </a>
+          </li>
+        </ul>
+        <p class="h-coupon"><span aria-hidden="true">🎁</span> <span><strong>Play and win:</strong> sign up on the Games page, win a game, and we’ll email you a $100 coupon code for the SALT Online Store.</span> <a href="/coupon-code/">How the $100 coupon works →</a></p>
+
+        <div class="h-lane">
+          <div class="h-lane-copy">
+            <p class="h-kicker">Remember when?</p>
+            <h2 class="h-display">Take a walk down Memory Lane</h2>
+            <p class="lead">Rotary phones, rabbit-ear TVs, the milkman. Flip a card, share the story, then read the newspaper from the day you were born.</p>
+            <ul class="h-relics">
+              {RELICS.slice(0, 4).map((r) => (
+                <li>
+                  <button type="button" class="h-flip" aria-pressed="false">
+                    <span class="f-front"><span class="em" aria-hidden="true">{r.emoji}</span><strong>{r.name}</strong><span class="tap">Tap to remember ↻</span></span>
+                    <span class="f-back"><span class="hand">{r.name}</span><span>{r.memory}</span></span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <ul class="h-classics">
+              {MEMORY_LINKS.slice(0, 3).map((l) => <li><a href={l.url} target="_blank" rel="noopener"><span aria-hidden="true">{l.icon}</span> {l.name} <span aria-hidden="true">↗</span></a></li>)}
+            </ul>
+            <div class="btn-row">
+              <a class="btn btn-berry" href="/memory-lane/">Visit Memory Lane</a>
+              <a class="btn btn-outline" href="/games/">🖍️ Color a picture</a>
+              <a class="btn btn-outline" href="/greeting-cards/">💌 Make a card</a>
+            </div>
+          </div>
+          <a class="relics-card" href="/books/relics-of-the-century/">
+            <Photo src="/images/relics-of-the-century.webp" alt="Relics of the Century book by Courtney Ray Jones" width={525} height={750} tilt="l" tape caption="Relics of the Century, by Courtney" />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Senior living resources -->
     <section class="h-sec h-res" id="resources" aria-labelledby="res-title">
       <div class="wrap">
         <div class="h-res-top">
@@ -232,7 +312,7 @@ const faqs = [
       </div>
     </section>
 
-    <!-- 5. Courses & learning -->
+    <!-- 6. Courses & learning -->
     <section class="h-sec h-learn section-dark" id="learning" aria-labelledby="learn-title">
       <div class="wrap">
         <div class="h-academy">
@@ -261,7 +341,7 @@ const faqs = [
       </div>
     </section>
 
-    <!-- 6. Shop -->
+    <!-- 7. Shop -->
     <section class="h-sec h-shop" id="shop" aria-labelledby="shop-title">
       <div class="snow" aria-hidden="true"></div>
       <div class="wrap">
@@ -280,31 +360,10 @@ const faqs = [
 
     <BibSpotlight campaign="home-bibs" />
 
-    <section class="h-sec section-cream">
-      <div class="wrap grid split">
-        <div>
-          <p class="h-kicker">Remember when?</p>
-          <h2 class="h-display">Take a walk down Memory Lane</h2>
-          <p class="lead">Rotary phones, rabbit-ear TVs, the milkman. Flip a card, share the story, then read the newspaper from the day you were born.</p>
-          <ul class="mini-relics">
-            {RELICS.slice(0, 4).map((r) => <li><span aria-hidden="true">{r.emoji}</span>{r.name}</li>)}
-          </ul>
-          <div class="btn-row">
-            <a class="btn btn-berry" href="/memory-lane/">Visit Memory Lane</a>
-            <a class="btn btn-outline" href="/games/">🖍️ Color a picture</a>
-            <a class="btn btn-outline" href="/greeting-cards/">💌 Make a card</a>
-          </div>
-        </div>
-        <a class="relics-card" href="/books/relics-of-the-century/">
-          <Photo src="/images/relics-of-the-century.webp" alt="Relics of the Century book by Courtney Ray Jones" width={525} height={750} tilt="l" tape caption="Relics of the Century, by Courtney" />
-        </a>
-      </div>
-    </section>
-
-    <!-- 7. Work with us -->
+    <!-- 8. Work with us -->
     <WorkWithUsBand />
 
-    <!-- 8. Courtney's story -->
+    <!-- 9. Courtney's story -->
     <section class="h-sec">
       <div class="wrap grid split split-rev">
         <div>
@@ -342,7 +401,13 @@ const faqs = [
       </div>
     </section>
 
-    <!-- 9. Final call to action -->
+    <!-- 10. Final call to action -->
     <CtaBand />
   </div>
 </Base>
+
+<script>
+  // Memory Lane cards: tap to flip (same behaviour as /memory-lane/).
+  document.querySelectorAll<HTMLButtonElement>('.h-flip').forEach((b) =>
+    b.addEventListener('click', () => b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true'))));
+</script>

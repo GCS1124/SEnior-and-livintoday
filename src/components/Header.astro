@@ -1,8 +1,10 @@
 ---
-// Site header: a slim top bar, then a sticky header with the registered logo, the two main actions
-// and the main menu. Desktop menu items open dropdowns on hover, focus or a tap on the arrow;
-// on phones and tablets the menu is an accordion. The header gets more compact once the visitor
-// scrolls. All motion is off for visitors who prefer reduced motion.
+// Site header: a slim top bar, then the header with the registered logo, the two main actions
+// and the main menu. The header stays in its normal place at the top of the page (it does not
+// follow the visitor down the page, so it never covers content). Desktop menu items open
+// dropdowns on hover, focus or a tap on the arrow; on phones and tablets the menu is an accordion.
+// Dropdown fades are off for visitors who prefer reduced motion. The desktop bar leaves out "Home"
+// (the logo links home); the mobile menu lists it.
 // Menu content: MENU in src/data/site.ts.
 import { MENU, SITE, type MenuItem } from '../data/site';
 const path = Astro.url.pathname;
@@ -15,13 +17,9 @@ const ext = (l: { external?: boolean }) => (l.external ? { target: '_blank', rel
     <a href={`tel:${SITE.phone}`}>Call Courtney’s team: <strong>{SITE.phoneDisplay}</strong></a>
   </div>
 </div>
-<script is:inline>
-  // Header entrance: only on the first page of a visit, so moving between pages stays calm.
-  try { if (!sessionStorage.getItem('salt-hdr')) { document.documentElement.classList.add('hdr-intro'); sessionStorage.setItem('salt-hdr', '1'); } } catch (e) {}
-</script>
 <header class="site-header" data-header>
   <div class="wrap bar">
-    <a href="/" class="brand" aria-label="Senior and Living Today home">
+    <a href="/" class="brand">
       <img src="/images/logo-registered-small.png" width="84" height="84" alt="" />
       <span>
         <strong>Senior and Living Today</strong>
@@ -38,7 +36,7 @@ const ext = (l: { external?: boolean }) => (l.external ? { target: '_blank', rel
         <ul class="m-list">
           {MENU.map((item) => item.links ? (
             <li>
-              <details class="m-grp" open={item.feature}>
+              <details class="m-grp" open={item.feature || item.mobileOpen}>
                 <summary aria-current={isCurrent(item) ? 'page' : undefined}><span aria-hidden="true">{item.icon}</span> {item.label}</summary>
                 <ul>
                   {item.links.map((l) => <li><a href={l.href} {...ext(l)}>{l.label}{l.external && <span aria-hidden="true"> ↗</span>}</a></li>)}
@@ -57,9 +55,9 @@ const ext = (l: { external?: boolean }) => (l.external ? { target: '_blank', rel
   </div>
   <nav class="desk" aria-label="Main">
     <ul class="wrap dl">
-      {MENU.map((item, i) => (
-        <li class:list={['dd', { 'dd-feature': item.feature, 'dd-end': i >= MENU.length - 2 }]} data-dd={item.links ? '' : undefined} style={`--i:${i}`}>
-          <a class="dl-a" href={item.href} aria-current={isCurrent(item) ? 'page' : undefined}>{item.feature && <span class="dl-ic" aria-hidden="true">{item.icon}</span>}{item.label}</a>
+      {MENU.map((item, i) => item.href !== '/' && (
+        <li class:list={['dd', { 'dd-feature': item.feature, 'dd-end': i >= MENU.length - 2 }]} data-dd={item.links ? '' : undefined}>
+          <a class="dl-a" href={item.href} aria-current={isCurrent(item) ? 'page' : undefined}>{(item.feature || item.mobileOpen) && <span class="dl-ic" aria-hidden="true">{item.icon}</span>}{item.label}</a>
           {item.links && (
             <>
               <button type="button" class="dd-btn" aria-expanded="false" aria-controls={`dd-${i}`} aria-label={`${item.label}: show the menu`}>
@@ -91,7 +89,6 @@ const ext = (l: { external?: boolean }) => (l.external ? { target: '_blank', rel
     </ul>
   </nav>
 </header>
-<span class="hdr-sentinel" data-hdr-sentinel aria-hidden="true"></span>
 
 <style>
   .topbar { background: var(--blue-ink); color: var(--on-dark); font-size: .95rem; }
@@ -100,59 +97,49 @@ const ext = (l: { external?: boolean }) => (l.external ? { target: '_blank', rel
   .tb a strong { color: var(--sun); }
   @media (max-width: 1000px) { .tb span { display: none; } .tb { justify-content: center; } }
 
-  /* ---------- sticky header ---------- */
-  .site-header { position: sticky; top: 0; z-index: 30; background: rgba(255,255,255,.97); box-shadow: 0 1px 0 var(--line); transition: box-shadow .3s ease; }
-  @supports (backdrop-filter: blur(8px)) { .site-header { background: rgba(255,255,255,.9); backdrop-filter: saturate(1.4) blur(10px); } }
-  .site-header.is-stuck { box-shadow: 0 10px 30px rgba(20,33,61,.12); }
-  .hdr-sentinel { position: absolute; top: 140px; left: 0; width: 1px; height: 1px; pointer-events: none; }
-  .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 104px; transition: min-height .3s ease; }
+  /* ---------- header (static: stays at the top of the page, never floats over content) ---------- */
+  .site-header { position: relative; z-index: 30; background: #fff; box-shadow: 0 1px 0 var(--line); }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 104px; }
   .brand { display: flex; align-items: center; gap: 16px; text-decoration: none; border-radius: 12px; }
-  .brand img { width: 84px; height: 84px; transition: width .3s ease, height .3s ease, transform .4s ease; } /* approved ® logo, as-is */
-  .brand:hover img { transform: rotate(-4deg) scale(1.03); }
-  .brand strong { display: block; font: 700 1.55rem/1.1 var(--font-head); letter-spacing: -.01em; color: var(--blue-ink); transition: font-size .3s ease; }
-  .brand small { display: block; margin-top: 2px; font: 600 1.5rem/1 var(--font-hand); color: var(--blue); transition: opacity .2s ease; }
-  .is-stuck .bar { min-height: 70px; }
-  .is-stuck .brand img { width: 54px; height: 54px; }
-  .is-stuck .brand strong { font-size: 1.25rem; }
+  .brand img { width: 84px; height: 84px; } /* approved ® logo, as-is */
+  .brand strong { display: block; font: 700 1.55rem/1.1 var(--font-head); letter-spacing: -.01em; color: var(--blue-ink); }
+  .brand small { display: block; margin-top: 2px; font: 600 1.5rem/1 var(--font-hand); color: var(--blue); }
   ul { list-style: none; margin: 0; padding: 0; }
   .acts { display: none; gap: 12px; align-items: center; }
   .acts .btn { min-height: 48px; padding: 10px 22px; font-size: 1rem; }
-  @media (max-width: 1099px) {
+  @media (max-width: 1179px) {
     .bar { min-height: 84px; }
     .brand img { width: 62px; height: 62px; }
     .brand strong { font-size: 1.25rem; }
     .brand small { font-size: 1.3rem; }
-    .is-stuck .bar { min-height: 68px; }
-    .is-stuck .brand img { width: 48px; height: 48px; }
-    .is-stuck .brand strong { font-size: 1.1rem; }
   }
-  /* Small phones: keep the sticky header compact so it doesn't eat the screen. */
+  /* Small phones: keep the header compact. */
   @media (max-width: 480px) {
-    .bar, .is-stuck .bar { min-height: 68px; gap: 10px; }
+    .bar { min-height: 68px; gap: 10px; }
     .brand { gap: 8px; min-width: 0; }
-    .brand img, .is-stuck .brand img { width: 46px; height: 46px; }
-    .brand strong, .is-stuck .brand strong { font-size: 1.02rem; }
+    .brand img { width: 46px; height: 46px; }
+    .brand strong { font-size: 1.02rem; }
     .brand small { font-size: 1.1rem; }
   }
   @media (max-width: 360px) { .brand small { display: none; } }
 
   /* ---------- desktop menu ---------- */
   .desk { display: none; border-top: 1px solid var(--line); background: linear-gradient(180deg, #fff, var(--blue-pale)); border-bottom: 3px solid var(--yellow); }
-  .dl { display: flex; justify-content: center; align-items: stretch; gap: 2px; }
+  .dl { display: flex; justify-content: center; align-items: stretch; gap: 0; max-width: 1340px; padding-left: 8px; padding-right: 8px; } /* the menu bar may run a little wider than the page content */
   .dd { position: relative; display: flex; align-items: center; }
-  .dl-a { position: relative; display: flex; align-items: center; gap: 7px; padding: 15px 10px 15px 12px; font: 600 1.02rem var(--font-head); color: var(--blue-ink); text-decoration: none; white-space: nowrap; border-radius: 8px; transition: color .2s ease; }
-  .dd:not([data-dd]) .dl-a { padding-right: 12px; }
-  .dl-a::after { content: ''; position: absolute; left: 12px; right: 4px; bottom: 6px; height: 3px; border-radius: 3px; background: var(--yellow); transform: scaleX(0); transform-origin: left; transition: transform .28s cubic-bezier(.2,.7,.2,1); }
-  .dd:not([data-dd]) .dl-a::after { right: 12px; }
+  .dl-a { position: relative; display: flex; align-items: center; gap: 6px; padding: 15px 8px 15px 11px; font: 600 1.02rem var(--font-head); color: var(--blue-ink); text-decoration: none; white-space: nowrap; border-radius: 8px; transition: color .2s ease; }
+  .dd:not([data-dd]) .dl-a { padding-right: 9px; }
+  .dl-a::after { content: ''; position: absolute; left: 11px; right: 3px; bottom: 6px; height: 3px; border-radius: 3px; background: var(--yellow); transform: scaleX(0); transform-origin: left; transition: transform .28s cubic-bezier(.2,.7,.2,1); }
+  .dd:not([data-dd]) .dl-a::after { right: 9px; }
   .dd:hover .dl-a::after, .dd.open .dl-a::after, .dl-a:focus-visible::after, .dl-a[aria-current='page']::after { transform: scaleX(1); }
   .dl-a:hover, .dd.open .dl-a { color: var(--blue); }
   .dl-a[aria-current='page'] { color: var(--blue); }
-  .dd-feature .dl-a { margin: 8px 0 8px 6px; padding: 9px 8px 9px 14px; background: var(--yellow-soft); border: 2px solid var(--yellow); border-right: 0; border-radius: 999px 0 0 999px; }
-  .dd-feature .dd-btn { margin: 8px 6px 8px 0; height: auto; align-self: stretch; padding: 0 12px 0 4px; background: var(--yellow-soft); border: 2px solid var(--yellow); border-left: 0; border-radius: 0 999px 999px 0; }
+  .dd-feature .dl-a { margin: 8px 0 8px 2px; padding: 9px 6px 9px 12px; background: var(--yellow-soft); border: 2px solid var(--yellow); border-right: 0; border-radius: 999px 0 0 999px; }
+  .dd-feature .dd-btn { margin: 8px 4px 8px 0; height: auto; align-self: stretch; padding: 0 10px 0 2px; background: var(--yellow-soft); border: 2px solid var(--yellow); border-left: 0; border-radius: 0 999px 999px 0; }
   .dd-feature .dl-a::after { display: none; }
   .dd-feature:hover .dl-a, .dd-feature.open .dl-a, .dd-feature:hover .dd-btn, .dd-feature.open .dd-btn { background: var(--yellow); }
   .dl-ic { font-size: 1.05rem; }
-  .dd-btn { display: grid; place-items: center; width: 30px; height: 44px; margin-left: -6px; padding: 0; border: 0; border-radius: 8px; background: transparent; color: var(--blue); cursor: pointer; }
+  .dd-btn { display: grid; place-items: center; width: 28px; height: 44px; margin-left: 0; padding: 0; border: 0; border-radius: 8px; background: transparent; color: var(--blue); cursor: pointer; }
   .dd-btn svg { transition: transform .25s ease; }
   .dd.open .dd-btn svg { transform: rotate(180deg); }
   .dd-btn:hover { background: var(--blue-soft); }
@@ -176,7 +163,9 @@ const ext = (l: { external?: boolean }) => (l.external ? { target: '_blank', rel
   .dd-covers span { font-size: .88rem; line-height: 1.35; color: var(--ink-soft); }
   .dd-foot { display: block; margin-top: 8px; padding: 10px 12px 2px; border-top: 1px solid var(--line); font: 700 .98rem var(--font-head); color: var(--blue); text-decoration: none; }
   .dd-foot:hover { text-decoration: underline; }
-  @media (max-width: 1240px) { .dl-a { font-size: .95rem; padding-left: 9px; padding-right: 8px; } }
+  @media (max-width: 1360px) { .dl { padding-left: 2px; padding-right: 2px; } .dl-a { font-size: .95rem; padding-left: 7px; padding-right: 5px; } .dl-a::after { left: 7px; } .dd-btn { width: 26px; } .dd-feature .dl-a { padding-left: 11px; } }
+
+  @media (max-width: 1240px) { .dl-a { padding-left: 5px; padding-right: 4px; } .dl-a::after { left: 5px; } .dd-feature .dl-a { padding-left: 10px; } }
 
   /* ---------- mobile menu ---------- */
   .mobile summary { list-style: none; cursor: pointer; font-weight: 700; padding: 10px 18px; min-height: 50px; border: 2px solid var(--blue); border-radius: 999px; display: flex; align-items: center; gap: 8px; color: var(--blue-ink); }
@@ -199,35 +188,19 @@ const ext = (l: { external?: boolean }) => (l.external ? { target: '_blank', rel
     @keyframes menu-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
   }
 
-  @media (min-width: 1100px) {
+  @media (min-width: 1180px) {
     .mobile { display: none; }
     .acts { display: flex; }
     .desk { display: block; }
   }
 
-  /* ---------- entrance (once per visit, never for reduced motion) ---------- */
-  @media (prefers-reduced-motion: no-preference) {
-    :global(html.hdr-intro) .bar > * { animation: hdr-in .6s cubic-bezier(.2,.7,.2,1) both; }
-    :global(html.hdr-intro) .bar > .acts { animation-delay: .12s; }
-    :global(html.hdr-intro) .dl > li { animation: hdr-in .5s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(.15s + var(--i) * .05s); }
-    @keyframes hdr-in { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
-  }
   @media (prefers-reduced-motion: reduce) {
-    .site-header, .bar, .brand img, .brand strong, .dd-panel, .dl-a::after, .dd-btn svg, .dd-covers img { transition: none !important; }
+    .dd-panel, .dl-a::after, .dd-btn svg, .dd-covers img, .dd-list li a { transition: none !important; }
   }
 </style>
 
 <script>
-  // 1. Entrance animation: set by the inline script above the header.
-
-  // 2. Compact sticky header once the page has scrolled.
-  const header = document.querySelector<HTMLElement>('[data-header]');
-  const sentinel = document.querySelector('[data-hdr-sentinel]');
-  if (header && sentinel && 'IntersectionObserver' in window) {
-    new IntersectionObserver(([e]) => header.classList.toggle('is-stuck', !e.isIntersecting && e.boundingClientRect.top < 0)).observe(sentinel);
-  }
-
-  // 3. Desktop dropdowns: open on hover (pointer devices), on the arrow button, or with the keyboard.
+  // 1. Desktop dropdowns: open on hover (pointer devices), on the arrow button, or with the keyboard.
   const items = [...document.querySelectorAll<HTMLElement>('.desk [data-dd]')];
   const setOpen = (li: HTMLElement, open: boolean) => {
     li.classList.toggle('open', open);
@@ -251,7 +224,7 @@ const ext = (l: { external?: boolean }) => (l.external ? { target: '_blank', rel
   });
   document.addEventListener('click', (e) => { if (!(e.target as HTMLElement).closest('.desk [data-dd]')) closeAll(); });
 
-  // 4. Mobile menu: show "Close" while open, and close it with Escape,
+  // 2. Mobile menu: show "Close" while open, and close it with Escape,
   // a tap outside the menu, or after choosing a link.
   const menu = document.querySelector<HTMLDetailsElement>('details.mobile');
   if (menu) {
