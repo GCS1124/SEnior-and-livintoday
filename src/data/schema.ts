@@ -34,7 +34,7 @@ export function bookSchema(opts: { name: string; description: string; path: stri
     name: opts.name,
     description: opts.description,
     url: new URL(opts.path, SITE.url).href,
-    author: PERSON,
+    author: opts.byTeam ? ORG : PERSON,
     publisher: ORG,
     inLanguage: 'en-US',
     ...(opts.image ? { image: new URL(opts.image, SITE.url).href } : {}),
@@ -43,7 +43,7 @@ export function bookSchema(opts: { name: string; description: string; path: stri
 }
 
 export function articleSchema(opts: {
-  title: string; description: string; path: string; published: Date; updated?: Date; image?: string;
+  title: string; description: string; path: string; published: Date; updated?: Date; image?: string; byTeam?: boolean;
 }) {
   return {
     '@type': 'BlogPosting',

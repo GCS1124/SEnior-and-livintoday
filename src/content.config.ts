@@ -16,6 +16,7 @@ const blog = defineCollection({
     video: z.string().optional(),      // YouTube id of Courtney's video this article is based on
     situation: z.string().optional(),  // short 'When…' label used on the Get Help page
     draft: z.boolean().default(false),
+    author: z.enum(['courtney', 'team']).default('courtney'), // 'team': articles credited to Senior and Living Today, not to Courtney personally
     faqs: z.array(z.object({ q: z.string(), a: z.string() })).default([]), // shown on the page + FAQPage schema
 
   }),
