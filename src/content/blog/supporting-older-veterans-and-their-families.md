@@ -3,7 +3,7 @@ title: "Honoring Our Veterans: Supporting the People Who Have Given So Much"
 description: "Explore practical ways families can support older veterans, understand available VA resources, and help veterans age with dignity and independence."
 published: 2026-11-26T16:58:00Z
 image: "/images/blog/supporting-older-veterans-and-their-families.webp"
-imageAlt: "Senior and Living Today banner: “Honoring those who served, supporting them today”, with a medal icon in brand blue and yellow"
+imageAlt: "An older U.S. Army veteran in a service cap, shown head and shoulders with an American flag behind him"
 tags: ["veterans", "caregiving"]
 author: team
 ---

@@ -3,7 +3,7 @@ title: "When Workers Come to Your Home, A Little Extra Planning Matters"
 description: "Learn how older adults and families can prepare for home visits, verify contractors, protect personal information, and avoid common home repair scams."
 published: 2026-11-26T16:51:00Z
 image: "/images/blog/home-worker-safety-and-planning-for-seniors.webp"
-imageAlt: "Senior and Living Today banner: “Plan ahead when workers visit”, with a hard hat icon in brand blue and yellow"
+imageAlt: "A tradesperson in a blue work uniform and cap"
 tags: ["home safety"]
 author: team
 ---

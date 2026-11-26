@@ -3,7 +3,7 @@ title: "Who Takes Care of the Caregiver?"
 description: "Explore practical ways family caregivers can get support, share responsibilities, and find respite while caring for an older loved one."
 published: 2026-11-26T16:50:00Z
 image: "/images/blog/support-and-respite-for-family-caregivers.webp"
-imageAlt: "Senior and Living Today banner: “Who takes care of the caregiver?”, with a heart handshake icon in brand blue and yellow"
+imageAlt: "A caregiver and an older woman smiling together"
 tags: ["caregiving"]
 author: team
 ---

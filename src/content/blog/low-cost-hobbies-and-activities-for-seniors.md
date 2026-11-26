@@ -3,7 +3,7 @@ title: "You Don't Need an Expensive Hobby to Enjoy Your Day"
 description: "Find simple, affordable activities that can bring enjoyment, purpose, and social connection to everyday life as we age."
 published: 2026-11-26T16:48:00Z
 image: "/images/blog/low-cost-hobbies-and-activities-for-seniors.webp"
-imageAlt: "Senior and Living Today banner: “Simple, low-cost ways to enjoy the day”, with a palette icon in brand blue and yellow"
+imageAlt: "Two older women working together in a vegetable garden"
 tags: ["everyday life", "fun"]
 author: team
 ---

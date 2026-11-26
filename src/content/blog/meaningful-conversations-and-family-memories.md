@@ -3,7 +3,7 @@ title: "Sometimes the Best Conversations Begin With 'Remember When?'"
 description: "Use simple memory-sharing questions to spark meaningful conversations, preserve family stories, and strengthen connections across generations."
 published: 2026-11-26T16:47:00Z
 image: "/images/blog/meaningful-conversations-and-family-memories.webp"
-imageAlt: "Senior and Living Today banner: “It starts with “Remember when?””, with a book heart icon in brand blue and yellow"
+imageAlt: "A hand holding two old black-and-white family photographs"
 tags: ["family", "memories"]
 author: team
 ---

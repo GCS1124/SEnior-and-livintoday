@@ -3,7 +3,7 @@ title: "Getting Ready for Winter: A Simple Checklist for Older Adults"
 description: "Help older adults prepare for cold weather with a practical checklist for home warmth, outdoor safety, medications, and family check-ins."
 published: 2026-11-26T16:52:00Z
 image: "/images/blog/winter-safety-checklist-for-older-adults.webp"
-imageAlt: "Senior and Living Today banner: “A simple checklist for the cold months”, with a snowflake icon in brand blue and yellow"
+imageAlt: "An older woman with a walker, dressed in a winter hat, scarf and coat, outside her home"
 tags: ["home safety", "winter"]
 author: team
 ---

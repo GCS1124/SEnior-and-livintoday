@@ -3,7 +3,7 @@ title: "A New Month Is Coming. Is Your Family Prepared for What Comes Next?"
 description: "Use a simple monthly check-in to review family contacts, medications, appointments, home safety, and support needs for an older loved one."
 published: 2026-11-26T16:41:00Z
 image: "/images/blog/monthly-family-preparedness-checklist.webp"
-imageAlt: "Senior and Living Today banner: “Ready for the month ahead”, with a calendar check icon in brand blue and yellow"
+imageAlt: "An open monthly planner on a wooden desk"
 tags: ["planning"]
 author: team
 ---

@@ -3,7 +3,7 @@ title: "Signs That It Might Be Time for Someone to Step In and Help"
 description: "Learn the everyday signs that an older adult may need extra support, and how to start a respectful conversation that protects their independence."
 published: 2026-11-26T16:40:00Z
 image: "/images/blog/signs-it-might-be-time-to-step-in-and-help.webp"
-imageAlt: "Senior and Living Today banner for this article, “Knowing when it’s time to step in and help”, in brand blue and yellow"
+imageAlt: "An adult daughter laughing with her older father as they look through a book together on the sofa"
 tags: ["caregiving", "aging parents"]
 author: team
 ---

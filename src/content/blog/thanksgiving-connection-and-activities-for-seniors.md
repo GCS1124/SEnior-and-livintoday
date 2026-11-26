@@ -3,7 +3,7 @@ title: "Thanksgiving Is About More Than What's on the Table"
 description: "Make Thanksgiving more meaningful for older adults with inclusive traditions, comfortable activities, and opportunities to connect."
 published: 2026-11-26T16:45:00Z
 image: "/images/blog/thanksgiving-connection-and-activities-for-seniors.webp"
-imageAlt: "Senior and Living Today banner: “More than what’s on the table”, with a utensils crossed icon in brand blue and yellow"
+imageAlt: "A family preparing a holiday meal together around a table"
 tags: ["Thanksgiving", "family"]
 author: team
 ---

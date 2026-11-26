@@ -3,7 +3,7 @@ title: "Behind the Wheel: Start Talking About It"
 description: "Learn how to talk with an older parent about driving safety, recognize possible warning signs, and plan transportation options without dismissing independence."
 published: 2026-11-26T16:38:00Z
 image: "/images/blog/talking-to-aging-parents-about-driving-safety.webp"
-imageAlt: "Senior and Living Today banner for this article, “Start the conversation with care”, in brand blue and yellow"
+imageAlt: "An older man getting into his car in a tree-lined parking area"
 tags: ["driving", "aging parents"]
 author: team
 ---

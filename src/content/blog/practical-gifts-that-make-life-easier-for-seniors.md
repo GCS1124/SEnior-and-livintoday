@@ -3,7 +3,7 @@ title: "The Best Gifts for Seniors Are the Ones That Make Everyday Life Better"
 description: "Find thoughtful, practical gift ideas that can support comfort, connection, hobbies, and everyday convenience for older adults."
 published: 2026-11-26T16:43:00Z
 image: "/images/blog/practical-gifts-that-make-life-easier-for-seniors.webp"
-imageAlt: "Senior and Living Today banner: “Gifts that make everyday life easier”, with a gift icon in brand blue and yellow"
+imageAlt: "Hands holding a wrapped gift tied with a red bow"
 tags: ["gifts"]
 author: team
 ---

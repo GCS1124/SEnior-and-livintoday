@@ -3,7 +3,7 @@ title: "After Thanksgiving, Don't Forget to Check on the Seniors in Your Life"
 description: "Simple ways to stay connected with older relatives and neighbors after the holidays, especially those who live alone or have limited support."
 published: 2026-11-26T16:44:00Z
 image: "/images/blog/check-on-older-adults-after-thanksgiving.webp"
-imageAlt: "Senior and Living Today banner: “Check on the seniors you love”, with a phone call icon in brand blue and yellow"
+imageAlt: "An older woman in a winter coat talking on her mobile phone"
 tags: ["Thanksgiving", "caregiving"]
 author: team
 ---

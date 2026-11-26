@@ -3,7 +3,7 @@ title: "After the Holidays Is an Important Time to Check In"
 description: "The holidays can reveal changes in an older loved one's routine, health, or social connection. Learn how to follow up with care after the celebrations end."
 published: 2026-11-26T16:39:00Z
 image: "/images/blog/after-the-holidays-check-in-on-older-adults.webp"
-imageAlt: "Senior and Living Today banner for this article, “The quiet days are a good time to check in”, in brand blue and yellow"
+imageAlt: "A smiling grandmother with white hair hugging her young granddaughter"
 tags: ["holidays", "caregiving"]
 author: team
 ---

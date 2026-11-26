@@ -3,7 +3,7 @@ title: "Growing Older at Home: Small Changes Can Make Everyday Life Easier"
 description: "Explore practical home safety updates that can make everyday routines easier for older adults who want to remain at home."
 published: 2026-11-26T16:53:00Z
 image: "/images/blog/small-home-changes-for-aging-in-place.webp"
-imageAlt: "Senior and Living Today banner: “Small changes for easier days at home”, with a house icon in brand blue and yellow"
+imageAlt: "A person holding a sturdy wooden handrail while walking down the stairs at home"
 tags: ["home safety", "aging in place"]
 author: team
 ---

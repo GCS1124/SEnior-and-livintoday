@@ -3,7 +3,7 @@ title: "Before the Holidays, Have the Conversations That Matter"
 description: "Prepare for meaningful family conversations about aging, support, safety, and future preferences before holiday gatherings become busy."
 published: 2026-11-26T16:46:00Z
 image: "/images/blog/important-family-conversations-before-the-holidays.webp"
-imageAlt: "Senior and Living Today banner: “Talk about what matters while you’re together”, with a message circle heart icon in brand blue and yellow"
+imageAlt: "A family gathered around a dining table talking with their grandfather"
 tags: ["planning", "holidays"]
 author: team
 ---

@@ -3,7 +3,7 @@ title: "The Most Meaningful Gift You Can Give Your Family Might Be Organization"
 description: "Discover how organizing essential records, contacts, and care preferences can make life easier for older adults and the people who support them."
 published: 2026-11-26T16:49:00Z
 image: "/images/blog/the-gift-of-family-organization.webp"
-imageAlt: "Senior and Living Today banner: “The gift of being organized”, with a folder heart icon in brand blue and yellow"
+imageAlt: "An older man in glasses writing notes in a notebook at his kitchen table"
 tags: ["planning", "family"]
 author: team
 ---

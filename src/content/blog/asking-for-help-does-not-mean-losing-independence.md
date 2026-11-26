@@ -3,7 +3,7 @@ title: "Asking for Help Isn't Losing Your Independence"
 description: "Discover how accepting the right support can help older adults stay involved in daily decisions and continue living life on their own terms."
 published: 2026-11-26T16:55:00Z
 image: "/images/blog/asking-for-help-does-not-mean-losing-independence.webp"
-imageAlt: "Senior and Living Today banner: “Asking for help is a strength”, with a hand heart icon in brand blue and yellow"
+imageAlt: "A caregiver holding an older woman's hands to help her stand up from her chair"
 tags: ["independence", "everyday life"]
 author: team
 ---

@@ -3,7 +3,7 @@ title: "Why No Senior Should Have to Navigate a Hospital Stay Alone"
 description: "Learn how families can support an older adult during a hospital stay and prepare for a safer, more organized transition home."
 published: 2026-11-26T16:57:00Z
 image: "/images/blog/hospital-discharge-planning-for-seniors.webp"
-imageAlt: "Senior and Living Today banner: “No one should face a hospital stay alone”, with a hospital icon in brand blue and yellow"
+imageAlt: "A doctor talking with an older man and his grandson during an appointment"
 tags: ["health", "hospital"]
 author: team
 ---

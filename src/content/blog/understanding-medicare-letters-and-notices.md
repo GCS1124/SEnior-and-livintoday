@@ -3,7 +3,7 @@ title: "Medicare Questions? Don't Let Important Letters Sit Unopened"
 description: "Learn why Medicare notices matter, what to look for in a letter, and how to find official help when a coverage or payment decision is unclear."
 published: 2026-11-26T16:54:00Z
 image: "/images/blog/understanding-medicare-letters-and-notices.webp"
-imageAlt: "Senior and Living Today banner: “Open the letter. Then ask questions.”, with a mail open icon in brand blue and yellow"
+imageAlt: "An older adult with grey hair sitting at a table reading a letter"
 tags: ["Medicare", "money"]
 author: team
 ---

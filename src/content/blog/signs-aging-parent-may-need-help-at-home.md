@@ -3,7 +3,7 @@ title: "Is Your Aging Parent Having a Harder Time Managing Everyday Life?"
 description: "Learn how to notice changes in an aging parent's daily routine and start a respectful conversation about support at home."
 published: 2026-11-26T16:56:00Z
 image: "/images/blog/signs-aging-parent-may-need-help-at-home.webp"
-imageAlt: "Senior and Living Today banner: “Noticing the everyday changes”, with a clipboard check icon in brand blue and yellow"
+imageAlt: "An older woman with white hair sitting in her armchair at home"
 tags: ["caregiving", "aging parents"]
 author: team
 ---

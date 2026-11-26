@@ -3,7 +3,7 @@ title: "A Simple Lockbox Could Help Your Family in an Emergency"
 description: "Learn what to store securely, what not to store, and how a lockbox can fit into a family emergency-preparedness plan."
 published: 2026-11-26T16:42:00Z
 image: "/images/blog/lockbox-for-important-senior-documents.webp"
-imageAlt: "Senior and Living Today banner: “A simple lockbox can help”, with a briefcase medical icon in brand blue and yellow"
+imageAlt: "House keys and a padlock beside a blue lockbox"
 tags: ["planning", "emergency"]
 author: team
 ---
